@@ -9,7 +9,12 @@ let bg;
 var pointer;
 const canvas = document.getElementById('fluid-canvas');
 let audio = document.getElementById('audio');
+const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
+const fluidCanvas = document.getElementById('fluid-canvas');
 
+bgColorSaveButton.addEventListener('click', function () {
+    config.BACK_COLOR = hexToRGB(""+bgColor)
+})
 
 // let ctx = canvas.getContext("3d");
 // 그냥 여기서 사이즈 지정
@@ -25,7 +30,7 @@ let config = {
     PRESSURE: 1,
     PRESSURE_ITERATIONS: 20,
     CURL: 30,
-    SPLAT_RADIUS: 0.25,
+    SPLAT_RADIUS: 0.1,
     SPLAT_FORCE: 6000,
     SHADING: true,
     COLORFUL: true,
@@ -1576,17 +1581,17 @@ function generateColor () {
 }
 
 
-function generateBackgroundColor(){
-    if (bgColor != undefined) {
-        bg = hexToRGB(""+bgColor)
-    } else {
-        bg = HSVtoRGB(Math.random(), 1.0, 1.0);
-    }
-    bg.r *= 0.15;
-    bg.g *= 0.15;
-    bg.b *= 0.15;
-    return bg;
-}
+// function generateBackgroundColor(){
+//     if (bgColor != undefined) {
+//         bg = hexToRGB(""+bgColor)
+//     } else {
+//         bg = HSVtoRGB(Math.random(), 1.0, 1.0);
+//     }
+//     bg.r *= 0.15;
+//     bg.g *= 0.15;
+//     bg.b *= 0.15;
+//     return bg;
+// }
 
 function HSVtoRGB (h, s, v) {
     let r, g, b, i, f, p, q, t;

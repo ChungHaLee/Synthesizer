@@ -2,12 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { sparkling, startFauxClicking, } from './sparkle.js'
 import { energy, dataArray, analyser, pitchDetector, myNote, octave } from './audio.js'
-import { moving } from './fluid.js'
+import { staggersAnimation1, staggersAnimation2 } from './stagger'
 
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
 const objColor2SaveButton = document.getElementById('objectColor2SaveButton');
-
 
 let controls;
 let camera, scene, renderer;
@@ -21,11 +20,12 @@ var pitchInfo;
 
 const sparkleButton = document.getElementById('sparkle');
 const fluidButton = document.getElementById('fluid');
+const staggerButton = document.getElementById('stagger');
 
-
+const upperStagger = document.getElementById('upper-stagger')
 const sparkleCanvas = document.getElementById('sparkle-canvas');
 const fluidCanvas = document.getElementById('fluid-canvas');
-
+const staggerCanvas = document.getElementById('upper-stagger')
 
 // 시각화 구분자 단어
 let identityVisualization = document.getElementById('identityVisual');
@@ -68,6 +68,12 @@ function optionalVisualization(){
     fluidButton.addEventListener('click', function (){
       identityVisualization.innerText = 'fluid'
     })
+
+    staggerButton.addEventListener('click', function (){
+      identityVisualization.innerText = 'stagger'
+    })
+
+
 }
 
 
@@ -109,13 +115,14 @@ function animate() {
       // console.log(octave)
 
       render();
-
       if (identityVisualization.innerText == 'sparkle'){
         sparkleCanvas.style.display = 'inline-block';
         fluidCanvas.style.display = 'none';
+        staggerCanvas.style.display = 'none';
+
         // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
         sparkling();
-        if (energy > 20 ){
+        if (octave > 4){
           startFauxClicking();
         }
       } 
@@ -123,19 +130,39 @@ function animate() {
         else if (identityVisualization.innerText == 'fluid'){
         fluidCanvas.style.display = 'inline-block';
         sparkleCanvas.style.display = 'none';
+        staggerCanvas.style.display = 'none';
 
         clearCanvas(sparkleCanvas);
-        if (energy > 20 ){
+        if (octave > 4){
           // create a keyboard press event
           var event = new KeyboardEvent('keydown', {
             'key': ' '
           });
 
           // call / simulate the event every 1000s using dispathEvent method
-          setInterval(() => window.dispatchEvent(event), 1000);
+          window.dispatchEvent(event)
+          console.log(octave)
         }
     
       }
+
+       else if (identityVisualization.innerText = 'stagger'){
+        upperStagger.style.display = 'inline-block';
+        fluidCanvas.style.display = 'none';
+        sparkleCanvas.style.display = 'none';
+
+        clearCanvas(sparkleCanvas);
+
+        if (octave > 4 ){
+          staggerCanvas.style.display = 'inline-block';
+          staggersAnimation2.play();
+        } else {
+          staggerCanvas.style.display = 'inline-block';
+          // staggersAnimation1.play();
+
+        }
+
+       }
 
   }
 }

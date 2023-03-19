@@ -19,7 +19,7 @@ var circles = [];
 
 
 var colorPicker = (function() {
-  var colors = ['#E56543', '#98D2DD', '#ff9df5'];
+  var colors = ['#808080', '#000000', '#ffffff'];
   
   bgColorSaveButton.addEventListener('click', function (){
     colors[0] = bgColor
@@ -50,6 +50,9 @@ var colorPicker = (function() {
     current: current
   }
 })();
+
+
+
 
 function removeAnimation(animation) {
   var index = animations.indexOf(animation);
