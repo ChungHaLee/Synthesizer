@@ -249,6 +249,7 @@ function handleInactiveUser() {
 
 function startFauxClicking() {
     fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
+    console.log(cW, cH)
   //   setTimeout(function(){
   //     fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
   //     startFauxClicking(); 
@@ -264,6 +265,18 @@ function fauxClick(x, y) {
   fauxClick.pageY = y;
   document.dispatchEvent(fauxClick);
 }
+
+
+
+function synthesize_Click(note){
+  var fauxClick2 = new Event("mousedown");
+  let note_x = 0;
+  let note_y = 0;
+  fauxClick2.pageX = note_x;
+  fauxClick2.pageY = note_y;
+  document.dispatchEvent(fauxClick2);
+}
+
 
 
 

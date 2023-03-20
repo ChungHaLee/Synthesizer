@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { sparkling, startFauxClicking, } from './sparkle.js'
 import { energy, dataArray, analyser, pitchDetector, myNote, octave } from './audio.js'
 import { staggersAnimation1, staggersAnimation2 } from './stagger'
-
+import {get_currnt_note, initialize_note} from './synthesiser_mapping.js'
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
 const objColor2SaveButton = document.getElementById('objectColor2SaveButton');
@@ -102,72 +102,136 @@ function clearCanvas(the_canvas)
 }
 
 
-function animate() {
-  requestAnimationFrame(animate);
+// function animate() {
+//   requestAnimationFrame(animate);
+//   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
+//   FrameRate = FrameRate + 1
+  
+//     // music rendering
+//     if (dataArray){
+//       analyser.getByteFrequencyData(dataArray);
+//       pitchDetector();
+//       //console.log(octave)
+
+//       render();
+//       if (identityVisualization.innerText == 'sparkle'){
+//         sparkleCanvas.style.display = 'inline-block';
+//         fluidCanvas.style.display = 'none';
+//         staggerCanvas.style.display = 'none';
+
+//         // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
+//         sparkling();
+//         if (octave > 4){
+//           startFauxClicking();
+//         }
+//       } 
+
+//         else if (identityVisualization.innerText == 'fluid'){
+//         fluidCanvas.style.display = 'inline-block';
+//         sparkleCanvas.style.display = 'none';
+//         staggerCanvas.style.display = 'none';
+
+//         clearCanvas(sparkleCanvas);
+//         if (octave > 4){
+//           // create a keyboard press event
+//           var event = new KeyboardEvent('keydown', {
+//             'key': ' '
+//           });
+
+//           // call / simulate the event every 1000s using dispathEvent method
+//           window.dispatchEvent(event)
+//           console.log(octave)
+//         }
+    
+//       }
+
+//        else if (identityVisualization.innerText = 'stagger'){
+//         upperStagger.style.display = 'inline-block';
+//         fluidCanvas.style.display = 'none';
+//         sparkleCanvas.style.display = 'none';
+
+//         clearCanvas(sparkleCanvas);
+
+//         if (octave > 4 ){
+//           staggerCanvas.style.display = 'inline-block';
+//           staggersAnimation2.play();
+//         } else {
+//           staggerCanvas.style.display = 'inline-block';
+//           // staggersAnimation1.play();
+
+//         }
+
+//        }
+
+//    }
+// }
+
+let activate_viz = true;
+let currnet_note = 0;
+function piano_animate() {
+  requestAnimationFrame(piano_animate);
   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
   FrameRate = FrameRate + 1
-  
+  //console.log(currnet_note)
+  currnet_note = get_currnt_note()
+  if(true){
+    render();
+    if (identityVisualization.innerText == 'sparkle'){
+      sparkleCanvas.style.display = 'inline-block';
+      fluidCanvas.style.display = 'none';
+      staggerCanvas.style.display = 'none';
 
-    // music rendering
-    if (dataArray){
-      analyser.getByteFrequencyData(dataArray);
-      pitchDetector();
-      // console.log(octave)
-
-      render();
-      if (identityVisualization.innerText == 'sparkle'){
-        sparkleCanvas.style.display = 'inline-block';
-        fluidCanvas.style.display = 'none';
-        staggerCanvas.style.display = 'none';
-
-        // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
-        sparkling();
-        if (octave > 4){
-          startFauxClicking();
-        }
-      } 
-
-        else if (identityVisualization.innerText == 'fluid'){
-        fluidCanvas.style.display = 'inline-block';
-        sparkleCanvas.style.display = 'none';
-        staggerCanvas.style.display = 'none';
-
-        clearCanvas(sparkleCanvas);
-        if (octave > 4){
-          // create a keyboard press event
-          var event = new KeyboardEvent('keydown', {
-            'key': ' '
-          });
-
-          // call / simulate the event every 1000s using dispathEvent method
-          window.dispatchEvent(event)
-          console.log(octave)
-        }
-    
+      // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
+      sparkling();
+      if (currnet_note > 0){
+        startFauxClicking();
       }
+    } 
 
-       else if (identityVisualization.innerText = 'stagger'){
-        upperStagger.style.display = 'inline-block';
-        fluidCanvas.style.display = 'none';
-        sparkleCanvas.style.display = 'none';
+    else if (identityVisualization.innerText == 'fluid'){
+      fluidCanvas.style.display = 'inline-block';
+      sparkleCanvas.style.display = 'none';
+      staggerCanvas.style.display = 'none';
 
-        clearCanvas(sparkleCanvas);
+      clearCanvas(sparkleCanvas);
+      if (currnet_note > 0){
+        // create a keyboard press event
+        var event = new KeyboardEvent('keydown', {
+          'key': ' '
+        });
 
-        if (octave > 4 ){
-          staggerCanvas.style.display = 'inline-block';
-          staggersAnimation2.play();
-        } else {
-          staggerCanvas.style.display = 'inline-block';
-          // staggersAnimation1.play();
+        // call / simulate the event every 1000s using dispathEvent method
+        window.dispatchEvent(event)
+      }
+    }
 
-        }
+    else if (identityVisualization.innerText = 'stagger'){
+      upperStagger.style.display = 'inline-block';
+      fluidCanvas.style.display = 'none';
+      sparkleCanvas.style.display = 'none';
 
-       }
+      clearCanvas(sparkleCanvas);
+      if (currnet_note > 0){
+        staggerCanvas.style.display = 'inline-block';
+        staggersAnimation2.play();
+      } else {
+        staggerCanvas.style.display = 'inline-block';
+        staggersAnimation1.play();
 
+      }
+    }
+    initialize_note();
   }
 }
 
-
+function activate_vizualization(note){
+  
+  activate_viz = true;
+}
+//export{ activate_vizualization }
+function deactivate_vizualization(){
+  activate_viz = false;
+}
 
 
 // render function
@@ -183,7 +247,7 @@ optionalVisualization();
 
 // BASIC EVENTS
 init();
-animate();
-
+//animate();
+piano_animate();
 
 export { pitchInfo }

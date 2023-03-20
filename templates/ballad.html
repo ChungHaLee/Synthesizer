@@ -34,6 +34,17 @@
         <button class="visualButtons" id="stagger"> Stagger </button>
     </div>
     
+    <div id="midiSettingContainer">
+      MIDI-In: <span id="midiInName">NONE</span>
+      </p><p>
+      <button data-action = "open_midi_in">open</button> 
+      <button data-action = "close_midi_in">close</button> 
+      </p><p>
+      <pre id="midiIn" style = "display: none;">
+      messages
+      </pre>
+    </div>
+
 
     <div id="customSliders">
         <button id="backgroundColor">Background Color <input id="backgroundColorID" type="text" data-coloris> </button> <button id="backgroundColorSaveButton"> SAVE </button>
@@ -62,5 +73,11 @@
     <script type="module" defer src="./static/src/js/dist/fluid.js"></script>
     <script type="module" defer src="./static/src/js/dist/colorpicker.js"></script>
     <script type="module" defer src="./static/src/js/dist/stagger.js"></script>
+
+    <script type="module" defer src="./static/src/js/dist/JZZ.js"></script>
+    <script type="module" defer src="./static/src/js/dist/synthesiser_mapping.js"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
+
+
 </body>
 </html>
