@@ -13,11 +13,11 @@
     <h1> 발라드 장르 </h1>
     <div id="content">
         <div class="thetitle" id="title"></div>
-        <label for="thefile" class="file">
-            <input type="file" id="thefile" accept="audio/*" />
+        <label for="thefile" class="file" style="display:none;">
+            <input type="file" id="thefile" accept="audio/*" style="display:none;"/>
         </label>
 
-        <audio id="audio" controls></audio>
+        <audio id="audio" controls style="display:none;"></audio>
         <br>
         <canvas id="sparkle-canvas"></canvas>
         <canvas id="fluid-canvas"></canvas>
@@ -45,6 +45,39 @@
       </pre>
     </div>
 
+    <section class="hapticContainer" style="margin-left: 700px;">
+        <br>
+        <div class="canvasDIV" style="margin-left: 10px; font-size: 18px;">진동 디자인
+
+        <button class="btn btn-danger" style="height:32px;">
+            멜로디
+        </button>
+        <button class="btn btn-danger" style="height:32px;">
+            리듬
+        </button>
+        <button class="btn btn-warning" data-action="SearchHapticDevice" style="height:32px;" >
+            연결
+        </button>
+        </div>
+        <div class="customMenu">
+            <br>
+            <p class="smallTitle" style="display:inline;">세기&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+            <input class="range" type="range" name="amplitude" id="slide-haptic-amplitude" value="0" min="0" max="100" style="display:inline;height:15px;"></input>
+            <br>
+            <p class="smallTitle" style="display:inline;">진동수&nbsp&nbsp</p>
+            <input class="range" type="range" name="frequency" id="slide-haptic-frequency" value="0" min="0" max="100" style="display:inline;height:15px;"></input>
+            <br>
+            <p class="smallTitle" style="display:inline;">Attack&nbsp</p>
+            <input class="range" type="range" name="attack" id="slide-haptic-attack" value="0" min="0" max="100" style="display:inline;height:15px;"></input>
+            <br>
+            <p class="smallTitle" style="display:inline;">Decay&nbsp&nbsp</p>
+            <input class="range" type="range" name="decay" id="slide-haptic-decay" value="0" min="0" max="100" style="display:inline;height:15px;"></input>
+            <br>
+            <p class="smallTitle" style="display:inline;">Sustain&nbsp&nbsp</p>
+            <input class="range" type="range" name="sustain" id="slide-haptic-sustain" value="0" min="0" max="100" style="display:inline;height:15px;"></input>
+            <br>
+            </div>
+    </section>
 
     <div id="customSliders">
         <button id="backgroundColor">Background Color <input id="backgroundColorID" type="text" data-coloris> </button> <button id="backgroundColorSaveButton"> SAVE </button>
@@ -76,6 +109,7 @@
 
     <script type="module" defer src="./static/src/js/dist/JZZ.js"></script>
     <script type="module" defer src="./static/src/js/dist/synthesiser_mapping.js"></script>
+    <script type="module" defer src="./static/src/js/dist/haptic.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
 
 

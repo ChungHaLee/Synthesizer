@@ -1,6 +1,38 @@
 import {JZZ} from "./JZZ.js"
 
 let note = 1;
+let synth = new Tone.Synth().toDestination();
+let note2pitch = {
+  0: "C4",
+  1: "C#4",
+  2: "D4",
+  3: "D#4",
+  4: "E4",
+  5: "F4",
+  6: "F#4",
+  7: "G4",
+  8: "G#4",
+  9: "A4",
+  10: "A#4",
+  11: "B4",
+  12: "C5",
+  13: "C#5",
+  13: "D5",
+  14: "D#5",
+  15: "E5",
+  16: "F5",
+  17: "F#5",
+  18: "G5",
+  19: "G#5",
+  20: "A5",
+  21: "A#5",
+  22: "B5",
+  23: "C6",
+  24: "C#6",
+  25: "D6"
+};
+
+
 function set_synthesiser(msg, start_note = "30", activate = 1){
   let synthesiser_msg = get_msg_input(msg)
   if(activate==1){
@@ -40,9 +72,10 @@ function get_currnt_note(){
 export { get_currnt_note }
 
 function synthesiser_piano_mapping(note_id, start_note = "30"){
-  let note_key = "key" + String(parseInt(note_id, 16) - parseInt(start_note, 16) + 1);
-  //console.log(parseInt(parseInt(note_id, 16) - parseInt(start_note, 16) + 1))
-  initialize_note(parseInt(parseInt(note_id, 16) - parseInt(start_note, 16) + 1))
+  let note_num = parseInt(parseInt(note_id, 16) - parseInt(start_note, 16) + 1);
+  console.log("piano key : ", note_num);
+  synth.triggerAttackRelease(note2pitch[note_num-1], 0.3);
+  initialize_note(note_num)
 }
 
 function synthesiser_pad_mapping(pad_id){
