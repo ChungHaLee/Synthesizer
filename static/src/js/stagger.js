@@ -11,7 +11,7 @@ const staggerVisual = document.getElementsByClassName('stagger-visualizer')[0]
 
 const staggerVisualizerEl = document.querySelector('.stagger-visualizer');
 const fragment = document.createDocumentFragment();
-const grid = [50, 50];
+const grid = [20, 20];
 const col = grid[0];
 const row = grid[1];
 const numberOfElements = col * row;
@@ -69,7 +69,7 @@ const staggersAnimation1 = anime.timeline({
 const staggersAnimation2 = anime.timeline({
   targets: '.stagger-visualizer div',
   easing: 'easeInOutSine',
-  delay: anime.stagger(2),
+  // delay: anime.stagger(0.1),
   loop: false,
   autoplay: false
 })
@@ -79,27 +79,33 @@ const staggersAnimation2 = anime.timeline({
   rotate: 0,
   scaleX: 2.5,
   scaleY: .25,
-  delay: anime.stagger(2, {from: 'center'})
+})
+.add({
+  translateX: anime.stagger('.50rem', {grid: grid, from: 'center', axis: 'x'}),
+  translateY: anime.stagger('.50rem', {grid: grid, from: 'center', axis: 'y'}),
+  rotate: 0,
+  scaleX: 0,
+  scaleY: 0,
 
 })
-.add({
-  rotate: anime.stagger([90, 0], {grid: grid, from: 'center'}),
-  delay: anime.stagger(5, {grid: grid, from: 'center'})
-})
-.add({
-  translateX: 0,
-  translateY: 0,
-  scale: .5,
-  scaleX: 1,
-  rotate: 180,
-  duration: 1000,
-  delay: anime.stagger(100, {grid: grid, from: 'center'})
-})
-.add({
-  scaleY: 1,
-  scale: 1,
-  delay: anime.stagger(20, {grid: grid, from: 'center'})
-})
+// .add({
+//   rotate: anime.stagger([90, 0], {grid: grid, from: 'center'}),
+//   delay: anime.stagger(0.1, {grid: grid, from: 'center'})
+// })
+// .add({
+//   translateX: 0,
+//   translateY: 0,
+//   scale: .5,
+//   scaleX: 1,
+//   rotate: 180,
+//   duration: 10,
+//   delay: anime.stagger(0.1, {grid: grid, from: 'center'})
+// })
+// .add({
+//   scaleY: 1,
+//   scale: 2,
+//   delay: anime.stagger(0.1, {grid: grid, from: 'center'})
+// })
 
 // staggersAnimation.play();
 

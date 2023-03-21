@@ -6,7 +6,7 @@ const objColor2SaveButton = document.getElementById('objectColor2SaveButton');
 
 
 var c = document.getElementById("sparkle-canvas");
-c.width = 600;
+c.width = 900;
 c.height = 600;
 
 var ctx = c.getContext("2d");
@@ -247,9 +247,10 @@ function handleInactiveUser() {
 
 
 
-function startFauxClicking() {
-    fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
+function startFauxClicking(note) {
+    //fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
     console.log(cW, cH)
+    fauxClick(note *10, note * 10 )
   //   setTimeout(function(){
   //     fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
   //     startFauxClicking(); 

@@ -184,7 +184,7 @@ function piano_animate() {
       // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
       sparkling();
       if (currnet_note > 0){
-        startFauxClicking();
+        startFauxClicking(currnet_note);
       }
     } 
 
@@ -209,14 +209,16 @@ function piano_animate() {
       upperStagger.style.display = 'inline-block';
       fluidCanvas.style.display = 'none';
       sparkleCanvas.style.display = 'none';
-
+      console.log(currnet_note);
       clearCanvas(sparkleCanvas);
       if (currnet_note > 0){
         staggerCanvas.style.display = 'inline-block';
         staggersAnimation2.play();
+        staggersAnimation2.remove()
       } else {
         staggerCanvas.style.display = 'inline-block';
-        staggersAnimation1.play();
+        
+        //staggersAnimation1.play();
 
       }
     }

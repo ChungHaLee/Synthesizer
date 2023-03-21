@@ -1,6 +1,6 @@
 import {JZZ} from "./JZZ.js"
 
-let note = 1;
+let note = 0;
 let synth = new Tone.Synth().toDestination();
 let note2pitch = {
   0: "C4",
