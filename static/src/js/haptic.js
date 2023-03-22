@@ -44,6 +44,7 @@ amp_slider.addEventListener('input', event => {
     amp = parseInt(Number(amp_slider.value) * 0.5);
     console.log("Control amplitude : " + amp * 2 + " A");
     //console.log("mono_amp : " + mono_amp);
+    _IntensityArray[0] = amp
 });
 
 let attack_slider = document.querySelector('[data-action="update_attack"]');
@@ -51,20 +52,20 @@ attack_slider.addEventListener('input', event => {
     attack = Number(attack_slider.value) * 0.009 + 0.1;
     console.log("Control attack : " + attack );
     //console.log("mono_freq : " + mono_freq);
-    _IntensityArray = Envelop_Maker(attack, decay, sustain);
+    //_IntensityArray = Envelop_Maker(attack, decay, sustain);
 });
 
 let decay_slider = document.querySelector('[data-action="update_decay"]');
 decay_slider.addEventListener('input', event => {
     decay = Number(decay_slider.value)  * 0.01;
     console.log("Control decay : " + decay );
-    _IntensityArray = Envelop_Maker(attack, decay, sustain);
+    //_IntensityArray = Envelop_Maker(attack, decay, sustain);
 });
 let sustain_slider = document.querySelector('[data-action="update_sustain"]');
 sustain_slider.addEventListener('input', event => {
     sustain = parseInt(Number(sustain_slider.value) * 0.1);
     console.log("Control sustain" + sustain );
-    _IntensityArray = Envelop_Maker(attack, decay, sustain);
+    //_IntensityArray = Envelop_Maker(attack, decay, sustain);
 });
 
 window.onbeforeunload = DisconnectAllDevices
