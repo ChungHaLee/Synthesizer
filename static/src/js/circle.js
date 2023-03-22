@@ -182,7 +182,7 @@ function piano_animate() {
       staggerCanvas.style.display = 'none';
 
       // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
-      setTimeout(sparkling(), 50)
+      //setTimeout(sparkling(), 50)
       if (currnet_note > 35){
         startFauxClicking(currnet_note);
       }

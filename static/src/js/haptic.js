@@ -19,7 +19,7 @@ let attack = 0.4;
 let decay = 0.33;
 let sustain = 7;
 
-let _IntensityArray = new Int16Array([100, 0]);
+let _IntensityArray = new Int16Array([50, 0]);
 let intensityArrayIndex = 0
 let max_index = 16;
 const Frequency_Field_size = 256;
@@ -44,7 +44,7 @@ amp_slider.addEventListener('input', event => {
     amp = parseInt(Number(amp_slider.value) * 0.5);
     console.log("Control amplitude : " + amp * 2 + " A");
     //console.log("mono_amp : " + mono_amp);
-    _IntensityArray[0] = amp
+    _IntensityArray[0] = amp * 2
 });
 
 let attack_slider = document.querySelector('[data-action="update_attack"]');

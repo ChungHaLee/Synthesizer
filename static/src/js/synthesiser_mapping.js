@@ -30,7 +30,7 @@ let note2pitch = {
   25: "C#6",
   26: "D6"
 };
-
+let DrumAudio = document.getElementById("drum_audio")
 
 function set_synthesiser(msg, start_note = "30"){
   let synthesiser_msg = get_msg_input(msg)
@@ -82,6 +82,7 @@ function synthesiser_pad_mapping(pad_id){
   // }
   let note_num = parseInt(pad_id, 16)
   console.log("pad id", note_num);
+  DrumAudio.play();
   haptic_play();
   initialize_note(note_num)
 }
