@@ -11,7 +11,7 @@ const staggerVisual = document.getElementsByClassName('stagger-visualizer')[0]
 
 const staggerVisualizerEl = document.querySelector('.stagger-visualizer');
 const fragment = document.createDocumentFragment();
-const grid = [20, 20];
+const grid = [30, 30];
 const col = grid[0];
 const row = grid[1];
 const numberOfElements = col * row;

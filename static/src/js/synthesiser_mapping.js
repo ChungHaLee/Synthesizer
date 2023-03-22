@@ -66,7 +66,7 @@ export { get_currnt_note }
 function synthesiser_piano_mapping(note_id, start_note = "30"){
   let note_num = parseInt(parseInt(note_id, 16) - parseInt(start_note, 16) + 1);
   console.log("piano key : ", note_num);
-  synth.triggerAttackRelease(note2pitch[note_num-1], 0.3);
+  synth.triggerAttackRelease(note2pitch[note_num-1], 0.2);
   currnet_note_changed(note_num);
   haptic_play();
   initialize_note(note_num)

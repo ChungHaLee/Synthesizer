@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1> 발라드 장르 </h1>
+    <h1> 신디사이저 사용해보기 </h1>
     <div id="content">
         <div class="thetitle" id="title"></div>
         <label for="thefile" class="file" style="display:none;">
@@ -28,67 +28,78 @@
     </div>
     </div>
 
-    <div id="visualButtons">
-        <button class="visualButtons" id="sparkle"> Sparkle </button>
-        <button class="visualButtons" id="fluid"> Fluid </button>
-        <button class="visualButtons" id="stagger"> Stagger </button>
-    </div>
-    
     <div id="midiSettingContainer">
-      MIDI-In: <span id="midiInName">NONE</span>
-      </p><p>
-      <button data-action = "open_midi_in">open</button> 
-      <button data-action = "close_midi_in">close</button> 
-      </p><p>
-      <pre id="midiIn" style = "display: none;">
-      messages
-      </pre>
-      <span id="currnet_note" style = "display: none;">NONE</span>
-    </div>
+        신디사이저 연결 여부: <span id="midiInName">NONE</span>
+        </p><p>
+        <button data-action = "open_midi_in">open</button> 
+        <button data-action = "close_midi_in">close</button> 
+        </p><p>
+        <pre id="midiIn" style = "display: none;">
+        messages
+        </pre>
+        <span id="currnet_note" style = "display: none;">NONE</span>
+      </div>
 
-    <section class="hapticContainer" style="margin-left: 1000px;">
-        <br>
-        <div class="canvasDIV" style="margin-left: 10px; font-size: 18px;">진동 디자인
+    <div id="menus" style="float: right; margin-right: 50px;">
+        <div id="visualButtons">
+            <div class="canvasDIV" style="font-size: 18px;">시각화 디자인&nbsp
+            <button class="visualButtons" id="sparkle" style="display: none"> Sparkle </button>
+            <button class="visualButtons" id="stagger" style="width: 80px; height:50px; margin-left: 10px;"> 리듬 </button>
+            <button class="visualButtons" id="fluid" style="width: 80px; height:50px;"> 멜로디 </button>
 
-        <button data-action="Melody" class="btn btn-danger" style="height:32px;">
-            멜로디
-        </button>
-        <button data-action="Beat" class="btn btn-danger" style="height:32px;">
-            리듬
-        </button>
-        <button class="btn btn-warning" data-action="SearchHapticDevice" style="height:32px;" >
-            연결
-        </button>
-        <button class="btn btn-warning" id = "haptic_button" data-action="playHaptic" style="height:32px;" >
-            Play
-        </button>
-        </div>
-        <div class="customMenu">
-            <br>
-            <p class="smallTitle" style="display:inline;">세기&nbsp&nbsp&nbsp&nbsp&nbsp</p>
-            <input data-action="update_amplitude" class="range" type="range" name="amplitude" id="slide-haptic-amplitude" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
-            <br>
-            <p class="smallTitle" style="display:inline;">진동수&nbsp&nbsp</p>
-            <input data-action="update_frequency" class="range" type="range" name="frequency" id="slide-haptic-frequency" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
-            <br>
-            <p class="smallTitle" style="display:inline;">Attack&nbsp</p>
-            <input data-action="update_attack" class="range" type="range" name="attack" id="slide-haptic-attack" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
-            <br>
-            <p class="smallTitle" style="display:inline;">Decay&nbsp&nbsp</p>
-            <input data-action="update_decay" class="range" type="range" name="decay" id="slide-haptic-decay" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
-            <br>
-            <p class="smallTitle" style="display:inline;">Sustain&nbsp&nbsp</p>
-            <input data-action="update_sustain" class="range" type="range" name="sustain" id="slide-haptic-sustain" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
-            <br>
+            <div id="customSliders">
+                <br>
+                <br>
+                <br>
+                <button id="backgroundColor"> 배경 색상 <input id="backgroundColorID" type="text" data-coloris> </button> <button id="backgroundColorSaveButton"> SAVE </button>
+                <br>
+                <button id="objectColor1"> 오브젝트 색상  <input type="text" data-coloris> </button> <button id="objectColor1SaveButton"> SAVE </button>
+                <br>
+                <button id="objectColor2" style="display: none;">Object Color 2  <input type="text" data-coloris> </button> <button id="objectColor2SaveButton" style="display: none;"> SAVE </button>
             </div>
-    </section>
+        </div>
 
-    <div id="customSliders">
-        <button id="backgroundColor">Background Color <input id="backgroundColorID" type="text" data-coloris> </button> <button id="backgroundColorSaveButton"> SAVE </button>
-        <br>
-        <button id="objectColor1">Object Color 1  <input type="text" data-coloris> </button> <button id="objectColor1SaveButton"> SAVE </button>
-        <br>
-        <button id="objectColor2">Object Color 2  <input type="text" data-coloris> </button> <button id="objectColor2SaveButton"> SAVE </button>
+        <section class="hapticContainer" style="float: right;">
+            <br>
+            <hr>
+            <br>
+            <div class="canvasDIV" style="float: right; font-size: 18px; margin-right: 2px; ">진동 디자인
+            <button class="btn btn-warning" data-action="SearchHapticDevice" style="width: 80px; height:50px;" >
+                연결
+            </button>
+            <button class="btn btn-warning" id = "haptic_button" data-action="playHaptic" style="width: 80px; height:50px;" >
+                Test
+            </button>
+            <button data-action="Melody" class="btn btn-danger" style="width: 80px; height:50px;">
+                멜로디
+            </button>
+            <button data-action="Beat" class="btn btn-danger" style="width: 80px; height:50px;">
+                리듬
+            </button>
+            </div>
+            <div class="customMenu">
+                <br>
+                <br>
+                <br>
+                <br>
+                <p class="smallTitle" style="display:inline;">진동 세기&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+                <input data-action="update_amplitude" class="range" type="range" name="amplitude" id="slide-haptic-amplitude" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
+                <br>
+                <br>
+                <p class="smallTitle" style="display:inline;">진동 수&nbsp&nbsp</p>
+                <input data-action="update_frequency" class="range" type="range" name="frequency" id="slide-haptic-frequency" value="50" min="0" max="100" style="display:inline;height:15px;"></input>
+                <br>
+                <p class="smallTitle" style="display:none;">Attack&nbsp</p>
+                <input data-action="update_attack" class="range" type="range" name="attack" id="slide-haptic-attack" value="50" min="0" max="100" style="display:none;height:15px;"></input>
+                <br>
+                <p class="smallTitle" style="display:none;">Decay&nbsp&nbsp</p>
+                <input data-action="update_decay" class="range" type="range" name="decay" id="slide-haptic-decay" value="50" min="0" max="100" style="display:none;height:15px;"></input>
+                <br>
+                <p class="smallTitle" style="display:none;">Sustain&nbsp&nbsp</p>
+                <input data-action="update_sustain" class="range" type="range" name="sustain" id="slide-haptic-sustain" value="50" min="0" max="100" style="display:none;height:15px;"></input>
+                <br>
+                </div>
+        </section>
     </div>
 
     

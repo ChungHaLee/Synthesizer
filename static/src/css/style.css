@@ -5,10 +5,10 @@ div#content{
 
 
 div#customSliders{
-    position: absolute;
-    right:0; 
+    /* position: absolute; */
+    /* right:0; 
     bottom:0;
-    margin-bottom: 30px;
+    margin-bottom: 30px; */
 }
 
 
@@ -63,6 +63,7 @@ div#customSliders{
     display: none;    
     float: left;
     margin-top: 10px;
+    margin-left: 20px;
     width: 900px;
     height: 600px;
 }
@@ -86,8 +87,9 @@ p#identityVisual{
 
 #upper-stagger{
     margin-top: 10px;
+    margin-left: 20px;
     display: none;
-    width: 600px;
+    width: 900px;
     height: 600px;
     background-color: black;
 }
@@ -96,10 +98,11 @@ p#identityVisual{
 
 .stagger-visualizer {
     display: flex;
+    /* margin-left: 200px; */
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 600px;
+    width: 900px;
     height: 600px;
     background-color: black;
   }
