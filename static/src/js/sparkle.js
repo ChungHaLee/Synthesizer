@@ -248,9 +248,9 @@ function handleInactiveUser() {
 
 
 function startFauxClicking(note) {
-    //fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
+    fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
     console.log(cW, cH)
-    fauxClick(note *10, note * 10 )
+    //fauxClick(note *10, note * 10 )
   //   setTimeout(function(){
   //     fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
   //     startFauxClicking(); 

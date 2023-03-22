@@ -16,6 +16,8 @@ const col = grid[0];
 const row = grid[1];
 const numberOfElements = col * row;
 
+const input_note = document.getElementById('currnet_note')
+
 for (let i = 0; i < numberOfElements; i++) {
   fragment.appendChild(document.createElement('div'));
 
@@ -41,7 +43,7 @@ objColor1SaveButton.addEventListener('click', function() {
 
 
 
-
+let A = parseInt(input_note.innerHTML);
 
 
 const staggersAnimation1 = anime.timeline({
@@ -76,7 +78,7 @@ const staggersAnimation2 = anime.timeline({
 .add({
   translateX: anime.stagger('.50rem', {grid: grid, from: 'center', axis: 'x'}),
   translateY: anime.stagger('.50rem', {grid: grid, from: 'center', axis: 'y'}),
-  rotate: 0,
+  rotate: 1,
   scaleX: 2.5,
   scaleY: .25,
 })

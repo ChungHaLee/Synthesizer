@@ -1,5 +1,4 @@
 import {JZZ} from "./JZZ.js"
-
 let note = 0;
 let synth = new Tone.Synth().toDestination();
 let note2pitch = {
@@ -17,31 +16,30 @@ let note2pitch = {
   11: "B4",
   12: "C5",
   13: "C#5",
-  13: "D5",
-  14: "D#5",
-  15: "E5",
-  16: "F5",
-  17: "F#5",
-  18: "G5",
-  19: "G#5",
-  20: "A5",
-  21: "A#5",
-  22: "B5",
-  23: "C6",
-  24: "C#6",
-  25: "D6"
+  14: "D5",
+  15: "D#5",
+  16: "E5",
+  17: "F5",
+  18: "F#5",
+  19: "G5",
+  20: "G#5",
+  21: "A5",
+  22: "A#5",
+  23: "B5",
+  24: "C6",
+  25: "C#6",
+  26: "D6"
 };
 
 
-function set_synthesiser(msg, start_note = "30", activate = 1){
+function set_synthesiser(msg, start_note = "30"){
   let synthesiser_msg = get_msg_input(msg)
-  if(activate==1){
     switch (synthesiser_msg.input_type){
       case "90":
         synthesiser_piano_mapping(synthesiser_msg.input_id, start_note = "30");
         break;
       case "99":
-        //synthesiser_pad_mapping(synthesiser_msg.input_id);
+        synthesiser_pad_mapping(synthesiser_msg.input_id);
         break;
       case "b0":
         //synthesiser_dial_mapping(synthesiser_msg.input_id, synthesiser_msg.input_value);
@@ -52,12 +50,6 @@ function set_synthesiser(msg, start_note = "30", activate = 1){
       default:
         break;
       }
-    }
-  else{
-    if(synthesiser_msg.input_type == 99){
-      synthesiser_pad_mapping2(synthesiser_msg.input_id, activate);
-    }
-  }
 }
 export { set_synthesiser }
 
@@ -75,17 +67,23 @@ function synthesiser_piano_mapping(note_id, start_note = "30"){
   let note_num = parseInt(parseInt(note_id, 16) - parseInt(start_note, 16) + 1);
   console.log("piano key : ", note_num);
   synth.triggerAttackRelease(note2pitch[note_num-1], 0.3);
+  currnet_note_changed(note_num);
+  haptic_play();
   initialize_note(note_num)
 }
 
 function synthesiser_pad_mapping(pad_id){
-  if(parseInt(pad_id, 16)<40){
-    document.getElementById("drum").click();
-  }
-  else{
-    let templete_id = "templete" + String(parseInt(pad_id, 16) - 40 + 1) +"Button";
-    document.getElementById(templete_id).click();
-  }
+  // if(parseInt(pad_id, 16)<40){
+  //   document.getElementById("drum").click();
+  // }
+  // else{
+  //   let templete_id = "templete" + String(parseInt(pad_id, 16) - 40 + 1) +"Button";
+  //   document.getElementById(templete_id).click();
+  // }
+  let note_num = parseInt(pad_id, 16)
+  console.log("pad id", note_num);
+  haptic_play();
+  initialize_note(note_num)
 }
 
 function synthesiser_pad_mapping2(pad_id){
@@ -165,6 +163,13 @@ function on_off_checker(string){
     return false;
   }
 }
+function currnet_note_changed(note){
+  document.getElementById("currnet_note").innerHTML = String(note);
+}
+function haptic_play(){
+  document.getElementById('haptic_button').click()
+}
+
 
 var midi_in;
 let open_midi = document.querySelector('[data-action="open_midi_in"]');

@@ -7,6 +7,7 @@ import * as dat from './dat.gui.min.js';
 // Simulation section
 let bg;
 var pointer;
+const input_note = document.getElementById('currnet_note');
 const canvas = document.getElementById('fluid-canvas');
 let audio = document.getElementById('audio');
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
@@ -18,7 +19,7 @@ bgColorSaveButton.addEventListener('click', function () {
 
 // let ctx = canvas.getContext("3d");
 // 그냥 여기서 사이즈 지정
-canvas.width = 600;
+canvas.width = 900;
 canvas.height = 600;
 
 let config = {
@@ -56,7 +57,6 @@ const hexToRGB = (hex) => {
 
     return {r: red, g: green, b: blue};
 }
-
 
 function pointerPrototype () {
     this.id = -1;
@@ -1144,7 +1144,7 @@ function updateKeywords () {
 
 updateKeywords();
 initFramebuffers();
-multipleSplats(parseInt(Math.random() * 20) + 5);
+multipleSplats(parseInt(input_note.innerHTML));
 
 let lastUpdateTime = Date.now();
 let colorUpdateTimer = 0.0;
@@ -1410,10 +1410,15 @@ function multipleSplats (amount) {
         color.r *= 10.0;
         color.g *= 10.0;
         color.b *= 10.0;
-        const x = Math.random();
-        const y = Math.random();
-        const dx = 1000 * (Math.random() - 0.5);
-        const dy = 1000 * (Math.random() - 0.5);
+        // const x = Math.random();
+        // const y = Math.random();
+        // const dx = 1000 * (Math.random() - 0.5);
+        // const dy = 1000 * (Math.random() - 0.5);
+        const x = parseInt(input_note.innerHTML) / 25;
+        const y = parseInt(input_note.innerHTML) / 25;
+        const dx = 1000 * (parseInt(input_note.innerHTML) / 25 -0.5);
+        const dy = 1000 * (parseInt(input_note.innerHTML) / 25 -0.5);
+
         splat(x, y, dx, dy, color);
     }
 }
@@ -1504,13 +1509,13 @@ window.addEventListener('touchend', e => {
         updatePointerUpData(pointer);
     }
 });
-
 window.addEventListener('keydown', e => {
     if (e.code === 'KeyP')
         config.PAUSED = !config.PAUSED;
     if (e.key === ' ')
-        // [중요] 이 부분에서 키보드가 스페이스바이면 circle.js 에서 keydown 이벤트 호출!!!!!!
-        splatStack.push(parseInt(Math.random() * 20) + 5);
+        // [중요] 이 부분에서 키보드가 스페이스바이면 circle.js 에서 keydo.wn 이벤트 호출!!!!!!
+        //console.log("신디를 눌렀을 때 input note", parseInt(input_note.innerHTML))
+        splatStack.push(parseInt(input_note.innerHTML));
 });
 
 function updatePointerDownData (pointer, id, posX, posY) {

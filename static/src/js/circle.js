@@ -182,8 +182,8 @@ function piano_animate() {
       staggerCanvas.style.display = 'none';
 
       // fluidCanvas 는 3D CANVAS 라서 그냥 clear 하지 않고 따로 둠
-      sparkling();
-      if (currnet_note > 0){
+      setTimeout(sparkling(), 50)
+      if (currnet_note > 35){
         startFauxClicking(currnet_note);
       }
     } 
@@ -194,7 +194,7 @@ function piano_animate() {
       staggerCanvas.style.display = 'none';
 
       clearCanvas(sparkleCanvas);
-      if (currnet_note > 0){
+      if (currnet_note > 0 && currnet_note < 35){
         // create a keyboard press event
         var event = new KeyboardEvent('keydown', {
           'key': ' '
@@ -209,12 +209,11 @@ function piano_animate() {
       upperStagger.style.display = 'inline-block';
       fluidCanvas.style.display = 'none';
       sparkleCanvas.style.display = 'none';
-      console.log(currnet_note);
       clearCanvas(sparkleCanvas);
-      if (currnet_note > 0){
+      if (currnet_note > 35){
         staggerCanvas.style.display = 'inline-block';
-        staggersAnimation2.play();
-        staggersAnimation2.remove()
+        //staggersAnimation2.play();
+        staggersAnimation2.restart();
       } else {
         staggerCanvas.style.display = 'inline-block';
         
@@ -225,7 +224,6 @@ function piano_animate() {
     initialize_note();
   }
 }
-
 function activate_vizualization(note){
   
   activate_viz = true;
@@ -234,16 +232,11 @@ function activate_vizualization(note){
 function deactivate_vizualization(){
   activate_viz = false;
 }
-
-
 // render function
 function render() {
     controls.update();
     renderer.render(scene, camera);
   }
-
-
-
 
 optionalVisualization();
 
