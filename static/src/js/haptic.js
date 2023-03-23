@@ -1,7 +1,7 @@
 'use strict';
 // Create an instance
 let sending_delay = 0.5;
-const delay_value = 0.12;
+const delay_value = 0.15;
 
 let last_time = 0;
 var intervaltester;
