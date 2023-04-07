@@ -6,7 +6,7 @@ var audio_context;
 var myNote, octave;
 
 let analyser, src, bufferLength, dataArray;
-let chroma, maxChroma, energy, amplitudeSpectrum;
+let chroma, maxChroma, energy, amplitudeSpectrum, pitchColor, pitch, multipitchColor, multipitch;
 
 
 let filepath = document.getElementById("filepath")
@@ -136,10 +136,32 @@ function AnalyzerPlay(audio_context, src) {
 
 
 
-FileInit();
-FileChange();
+function randomEnergy(){
+  energy = Math.random() * 10
+  return energy
+}
+
+
+function colorByPitch(){
+  pitch = Math.random() * 10
+  if (pitch < 5){
+      pitchColor = '#ff0000'
+  } else {
+    pitchColor = '#0000FF'
+  }
+  return pitchColor;
+}
 
 
 
+function colorByPitchMulti(){
+  multipitch = Math.random() * 10 
+  if (multipitch < 5){
+      multipitchColor = '#FA2E2E'
+  } else {
+    multipitchColor = '#FF19DC'
+  } 
+  return multipitchColor;
+}
 
-export { audio, audio_context, src, analyser, energy, bufferLength, dataArray, FileChange, updatePitch, pitchDetector, myNote, octave  }
+export { audio, audio_context, src, analyser, bufferLength, dataArray, FileChange, updatePitch, pitchDetector, myNote, octave, randomEnergy, colorByPitch, colorByPitchMulti  }

@@ -4,7 +4,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { energy, dataArray, analyser, pitchDetector, myNote, octave } from './audio.js'
+import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitch, colorByPitchMulti } from './audio.js'
 import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './colorpicker'
 
 
@@ -12,7 +12,7 @@ import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './color
 
 let controls, bloomComposer;
 let camera, scene, renderer;
-let geometry, material, material1, material2, material3;
+let geometry, material, material1, material2, material3, energy;
 let compoCenter, compoCenter1, compoCenter2, compoCenter3;
 let container;
 let FrameRate = 0;
@@ -104,7 +104,6 @@ let musicDuration = 60;
 
 // 시각화 구분자 단어
 let identityVisualization = document.getElementById('identityVisual');
-
 
 
 
@@ -1419,26 +1418,6 @@ function createDodecahedronBloom(){
 // Effect 5: Gradient
 // 2D 도형
 
-function colorByPitch(){
-    let pitchColor;
-    if (myNote.name == 'C' || myNote.name == 'C#'){
-        pitchColor = '#ff0000'
-    } else if (myNote.name == 'D' || myNote.name == 'D#' || myNote.name == 'D♭'){
-        pitchColor = '#ffa500'
-    } else if (myNote.name == 'E' || myNote.name == 'E♭'){
-        pitchColor = '#ffff00'
-    } else if (myNote.name == 'F' || myNote.name == 'F#'){
-        pitchColor = '#008000'
-    } else if (myNote.name == 'G' || myNote.name == 'G#' || myNote.name == 'G♭'){
-        pitchColor = '#0000ff'
-    } else if (myNote.name == 'A' || myNote.name == 'A#' || myNote.name == 'A♭'){
-        pitchColor = '#4b0082'
-    } else if (myNote.name == 'B' || myNote.name == 'B♭'){
-        pitchColor = '#ee82ee'
-    }
-    return pitchColor;
-}
-
 function createCircleGradient(){
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.CircleGeometry( 10, 80 );
@@ -1694,26 +1673,6 @@ function createDodecahedronGradient(){
 
 
 // Effect 6: Horizontal
-
-function colorByPitchMulti(){
-  let multipitchColor;
-  if (myNote.name == 'C' || myNote.name == 'C#'){
-      multipitchColor = '#FA2E2E'
-  } else if (myNote.name == 'D' || myNote.name == 'D#' || myNote.name == 'D♭'){
-      multipitchColor = '#FF9319'
-  } else if (myNote.name == 'E' || myNote.name == 'E♭'){
-      multipitchColor = '#FFFC19'
-  } else if (myNote.name == 'F' || myNote.name == 'F#'){
-      multipitchColor = '#66FF19'
-  } else if (myNote.name == 'G' || myNote.name == 'G#' || myNote.name == 'G♭'){
-      multipitchColor = '#1951FF'
-  } else if (myNote.name == 'A' || myNote.name == 'A#' || myNote.name == 'A♭'){
-      multipitchColor = '#8C19FF'
-  } else if (myNote.name == 'B' || myNote.name == 'B♭'){
-      multipitchColor = '#FF19DC'
-  }
-  return multipitchColor;
-}
 
 
 function createCircleHorizontal(){
@@ -3080,15 +3039,16 @@ myMedia.volume = myVolume;
 
 function animate() {
   requestAnimationFrame(animate);
+  energy = randomEnergy();
   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
   FrameRate = FrameRate + 1
   
   if (FrameRate % 4 == 0){
 
         // music rendering
-        if (dataArray){
-          analyser.getByteFrequencyData(dataArray);
-          pitchDetector();
+        // if (dataArray){
+        //   analyser.getByteFrequencyData(dataArray);
+          // pitchDetector();
 
           // effect: Scale
           if (identityVisualization.innerText == 'circle-scale'){
@@ -3302,7 +3262,6 @@ function animate() {
 
   }
 
-}
 
 
 function deleteBasics(){
