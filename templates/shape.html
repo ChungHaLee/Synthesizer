@@ -17,8 +17,14 @@
 </head>
 
 <body>
-
     <div id="shape-canvas"></div>
+
+    <div id="midiContainer">
+        <button data-action = "open_midi_in">open</button> 
+        <button data-action = "close_midi_in">close</button> 
+        MIDI: <span id="midiInName">NONE</span>
+        <!-- <span id="currnet_note" style = "display: none;">NONE</span> -->
+    </div>    
 
     <div id="content">
         <h4>Music Input</h4>
@@ -41,11 +47,6 @@
                 <input type="text" id="playTime" readonly style="border:0; color:#f6931f; font-weight:bold;">
             </p>
             <div id="slider-range" style="pointer-events: none;" ></div>
-        
-        
-        
-        
-        
         </div>
     </div>
 
@@ -173,7 +174,6 @@
             </div>
         </div>
 
-        
 
     <div class="saveTemplate">
         <h4>Save Template</h4>
@@ -185,6 +185,7 @@
         </div>
     </div>
 
+    
     
     <p id="identityVisual"></p>
 
@@ -207,9 +208,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
     <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
 
-
+    <script type="module" defer src="./static/src/js/dist/Share.js"></script>
+    
     <script type="module" defer src="./static/src/js/dist/circle.js"></script>
     <script type="module" defer src="./static/src/js/dist/colorpicker.js"></script>
     <script type="module" defer src="./static/src/js/dist/ui.js"></script>
+
+    <script type="module" defer src="./static/src/js/dist/JZZ.js"></script>
+    <script type="module" defer src="./static/src/js/dist/Synthesizer.js"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
 </body>
 </html>

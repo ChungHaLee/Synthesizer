@@ -6,9 +6,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitch, colorByPitchMulti } from './audio.js'
 import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './colorpicker'
-
-
-
+import { SyntheysizerEvents, note_set, pad_set, dial_set} from './Share.js';
 
 let controls, bloomComposer;
 let camera, scene, renderer;
@@ -22,9 +20,6 @@ let FrameRate = 0;
 let group;
 let ambientLight, spotLight, pointLight;
 var pitchInfo;
-
-let currentTempleteNumber = 0;
-const saveButtonColorList = ["#FFCC99", "#FFCC00","#99FF99", "#9999FF", "#666699", "#FF66FF", "#FF9999"]
 
 // html 버튼 요소
 
@@ -2722,6 +2717,32 @@ function createDodecahedronHorizontal(){
 }
 
 
+//-------------------------신디 관련 컨트롤용 코드입니다.-----------------------------//
+SyntheysizerEvents.addEventListener('noteInput', function (){
+  console.log("In Circle note: ", note_set.note);  //범위가 C0~C10입니다.
+  console.log("In Circle note: ", note_set.pitch); //범위가 0~127입니다.
+  console.log("In Circle note: ", note_set.value); //범위가 0~127입니다.
+})
+
+
+SyntheysizerEvents.addEventListener('padInput', function (){
+  console.log("In Circle Pad id: ", pad_set.id); //그냥 패드 id입니다. 0~7로 8개가 표시됩니다.
+})
+
+
+SyntheysizerEvents.addEventListener('dialInput', function (){
+  console.log("In Circle dial_value: ", dial_set.value);
+  $("#volume").slider("value", (dial_set.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
+})
+
+
+
+
+
+//-----------------------------------------Songmin code-----------------------------------------//
+    //여기 밑부터 코드를 다른 곧으로 옮길 예정입니다.... 시간이 없었어서 너무 지저분하네요....//
+let currentTempleteNumber = 0;
+const saveButtonColorList = ["#FFCC99", "#FFCC00","#99FF99", "#9999FF", "#666699", "#FF66FF", "#FF9999"]
 let musicName = document.getElementById("thefile")
 let templateFile = document.getElementById("TemplateFile")
 
@@ -3020,7 +3041,7 @@ function setVolume(myVolume) {
 var myMedia = document.getElementById('audio');
 myMedia.volume = myVolume;
 }
-
+//------------------------------------------------------------------------------------------//
 
 
 

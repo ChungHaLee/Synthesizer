@@ -7,7 +7,9 @@ module.exports = {
         audio: path.resolve(__dirname, "src", "js", "audio.js"),
         circle: path.resolve(__dirname, "src", "js", "circle.js"),
         colorpicker: path.resolve(__dirname, "src", "js", "colorpicker.js"),
-        ui: path.resolve(__dirname, "src", "js", "ui.js")
+        JZZ: path.resolve(__dirname, "src", "js", "JZZ.js"),
+        Synthesizer: path.resolve(__dirname, "src", "js", "Synthesizer.js"),
+        Share: path.resolve(__dirname, "src", "js", "Share.js")
     },
     mode: "development",
     target: "web",
