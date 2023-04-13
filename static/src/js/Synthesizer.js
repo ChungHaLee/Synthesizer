@@ -11,6 +11,7 @@ function set_synthesiser(msg){
         piano_key_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
         break;
       case "80":  //Release the piano keys
+      piano_key_release(synthesiser_msg.input_id)
         break;
       case "99":  //tap the touch pad
         pad_input(synthesiser_msg.input_id)
@@ -42,11 +43,19 @@ function get_msg_input(msg){
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
   //console.log("Press the piano key : ", input_pitch);
-  synth.triggerAttackRelease(input_pitch, 0.2);
+  //synth.triggerAttackRelease(input_pitch, 0.2);
+  synth.triggerAttack(input_pitch, "+"+toString(input_value/127));
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
-  note_set.value = input_value;
+  note_set.value = input_value; //output : 0 ~ 127
   const event = new CustomEvent('noteInput', { detail: note_set });
+  SyntheysizerEvents.dispatchEvent(event);
+}
+
+function piano_key_release(input_id){
+  let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
+  synth.triggerRelease(input_pitch);
+  const event = new CustomEvent('noteRelease', { detail: note_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
 
@@ -54,6 +63,7 @@ function pad_input(input_id){
   //console.log("pad id", input_id);
   //DrumAudio.play();
   pad_set.id = input_id-36;
+  
   const event = new CustomEvent('padInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
