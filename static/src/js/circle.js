@@ -17,7 +17,8 @@ let compoCenter, compoCenter1, compoCenter2, compoCenter3;
 let container;
 let FrameRate = 0;
 let pitchColor = 0;
-// let backgroundColor;
+let dial_one, dial_two, dial_three, dial_four, dial_five, dial_six, dial_seven, dial_eight;
+
 
 let group;
 let ambientLight, spotLight, pointLight;
@@ -94,6 +95,23 @@ function createCircle_Vanilla(){
 
 
 
+function makeRoughBall(mesh, bassFr, treFr) {
+  mesh.geometry.vertices.forEach(function (vertex, i) {
+      var offset = mesh.geometry.parameters.radius;
+      var amp = 7;
+      var time = window.performance.now();
+      vertex.normalize();
+      var rf = 0.00001;
+      var distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
+      vertex.multiplyScalar(distance);
+  });
+  mesh.geometry.verticesNeedUpdate = true;
+  mesh.geometry.normalsNeedUpdate = true;
+  mesh.geometry.computeVertexNormals();
+  mesh.geometry.computeFaceNormals();
+}
+
+
 
 
 // 3D 도형
@@ -110,10 +128,18 @@ function createShape(){
   let size = custom_energy;
 
   scene.background = new THREE.Color( bgColor );
-  geometry = new THREE.OctahedronGeometry( size/2, 0 );
-  material = new THREE.MeshPhongMaterial( { color: objColor1, emissive: objColor1, specular: objColor1, shininess: 30 } );
-  material.transparent = false
-  material.opacity = 1
+
+  if (dial_four < 63){
+    geometry = new THREE.OctahedronGeometry( size/2, dial_four );
+    material = new THREE.MeshPhongMaterial( { color: objColor1, emissive: objColor1, specular: objColor1, shininess: 30 } );
+    material.transparent = false
+    material.opacity = 1
+
+  } else {
+
+    geometry = new THREE.IcosahedronGeometry(10, 4);
+    material = new THREE.MeshPhongMaterial( { color: objColor1, emissive: objColor1, specular: objColor1, shininess: 30 } );
+  }
 
   compoCenter = new THREE.Mesh(geometry, material);
   compoCenter.position.set(1, 0, 0);
@@ -144,7 +170,16 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
 
 
 SyntheysizerEvents.addEventListener('dialInput', function (e){
-  console.log("In Circle dial_value: ", e.detail.value);
+  dial_one = e.detail.value[0][0]
+  dial_two = e.detail.value[0][1]
+  dial_three = e.detail.value[0][2]
+  dial_four = e.detail.value[0][3]
+  dial_five = e.detail.value[1][0]
+  dial_six = e.detail.value[1][1]
+  dial_seven = e.detail.value[1][2]
+  dial_eight = e.detail.value[1][3]
+
+
   $("#volume").slider("value", (e.detail.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
 })
 
@@ -477,7 +512,6 @@ function animate() {
   FrameRate = FrameRate + 1
   
   if (FrameRate % 4 == 0){
-        console.log(dial_set);
         deleteBasics();
         createShape();
         render();
