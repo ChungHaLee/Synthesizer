@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "noise-library": "^1.0.1",
+    "open-simplex-noise": "^2.5.0",
+    "perlin": "^1.0.0",
+    "simplex-noise": "^4.0.1",
     "webpack": "^5.77.0"
   }
 }

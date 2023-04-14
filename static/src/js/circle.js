@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-
+import { makeNoise4D, makeNoise3D } from "open-simplex-noise";
+import Noise from 'noise-library';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
@@ -19,10 +20,14 @@ let FrameRate = 0;
 let pitchColor = 0;
 let dial_one, dial_two, dial_three, dial_four, dial_five, dial_six, dial_seven, dial_eight;
 
+let clock = new THREE.Clock();
+
 
 let group;
 let ambientLight, spotLight, pointLight;
 var pitchInfo;
+
+
 
 // html 버튼 요소
 
@@ -95,21 +100,9 @@ function createCircle_Vanilla(){
 
 
 
-function makeRoughBall(mesh, bassFr, treFr) {
-  mesh.geometry.vertices.forEach(function (vertex, i) {
-      var offset = mesh.geometry.parameters.radius;
-      var amp = 7;
-      var time = window.performance.now();
-      vertex.normalize();
-      var rf = 0.00001;
-      var distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
-      vertex.multiplyScalar(distance);
-  });
-  mesh.geometry.verticesNeedUpdate = true;
-  mesh.geometry.normalsNeedUpdate = true;
-  mesh.geometry.computeVertexNormals();
-  mesh.geometry.computeFaceNormals();
-}
+
+
+
 
 
 
@@ -129,25 +122,62 @@ function createShape(){
 
   scene.background = new THREE.Color( bgColor );
 
-  if (dial_four < 63){
-    geometry = new THREE.OctahedronGeometry( size/2, dial_four );
-    material = new THREE.MeshPhongMaterial( { color: objColor1, emissive: objColor1, specular: objColor1, shininess: 30 } );
-    material.transparent = false
-    material.opacity = 1
 
-  } else {
+    geometry = new THREE.SphereGeometry(5, 100, 100);
+    geometry.positionData = [];
+    
+    // let gob;
+    // let v3 = new THREE.Vector3();
+    // if (dial_four < 63){
+    //   gob = -0.00001
+    // } else {
+    //   gob = 0.001
+    // }
 
-    geometry = new THREE.IcosahedronGeometry(10, 4);
-    material = new THREE.MeshPhongMaterial( { color: objColor1, emissive: objColor1, specular: objColor1, shininess: 30 } );
+    let v3 = new THREE.Vector3();
+
+    // 음수~양수 범위로 바꾸기
+    let noise = makeNoise4D(Date.now());
+
+
+    for (let i = 0; i < geometry.attributes.position.count; i++){
+        v3.fromBufferAttribute(geometry.attributes.position, i);
+        geometry.positionData.push(v3.clone());
+    }
+
+    material = new THREE.ShaderMaterial({
+      uniforms: {      
+          colorA: {type: 'vec3', value: new THREE.Vector3(0.5, 0.5, 0.5)},
+
+      },
+      vertexShader: document.getElementById('vertex').textContent,
+      fragmentShader: document.getElementById('fragment').textContent,
+    });
+
+    geometry.positionData.forEach((p, idx) => {
+      var time = performance.now() * 0.01;
+
+      let k = 3
+      p.normalize().multiplyScalar( 3+ 0.3 * Noise.perlin3(p.x, p.y, p.z));
+      // p.normalize().multiplyScalar(1 + 0.3 * Noise.perlin3(p.x * k + time, p.y * k, p.z * k));
+      let setNoise = noise(p.x, p.y, p.z, 1);
+      v3.copy(p).addScaledVector(p, setNoise);
+      geometry.attributes.position.setXYZ(idx, v3.x, v3.y, v3.z);
+    })
+    geometry.computeVertexNormals();
+    geometry.attributes.position.needsUpdate = true;
+
+    compoCenter = new THREE.Mesh(geometry, material); 
+    compoCenter.position.set(1, 0, 0);
+
+    scene.add(pointLight);
+
+    group.add( compoCenter );
+
+
   }
 
-  compoCenter = new THREE.Mesh(geometry, material);
-  compoCenter.position.set(1, 0, 0);
 
-  scene.add(pointLight);
-
-  group.add( compoCenter );
-}
 
 
 
@@ -178,7 +208,7 @@ SyntheysizerEvents.addEventListener('dialInput', function (e){
   dial_six = e.detail.value[1][1]
   dial_seven = e.detail.value[1][2]
   dial_eight = e.detail.value[1][3]
-
+  console.log(dial_four)
 
   $("#volume").slider("value", (e.detail.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
 })
@@ -496,28 +526,23 @@ myMedia.volume = myVolume;
 
 
 
-
-
-
-
-
-
-
-
-
-
 function animate() {
   requestAnimationFrame(animate);
   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
   FrameRate = FrameRate + 1
   
   if (FrameRate % 4 == 0){
-        deleteBasics();
-        createShape();
-        render();
-      } 
+
+
+      deleteBasics();
+      createShape();
+      render();
 
     }
+
+    } 
+
+
 
 
 
