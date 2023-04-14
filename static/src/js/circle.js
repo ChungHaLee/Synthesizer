@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass'
-import { RenderPass } from 'three/addons/postprocessing/RenderPass'
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitchMulti } from './audio.js'
 import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './colorpicker'
@@ -16,7 +14,7 @@ let geometry, material, material1, material2, material3, energy = 0;
 let compoCenter, compoCenter1, compoCenter2, compoCenter3;
 let container;
 let FrameRate = 0;
-let pitch, pitchColor;
+let pitch, pitchColor, color, gradientColor;
 let dial_one, dial_two, dial_three, dial_four, dial_five, dial_six, dial_seven, dial_eight;
 
 
@@ -63,7 +61,6 @@ function init() {
     renderer.outputEncoding = THREE.sRGBEncoding;
 
 
-
     group = new THREE.Group();
     scene.add(group);
    
@@ -79,36 +76,52 @@ function init() {
 // 베이스 도형
 
 function createCircle_Vanilla(){
-    geometry = new THREE.CircleGeometry( 10, 60 );
-    material = new THREE.MeshBasicMaterial();
+  geometry = new THREE.CircleGeometry( 10, 60 );
+  material = new THREE.MeshBasicMaterial();
 
 
-    compoCenter = new THREE.Mesh(geometry, material);
-    compoCenter.position.set(1, 0, 0);
-    // spotLight.lookAt(compoCenter);
-    pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(200, 200, 200);
-    scene.add(pointLight);
+  compoCenter = new THREE.Mesh(geometry, material);
+  compoCenter.position.set(1, 0, 0);
+  pointLight = new THREE.PointLight(0xffffff, 1);
+  pointLight.position.set(200, 200, 200);
+  scene.add(pointLight);
 
-    group.add( compoCenter );
+  group.add( compoCenter );
 }
 
 
+function colorByWheel(){
+  let wheelColor;
 
-function makeRoughBall(mesh, bassFr, treFr) {
-  mesh.geometry.vertices.forEach(function (vertex, i) {
-      var offset = mesh.geometry.parameters.radius;
-      var amp = 7;
-      var time = window.performance.now();
-      vertex.normalize();
-      var rf = 0.00001;
-      var distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
-      vertex.multiplyScalar(distance);
-  });
-  mesh.geometry.verticesNeedUpdate = true;
-  mesh.geometry.normalsNeedUpdate = true;
-  mesh.geometry.computeVertexNormals();
-  mesh.geometry.computeFaceNormals();
+  if ( dial_one < 12 ){
+    wheelColor = '#FFFFFF'
+  } else if ( dial_one < 24 && dial_one >= 12){
+    wheelColor = '#E2E2E2'
+  } else if ( dial_one < 36 && dial_one >= 24){
+    wheelColor = '#C6C6C6'
+  } else if ( dial_one < 48 && dial_one >= 36){
+    wheelColor = '#ABABAB'
+  } else if ( dial_one < 60 && dial_one >= 48){
+    wheelColor = '#919191'
+  } else if ( dial_one < 72 && dial_one >= 60){
+    wheelColor = '#777777'
+  } else if ( dial_one < 84 && dial_one >= 72){
+    wheelColor = '#5E5E5E'
+  } else if ( dial_one < 96 && dial_one >= 84){
+    wheelColor = '#474747'
+  } else if ( dial_one < 108 && dial_one >= 96){
+    wheelColor = '#303030'
+  } else if ( dial_one < 127 && dial_one >= 108){
+    wheelColor = '#000000'
+  } else {
+    wheelColor = '#FFFFFF'
+  }
+
+
+  return wheelColor;
+
+
+
 }
 
 
@@ -173,9 +186,12 @@ function createShape(){
 
   geometry = new THREE.IcosahedronGeometry( 15, dial_four );
   
-  let color = colorByPitch();
+  color = colorByPitch();
+  gradientColor = colorByWheel();
 
-  material = new THREE.MeshPhongMaterial( { color: color, emissive: color, specular: color } );
+  material = new THREE.MeshPhongMaterial( { color: color, emissive: gradientColor, specular: gradientColor, shininess: 0 } );
+
+  console.log(material)
   material.transparent = false
   material.opacity = 1
 
@@ -183,10 +199,13 @@ function createShape(){
   compoCenter = new THREE.Mesh(geometry, material);
   compoCenter.position.set(1, 0, 0);
 
-  scene.add(pointLight);
+  // scene.add(pointLight);
 
   group.add( compoCenter );
 }
+
+
+
 
 
 
@@ -197,8 +216,6 @@ SyntheysizerEvents.addEventListener('noteInput', function (e){
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
   energy = e.detail.value * 10 / 127
   pitch = e.detail.pitch
-
-  console.log('pitch', pitch)
 })
 
 
