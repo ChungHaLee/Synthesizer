@@ -142,7 +142,7 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
 
 
 SyntheysizerEvents.addEventListener('dialInput', function (e){
-  console.log("In Circle dial_value: ", dial_set.value);
+  console.log("In Circle dial_value: ", e.detail.value);
   $("#volume").slider("value", (e.detail.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
 })
 
