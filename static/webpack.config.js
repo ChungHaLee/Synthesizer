@@ -9,7 +9,8 @@ module.exports = {
         colorpicker: path.resolve(__dirname, "src", "js", "colorpicker.js"),
         JZZ: path.resolve(__dirname, "src", "js", "JZZ.js"),
         Synthesizer: path.resolve(__dirname, "src", "js", "Synthesizer.js"),
-        Share: path.resolve(__dirname, "src", "js", "Share.js")
+        Share: path.resolve(__dirname, "src", "js", "Share.js"),
+        SheetMusic: path.resolve(__dirname, "src", "js", "SheetMusic.js")
     },
     mode: "development",
     target: "web",
