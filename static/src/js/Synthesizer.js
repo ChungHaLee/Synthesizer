@@ -43,8 +43,8 @@ function get_msg_input(msg){
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
   //console.log("Press the piano key : ", input_pitch);
-  //synth.triggerAttackRelease(input_pitch, 0.2);
-  synth.triggerAttack(input_pitch, "+"+toString(input_value/127));
+  synth.triggerAttackRelease(input_pitch, 0.2);
+  //synth.triggerAttack(input_pitch, "+"+toString(input_value/127));
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
   note_set.value = input_value; //output : 0 ~ 127
@@ -54,9 +54,9 @@ function piano_key_input(input_id, input_value){
 
 function piano_key_release(input_id){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  synth.triggerRelease(input_pitch);
-  const event = new CustomEvent('noteRelease', { detail: note_set });
-  SyntheysizerEvents.dispatchEvent(event);
+  //synth.triggerRelease(input_pitch);
+  //const event = new CustomEvent('noteRelease', { detail: note_set });
+  //SyntheysizerEvents.dispatchEvent(event);
 }
 
 function pad_input(input_id){

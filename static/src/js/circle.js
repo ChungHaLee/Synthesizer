@@ -10,11 +10,11 @@ import { SyntheysizerEvents, note_set, pad_set, dial_set} from './Share.js';
 
 let controls, bloomComposer;
 let camera, scene, renderer;
-let geometry, material, material1, material2, material3, energy;
+let geometry, material, material1, material2, material3, energy = 0;
 let compoCenter, compoCenter1, compoCenter2, compoCenter3;
 let container;
 let FrameRate = 0;
-
+let pitchColor = 0;
 // let backgroundColor;
 
 let group;
@@ -1416,7 +1416,8 @@ function createDodecahedronBloom(){
 function createCircleGradient(){
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.CircleGeometry( 10, 80 );
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
+    //console.log("Pitch", pitchColor)
     material = new THREE.ShaderMaterial({
         uniforms: {
           color1: {
@@ -1461,7 +1462,7 @@ function createTriangleGradient(){
 
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.CircleGeometry(  10, 0 );
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.ShaderMaterial({
         uniforms: {
           color1: {
@@ -1508,7 +1509,7 @@ function createRectangleGradient(){
     scene.background = new THREE.Color( bgColor );
 
     geometry = new THREE.PlaneGeometry(  10,  10);
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.ShaderMaterial({
         uniforms: {
           color1: {
@@ -1556,7 +1557,7 @@ function createPentagonGradient(){
     scene.background = new THREE.Color( bgColor );
 
     geometry = new THREE.CircleGeometry(  10, 5 );
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.ShaderMaterial({
         uniforms: {
           color1: {
@@ -1605,7 +1606,7 @@ function createSphereGradient(){
 
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.SphereGeometry(  10, 64, 32 );
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.MeshPhongMaterial( {color: objColor1, emissive: pitchColor, specular: pitchColor, shininess: 50, vertexColors: true} )
 
     compoCenter = new THREE.Mesh(geometry, material);
@@ -1621,7 +1622,7 @@ function createConeGradient(){
 
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.ConeGeometry( 10, 10, 3 );
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.MeshPhongMaterial( {color: objColor1, emissive: pitchColor, specular: pitchColor, shininess: 50} )
 
     compoCenter = new THREE.Mesh(geometry, material);
@@ -1637,7 +1638,7 @@ function createBoxGradient(){
 
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.BoxGeometry(  10,  10,  10 );
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.MeshPhongMaterial( {color: objColor1, emissive: pitchColor, specular: pitchColor, shininess: 50} )
 
     compoCenter = new THREE.Mesh(geometry, material);
@@ -1655,7 +1656,7 @@ function createDodecahedronGradient(){
 
     scene.background = new THREE.Color( bgColor );
     geometry = new THREE.DodecahedronGeometry( 10, 0);
-    let pitchColor = colorByPitch();
+    //let pitchColor = colorByPitch();
     material = new THREE.MeshPhongMaterial( {color: objColor1, emissive: pitchColor, specular: pitchColor, shininess: 50} )
 
     compoCenter = new THREE.Mesh(geometry, material);
@@ -1688,7 +1689,7 @@ function createCircleHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -1819,7 +1820,7 @@ function createTriangleHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -1950,7 +1951,7 @@ function createRectangleHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -2080,7 +2081,7 @@ function createPentagonHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -2210,7 +2211,7 @@ function createSphereHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -2342,7 +2343,7 @@ function createConeHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -2473,7 +2474,7 @@ function createBoxHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -2605,7 +2606,7 @@ function createDodecahedronHorizontal(){
 
 
   let multiColor = colorByPitchMulti();
-  let pitchColor = colorByPitch();
+  //let pitchColor = colorByPitch();
 
   material1 = new THREE.ShaderMaterial({
     uniforms: {
@@ -2718,21 +2719,23 @@ function createDodecahedronHorizontal(){
 
 
 //-------------------------신디 관련 컨트롤용 코드입니다.-----------------------------//
-SyntheysizerEvents.addEventListener('noteInput', function (){
-  console.log("In Circle note: ", note_set.note);  //범위가 C0~C10입니다.
-  console.log("In Circle note: ", note_set.pitch); //범위가 0~127입니다.
-  console.log("In Circle note: ", note_set.value); //범위가 0~127입니다.
+SyntheysizerEvents.addEventListener('noteInput', function (e){
+  // console.log("In Circle note: ", e.detail.note);  //범위가 C0~C10입니다.
+  // console.log("In Circle note: ", e.detail.pitch); //범위가 0~127입니다.
+  // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
+  energy = e.detail.value * 10 / 127
+  pitchColor = e.detail.pitch * 10 / 127
 })
 
 
-SyntheysizerEvents.addEventListener('padInput', function (){
-  console.log("In Circle Pad id: ", pad_set.id); //그냥 패드 id입니다. 0~7로 8개가 표시됩니다.
+SyntheysizerEvents.addEventListener('padInput', function (e){
+  console.log("In Circle Pad id: ", e.detail.id); //그냥 패드 id입니다. 0~7로 8개가 표시됩니다.
 })
 
 
-SyntheysizerEvents.addEventListener('dialInput', function (){
+SyntheysizerEvents.addEventListener('dialInput', function (e){
   console.log("In Circle dial_value: ", dial_set.value);
-  $("#volume").slider("value", (dial_set.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
+  $("#volume").slider("value", (e.detail.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
 })
 
 
@@ -3060,7 +3063,8 @@ myMedia.volume = myVolume;
 
 function animate() {
   requestAnimationFrame(animate);
-  energy = randomEnergy();
+  //energy = randomEnergy();
+  //console.log("energy", energy);
   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
   FrameRate = FrameRate + 1
   
