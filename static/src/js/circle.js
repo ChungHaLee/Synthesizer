@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass'
+import { RenderPass } from 'three/addons/postprocessing/RenderPass'
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitchMulti } from './audio.js'
@@ -12,6 +14,7 @@ let controls, bloomComposer;
 let camera, scene, renderer;
 let geometry, material, material1, material2, material3, energy = 0;
 let compoCenter, compoCenter1, compoCenter2, compoCenter3;
+let particleMaterial;
 let container;
 let FrameRate = 0;
 let pitch, pitchColor, color, gradientColor;
@@ -31,7 +34,7 @@ let AudioObject = document.getElementById("audio");
 let playButton  = document.getElementById("playButton")
 let musicDuration = 60;
 
-
+let dialTWO = [];
 
 // 시각화 구분자 단어
 let identityVisualization = document.getElementById('identityVisual');
@@ -171,37 +174,74 @@ function colorByPitch(){
 // 3D 도형
 
 function createShape(){
-  let custom_energy = energy * 5;
 
-  if(custom_energy > 50){
-    custom_energy = 15;
-  } else if(custom_energy < 10){
-    custom_energy = custom_energy / 2 + 5
-  }
+  //bloom renderer
+  const renderScene = new RenderPass(scene, camera);
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
 
-  let size = custom_energy;
-
-  scene.background = new THREE.Color( bgColor );
-
-
-  geometry = new THREE.IcosahedronGeometry( 15, dial_four );
   
+  bloomPass.threshold = 0;
+
+
+  bloomPass.radius = 1;
+  bloomPass.strength = dial_two * 0.05;
+  bloomPass.exposure = dial_two * 0.01
+
   color = colorByPitch();
   gradientColor = colorByWheel();
 
-  material = new THREE.MeshPhongMaterial( { color: color, emissive: gradientColor, specular: gradientColor, shininess: 0 } );
 
-  console.log(material)
-  material.transparent = false
-  material.opacity = 1
+  geometry = new THREE.IcosahedronGeometry( 10, dial_four );
+  material = new THREE.MeshPhongMaterial( { color: color, emissive: color, specular: color, shininess: 50} )
+
+  compoCenter = new THREE.Mesh(geometry, material);
+  compoCenter.position.set(1, 0, 0);
+
+  const pointLight = new THREE.PointLight( 0xffffff, 1);
+  camera.add(pointLight);
+
+    
+  bloomComposer = new EffectComposer(renderer);
+  bloomComposer.setSize(window.innerWidth, window.innerHeight);
+  // bloomComposer.renderToScreen = true;
+  bloomComposer.addPass(renderScene);
+  bloomComposer.addPass(bloomPass);
 
 
   compoCenter = new THREE.Mesh(geometry, material);
   compoCenter.position.set(1, 0, 0);
 
-  // scene.add(pointLight);
 
   group.add( compoCenter );
+  bloomComposer.render();
+
+
+
+
+
+  // scene.background = new THREE.Color( bgColor );
+
+
+  // geometry = new THREE.IcosahedronGeometry( 15, dial_four );
+  
+  // color = colorByPitch();
+  // gradientColor = colorByWheel();
+
+  // material = new THREE.MeshPhongMaterial( { color: color, emissive: gradientColor, specular: gradientColor, shininess: 0 } );
+  // compoCenter = new THREE.Mesh(geometry, material);
+  // compoCenter.position.set(1, 0, 0);
+
+  // scene.add(pointLight);
+
+  // group.add( compoCenter );
+
+
+
 }
 
 
@@ -227,6 +267,7 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
 SyntheysizerEvents.addEventListener('dialInput', function (e){
   dial_one = e.detail.value[0][0]
   dial_two = e.detail.value[0][1]
+  dialTWO.push(dial_two);
   dial_three = e.detail.value[0][2]
   dial_four = e.detail.value[0][3]
   dial_five = e.detail.value[1][0]
