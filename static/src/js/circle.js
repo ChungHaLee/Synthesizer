@@ -1,11 +1,10 @@
 import * as THREE from 'three';
-import { makeNoise4D, makeNoise3D } from "open-simplex-noise";
-import Noise from 'noise-library';
+
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitch, colorByPitchMulti } from './audio.js'
+import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitchMulti } from './audio.js'
 import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './colorpicker'
 import { SyntheysizerEvents, note_set, pad_set, dial_set} from './Share.js';
 
@@ -17,17 +16,13 @@ let geometry, material, material1, material2, material3, energy = 0;
 let compoCenter, compoCenter1, compoCenter2, compoCenter3;
 let container;
 let FrameRate = 0;
-let pitchColor = 0;
+let pitch, pitchColor;
 let dial_one, dial_two, dial_three, dial_four, dial_five, dial_six, dial_seven, dial_eight;
-
-let clock = new THREE.Clock();
 
 
 let group;
 let ambientLight, spotLight, pointLight;
 var pitchInfo;
-
-
 
 // html 버튼 요소
 
@@ -100,10 +95,63 @@ function createCircle_Vanilla(){
 
 
 
+function makeRoughBall(mesh, bassFr, treFr) {
+  mesh.geometry.vertices.forEach(function (vertex, i) {
+      var offset = mesh.geometry.parameters.radius;
+      var amp = 7;
+      var time = window.performance.now();
+      vertex.normalize();
+      var rf = 0.00001;
+      var distance = (offset + bassFr ) + noise.noise3D(vertex.x + time *rf*7, vertex.y +  time*rf*8, vertex.z + time*rf*9) * amp * treFr;
+      vertex.multiplyScalar(distance);
+  });
+  mesh.geometry.verticesNeedUpdate = true;
+  mesh.geometry.normalsNeedUpdate = true;
+  mesh.geometry.computeVertexNormals();
+  mesh.geometry.computeFaceNormals();
+}
 
 
 
+function colorByPitch(){
+  let pitchColor;
 
+  let red = '#C20000'
+  let orange = '#FF1A00'
+  let yellow = '#FF3B00'
+  let green = '#008000'
+  let blue = '#004FFF'
+  let violet = '#5D00E1'
+  let pink = '#CF003D'
+  if (pitch == '48'){ // 도
+      pitchColor = red
+  } else if (pitch == '49'){ // 도샾++
+      pitchColor = '#FF4814'
+  } else if (pitch == '50'){ // 레++
+      pitchColor = orange
+  } else if (pitch == '51'){ // 레샾
+      pitchColor = '#FFCF00'
+  } else if (pitch == '52'){ // 미++
+      pitchColor = yellow
+  } else if (pitch == '53'){ // 파
+      pitchColor = green
+  } else if (pitch == '54'){ // 파샾
+      pitchColor = '#29FA00'
+  } else if (pitch == '55'){ // 솔
+     pitchColor = blue
+  } else if (pitch == '56'){ // 솔샾
+    pitchColor = '#2E93FF'
+ } else if (pitch == '57'){ // 라
+    pitchColor = violet
+  } else if (pitch=='58'){ // 라샾
+    pitchColor = '#ff69b4'
+  } else if (pitch=='59'){ // 시
+    pitchColor = pink
+  } else {
+    pitchColor = '#808080'
+  }
+    return pitchColor;
+  }
 
 
 
@@ -123,61 +171,22 @@ function createShape(){
   scene.background = new THREE.Color( bgColor );
 
 
-    geometry = new THREE.SphereGeometry(5, 100, 100);
-    geometry.positionData = [];
-    
-    // let gob;
-    // let v3 = new THREE.Vector3();
-    // if (dial_four < 63){
-    //   gob = -0.00001
-    // } else {
-    //   gob = 0.001
-    // }
+  geometry = new THREE.IcosahedronGeometry( 15, dial_four );
+  
+  let color = colorByPitch();
 
-    let v3 = new THREE.Vector3();
-
-    // 음수~양수 범위로 바꾸기
-    let noise = makeNoise4D(Date.now());
+  material = new THREE.MeshPhongMaterial( { color: color, emissive: color, specular: color } );
+  material.transparent = false
+  material.opacity = 1
 
 
-    for (let i = 0; i < geometry.attributes.position.count; i++){
-        v3.fromBufferAttribute(geometry.attributes.position, i);
-        geometry.positionData.push(v3.clone());
-    }
+  compoCenter = new THREE.Mesh(geometry, material);
+  compoCenter.position.set(1, 0, 0);
 
-    material = new THREE.ShaderMaterial({
-      uniforms: {      
-          colorA: {type: 'vec3', value: new THREE.Vector3(0.5, 0.5, 0.5)},
+  scene.add(pointLight);
 
-      },
-      vertexShader: document.getElementById('vertex').textContent,
-      fragmentShader: document.getElementById('fragment').textContent,
-    });
-
-    geometry.positionData.forEach((p, idx) => {
-      var time = performance.now() * 0.01;
-
-      let k = 3
-      p.normalize().multiplyScalar( 3+ 0.3 * Noise.perlin3(p.x, p.y, p.z));
-      // p.normalize().multiplyScalar(1 + 0.3 * Noise.perlin3(p.x * k + time, p.y * k, p.z * k));
-      let setNoise = noise(p.x, p.y, p.z, 1);
-      v3.copy(p).addScaledVector(p, setNoise);
-      geometry.attributes.position.setXYZ(idx, v3.x, v3.y, v3.z);
-    })
-    geometry.computeVertexNormals();
-    geometry.attributes.position.needsUpdate = true;
-
-    compoCenter = new THREE.Mesh(geometry, material); 
-    compoCenter.position.set(1, 0, 0);
-
-    scene.add(pointLight);
-
-    group.add( compoCenter );
-
-
-  }
-
-
+  group.add( compoCenter );
+}
 
 
 
@@ -185,12 +194,11 @@ function createShape(){
 
 //-------------------------신디 관련 컨트롤용 코드입니다.-----------------------------//
 SyntheysizerEvents.addEventListener('noteInput', function (e){
-  // console.log("In Circle note: ", e.detail.note);  //범위가 C0~C10입니다.
-  console.log("In Circle note: ", e.detail.pitch); //범위가 0~127입니다.
-
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
   energy = e.detail.value * 10 / 127
-  pitchColor = e.detail.pitch * 10 / 127
+  pitch = e.detail.pitch
+
+  console.log('pitch', pitch)
 })
 
 
@@ -208,7 +216,7 @@ SyntheysizerEvents.addEventListener('dialInput', function (e){
   dial_six = e.detail.value[1][1]
   dial_seven = e.detail.value[1][2]
   dial_eight = e.detail.value[1][3]
-  console.log(dial_four)
+
 
   $("#volume").slider("value", (e.detail.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
 })
@@ -526,23 +534,28 @@ myMedia.volume = myVolume;
 
 
 
+
+
+
+
+
+
+
+
+
+
 function animate() {
   requestAnimationFrame(animate);
   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
   FrameRate = FrameRate + 1
   
   if (FrameRate % 4 == 0){
-
-
-      deleteBasics();
-      createShape();
-      render();
+        deleteBasics();
+        createShape();
+        render();
+      } 
 
     }
-
-    } 
-
-
 
 
 
