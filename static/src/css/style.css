@@ -100,8 +100,9 @@ button#effectScale{
 
 
 div.saveTemplate{
+    float: right;
     margin-top: 280px;
-    position: absolute;
+
     background-color: gray;
     width: 35em;
     height: 10rem;
@@ -132,7 +133,9 @@ div.saveTemplate{
 
 
 #customSliders{
-    position: absolute;
+    display: none;
+    float: right;
+    /* position: absolute; */
     /* margin-top: 50px; */
     margin-top: 50px;
 }
