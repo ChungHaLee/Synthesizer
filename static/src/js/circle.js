@@ -187,19 +187,64 @@ function createShape(){
   
   bloomPass.threshold = 0;
 
-
   bloomPass.radius = 1;
   bloomPass.strength = dial_two * 0.05;
   bloomPass.exposure = dial_two * 0.01
 
   color = colorByPitch();
   gradientColor = colorByWheel();
+  if (dial_three == 'undefined'){
+    dial_three = 1
+  } else {
+    
+  }
+
+  geometry = new THREE.IcosahedronGeometry( 12, dial_four );
+  // material = new THREE.MeshPhongMaterial( { color: color, emissive: color, specular: color, shininess: 50} )
+  material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
+    particleMaterial = new THREE.PointsMaterial({
+      map: texture,
+      color: color,
+      blending: THREE.AdditiveBlending,
+      size: dial_three * 0.03
+  })});
 
 
-  geometry = new THREE.IcosahedronGeometry( 10, dial_four );
-  material = new THREE.MeshPhongMaterial( { color: color, emissive: color, specular: color, shininess: 50} )
+  // let wireframe = new THREE.WireframeGeometry( geometry )
+  // material = new THREE.PointsMaterial({
+  //   color: color,
+  //   size : 0.25,
+  //   //map : new THREE.TextureLoader().load('three/particle.jpg')
+  // })
 
-  compoCenter = new THREE.Mesh(geometry, material);
+  // let particleSystem = new THREE.Points(geometry, material);
+  // particleSystem.name = 'particles';
+  // scene.add(particleSystem);
+
+
+  // let particles = scene.getObjectByName('particles');
+
+  // let t = 0;
+  // t += 1;
+  // let interval = 10,
+  //     length = 2;
+  // console.log(particles.geometry.attributes.position.array);
+  // particles.geometry.attributes.position.array.forEach((vertex,index)=>{
+  //    vertex.x +=  Math.sin( ( (t + index )/interval   ) ) * (0.005 * length) ;
+  //    vertex.y +=  Math.sin( ( (t + index )/interval   ) ) * (0.005 * length);
+  //    vertex.z +=  Math.sin( ( (t + index )/interval   ) ) * (0.005 * length);
+
+  // });
+  // particles.geometry.verticesNeedUpdate = true;
+
+
+  // let point_light = new THREE.PointLight(0xffffff, 2);
+  // point_light.position.y = 10;d
+
+  // scene.add(point_light);
+  // scene.add(camera);
+    
+  // compoCenter = new THREE.Mesh(geometry, material);
   compoCenter.position.set(1, 0, 0);
 
   const pointLight = new THREE.PointLight( 0xffffff, 1);
@@ -212,33 +257,14 @@ function createShape(){
   bloomComposer.addPass(renderScene);
   bloomComposer.addPass(bloomPass);
 
-
-  compoCenter = new THREE.Mesh(geometry, material);
+  compoCenter = new THREE.Points(geometry, particleMaterial);
+  // compoCenter = new THREE.Mesh(geometry, material);
   compoCenter.position.set(1, 0, 0);
 
 
   group.add( compoCenter );
   bloomComposer.render();
 
-
-
-
-
-  // scene.background = new THREE.Color( bgColor );
-
-
-  // geometry = new THREE.IcosahedronGeometry( 15, dial_four );
-  
-  // color = colorByPitch();
-  // gradientColor = colorByWheel();
-
-  // material = new THREE.MeshPhongMaterial( { color: color, emissive: gradientColor, specular: gradientColor, shininess: 0 } );
-  // compoCenter = new THREE.Mesh(geometry, material);
-  // compoCenter.position.set(1, 0, 0);
-
-  // scene.add(pointLight);
-
-  // group.add( compoCenter );
 
 
 
@@ -267,7 +293,6 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
 SyntheysizerEvents.addEventListener('dialInput', function (e){
   dial_one = e.detail.value[0][0]
   dial_two = e.detail.value[0][1]
-  dialTWO.push(dial_two);
   dial_three = e.detail.value[0][2]
   dial_four = e.detail.value[0][3]
   dial_five = e.detail.value[1][0]
