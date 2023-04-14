@@ -8,6 +8,8 @@ import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, color
 import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './colorpicker'
 import { SyntheysizerEvents, note_set, pad_set, dial_set} from './Share.js';
 
+
+
 let controls, bloomComposer;
 let camera, scene, renderer;
 let geometry, material, material1, material2, material3, energy = 0;
@@ -96,7 +98,7 @@ function createCircle_Vanilla(){
 
 // 3D 도형
 
-function createSphereScale(){
+function createShape(){
   let custom_energy = energy * 5;
 
   if(custom_energy > 50){
@@ -108,7 +110,7 @@ function createSphereScale(){
   let size = custom_energy;
 
   scene.background = new THREE.Color( bgColor );
-  geometry = new THREE.SphereGeometry( size/2, 64, 32 );
+  geometry = new THREE.OctahedronGeometry( size/2, 0 );
   material = new THREE.MeshPhongMaterial( { color: objColor1, emissive: objColor1, specular: objColor1, shininess: 30 } );
   material.transparent = false
   material.opacity = 1
@@ -471,15 +473,13 @@ myMedia.volume = myVolume;
 
 function animate() {
   requestAnimationFrame(animate);
-  //energy = randomEnergy();
-  //console.log("energy", energy);
   // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
   FrameRate = FrameRate + 1
   
   if (FrameRate % 4 == 0){
-  
+        console.log(dial_set);
         deleteBasics();
-        createSphereScale();
+        createShape();
         render();
       } 
 
