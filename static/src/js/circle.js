@@ -304,6 +304,10 @@ SyntheysizerEvents.addEventListener('dialInput', function (e){
   $("#volume").slider("value", (e.detail.value[0][0]/127)*100); //여기 다이얼 값 범위가 0~127입니다.
 })
 
+SyntheysizerEvents.addEventListener('joystickInpnut', function (e){ // 조이스틱을 움직이면 업데이트되는 값입니다.
+  console.log("In Circle Pjoystic: ", e.detail.value); //출력은 [x, y] 형태이며, x는 -64 ~ +64. Y는 0 ~ +64 범위를 가집니다.
+                                                                 // 현재 조이스틱 Y좌표가 위 아래가 구분이 안됩니다.. 확인해보고 수정하겠습니다. 
+})
 
 
 
