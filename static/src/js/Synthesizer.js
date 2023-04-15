@@ -19,9 +19,15 @@ function set_synthesiser(msg){
       case "89":  //Release the touch pad
         break;
       case "b0":  //Moving the dial or Moving the joystick(up,down)
-        dial_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
+        if(synthesiser_msg.input_id != 1){
+          dial_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
+        }
+        else{
+          joystick_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
+        }
         break;
       case "e0":  //Moving the joystick(left, right)
+        joystick_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
         break;
       case "d9":  //Press the touch pad
         break;
@@ -76,6 +82,10 @@ function dial_input(input_id, input_value){
     SyntheysizerEvents.dispatchEvent(event);
   }
 }
+function joystick_input(input_id, input_value){
+  console.log(input_id, input_value)
+}
+
 
 
 // function synthesiser_console_mapping(console_id, value){
