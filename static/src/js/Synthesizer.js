@@ -1,8 +1,10 @@
 import {JZZ} from "./JZZ.js"
-import { SyntheysizerEvents, note_set, pad_set, dial_set} from './Share.js';
+import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set} from './Share.js';
 
 let synth = new Tone.Synth().toDestination();
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
+let vector = {X:"x", Y:"y"}
+
 
 function set_synthesiser(msg){
   let synthesiser_msg = get_msg_input(msg)
@@ -23,11 +25,11 @@ function set_synthesiser(msg){
           dial_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
         }
         else{
-          joystick_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
+          joystick_input(synthesiser_msg.input_id, synthesiser_msg.input_value, vector.Y)
         }
         break;
       case "e0":  //Moving the joystick(left, right)
-        joystick_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
+        joystick_input(synthesiser_msg.input_id, synthesiser_msg.input_value, vector.X)
         break;
       case "d9":  //Press the touch pad
         break;
@@ -82,8 +84,19 @@ function dial_input(input_id, input_value){
     SyntheysizerEvents.dispatchEvent(event);
   }
 }
-function joystick_input(input_id, input_value){
-  console.log(input_id, input_value)
+function joystick_input(input_id, input_value, type){
+  if(type == vector.X){
+    //console.log(type, input_value - 64)
+    joystick_set.value[0] = input_value - 64;
+    const event = new CustomEvent('joystickInpnut', { detail: joystick_set });
+    SyntheysizerEvents.dispatchEvent(event);
+  }
+  else{
+    //console.log(type, parseInt(input_value/2))
+    joystick_set.value[1] = parseInt(input_value/2)
+    const event = new CustomEvent('joystickInpnut', { detail: joystick_set });
+    SyntheysizerEvents.dispatchEvent(event);
+  }
 }
 
 
