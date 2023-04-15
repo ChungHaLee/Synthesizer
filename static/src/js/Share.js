@@ -16,3 +16,7 @@ export const dial_set = {
   value: [[0.0, 0.0, 0.0, 0.0],  //순서대로 [[11, 12, 13, 14],
           [0.0, 0.0, 0.0, 0.0]]   //순서대로  [21, 22, 23, 24]]
 }; 
+
+export const joystick_set = {
+  value:[0, 0]
+};
