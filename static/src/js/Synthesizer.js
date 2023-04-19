@@ -62,9 +62,11 @@ function piano_key_input(input_id, input_value){
 
 function piano_key_release(input_id){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
+  note_set.pitch = input_id;  //output : 0 ~ 127
+  note_set.note = input_pitch; //output : C0 ~ B7
   //synth.triggerRelease(input_pitch);
-  //const event = new CustomEvent('noteRelease', { detail: note_set });
-  //SyntheysizerEvents.dispatchEvent(event);
+  const event = new CustomEvent('noteRelease', { detail: note_set });
+  SyntheysizerEvents.dispatchEvent(event);
 }
 
 function pad_input(input_id){
@@ -98,18 +100,6 @@ function joystick_input(input_id, input_value, type){
     SyntheysizerEvents.dispatchEvent(event);
   }
 }
-
-
-
-// function synthesiser_console_mapping(console_id, value){
-//   if(input_scale_changer(value,["00", "7f"]) > 60){
-//     document.getElementById("beatButton").click();
-//   }
-//   else if(input_scale_changer(value,["00", "7f"]) < 20){
-//     document.getElementById("pitchButton").click();
-//   }
-// }
-
 
 // MIDI Detect code
 var midi_in;

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Style -->
     <link type="text/css" href="../static/src/css/style.css" rel="stylesheet">
+    <link type="text/css" href="../static/src/css/SheetMusic.css" rel="stylesheet">
     <!-- <link type="text/css" href="../static/src/css/menu.css" rel="stylesheet"> -->
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
 
@@ -26,10 +27,76 @@
         <!-- <span id="currnet_note" style = "display: none;">NONE</span> -->
     </div>    
 
-    <div id="content">
-        <h4>Music Input</h4>
+    
+    <div class="fixed-track-container">
+        <div class="grid-container" id="TrackContainer">
+            <!-- <div class="track-item" track_type="template">Visualization </div>
+            <div class="track-item" track_type="Meolody">Melody </div>
+            <div class="track-item" track_type="Beat">Beat </div> -->
+
+        </div>
+    </div>
+
+    <div id = 'sheetMusicController'>
+        <button class="sheetMusicButton"id="sheetMusicMelodyButton"> Melody </button>
+        <button class="sheetMusicButton"id="sheetMusicBeatButton"> Beat </button>
+        <button class="sheetMusicButton"id="sheetMusicSaveButton"> Save </button>
+        <br>
+        duration : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
+        <br>
+        <button class="sheetMusicButton"id="sheetMusicPlayButton"> Play </button>
+        <button class="sheetMusicButton"id="sheetMusicPauseButton"> Pause </button>
+        <div id="slider" style="width: 1820px; left:60px;"></div>
+    </div>
+    <div class="fixed-container">
+        <div class="grid-container" id="MelodyContainer">
+            <div class="vertical-line" id="startLine", style="left:60px;"></div>
+            <div class="vertical-line" id="timeLine1" style="background-color:green; left:60px;"></div>
+            <div class="grid-item" id="box_C4">C4</div>
+            <div class="grid-item" id="box_C#4">C#4</div>
+            <div class="grid-item" id="box_D4">D4</div>
+            <div class="grid-item" id="box_D#4">D#4 </div>
+            <div class="grid-item" id="box_E4">E4 </div>
+            <div class="grid-item" id="box_F4">F4 </div>
+            <div class="grid-item" id="box_F#4">F#4 </div>
+            <div class="grid-item" id="box_G4">G4 </div>
+            <div class="grid-item" id="box_G#4">G#4 </div>
+            <div class="grid-item" id="box_A4">A4 </div>
+            <div class="grid-item" id="box_A#4">A#4</div>
+            <div class="grid-item" id="box_B4">B4 </div>
+            <div class="grid-item" id="box_C5">C5 </div>
+            <div class="grid-item" id="box_C#5">C#5 </div>
+            <div class="grid-item" id="box_D5">D5 </div>
+            <div class="grid-item" id="box_D#5">D#5</div>
+            <div class="grid-item" id="box_E5">E5 </div>
+            <div class="grid-item" id="box_F5">F5 </div>
+            <div class="grid-item" id="box_F#5">F#5 </div>
+            <div class="grid-item" id="box_G5">G5 </div>
+            <div class="grid-item" id="box_G#5">G#5 </div>
+            <div class="grid-item" id="box_A5">A5 </div>
+            <div class="grid-item" id="box_A#5">A#5 </div>
+            <div class="grid-item" id="box_B5">B5  </div>
+            <div class="grid-item" id="box_C6">C6  </div>
+        </div>
+        <div class="grid-container" id="BeatContainer" style="display:none;">
+            <div class="vertical-line" id="startLine2", style="left:60px; height: 120%;"></div>
+            <div class="vertical-line" id="timeLine2" style="background-color:green; left:60px; height: 120%"></div>
+            <div class="grid-item" id="box_0" style="height:100px;">Beat1 </div>
+            <div class="grid-item" id="box_1" style="height:100px;">Beat2 </div>
+            <div class="grid-item" id="box_2" style="height:100px;">Beat3 </div>
+            <div class="grid-item" id="box_3" style="height:100px;">Beat4 </div>
+        </div>
+    </div>
+
+
+
+
+    
+
+    <!-- <div id="content">
+        <h4>Music Input</h4> -->
         <!-- <div class="thetitle" id="title"></div> -->
-        <label for="thefile" class="file">
+        <!-- <label for="thefile" class="file">
             <input type="file" id="thefile" accept="audio/*" />
             <pre id="filepath" style = "display: none;"> None </pre>
         </label>
@@ -48,7 +115,7 @@
             </p>
             <div id="slider-range" style="pointer-events: none;" ></div>
         </div>
-    </div>
+    </div> -->
 
     
     <!-- <div class="shapeEffectClass">
@@ -170,14 +237,14 @@
         </div>
 
 
-    <div class="saveTemplate">
+    <!-- <div class="saveTemplate">
         <h4>Save Template</h4>
         <button id="TemplateJsonSave">Save Json</button>
         <button id="TemplateJsonLoad">Load Json</button>
         <input type="file" id="TemplateFile" style="display:none;">
         <div id="templateContainer">
         </div>
-    </div>
+    </div> -->
 
     
     
@@ -277,7 +344,6 @@
         
         }
     </script>
-       
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
@@ -292,5 +358,6 @@
     <script type="module" defer src="./static/src/js/dist/Synthesizer.js"></script>
     <script type="module" defer src="./static/src/js/dist/SheetMusic.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 </body>
 </html>
