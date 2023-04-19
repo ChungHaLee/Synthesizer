@@ -102,7 +102,7 @@ export class MusicClip {
     return this.Clip_id;
   }
   getClipType(){
-    return this.type;
+    return this.Type;
   }
   getNoteIndex(){
     if(this.Type==MusicClipType.Melody){
@@ -112,13 +112,12 @@ export class MusicClip {
       return this.beatSet.length - 1;
     }
   }
-
-  test(){
+  getMusicClip(){
     if(this.Type==MusicClipType.Melody){
-      return this.melodyTimeset
+      return [this.melodyNoteSet, this.melodyTimeset]
     }
     else{
-      return this.beatTime
+      return [this.beatSet, this.beatTime]
     }
   }
 }

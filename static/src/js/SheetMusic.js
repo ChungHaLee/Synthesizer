@@ -2,7 +2,6 @@ import { SyntheysizerEvents, MusicClip, MusicClipType} from './Share.js';
 //최소 범위 A2 ~ C7
 
 let fps = 30;
-
 let currentTime = 0.0;
 let play_state = false;
 let timer = null;
@@ -22,9 +21,6 @@ clipduration.addEventListener("change", function(){
   duration = parseFloat(clipduration.value);
   noteSizeAllOff();
   clearNoteClip(current_clip_type);
-  melody_clip.setDuration(duration);
-
-
   if(time_to_px(currentTime, duration) >= 1880){
     $("#slider").slider("value",1880);
     timeLine2.style.left = 1880+ "px";
@@ -36,10 +32,12 @@ clipduration.addEventListener("change", function(){
     timeLine1.style.left = time_to_px(currentTime, duration) + "px";
   }
   if(current_clip_type == MusicClipType.Melody){
+    melody_clip.setDuration(duration);
     loadClip(melody_clip, duration);
   }
   else{
-    loadClip(melody_clip, duration);
+    beat_clip.setDuration(duration);
+    loadClip(beat_clip, duration);
   }
 })
 
@@ -60,7 +58,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
   timeLine1.style.left = time_to_px(currentTime, duration) + "px";
   //console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
   for (let item of onNoteList){
-    noteSizeChanger(item, time_to_px(currentTime, duration));
+    noteResizeChanger(item, time_to_px(currentTime, duration));
   }
   
   if(currentTime >= duration){
@@ -122,11 +120,9 @@ function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, B
   resizeDrag.setAttribute("note_id", noteId); // note_id 속성 추가
   resizeDrag.setAttribute("note", note); // note_id 속성 추가
   boxItem.appendChild(resizeDrag);
-  if(type == MusicClipType.Melody){
-    onNoteList.push(resizeDrag);
-  }
+  return resizeDrag
 }
-function noteSizeChanger(noteObejct, target_pix){
+function noteResizeChanger(noteObejct, target_pix){
   const currentWidth = 10;  //Meldoy 음표의 최소 길이값(css에서 변경시 바꿔야함)
   const currentleft = parseFloat(noteObejct.style.left);
   if(currentWidth < target_pix - currentleft){
@@ -195,7 +191,8 @@ document.getElementById("sheetMusicPauseButton").addEventListener('click', funct
 SyntheysizerEvents.addEventListener('noteInput', function (e){
   if(play_state && current_clip_type == MusicClipType.Melody){
     melody_clip.setNoteInput(e.detail.note, currentTime);
-    createResizeDragElement(e.detail.note, time_to_px(currentTime, duration), melody_clip.getNoteIndex(), MusicClipType.Melody);
+    let NoteItem = createResizeDragElement(e.detail.note, time_to_px(currentTime, duration), melody_clip.getNoteIndex(), MusicClipType.Melody);
+    onNoteList.push(NoteItem);  //Melody만
   }
 })
 SyntheysizerEvents.addEventListener('noteRelease', function (e){
@@ -206,8 +203,8 @@ SyntheysizerEvents.addEventListener('noteRelease', function (e){
 })
 SyntheysizerEvents.addEventListener('padInput', function (e){
   if(play_state && current_clip_type == MusicClipType.Beat){
-    beat_clip.setBeatInput(e.detail.pad_id, currentTime);
-    createResizeDragElement(e.detail.id, time_to_px(currentTime, duration), beat_clip.getNoteIndex(), MusicClipType.Beat);
+    beat_clip.setBeatInput(e.detail.id, currentTime);
+    let PadItem = createResizeDragElement(e.detail.id, time_to_px(currentTime, duration), beat_clip.getNoteIndex(), MusicClipType.Beat);
   }
 })
 
@@ -228,7 +225,21 @@ function clearNoteClip(type){
 }
 
 function loadClip(MusicClip, duration){
-  console.log(MusicClip, duration);
+  if(MusicClip.getClipType() == MusicClipType.Melody){
+    const [NoteSet, TimeSet] = MusicClip.getMusicClip()
+    for(let i=0; i<NoteSet.length; i++){
+      console.log(NoteSet[i], time_to_px(TimeSet[i][0], duration), i, MusicClipType.Melody)
+      let NoteItem = createResizeDragElement(NoteSet[i], time_to_px(TimeSet[i][0], duration), i, MusicClipType.Melody);
+      noteResizeChanger(NoteItem, time_to_px(TimeSet[i][1], duration));
+    }
+  }
+  else{
+    const [padSet, TimeSet] = MusicClip.getMusicClip()
+    for(let i=0; i<padSet.length; i++){
+      console.log(padSet[i], time_to_px(TimeSet[i][0], duration), i, MusicClipType.Beat)
+      let NoteItem = createResizeDragElement(padSet[i], time_to_px(TimeSet[i], duration), i, MusicClipType.Beat);
+    }
+  }
 }
 
 
