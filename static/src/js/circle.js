@@ -240,7 +240,6 @@ function createShape(){
   // scene.add(camera);
     
   // compoCenter = new THREE.Mesh(geometry, material);
-  compoCenter.position.set(1, 0, 0);
 
   const pointLight = new THREE.PointLight( 0xffffff, 1);
   camera.add(pointLight);
@@ -254,8 +253,7 @@ function createShape(){
 
   compoCenter = new THREE.Points(geometry, particleMaterial);
   // compoCenter = new THREE.Mesh(geometry, material);
-  compoCenter.position.set(1, 0, 0);
-
+  compoCenter.position.set(5*(pitch-48)/4 - 15, 5*(pitch-48)/6 - 10, -10);
 
   group.add( compoCenter );
   bloomComposer.render();
@@ -276,7 +274,8 @@ function createShape(){
 SyntheysizerEvents.addEventListener('noteInput', function (e){
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
   energy = e.detail.value * 10 / 127
-  pitch = e.detail.pitch
+  pitch = e.detail.pitch; // 48~72
+  compoCenter.position.set(10, 0, 0);
 })
 
 

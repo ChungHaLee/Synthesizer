@@ -5,6 +5,11 @@ let synth = new Tone.Synth().toDestination();
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
 
+var beat1Sound = new Audio('../sound/clap.wav');
+var beat2Sound = new Audio('../sound/ride.wav');
+var beat3Sound = new Audio('../sound/snare.wav');
+var beat4Sound = new Audio('../sound/dog.wav');
+
 
 function set_synthesiser(msg){
   let synthesiser_msg = get_msg_input(msg)
@@ -73,9 +78,28 @@ function pad_input(input_id){
   //console.log("pad id", input_id);
   //DrumAudio.play();
   pad_set.id = input_id-36;
+  switch (pad_set.id){
+    case 0:
+      beat1Sound.play();
+      break;
+    case 1:
+      beat2Sound.play();
+      break;
+    case 2:
+      beat3Sound.play();
+      break;
+    case 3:
+      beat4Sound.play();
+      break;
+    default:
+      break;
+    }
+    const event = new CustomEvent('padInput', { detail: pad_set });
+    SyntheysizerEvents.dispatchEvent(event);
   
-  const event = new CustomEvent('padInput', { detail: pad_set });
-  SyntheysizerEvents.dispatchEvent(event);
+
+
+
 }
 
 function dial_input(input_id, input_value){

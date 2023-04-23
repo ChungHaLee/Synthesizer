@@ -243,27 +243,6 @@ function loadClip(MusicClip, duration){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Note Interaction용
 interact('.resize-drag')
   .resizable({
@@ -278,7 +257,7 @@ interact('.resize-drag')
           height: `${event.rect.height}px`,
           transform: `translate(${x}px, ${y}px)`
         })
-
+        console.log( "id:", event.target.getAttribute("note_id"), "Add px:", [x, x + event.rect.width]);
         Object.assign(event.target.dataset, { x, y })
       }
     }
@@ -313,7 +292,6 @@ interact('.resize-drag')
       // call this function on every dragend event
       end (event) {
         var textEl = event.target.querySelector('p')
-
         textEl && (textEl.textContent =
           'moved a distance of ' +
           (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
@@ -370,6 +348,8 @@ interact('.draggable')
     var y = 0
     // translate the element
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    console.log( "id:", event.target.getAttribute("note_id"), "Add px:", [x, target.style.width.slice[0, -2]]);
+    //console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
