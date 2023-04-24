@@ -1,14 +1,44 @@
 import {JZZ} from "./JZZ.js"
 import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set} from './Share.js';
-
-let synth = new Tone.Synth().toDestination();
+// let synth = new Tone.Synth().toDestination();
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
+// var beat1Sound = new Audio('../sound/clap.wav');
+// var beat2Sound = new Audio('../sound/ride.wav');
+// var beat3Sound = new Audio('../sound/snare.wav');
+// var beat4Sound = new Audio('../sound/dog.wav');
 
-var beat1Sound = new Audio('../sound/clap.wav');
-var beat2Sound = new Audio('../sound/ride.wav');
-var beat3Sound = new Audio('../sound/snare.wav');
-var beat4Sound = new Audio('../sound/dog.wav');
+// let MIDI = new MIDI
+window.onload = function () {
+  MIDI.loadPlugin({
+    soundfontUrl: "https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
+    instrument: "acoustic_grand_piano",
+    onprogress: function (state, progress) {
+      console.log(state, progress);
+    },
+    onsuccess: function () {
+      // After successfully loading the plugin, you can play notes
+      playNote();
+    },
+  });
+};
+
+// function playNote() {
+//   var note = 60; // MIDI note number (C4)
+//   var velocity = 127; // How hard the note is hit (0-127)
+//   var delay = 0; // Start time (in seconds)
+//   var duration = 0.5; // Duration of the note (in seconds)
+
+//   MIDI.setVolume(0, 127);
+//   MIDI.noteOn(0, note, velocity, delay);
+//   MIDI.noteOff(0, note, delay + duration);
+// }
+
+
+
+
+
+
 
 
 function set_synthesiser(msg){
@@ -56,7 +86,8 @@ function get_msg_input(msg){
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
   //console.log("Press the piano key : ", input_pitch);
-  synth.triggerAttackRelease(input_pitch, 0.2);
+  //synth.triggerAttackRelease(input_pitch, 0.2);
+  //playNote();
   //synth.triggerAttack(input_pitch, "+"+toString(input_value/127));
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
@@ -77,28 +108,25 @@ function piano_key_release(input_id){
 function pad_input(input_id){
   //console.log("pad id", input_id);
   //DrumAudio.play();
-  pad_set.id = input_id-36;
-  switch (pad_set.id){
-    case 0:
-      beat1Sound.play();
-      break;
-    case 1:
-      beat2Sound.play();
-      break;
-    case 2:
-      beat3Sound.play();
-      break;
-    case 3:
-      beat4Sound.play();
-      break;
-    default:
-      break;
-    }
+  pad_set.id = input_id - 36;
+  // switch (pad_set.id){
+  //   case 0:
+  //     beat1Sound.play();
+  //     break;
+  //   case 1:
+  //     beat2Sound.play();
+  //     break;
+  //   case 2:
+  //     beat3Sound.play();
+  //     break;
+  //   case 3:
+  //     beat4Sound.play();
+  //     break;
+  //   default:
+  //     break;
+  //   }
     const event = new CustomEvent('padInput', { detail: pad_set });
     SyntheysizerEvents.dispatchEvent(event);
-  
-
-
 
 }
 
@@ -125,7 +153,7 @@ function joystick_input(input_id, input_value, type){
   }
 }
 
-// MIDI Detect code
+// MIDI Device Detect code
 var midi_in;
 let open_midi = document.querySelector('[data-action="open_midi_in"]');
 open_midi.addEventListener('click', event => {

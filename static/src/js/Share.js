@@ -19,7 +19,7 @@ export const dial_set = {
 
 export const joystick_set = {
   value:[0, 0]
-};
+};  
 
 export const MusicClipType = {
   Melody: "Melody",
@@ -35,7 +35,7 @@ const MusicNote = {
 }
 
 export class MusicClip {
-  constructor (Type, Clip_id, duration = 15, instrument_id =0,) {
+  constructor (Type, Clip_id, duration = 15, instrument_id = 0) {
       console.log("music Type : ", Type, "Clip_id", Clip_id,  duration = 15);
       this.Type = Type;
       this.Clip_id = Clip_id;
@@ -96,8 +96,19 @@ export class MusicClip {
     this.duration = duration;
   }
   serInstrument(instrument_id){
-    this.instrument_id;
+    this.instrument_id = instrument_id;
   }
+  editNote(noteIndex, deltaTimeset){
+    if(this.Type==MusicClipType.Melody){
+      this.melodyTimeset[noteIndex][0] += deltaTimeset[0];
+      this.melodyTimeset[noteIndex][1] += deltaTimeset[1];
+    }
+    else{
+      this.beatTime[noteIndex] += deltaTimeset[0];
+    }
+  }
+
+
   getCliptId(){
     return this.Clip_id;
   }

@@ -14,7 +14,6 @@ const Beat_clip_array = [];
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration)
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration)
-
 let onNoteList = []
 
 clipduration.addEventListener("change", function(){
@@ -22,8 +21,8 @@ clipduration.addEventListener("change", function(){
   noteSizeAllOff();
   clearNoteClip(current_clip_type);
   if(time_to_px(currentTime, duration) >= 1880){
-    $("#slider").slider("value",1880);
-    timeLine2.style.left = 1880+ "px";
+    $("#slider").slider("value", 1880);
+    timeLine2.style.left = 1880 + "px";
     timeLine1.style.left = 1880 + "px";
   }
   else{
@@ -40,8 +39,6 @@ clipduration.addEventListener("change", function(){
     loadClip(beat_clip, duration);
   }
 })
-
-
 function startRecording(){//Timer를 시작하는 코드
   play_state = true;
   startTimer();
@@ -56,7 +53,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
   $("#slider").slider("value",time_to_px(currentTime, duration));
   timeLine2.style.left = time_to_px(currentTime, duration) + "px";
   timeLine1.style.left = time_to_px(currentTime, duration) + "px";
-  //console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
+  // console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
   for (let item of onNoteList){
     noteResizeChanger(item, time_to_px(currentTime, duration));
   }
@@ -67,7 +64,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
 }
 function startTimer() {
   if (!timer) { // 타이머가 이미 실행 중이지 않은 경우에만 실행
-    timer = setInterval(updateTime, 1/fps * 1000); // 0.01초 간격으로 updateTime 함수 실행
+    timer = setInterval(updateTime, 1 / fps * 1000); // 0.01초 간격으로 updateTime 함수 실행
   }
 }
 function stopTimer() {
@@ -87,14 +84,13 @@ $("#slider").slider({ //Timer 슬라이더
     noteSizeAllOff();
   }
 });
-function initializeTimer(){
+function initializeTimer(){ //Timer 초기화
   stopRecording();
   currentTime = 0.0;
   $("#slider").slider("value",time_to_px(currentTime, duration));
   timeLine2.style.left = time_to_px(currentTime, duration) + "px";
   timeLine1.style.left = time_to_px(currentTime, duration) + "px";
 }
-
 
 function time_to_px(time, duration){ //Time을 Px로 변환하는 코드
   const start_px = 60
@@ -103,6 +99,10 @@ function time_to_px(time, duration){ //Time을 Px로 변환하는 코드
 function px_to_time(px, duration){  //Px을 Time으로 변환하는 코드
   const start_px = 60
   return (px - start_px) * duration / (1880 - start_px)
+}
+function px_to_time_Scale(px, duration){  //Px을 Time으로 변환하는 코드
+  const start_px = 60
+  return px * duration / (1880 - start_px)
 }
 
 function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, Beat 노트 생성
@@ -129,13 +129,13 @@ function noteResizeChanger(noteObejct, target_pix){
     noteObejct.style.width = (target_pix - currentleft) + "px";
   }
 }
-function noteSizeAllOff(){
+function noteSizeAllOff(){ //Note 변화용 array 초기화
   for (let i = 0; i < onNoteList.length; i++) {
     melody_clip.setNoteRelease(onNoteList[i].getAttribute("note"), currentTime);
   }
   onNoteList = [];
 }
-function noteOff(note){
+function noteOff(note){//Note 변화 설정 초기화
   for (let i = 0; i < onNoteList.length; i++) {
     if (onNoteList[i].getAttribute("note") === note) {
       onNoteList.splice(i, 1);
@@ -164,7 +164,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       initializeTimer();
     }
     else{
-      alert("There isn't any note in clip")
+      alert("There isn't any note in clip");
     }
   }
   else{                                         //비트   클립 저장시
@@ -176,7 +176,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       initializeTimer();
     }
     else{
-      alert("There isn't any note in clip")
+      alert("There isn't any note in clip");
     }
   }
 })
@@ -187,12 +187,11 @@ document.getElementById("sheetMusicPauseButton").addEventListener('click', funct
   stopRecording();
 })
 
-
 SyntheysizerEvents.addEventListener('noteInput', function (e){
   if(play_state && current_clip_type == MusicClipType.Melody){
     melody_clip.setNoteInput(e.detail.note, currentTime);
     let NoteItem = createResizeDragElement(e.detail.note, time_to_px(currentTime, duration), melody_clip.getNoteIndex(), MusicClipType.Melody);
-    onNoteList.push(NoteItem);  //Melody만
+    onNoteList.push(NoteItem); 
   }
 })
 SyntheysizerEvents.addEventListener('noteRelease', function (e){
@@ -208,14 +207,14 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
   }
 })
 
-function removeAllElementsByClassName(className) {
+function removeAllElementsByClassName(className) {//
   const elements = document.getElementsByClassName(className);
   while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
   }
 }
 
-function clearNoteClip(type){
+function clearNoteClip(type){// 편집기에 모든 노트 제거
   if(type == MusicClipType.Melody){
     removeAllElementsByClassName("resize-drag");
   }
@@ -224,7 +223,7 @@ function clearNoteClip(type){
   }
 }
 
-function loadClip(MusicClip, duration){
+function loadClip(MusicClip, duration){//입력 클립을 편집기에 반영
   if(MusicClip.getClipType() == MusicClipType.Melody){
     const [NoteSet, TimeSet] = MusicClip.getMusicClip()
     for(let i=0; i<NoteSet.length; i++){
@@ -241,7 +240,14 @@ function loadClip(MusicClip, duration){
     }
   }
 }
-
+function changeMusicClip(noteIndex, deltaTimeset){//노트 위치, 크기 편집을 클립 시간에 반영
+  if(current_clip_type = MusicClipType.Melody){
+    melody_clip.editNote(noteIndex, deltaTimeset)
+  }
+  else{
+    beat_clip.editNote(noteIndex, deltaTimeset)
+  }
+}
 
 //Note Interaction용
 interact('.resize-drag')
@@ -257,7 +263,9 @@ interact('.resize-drag')
           height: `${event.rect.height}px`,
           transform: `translate(${x}px, ${y}px)`
         })
-        console.log( "id:", event.target.getAttribute("note_id"), "Add px:", [x, x + event.rect.width]);
+        console.log( "id:", event.target.getAttribute("note_id"), "Add timeset:", [px_to_time_Scale(event.deltaRect.left, duration), px_to_time_Scale(event.deltaRect.left + event.deltaRect.width, duration)]);
+        changeMusicClip(event.target.getAttribute("note_id"), [px_to_time_Scale(event.deltaRect.left, duration), px_to_time_Scale(event.deltaRect.left + event.deltaRect.width, duration)])
+        
         Object.assign(event.target.dataset, { x, y })
       }
     }
@@ -300,6 +308,7 @@ interact('.resize-drag')
       }
     }
   })
+
 
 interact('.draggable')
   .draggable({
@@ -348,7 +357,8 @@ interact('.draggable')
     var y = 0
     // translate the element
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-    console.log( "id:", event.target.getAttribute("note_id"), "Add px:", [x, target.style.width.slice[0, -2]]);
+    console.log( "id:", event.target.getAttribute("note_id"), "Add timeset:", [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)]);
+    changeMusicClip(event.target.getAttribute("note_id"), [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)])
     //console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
     // update the posiion attributes
     target.setAttribute('data-x', x)
