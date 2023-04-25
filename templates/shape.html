@@ -33,7 +33,10 @@
             <!-- <div class="track-item" track_type="template">Visualization </div>
             <div class="track-item" track_type="Meolody">Melody </div>
             <div class="track-item" track_type="Beat">Beat </div> -->
-
+            <div id="template-dropzone" class="dropzone">Template</div>
+            <div id="melody-dropzone" class="dropzone">Melody</div>
+            <div id="beat-dropzone" class="dropzone">Beat</div>
+            <div id="yes-drop" class="drag-drop"> #yes-drop </div>
         </div>
     </div>
 
@@ -41,9 +44,7 @@
         <button class="sheetMusicButton"id="sheetMusicMelodyButton"> Melody </button>
         <button class="sheetMusicButton"id="sheetMusicBeatButton"> Beat </button>
         <button class="sheetMusicButton"id="sheetMusicSaveButton"> Save </button>
-        <br>
         duration : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
-        <br>
         <button class="sheetMusicButton"id="sheetMusicPlayButton"> Play </button>
         <button class="sheetMusicButton"id="sheetMusicPauseButton"> Pause </button>
         <div id="slider" style="width: 1820px; left:60px;"></div>
@@ -358,10 +359,14 @@
     <script type="module" defer src="./static/src/js/dist/Synthesizer.js"></script>
     <script type="module" defer src="./static/src/js/dist/SheetMusic.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tunajs/1.0.1/tuna.js"></script>
 
-    <!-- <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script> -->
+
+
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/midi/0.0.0/midi.js"></script> -->
-    <script src="https://www.midijs.net/lib/midi.js"></script>
 
 </body>
 </html>

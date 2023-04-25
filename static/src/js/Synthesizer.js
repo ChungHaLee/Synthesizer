@@ -1,43 +1,81 @@
 import {JZZ} from "./JZZ.js"
 import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set} from './Share.js';
-// let synth = new Tone.Synth().toDestination();
+
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
-// var beat1Sound = new Audio('../sound/clap.wav');
-// var beat2Sound = new Audio('../sound/ride.wav');
-// var beat3Sound = new Audio('../sound/snare.wav');
-// var beat4Sound = new Audio('../sound/dog.wav');
 
-// let MIDI = new MIDI
-window.onload = function () {
-  MIDI.loadPlugin({
-    soundfontUrl: "https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
-    instrument: "acoustic_grand_piano",
-    onprogress: function (state, progress) {
-      console.log(state, progress);
-    },
-    onsuccess: function () {
-      // After successfully loading the plugin, you can play notes
-      playNote();
-    },
-  });
-};
+//AutiFilter >> 그냥 필터!
+const filter = new Tone.Filter().toDestination();
+filter.set({
+  frequency: "C4",
+  type:"highpass"
+});
 
-// function playNote() {
-//   var note = 60; // MIDI note number (C4)
-//   var velocity = 127; // How hard the note is hit (0-127)
-//   var delay = 0; // Start time (in seconds)
-//   var duration = 0.5; // Duration of the note (in seconds)
+//AutoPanner >> 효과가 잘 모르겠습니다...
+const autoPanner = new Tone.AutoPanner("4n").toDestination();
 
-//   MIDI.setVolume(0, 127);
-//   MIDI.noteOn(0, note, velocity, delay);
-//   MIDI.noteOff(0, note, delay + duration);
-// }
+//AutoWah >> 울리는 효과
+const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+autoWah.Q.value = 6;
+
+//BitCrusher >> 찢어지는 듯한 효과
+const crusher = new Tone.BitCrusher(4).toDestination();
+
+//Chebyshev >> 고양이 소리?
+const cheby = new Tone.Chebyshev(50).toDestination();
+
+//Chorus >> 동시에 누를 때 확인
+const chorus = new Tone.Chorus(4, 2.5, 0.5).toDestination().start();
+
+//Distortion >> 음이 더 늘어지는 효과
+const dist = new Tone.Distortion(0.8).toDestination();
+
+//FeedbackDelay >> delay랑 코러스 효과음?
+const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+
+//Freeverb >> 먹먹해지는 효과?
+const freeverb = new Tone.Freeverb().toDestination();
+freeverb.dampening = 1000;
+
+//JCReverb >> 두 음이 울리는 느낌?
+const reverb = new Tone.JCReverb(0.4).toDestination();
+const delay = new Tone.FeedbackDelay(0.5);
+//const synth = new Tone.Synth().chain(delay, reverb);
+
+//Phaser >> 잡음이 섞이는 느낌
+const phaser = new Tone.Phaser({
+	frequency: 300,
+	octaves: 12,
+	baseFrequency: 2000
+}).toDestination();
+
+//PingPonDelay >> 탁구공이 튀는 느낌으로 점점 음이 생기는 느낌
+const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
+
+
+const synth = new Tone.Synth().toDestination();
+const AMsynth = new Tone.AMSynth().toDestination();
+const duoSynth = new Tone.DuoSynth().toDestination();
+const fmSynth = new Tone.FMSynth().toDestination();
+const MembraneSynth = new Tone.MembraneSynth().toDestination();
+const plucky = new Tone.PluckSynth().toDestination();
+const polySynth = new Tone.PolySynth().connect(autoWah)//.toDestination();
+polySynth.set({ detune: -1200 });
+const MonoSynth = new Tone.MonoSynth({
+	oscillator: {
+		type: "square"
+	},
+	envelope: {
+		attack: 0.1
+	}
+}).toDestination();
 
 
 
 
-
+// Beat
+const MetalSynth = new Tone.MetalSynth().toDestination();
+const noiseSynth = new Tone.NoiseSynth().toDestination();
 
 
 
@@ -82,13 +120,9 @@ function get_msg_input(msg){
   }
 }
 
-
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  //console.log("Press the piano key : ", input_pitch);
-  //synth.triggerAttackRelease(input_pitch, 0.2);
-  //playNote();
-  //synth.triggerAttack(input_pitch, "+"+toString(input_value/127));
+  polySynth.triggerAttackRelease(input_pitch, '8n');
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
   note_set.value = input_value; //output : 0 ~ 127
@@ -107,7 +141,7 @@ function piano_key_release(input_id){
 
 function pad_input(input_id){
   //console.log("pad id", input_id);
-  //DrumAudio.play();
+  noiseSynth.triggerAttackRelease("8n", 0.05);
   pad_set.id = input_id - 36;
   // switch (pad_set.id){
   //   case 0:
@@ -127,7 +161,6 @@ function pad_input(input_id){
   //   }
     const event = new CustomEvent('padInput', { detail: pad_set });
     SyntheysizerEvents.dispatchEvent(event);
-
 }
 
 function dial_input(input_id, input_value){

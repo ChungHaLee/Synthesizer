@@ -33,7 +33,7 @@
 .fixed-container {
     position: relative; /* or 'absolute' or 'fixed', depending on your needs */
     width: 1900px; /* Set the desired width */
-    height: 400px; /* Set the desired height */
+    height: 300px; /* Set the desired height */
     overflow: auto; /* Enables scrolling when the content exceeds the container's size */
     padding: 0px;
     border: 5px solid rgb(0, 38, 255);
@@ -43,7 +43,7 @@
     margin-left: 900px;
     position: absolute; /* or 'absolute' or 'fixed', depending on your needs */
     width: 1000px; /* Set the desired width */
-    height: 500px; /* Set the desired height */
+    height: 600px; /* Set the desired height */
     overflow: auto; /* Enables scrolling when the content exceeds the container's size */
     padding: 0px;
     border: 5px solid rgb(0, 38, 255);
@@ -119,6 +119,21 @@
     background-color: #29e;
     border-color: #fff;
     border-style: solid;
+  }
+  
+  #template-dropzone {
+    width: 1000px;
+    height: 80px;
+  }
+  
+  #melody-dropzone {
+    width: 1000px;
+    height: 80px;
+  }
+
+  #beat-dropzone {
+    width: 1000px;
+    height: 80px;
   }
   
   .drag-drop {

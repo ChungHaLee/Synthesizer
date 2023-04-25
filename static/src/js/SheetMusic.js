@@ -1,6 +1,9 @@
 import { SyntheysizerEvents, MusicClip, MusicClipType} from './Share.js';
 //최소 범위 A2 ~ C7
 
+
+const clip_box_width = 1880;
+const clip_start_px = 60;
 let fps = 30;
 let currentTime = 0.0;
 let play_state = false;
@@ -20,10 +23,10 @@ clipduration.addEventListener("change", function(){
   duration = parseFloat(clipduration.value);
   noteSizeAllOff();
   clearNoteClip(current_clip_type);
-  if(time_to_px(currentTime, duration) >= 1880){
-    $("#slider").slider("value", 1880);
-    timeLine2.style.left = 1880 + "px";
-    timeLine1.style.left = 1880 + "px";
+  if(time_to_px(currentTime, duration) >= clip_box_width){
+    $("#slider").slider("value", clip_box_width);
+    timeLine2.style.left = clip_box_width + "px";
+    timeLine1.style.left = clip_box_width + "px";
   }
   else{
     $("#slider").slider("value",time_to_px(currentTime, duration));
@@ -73,9 +76,9 @@ function stopTimer() {
 }
 
 $("#slider").slider({ //Timer 슬라이더
-  value: 60,
-  min: 60,
-  max: 1880,
+  value: clip_start_px,
+  min: clip_start_px,
+  max: clip_box_width,
   step: 0.01,
   slide: function( event, ui ) {
     timeLine1.style.left = (ui.value) + "px";
@@ -93,16 +96,13 @@ function initializeTimer(){ //Timer 초기화
 }
 
 function time_to_px(time, duration){ //Time을 Px로 변환하는 코드
-  const start_px = 60
-  return start_px + time / duration * (1880 - start_px)
+  return clip_start_px + time / duration * (clip_box_width - clip_start_px)
 }
 function px_to_time(px, duration){  //Px을 Time으로 변환하는 코드
-  const start_px = 60
-  return (px - start_px) * duration / (1880 - start_px)
+  return (px - clip_start_px) * duration / (clip_box_width - clip_start_px)
 }
 function px_to_time_Scale(px, duration){  //Px을 Time으로 변환하는 코드
-  const start_px = 60
-  return px * duration / (1880 - start_px)
+  return px * duration / (clip_box_width - clip_start_px)
 }
 
 function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, Beat 노트 생성
@@ -309,7 +309,7 @@ interact('.resize-drag')
     }
   })
 
-
+//note 위치 이동용 코드
 interact('.draggable')
   .draggable({
     listeners: { move: window.dragMoveListener },
@@ -363,5 +363,69 @@ interact('.draggable')
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
-  
 
+
+  //note 위치 이동용 코드
+  
+  interact('.dropzone').dropzone({
+    // only accept elements matching this CSS selector
+    accept: '#yes-drop',
+    // Require a 75% element overlap for a drop to be possible
+    overlap: 0.75,
+  
+    // listen for drop related events:
+  
+    ondropactivate: function (event) {
+      // add active dropzone feedback
+      event.target.classList.add('drop-active')
+    },
+    ondragenter: function (event) {
+      var draggableElement = event.relatedTarget
+      var dropzoneElement = event.target
+  
+      // feedback the possibility of a drop
+      dropzoneElement.classList.add('drop-target')
+      draggableElement.classList.add('can-drop')
+      draggableElement.textContent = 'Dragged in'
+    },
+    ondragleave: function (event) {
+      // remove the drop feedback style
+      event.target.classList.remove('drop-target')
+      event.relatedTarget.classList.remove('can-drop')
+      event.relatedTarget.textContent = 'Dragged out'
+    },
+    ondrop: function (event) {
+      event.relatedTarget.textContent = 'Dropped'
+    },
+    ondropdeactivate: function (event) {
+      // remove active dropzone feedback
+      event.target.classList.remove('drop-active')
+      event.target.classList.remove('drop-target')
+    }
+  })
+  
+  interact('.drag-drop')
+    .draggable({
+      inertia: true,
+      modifiers: [
+        interact.modifiers.restrictRect({
+          restriction: 'parent',
+          endOnly: true
+        })
+      ],
+      autoScroll: true,
+      // dragMoveListener from the dragging demo above
+      listeners: { move: dragMoveListenerxy }
+    })
+  
+  function dragMoveListenerxy (event) {
+    var target = event.target
+    // keep the dragged position in the data-x/data-y attributes
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+    // translate the element
+    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    // update the posiion attributes
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
