@@ -2,7 +2,7 @@
     position: absolute;
     top: 0;
     width: 2px;
-    height: 172%;
+    height: 200%;
     background-color: black;
     transform: translateX(0%);
   }
@@ -135,13 +135,13 @@
     width: 1000px;
     height: 80px;
   }
-  
+
   .drag-drop {
     display: inline-block;
     min-width: 40px;
     padding: 2em 0.5em;
     margin: 1rem 0 0 1rem;
-  
+    width: 100px;
     color: #fff;
     background-color: #29e;
     border: solid 2px #fff;

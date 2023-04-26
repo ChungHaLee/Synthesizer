@@ -11,9 +11,6 @@ filter.set({
   type:"highpass"
 });
 
-//AutoPanner >> 효과가 잘 모르겠습니다...
-const autoPanner = new Tone.AutoPanner("4n").toDestination();
-
 //AutoWah >> 울리는 효과
 const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
 autoWah.Q.value = 6;
@@ -28,7 +25,7 @@ const cheby = new Tone.Chebyshev(50).toDestination();
 const chorus = new Tone.Chorus(4, 2.5, 0.5).toDestination().start();
 
 //Distortion >> 음이 더 늘어지는 효과
-const dist = new Tone.Distortion(0.8).toDestination();
+//const dist = new Tone.Distortion(1.5).toDestination();
 
 //FeedbackDelay >> delay랑 코러스 효과음?
 const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
@@ -39,27 +36,28 @@ freeverb.dampening = 1000;
 
 //JCReverb >> 두 음이 울리는 느낌?
 const reverb = new Tone.JCReverb(0.4).toDestination();
-const delay = new Tone.FeedbackDelay(0.5);
+const delay = new Tone.FeedbackDelay(0.5).toDestination();;
 //const synth = new Tone.Synth().chain(delay, reverb);
 
 //Phaser >> 잡음이 섞이는 느낌
 const phaser = new Tone.Phaser({
-	frequency: 300,
-	octaves: 12,
-	baseFrequency: 2000
+	frequency: 150,
+	octaves: 10,
+	baseFrequency: 1000
 }).toDestination();
 
-//PingPonDelay >> 탁구공이 튀는 느낌으로 점점 음이 생기는 느낌
-const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
+// //PingPonDelay >> 탁구공이 튀는 느낌으로 점점 음이 생기는 느낌
+// const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
 
+const vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 
-const synth = new Tone.Synth().toDestination();
+const synth = new Tone.Synth().chain(chorus).toDestination();
 const AMsynth = new Tone.AMSynth().toDestination();
 const duoSynth = new Tone.DuoSynth().toDestination();
 const fmSynth = new Tone.FMSynth().toDestination();
 const MembraneSynth = new Tone.MembraneSynth().toDestination();
 const plucky = new Tone.PluckSynth().toDestination();
-const polySynth = new Tone.PolySynth().connect(autoWah)//.toDestination();
+const polySynth = new Tone.PolySynth().connect(tremolo);
 polySynth.set({ detune: -1200 });
 const MonoSynth = new Tone.MonoSynth({
 	oscillator: {
@@ -70,6 +68,18 @@ const MonoSynth = new Tone.MonoSynth({
 	}
 }).toDestination();
 
+const sampler = new Tone.Sampler({
+	urls: {
+		A1: "A1.mp3",
+		A2: "A2.mp3",
+	},
+	//baseUrl: "https://tonejs.github.io/audio/salamander/",
+  baseUrl: "https://tonejs.github.io/audio/casio/",
+  attack: 1,
+  release: 0,
+}).toDestination();
+
+//sampler.connect(pingPong)
 
 
 
@@ -122,7 +132,11 @@ function get_msg_input(msg){
 
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  polySynth.triggerAttackRelease(input_pitch, '8n');
+
+
+  polySynth.triggerAttackRelease(input_pitch, 0.5);
+
+
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
   note_set.value = input_value; //output : 0 ~ 127
@@ -141,7 +155,7 @@ function piano_key_release(input_id){
 
 function pad_input(input_id){
   //console.log("pad id", input_id);
-  noiseSynth.triggerAttackRelease("8n", 0.05);
+  MetalSynth.triggerAttackRelease("8n", 0.05);
   pad_set.id = input_id - 36;
   // switch (pad_set.id){
   //   case 0:
