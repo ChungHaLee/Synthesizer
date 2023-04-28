@@ -10,29 +10,28 @@ filter.set({
   frequency: "C4",
   type:"highpass"
 });
-
 //AutoWah >> 울리는 효과
-const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
-autoWah.Q.value = 6;
+// const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+// autoWah.Q.value = 6;
 
 //BitCrusher >> 찢어지는 듯한 효과
-const crusher = new Tone.BitCrusher(4).toDestination();
+// const crusher = new Tone.BitCrusher(4).toDestination();
 
 //Chebyshev >> 고양이 소리?
-const cheby = new Tone.Chebyshev(50).toDestination();
+// const cheby = new Tone.Chebyshev(50).toDestination();
 
 //Chorus >> 동시에 누를 때 확인
-const chorus = new Tone.Chorus(4, 2.5, 0.5).toDestination().start();
+// const chorus = new Tone.Chorus(4, 2.5, 0.5).toDestination().start();
 
 //Distortion >> 음이 더 늘어지는 효과
 //const dist = new Tone.Distortion(1.5).toDestination();
 
 //FeedbackDelay >> delay랑 코러스 효과음?
-const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+// const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
 
 //Freeverb >> 먹먹해지는 효과?
-const freeverb = new Tone.Freeverb().toDestination();
-freeverb.dampening = 1000;
+// const freeverb = new Tone.Freeverb().toDestination();
+// freeverb.dampening = 1000;
 
 //JCReverb >> 두 음이 울리는 느낌?
 const reverb = new Tone.JCReverb(0.4).toDestination();
@@ -40,25 +39,26 @@ const delay = new Tone.FeedbackDelay(0.5).toDestination();;
 //const synth = new Tone.Synth().chain(delay, reverb);
 
 //Phaser >> 잡음이 섞이는 느낌
-const phaser = new Tone.Phaser({
-	frequency: 150,
-	octaves: 10,
-	baseFrequency: 1000
-}).toDestination();
+// const phaser = new Tone.Phaser({
+// 	frequency: 150,
+// 	octaves: 10,
+// 	baseFrequency: 1000
+// }).toDestination();
 
 // //PingPonDelay >> 탁구공이 튀는 느낌으로 점점 음이 생기는 느낌
 // const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
 
-const vibrato = new Tone.Vibrato(5, 0.1).toDestination();
+// const vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 
-const synth = new Tone.Synth().chain(chorus).toDestination();
-const AMsynth = new Tone.AMSynth().toDestination();
-const duoSynth = new Tone.DuoSynth().toDestination();
-const fmSynth = new Tone.FMSynth().toDestination();
-const MembraneSynth = new Tone.MembraneSynth().toDestination();
-const plucky = new Tone.PluckSynth().toDestination();
-const polySynth = new Tone.PolySynth().connect(tremolo);
+// const synth = new Tone.Synth().chain(chorus).toDestination();
+// const AMsynth = new Tone.AMSynth().toDestination();
+// const duoSynth = new Tone.DuoSynth().toDestination();
+// const fmSynth = new Tone.FMSynth().toDestination();
+// const MembraneSynth = new Tone.MembraneSynth().toDestination();
+// const plucky = new Tone.PluckSynth().toDestination();
+const polySynth = new Tone.PolySynth().toDestination();
 polySynth.set({ detune: -1200 });
+
 const MonoSynth = new Tone.MonoSynth({
 	oscillator: {
 		type: "square"
@@ -183,8 +183,57 @@ function dial_input(input_id, input_value){
     dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
     const event = new CustomEvent('dialInput', { detail: dial_set });
     SyntheysizerEvents.dispatchEvent(event);
+    dial_effect(input_id, input_value);
   }
 }
+
+function dial_effect(input_id, input_value){
+    switch (input_id){
+      case 70: // AutoWah
+        let autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+        autoWah.Q.value = input_value/12.7;
+        polySynth.connect(autoWah);
+        break;
+      case 71:
+        let crusher = new Tone.BitCrusher(input_value/12.7).toDestination();
+        polySynth.connect(crusher);
+        break;
+      case 72:
+        let cheby = new Tone.Chebyshev(input_value/2).toDestination();
+        polySynth.connect(cheby);
+        break;
+      case 73:
+        let chorus = new Tone.Chorus(input_value/12.7, 2.5, 0.5).toDestination();
+        polySynth.connect(chorus);
+        break;
+      case 74:
+        let feedbackDelay = new Tone.FeedbackDelay("8n", input_value/60).toDestination();
+        polySynth.connect(feedbackDelay);
+        break;
+      case 75:
+        let freeverb = new Tone.Freeverb().toDestination();
+        freeverb.dampening = input_value * 20;
+        polySynth.connect(freeverb);
+        break;
+      case 76:
+        let phaser = new Tone.Phaser({
+          frequency: 150,
+          octaves: parseInt(input_value/12.7),
+          baseFrequency: 1000
+        }).toDestination();
+        polySynth.connect(phaser);
+        break;
+      case 77:
+        let vibrato = new Tone.Vibrato(input_value/12.7, 0.1).toDestination();
+        polySynth.connect(vibrato);
+        break;
+      default:
+        break;
+      }
+}
+
+
+
 function joystick_input(input_id, input_value, type){
   if(type == vector.X){
     //console.log(type, input_value - 64)
