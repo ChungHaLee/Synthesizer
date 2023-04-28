@@ -249,6 +249,29 @@ function changeMusicClip(noteIndex, deltaTimeset){//노트 위치, 크기 편집
   }
 }
 
+function createClipBox(musicClip) { //Melody, Beat 노트 생성
+  let currenctCliptType = musiClip.getClipType();
+  let clip_id = musicClip.getClipId();
+  const Itemid = "box_" + note; 
+  const dragdrop = document.createElement("div");
+  dragdrop.classList.add("drag-drop");  // resize-drag로 생성
+  dragdrop.setAttribute("clip_id", clip_id); // note_id 속성 추가
+  if(currenctCliptType == MusicClipType.Melody){
+    dragdrop.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    let boxItem = document.getElementById("melody-dropzone");
+  }
+  else{
+    dragdrop.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    let boxItem = document.getElementById("beat-dropzone");
+  }
+  boxItem.appendChild(resizeDrag);
+  return resizeDrag
+}
+
+
+
+
+
 //Note Interaction용
 interact('.resize-drag')
   .resizable({
@@ -359,13 +382,13 @@ interact('.draggable')
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
     console.log( "id:", event.target.getAttribute("note_id"), "Add timeset:", [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)]);
     changeMusicClip(event.target.getAttribute("note_id"), [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)])
-    //console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
+    // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
 
 
-  //note 위치 이동용 코드
+  //clip alc track 설정용 코드
   
   interact('.dropzone').dropzone({
     // only accept elements matching this CSS selector

@@ -50,12 +50,35 @@ const delay = new Tone.FeedbackDelay(0.5).toDestination();;
 
 // const vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 
+let autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+let crusher = new Tone.BitCrusher(4).toDestination();
+let cheby = new Tone.Chebyshev(50).toDestination();
+let chorus = new Tone.Chorus(5, 2.5, 0.5).toDestination();
+let feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+let freeverb = new Tone.Freeverb().toDestination();
+let phaser = new Tone.Phaser({
+  frequency: 150,
+  octaves: 10,
+  baseFrequency: 1000
+}).toDestination();
+let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
+let dial_bool = [false, false, false, false, false, false, false, false]
+
+
+
+
+
+
+
+
 // const synth = new Tone.Synth().chain(chorus).toDestination();
 // const AMsynth = new Tone.AMSynth().toDestination();
 // const duoSynth = new Tone.DuoSynth().toDestination();
-// const fmSynth = new Tone.FMSynth().toDestination();
+const fmSynth = new Tone.FMSynth().toDestination();
 // const MembraneSynth = new Tone.MembraneSynth().toDestination();
 // const plucky = new Tone.PluckSynth().toDestination();
+
+
 const polySynth = new Tone.PolySynth().toDestination();
 polySynth.set({ detune: -1200 });
 
@@ -133,9 +156,7 @@ function get_msg_input(msg){
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
 
-
-  polySynth.triggerAttackRelease(input_pitch, 0.5);
-
+  fmSynth.triggerAttackRelease(input_pitch, 0.5);
 
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
@@ -187,45 +208,133 @@ function dial_input(input_id, input_value){
   }
 }
 
+function Normaizing(input_value, minmaxList){
+  return minmaxList[0] + (minmaxList[1] - minmaxList[0]) * ((input_value - 10) / (127 - 10));
+}
+
+
 function dial_effect(input_id, input_value){
     switch (input_id){
       case 70: // AutoWah
-        let autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
-        autoWah.Q.value = input_value/12.7;
-        polySynth.connect(autoWah);
+        console.log("autoWah", input_value)
+        if(dial_bool[0]){
+          console.log("disconnect");
+          polySynth.disconnect(autoWah);
+          dial_bool[0] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          autoWah.Q.value = Normaizing(input_value, [1, 10]);
+          polySynth.connect(autoWah);
+          dial_bool[0] = true;
+        }
         break;
       case 71:
-        let crusher = new Tone.BitCrusher(input_value/12.7).toDestination();
-        polySynth.connect(crusher);
+        console.log("crusher", input_value)
+        if(dial_bool[1]){
+          console.log("disconnect");
+          polySynth.disconnect(crusher);
+          dial_bool[1] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          crusher.bits.value = parseInt(Normaizing(input_value, [1, 8]));
+          polySynth.connect(crusher);
+          dial_bool[1] = true;
+        }
         break;
       case 72:
-        let cheby = new Tone.Chebyshev(input_value/2).toDestination();
-        polySynth.connect(cheby);
+        console.log("cheby", input_value)
+        if(dial_bool[2]){
+          console.log("disconnect");
+          polySynth.disconnect(cheby);
+          dial_bool[2] = false;
+        }
+        if(input_value > 10){  
+          console.log("connect");
+          cheby.order = parseInt(Normaizing(input_value, [1, 80]));
+          polySynth.connect(cheby);
+          dial_bool[2] = true;
+        }
         break;
       case 73:
-        let chorus = new Tone.Chorus(input_value/12.7, 2.5, 0.5).toDestination();
-        polySynth.connect(chorus);
+        console.log("chorus", input_value)
+        if(dial_bool[3]){
+          console.log("disconnect");
+          polySynth.disconnect(chorus);
+          dial_bool[3] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          //chorus = new Tone.Chorus(Normaizing(input_value, [1, 10]), 2.5, 0.5).toDestination();
+          chorus.frequency.value = Normaizing(input_value, [1, 10])
+          polySynth.connect(chorus);
+          dial_bool[3] = true;
+        }
         break;
       case 74:
-        let feedbackDelay = new Tone.FeedbackDelay("8n", input_value/60).toDestination();
-        polySynth.connect(feedbackDelay);
+        console.log("feedbackDelay", input_value)
+        if(dial_bool[4]){
+          console.log("disconnect");
+          polySynth.disconnect(feedbackDelay);
+          dial_bool[4] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
+          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.8]);
+          polySynth.connect(feedbackDelay);
+          dial_bool[4] = true;
+        }
         break;
       case 75:
-        let freeverb = new Tone.Freeverb().toDestination();
-        freeverb.dampening = input_value * 20;
-        polySynth.connect(freeverb);
+        console.log("freeverb", input_value)
+        if(dial_bool[5]){
+          console.log("disconnect");
+          polySynth.disconnect(freeverb);
+          dial_bool[5] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          freeverb.dampening = input_value * 20;
+          polySynth.connect(freeverb);
+          dial_bool[5] = true;
+        }
         break;
       case 76:
-        let phaser = new Tone.Phaser({
-          frequency: 150,
-          octaves: parseInt(input_value/12.7),
-          baseFrequency: 1000
-        }).toDestination();
-        polySynth.connect(phaser);
+        console.log("phaser", input_value)
+        if(dial_bool[6]){
+          console.log("disconnect");
+          polySynth.disconnect(phaser);
+          dial_bool[6] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          // phaser = new Tone.Phaser({
+          //   frequency: 150,
+          //   octaves: parseInt(Normaizing(input_value, [1, 10])),
+          //   baseFrequency: 1000
+          // }).toDestination();
+          phaser.frequency.value = Normaizing(input_value, [1, 150]);
+          //phaser.octaves = parseInt(Normaizing(input_value, [1, 10])),
+          polySynth.connect(phaser);
+          dial_bool[6] = true;
+        }
         break;
       case 77:
-        let vibrato = new Tone.Vibrato(input_value/12.7, 0.1).toDestination();
-        polySynth.connect(vibrato);
+        console.log("vibrato", input_value)
+        if(dial_bool[7]){
+          console.log("disconnect");
+          polySynth.disconnect(vibrato);
+          dial_bool[7] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          //vibrato = new Tone.Vibrato(Normaizing(input_value, [1, 10]), 0.1).toDestination();
+          vibrato.frequency.value = Normaizing(input_value, [1, 10]);
+          polySynth.connect(vibrato);
+          dial_bool[7] = true;
+        }
         break;
       default:
         break;
