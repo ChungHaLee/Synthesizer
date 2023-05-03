@@ -19,6 +19,7 @@ let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, 
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration)
 let onNoteList = []
 
+
 clipduration.addEventListener("change", function(){
   duration = parseFloat(clipduration.value);
   noteSizeAllOff();
@@ -157,6 +158,7 @@ document.getElementById("sheetMusicBeatButton").addEventListener('click', functi
 document.getElementById("sheetMusicSaveButton").addEventListener('click', function (){
   if(current_clip_type == MusicClipType.Melody){     //멜로디 클립 저장 시
     if(melody_clip.getNoteIndex() != -1){
+      createClipBox(melody_clip);
       Melody_clip_array.push(melody_clip);
       melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
       alert("Melody Clip saved")
@@ -169,6 +171,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
   }
   else{                                         //비트   클립 저장시
     if(beat_clip.getNoteIndex() != -1){
+      createClipBox(beat_clip);
       Beat_clip_array.push(beat_clip);
       beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
       alert("Beat Clip saved")
@@ -249,24 +252,72 @@ function changeMusicClip(noteIndex, deltaTimeset){//노트 위치, 크기 편집
   }
 }
 
+
+
+//track 용 코드
 function createClipBox(musicClip) { //Melody, Beat 노트 생성
-  let currenctCliptType = musiClip.getClipType();
+  let currenctCliptType = musicClip.getClipType();
   let clip_id = musicClip.getClipId();
-  const Itemid = "box_" + note; 
+  //let clip_id = 0
   const dragdrop = document.createElement("div");
   dragdrop.classList.add("drag-drop");  // resize-drag로 생성
   dragdrop.setAttribute("clip_id", clip_id); // note_id 속성 추가
+  dragdrop.setAttribute("clip_type", currenctCliptType); // note_id 속성 추가
   if(currenctCliptType == MusicClipType.Melody){
     dragdrop.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
-    let boxItem = document.getElementById("melody-dropzone");
+    dragdrop.setAttribute("id", "melody-drop");
+    let boxItem = document.getElementById("MelodydropContainer");
+    boxItem.appendChild(dragdrop);
   }
   else{
     dragdrop.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
-    let boxItem = document.getElementById("beat-dropzone");
+    dragdrop.setAttribute("id", "beat-drop");
+    let boxItem = document.getElementById("BeatdropContainer");
+    boxItem.appendChild(dragdrop);
   }
-  boxItem.appendChild(resizeDrag);
-  return resizeDrag
 }
+function createTrackClipObject(dropzoneName, musicCLip){
+  let currenctCliptType = musicClip.getClipType();
+  let clip_id = musicClip.getClipId();
+  let duration = musicCLip.getDuration();
+  const trackClip = document.createElement("div");
+  trackClip.classList.add("draggable_clip");
+  trackClip.style.width = duration * 10 + "px"
+  if(currenctCliptType == MusicClipType.Melody){
+    trackClip.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    //dragdrop.setAttribute("id", "melody-drop");
+  }
+  else{
+    trackClip.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    //dragdrop.setAttribute("id", "beat-drop");
+  }
+
+  let boxItem = document.getElementById(dropzoneName);
+  boxItem.appendChild(trackClip);
+}
+function get_clip(clipType, clip_id){
+  if(clipType == MusicClipType.Melody){
+    return Melody_clip_array[clip_id]
+    //dragdrop.setAttribute("id", "melody-drop");
+  }
+  else{
+    return Beat_clip_array[clip_id]
+    //dragdrop.setAttribute("id", "beat-drop");
+  }
+}
+
+$("#slider_track").slider({ //Timer 슬라이더
+  value: 0,
+  min: 0,
+  max: 600,
+  step: 0.1,
+  slide: function( event, ui ) {
+
+  }
+});
+
+
+
 
 
 
@@ -390,9 +441,9 @@ interact('.draggable')
 
   //clip alc track 설정용 코드
   
-  interact('.dropzone').dropzone({
+  interact('.template-dropzone').dropzone({
     // only accept elements matching this CSS selector
-    accept: '#yes-drop',
+    accept: '#template-drop',
     // Require a 75% element overlap for a drop to be possible
     overlap: 0.75,
   
@@ -409,21 +460,106 @@ interact('.draggable')
       // feedback the possibility of a drop
       dropzoneElement.classList.add('drop-target')
       draggableElement.classList.add('can-drop')
-      draggableElement.textContent = 'Dragged in'
+      //draggableElement.textContent = 'Dragged in'
     },
     ondragleave: function (event) {
       // remove the drop feedback style
       event.target.classList.remove('drop-target')
       event.relatedTarget.classList.remove('can-drop')
-      event.relatedTarget.textContent = 'Dragged out'
+      //event.relatedTarget.textContent = 'Dragged out'
     },
     ondrop: function (event) {
-      event.relatedTarget.textContent = 'Dropped'
+      //event.relatedTarget.textContent = 'Dropped'
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
+    }
+  })
+
+  interact('.melody-dropzone').dropzone({
+    // only accept elements matching this CSS selector
+    accept: '#melody-drop',
+    // Require a 75% element overlap for a drop to be possible
+    overlap: 0.75,
+  
+    // listen for drop related events:
+  
+    ondropactivate: function (event) {
+      // add active dropzone feedback
+      event.target.classList.add('drop-active')
+    },
+    ondragenter: function (event) {
+      var draggableElement = event.relatedTarget
+      var dropzoneElement = event.target
+  
+      // feedback the possibility of a drop
+      dropzoneElement.classList.add('drop-target')
+      draggableElement.classList.add('can-drop')
+      //draggableElement.textContent = 'Dragged in'
+    },
+    ondragleave: function (event) {
+      // remove the drop feedback style
+      event.target.classList.remove('drop-target')
+      event.relatedTarget.classList.remove('can-drop')
+      //event.relatedTarget.textContent = 'Dragged out'
+    },
+    ondrop: function (event) {
+      //event.relatedTarget.textContent = 'Dropped'
+      //createTrackClipObject('melody-dropzone',get_clip(event.target.getAttribute("clip_id"), event.target.getAttribute("clip_type")))
+
+    },
+    ondropdeactivate: function (event) {
+      // remove active dropzone feedback
+      event.target.classList.remove('drop-active')
+      event.target.classList.remove('drop-target')
+      console.log("Check clip", get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
+      //createTrackClipObject('melody-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
+      //console.log(event.target)
+    }
+  })
+
+    interact('.beat-dropzone').dropzone({
+    // only accept elements matching this CSS selector
+    accept: '#beat-drop',
+    // Require a 75% element overlap for a drop to be possible
+    overlap: 0.75,
+  
+    // listen for drop related events:
+  
+    ondropactivate: function (event) {
+      // add active dropzone feedback
+      event.target.classList.add('drop-active')
+    },
+    ondragenter: function (event) {
+      var draggableElement = event.relatedTarget
+      var dropzoneElement = event.target
+  
+      // feedback the possibility of a drop
+      dropzoneElement.classList.add('drop-target')
+      draggableElement.classList.add('can-drop')
+      //draggableElement.textContent = 'Dragged in'
+    },
+    ondragleave: function (event) {
+      // remove the drop feedback style
+      event.target.classList.remove('drop-target')
+      event.relatedTarget.classList.remove('can-drop')
+      //event.relatedTarget.textContent = 'Dragged out'
+    },
+    ondrop: function (event) {
+      //event.relatedTarget.textContent = 'Dropped'
+      //createTrackClipObject('beat-dropzone',get_clip(event.target.getAttribute("clip_id"), event.target.getAttribute("clip_type")))
+      
+    },
+    ondropdeactivate: function (event) {
+      // remove active dropzone feedback
+      event.target.classList.remove('drop-active')
+      event.target.classList.remove('drop-target')
+      console.log("Check clip", event.relatedTarget.getAttribute("clip_id"), event.relatedTarget.getAttribute("clip_type"))
+      //createTrackClipObject('beat-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
+      //console.log("Check clip", (event.target.getAttribute("clip_id"), event.target.getAttribute("clip_type")))
+      //console.log(event.target)
     }
   })
   

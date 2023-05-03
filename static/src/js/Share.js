@@ -107,11 +107,14 @@ export class MusicClip {
       this.beatTime[noteIndex] += deltaTimeset[0];
     }
   }
-  getCliptId(){
+  getClipId(){
     return this.Clip_id;
   }
   getClipType(){
     return this.Type;
+  }
+  getDuration(){
+    return this.duration;
   }
   getNoteIndex(){
     if(this.Type==MusicClipType.Melody){

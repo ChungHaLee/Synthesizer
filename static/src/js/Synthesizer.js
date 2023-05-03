@@ -156,7 +156,7 @@ function get_msg_input(msg){
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
 
-  fmSynth.triggerAttackRelease(input_pitch, 0.5);
+  polySynth.triggerAttack(input_pitch);
 
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
@@ -169,7 +169,7 @@ function piano_key_release(input_id){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
-  //synth.triggerRelease(input_pitch);
+  polySynth.triggerRelease(input_pitch);
   const event = new CustomEvent('noteRelease', { detail: note_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
@@ -238,7 +238,7 @@ function dial_effect(input_id, input_value){
         }
         if(input_value > 10){
           console.log("connect");
-          crusher.bits.value = parseInt(Normaizing(input_value, [1, 8]));
+          crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 8]));
           polySynth.connect(crusher);
           dial_bool[1] = true;
         }

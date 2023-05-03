@@ -29,23 +29,28 @@
 
     
     <div class="fixed-track-container">
+        duration : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
+        <button class="sheetMusicButton"id="trackMusicPlayButton"> Play </button>
+        <button class="sheetMusicButton"id="trackMusicPauseButton"> Pause </button>
+        <button class="sheetMusicButton"id="trackMusicRemoveNoteButton"> Remove Note </button>
+        <div id="slider_track" style="width: 3000px; height: 10px;"></div>
         <div class="grid-container" id="TrackContainer">
             <!-- <div class="track-item" track_type="template">Visualization </div>
             <div class="track-item" track_type="Meolody">Melody </div>
             <div class="track-item" track_type="Beat">Beat </div> -->
             <div id="dropzoneGroup">
-                <div id="template-dropzone" class="dropzone">Template</div>
-                <div id="melody-dropzone" class="dropzone">Melody</div>
-                <div id="beat-dropzone" class="dropzone">Beat</div>
+                <div id="template-dropzone" class="template-dropzone" style="width: 3000px;">Template</div>
+                <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px;">Melody</div>
+                <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px;">Beat</div>
             </div>
             <div id="TemplatedropContainer">
-                <div id="yes-drop" class="drag-drop"> Test 1 </div>
+                <!-- <div id="yes-drop" class="drag-drop"> Test 1 </div> -->
             </div>
             <div id="MelodydropContainer">
-                <div id="yes-drop" class="drag-drop"> Test 3 </div>
+                <!-- <div id="yes-drop" class="drag-drop"> Test 3 </div> -->
             </div>
             <div id="BeatdropContainer">
-                <div id="yes-drop" class="drag-drop"> Test 5 </div>
+                <!-- <div id="yes-drop" class="drag-drop"> Test 5 </div> -->
             </div>
         </div>
     </div>
@@ -57,6 +62,7 @@
         duration : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
         <button class="sheetMusicButton"id="sheetMusicPlayButton"> Play </button>
         <button class="sheetMusicButton"id="sheetMusicPauseButton"> Pause </button>
+        <button class="sheetMusicButton"id="sheetMusicRemoveNoteButton"> Remove Note </button>
         <div id="slider" style="width: 1820px; left:60px;"></div>
     </div>
     <div class="fixed-container">
