@@ -1,0 +1,190 @@
+.vertical-line {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 250%;
+    background-color: black;
+    transform: translateX(0%);
+  }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* 가로로 2개의 열 생성 */
+    grid-template-rows: repeat(10, 1fr); /* 세로로 2개의 행 생성 */
+    grid-gap: 0px; /* 격자 사이의 간격 설정 */
+    width: 100%; /* 격자의 너비 설정 */
+    height: 20%; /* 격자의 높이 설정 */
+  }
+  
+  .grid-item {
+    background-color: rgb(245, 245, 245); /* 격자 항목의 배경색 설정 */
+    padding: 5px; /* 격자 항목 내부의 여백 설정 */
+    border: 1px solid black; /* 격자 항목의 테두리 설정 */
+    height: 15px;
+  }
+  .track-item {
+    background-color: rgb(255, 255, 255); /* 격자 항목의 배경색 설정 */
+    padding: 0px; /* 격자 항목 내부의 여백 설정 */
+    border: 3px solid black; /* 격자 항목의 테두리 설정 */
+    height: 100px
+  }
+
+
+.fixed-container {
+    position: relative; /* or 'absolute' or 'fixed', depending on your needs */
+    width: 1900px; /* Set the desired width */
+    height: 300px; /* Set the desired height */
+    overflow: auto; /* Enables scrolling when the content exceeds the container's size */
+    padding: 0px;
+    border: 5px solid rgb(0, 38, 255);
+  }
+.fixed-track-container {
+    margin-top: -600px;
+    margin-left: 900px;
+    position: absolute; /* or 'absolute' or 'fixed', depending on your needs */
+    width: 1000px; /* Set the desired width */
+    height: 600px; /* Set the desired height */
+    overflow: auto; /* Enables scrolling when the content exceeds the container's size */
+    padding: 0px;
+    border: 5px solid rgb(0, 38, 255);
+    font-size: 0.1em;
+  }
+.draggable {
+  width: 3px;
+  height: 100px;
+  padding: 1px;
+  margin: 0.3rem;
+  background-color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  border-radius: 0.75em;
+  touch-action: none;
+  user-select: none;
+  display: inline-block;
+  position: absolute;
+}
+
+.draggable_clip {
+  width: 100px;
+  height: 60px;
+  padding: 0px;
+  margin: 0.3rem;
+  background-color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  border-radius: 0.75em;
+  touch-action: none;
+  user-select: none;
+  display: inline-block;
+  position: absolute;
+}
+
+.resize-drag {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    padding: 0px;
+    margin: 0.3rem;
+    background-color: #29e;
+    color:#29e;
+    font-size: 5px;
+    font-family: sans-serif;
+    touch-action: none;
+    /* This makes things *much* easier */
+    box-sizing: border-box;
+    display: inline-block;
+    position: absolute;
+  }
+
+  #grid-snap {
+    width: 100%;
+    border-radius: 4px;
+    padding: 2%;
+    margin: 1rem 0 0 1rem;
+    background-color: #29e;
+    color: #29e;
+    font-size: 1.2em;
+    touch-action: none;
+  }
+
+
+  #outer-dropzone {
+    height: 140px;
+  }
+  
+  #inner-dropzone {
+    height: 80px;
+  }
+  
+  .template-dropzone {
+    background-color: #fffbbf;
+    border: dashed 4px transparent;
+    border-radius: 4px;
+    margin: 10px auto 30px;
+    padding: 0px;
+    /* width: 80%; */
+    transition: background-color 0.3s;
+  }
+  
+  .melody-dropzone {
+    background-color: #92d0fd;
+    border: dashed 4px transparent;
+    border-radius: 4px;
+    margin: 10px auto 30px;
+    padding: 0px;
+    /* width: 80%; */
+    transition: background-color 0.3s;
+  }
+
+  .beat-dropzone {
+    background-color: #d0fccb;
+    border: dashed 4px transparent;
+    border-radius: 4px;
+    margin: 10px auto 30px;
+    padding: 0px;
+    /* width: 80%; */
+    transition: background-color 0.3s;
+  }
+  .drop-active {
+    border-color: #aaa;
+  }
+  
+  .drop-target {
+    background-color: #29e;
+    border-color: #fff;
+    border-style: solid;
+  }
+  
+  #template-dropzone {
+    width: 1000px;
+    height: 80px;
+  }
+  
+  #melody-dropzone {
+    width: 1000px;
+    height: 80px;
+  }
+
+  #beat-dropzone {
+    width: 1000px;
+    height: 80px;
+  }
+
+  .drag-drop {
+    display: inline-block;
+    min-width: 40px;
+    padding: 2em 0.5em;
+    margin: 1rem 0 0 1rem;
+    width: 100px;
+    color: #fff;
+    background-color: #29e;
+    border: solid 2px #fff;
+  
+    touch-action: none;
+    transform: translate(0px, 0px);
+  
+    transition: background-color 0.3s;
+  }
+  
+  .drag-drop.can-drop {
+    color: #000;
+    background-color: #4e4;
+  }

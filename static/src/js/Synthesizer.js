@@ -1,9 +1,115 @@
 import {JZZ} from "./JZZ.js"
 import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set} from './Share.js';
 
-let synth = new Tone.Synth().toDestination();
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
+
+//AutiFilter >> 그냥 필터!
+const filter = new Tone.Filter().toDestination();
+filter.set({
+  frequency: "C4",
+  type:"highpass"
+});
+//AutoWah >> 울리는 효과
+// const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+// autoWah.Q.value = 6;
+
+//BitCrusher >> 찢어지는 듯한 효과
+// const crusher = new Tone.BitCrusher(4).toDestination();
+
+//Chebyshev >> 고양이 소리?
+// const cheby = new Tone.Chebyshev(50).toDestination();
+
+//Chorus >> 동시에 누를 때 확인
+// const chorus = new Tone.Chorus(4, 2.5, 0.5).toDestination().start();
+
+//Distortion >> 음이 더 늘어지는 효과
+//const dist = new Tone.Distortion(1.5).toDestination();
+
+//FeedbackDelay >> delay랑 코러스 효과음?
+// const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+
+//Freeverb >> 먹먹해지는 효과?
+// const freeverb = new Tone.Freeverb().toDestination();
+// freeverb.dampening = 1000;
+
+//JCReverb >> 두 음이 울리는 느낌?
+const reverb = new Tone.JCReverb(0.4).toDestination();
+const delay = new Tone.FeedbackDelay(0.5).toDestination();;
+//const synth = new Tone.Synth().chain(delay, reverb);
+
+//Phaser >> 잡음이 섞이는 느낌
+// const phaser = new Tone.Phaser({
+// 	frequency: 150,
+// 	octaves: 10,
+// 	baseFrequency: 1000
+// }).toDestination();
+
+// //PingPonDelay >> 탁구공이 튀는 느낌으로 점점 음이 생기는 느낌
+// const pingPong = new Tone.PingPongDelay("4n", 0.2).toDestination();
+
+// const vibrato = new Tone.Vibrato(5, 0.1).toDestination();
+
+let autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+let crusher = new Tone.BitCrusher(4).toDestination();
+let cheby = new Tone.Chebyshev(50).toDestination();
+let chorus = new Tone.Chorus(5, 2.5, 0.5).toDestination();
+let feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+let freeverb = new Tone.Freeverb().toDestination();
+let phaser = new Tone.Phaser({
+  frequency: 150,
+  octaves: 10,
+  baseFrequency: 1000
+}).toDestination();
+let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
+let dial_bool = [false, false, false, false, false, false, false, false]
+
+
+
+
+
+
+
+
+// const synth = new Tone.Synth().chain(chorus).toDestination();
+// const AMsynth = new Tone.AMSynth().toDestination();
+// const duoSynth = new Tone.DuoSynth().toDestination();
+const fmSynth = new Tone.FMSynth().toDestination();
+// const MembraneSynth = new Tone.MembraneSynth().toDestination();
+// const plucky = new Tone.PluckSynth().toDestination();
+
+
+const polySynth = new Tone.PolySynth().toDestination();
+polySynth.set({ detune: -1200 });
+
+const MonoSynth = new Tone.MonoSynth({
+	oscillator: {
+		type: "square"
+	},
+	envelope: {
+		attack: 0.1
+	}
+}).toDestination();
+
+const sampler = new Tone.Sampler({
+	urls: {
+		A1: "A1.mp3",
+		A2: "A2.mp3",
+	},
+	//baseUrl: "https://tonejs.github.io/audio/salamander/",
+  baseUrl: "https://tonejs.github.io/audio/casio/",
+  attack: 1,
+  release: 0,
+}).toDestination();
+
+//sampler.connect(pingPong)
+
+
+
+// Beat
+const MetalSynth = new Tone.MetalSynth().toDestination();
+const noiseSynth = new Tone.NoiseSynth().toDestination();
+
 
 
 function set_synthesiser(msg){
@@ -47,12 +153,11 @@ function get_msg_input(msg){
   }
 }
 
-
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  //console.log("Press the piano key : ", input_pitch);
-  synth.triggerAttackRelease(input_pitch, 0.2);
-  //synth.triggerAttack(input_pitch, "+"+toString(input_value/127));
+
+  polySynth.triggerAttack(input_pitch);
+
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
   note_set.value = input_value; //output : 0 ~ 127
@@ -62,18 +167,35 @@ function piano_key_input(input_id, input_value){
 
 function piano_key_release(input_id){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  //synth.triggerRelease(input_pitch);
-  //const event = new CustomEvent('noteRelease', { detail: note_set });
-  //SyntheysizerEvents.dispatchEvent(event);
+  note_set.pitch = input_id;  //output : 0 ~ 127
+  note_set.note = input_pitch; //output : C0 ~ B7
+  polySynth.triggerRelease(input_pitch);
+  const event = new CustomEvent('noteRelease', { detail: note_set });
+  SyntheysizerEvents.dispatchEvent(event);
 }
 
 function pad_input(input_id){
   //console.log("pad id", input_id);
-  //DrumAudio.play();
-  pad_set.id = input_id-36;
-  
-  const event = new CustomEvent('padInput', { detail: pad_set });
-  SyntheysizerEvents.dispatchEvent(event);
+  MetalSynth.triggerAttackRelease("8n", 0.05);
+  pad_set.id = input_id - 36;
+  // switch (pad_set.id){
+  //   case 0:
+  //     beat1Sound.play();
+  //     break;
+  //   case 1:
+  //     beat2Sound.play();
+  //     break;
+  //   case 2:
+  //     beat3Sound.play();
+  //     break;
+  //   case 3:
+  //     beat4Sound.play();
+  //     break;
+  //   default:
+  //     break;
+  //   }
+    const event = new CustomEvent('padInput', { detail: pad_set });
+    SyntheysizerEvents.dispatchEvent(event);
 }
 
 function dial_input(input_id, input_value){
@@ -82,8 +204,145 @@ function dial_input(input_id, input_value){
     dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
     const event = new CustomEvent('dialInput', { detail: dial_set });
     SyntheysizerEvents.dispatchEvent(event);
+    dial_effect(input_id, input_value);
   }
 }
+
+function Normaizing(input_value, minmaxList){
+  return minmaxList[0] + (minmaxList[1] - minmaxList[0]) * ((input_value - 10) / (127 - 10));
+}
+
+
+function dial_effect(input_id, input_value){
+    switch (input_id){
+      case 70: // AutoWah
+        console.log("autoWah", input_value)
+        if(dial_bool[0]){
+          console.log("disconnect");
+          polySynth.disconnect(autoWah);
+          dial_bool[0] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          autoWah.Q.value = Normaizing(input_value, [1, 10]);
+          polySynth.connect(autoWah);
+          dial_bool[0] = true;
+        }
+        break;
+      case 71:
+        console.log("crusher", input_value)
+        if(dial_bool[1]){
+          console.log("disconnect");
+          polySynth.disconnect(crusher);
+          dial_bool[1] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 8]));
+          polySynth.connect(crusher);
+          dial_bool[1] = true;
+        }
+        break;
+      case 72:
+        console.log("cheby", input_value)
+        if(dial_bool[2]){
+          console.log("disconnect");
+          polySynth.disconnect(cheby);
+          dial_bool[2] = false;
+        }
+        if(input_value > 10){  
+          console.log("connect");
+          cheby.order = parseInt(Normaizing(input_value, [1, 80]));
+          polySynth.connect(cheby);
+          dial_bool[2] = true;
+        }
+        break;
+      case 73:
+        console.log("chorus", input_value)
+        if(dial_bool[3]){
+          console.log("disconnect");
+          polySynth.disconnect(chorus);
+          dial_bool[3] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          //chorus = new Tone.Chorus(Normaizing(input_value, [1, 10]), 2.5, 0.5).toDestination();
+          chorus.frequency.value = Normaizing(input_value, [1, 10])
+          polySynth.connect(chorus);
+          dial_bool[3] = true;
+        }
+        break;
+      case 74:
+        console.log("feedbackDelay", input_value)
+        if(dial_bool[4]){
+          console.log("disconnect");
+          polySynth.disconnect(feedbackDelay);
+          dial_bool[4] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
+          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.8]);
+          polySynth.connect(feedbackDelay);
+          dial_bool[4] = true;
+        }
+        break;
+      case 75:
+        console.log("freeverb", input_value)
+        if(dial_bool[5]){
+          console.log("disconnect");
+          polySynth.disconnect(freeverb);
+          dial_bool[5] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          freeverb.dampening = input_value * 20;
+          polySynth.connect(freeverb);
+          dial_bool[5] = true;
+        }
+        break;
+      case 76:
+        console.log("phaser", input_value)
+        if(dial_bool[6]){
+          console.log("disconnect");
+          polySynth.disconnect(phaser);
+          dial_bool[6] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          // phaser = new Tone.Phaser({
+          //   frequency: 150,
+          //   octaves: parseInt(Normaizing(input_value, [1, 10])),
+          //   baseFrequency: 1000
+          // }).toDestination();
+          phaser.frequency.value = Normaizing(input_value, [1, 150]);
+          //phaser.octaves = parseInt(Normaizing(input_value, [1, 10])),
+          polySynth.connect(phaser);
+          dial_bool[6] = true;
+        }
+        break;
+      case 77:
+        console.log("vibrato", input_value)
+        if(dial_bool[7]){
+          console.log("disconnect");
+          polySynth.disconnect(vibrato);
+          dial_bool[7] = false;
+        }
+        if(input_value > 10){
+          console.log("connect");
+          //vibrato = new Tone.Vibrato(Normaizing(input_value, [1, 10]), 0.1).toDestination();
+          vibrato.frequency.value = Normaizing(input_value, [1, 10]);
+          polySynth.connect(vibrato);
+          dial_bool[7] = true;
+        }
+        break;
+      default:
+        break;
+      }
+}
+
+
+
 function joystick_input(input_id, input_value, type){
   if(type == vector.X){
     //console.log(type, input_value - 64)
@@ -99,19 +358,7 @@ function joystick_input(input_id, input_value, type){
   }
 }
 
-
-
-// function synthesiser_console_mapping(console_id, value){
-//   if(input_scale_changer(value,["00", "7f"]) > 60){
-//     document.getElementById("beatButton").click();
-//   }
-//   else if(input_scale_changer(value,["00", "7f"]) < 20){
-//     document.getElementById("pitchButton").click();
-//   }
-// }
-
-
-// MIDI Detect code
+// MIDI Device Detect code
 var midi_in;
 let open_midi = document.querySelector('[data-action="open_midi_in"]');
 open_midi.addEventListener('click', event => {
