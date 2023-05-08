@@ -134,6 +134,7 @@ export class MusicClip {
   }
 
   getcurrentNoteSet(currentTime){
+    const noteSet = []
     if(this.Type==MusicClipType.Melody){
       return [this.melodyNoteSet, this.melodyTimeset]
     }
@@ -141,6 +142,14 @@ export class MusicClip {
       return [this.beatSet, this.beatTime]
     }
   }
-
+  getCurrentNoteByTime(timeSetArray, currentTime) {
+    const indexes = [];
+    for (let i = 0; i < timeSetArray.length; i++) {
+      if (timeSetArray[i][0] <= currentTime && currentTime < timeSetArray[i][1]) {
+        indexes.push(i);
+      }
+    }
+    return indexes;
+  }
 
 }

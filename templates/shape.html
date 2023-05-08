@@ -30,18 +30,22 @@
     
     <div class="fixed-track-container">
         duration : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
-        <button class="sheetMusicButton"id="trackMusicPlayButton"> Play </button>
-        <button class="sheetMusicButton"id="trackMusicPauseButton"> Pause </button>
-        <button class="sheetMusicButton"id="trackMusicRemoveNoteButton"> Remove Note </button>
+        <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
+        <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
+        <button class="trackMusicButton"id="trackMusicRemoveClipButton"> Remove Note </button>
+        <button class="trackMusicButton"id="trackMusicSaveButton"> save </button>
         <div id="slider_track" style="width: 3000px; height: 10px;"></div>
         <div class="grid-container" id="TrackContainer">
             <!-- <div class="track-item" track_type="template">Visualization </div>
             <div class="track-item" track_type="Meolody">Melody </div>
             <div class="track-item" track_type="Beat">Beat </div> -->
             <div id="dropzoneGroup">
-                <div id="template-dropzone" class="template-dropzone" style="width: 3000px;">Template</div>
-                <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px;">Melody</div>
-                <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px;">Beat</div>
+                Template
+                <div id="template-dropzone" class="template-dropzone" style="width: 3000px;"></div>
+                Melody
+                <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px;"></div>
+                Beat
+                <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px;"></div>
             </div>
             <div id="TemplatedropContainer">
                 <!-- <div id="yes-drop" class="drag-drop"> Test 1 </div> -->

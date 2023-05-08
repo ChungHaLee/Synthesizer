@@ -13,7 +13,7 @@ let clipduration = document.getElementById("clipduration");
 let timeLine1 = document.getElementById("timeLine1");
 let timeLine2 = document.getElementById("timeLine2");
 const Melody_clip_array = [];
-const Beat_clip_array = [];
+const Beat_clip_array = []  ;
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration)
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration)
@@ -276,10 +276,10 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
     boxItem.appendChild(dragdrop);
   }
 }
-function createTrackClipObject(dropzoneName, musicCLip){
+function createTrackClipObject(dropzoneName, musicClip){
   let currenctCliptType = musicClip.getClipType();
   let clip_id = musicClip.getClipId();
-  let duration = musicCLip.getDuration();
+  let duration = musicClip.getDuration();
   const trackClip = document.createElement("div");
   trackClip.classList.add("draggable_clip");
   trackClip.style.width = duration * 10 + "px"
@@ -345,7 +345,7 @@ interact('.resize-drag')
     }
   })
   .draggable({
-    listeners: { move: window.dragMoveListener },
+    listeners: { move: window.dragMoveListener_note },
     inertia: true,
     modifiers: [
       interact.modifiers.restrictRect({
@@ -369,7 +369,7 @@ interact('.resize-drag')
 
     listeners: {
       // call this function on every dragmove event
-      move: dragMoveListener,
+      move: dragMoveListener_note,
 
       // call this function on every dragend event
       end (event) {
@@ -386,7 +386,7 @@ interact('.resize-drag')
 //note 위치 이동용 코드
 interact('.draggable')
   .draggable({
-    listeners: { move: window.dragMoveListener },
+    listeners: { move: window.dragMoveListener_note },
     inertia: true,
     modifiers: [
       interact.modifiers.restrictRect({
@@ -409,7 +409,7 @@ interact('.draggable')
     autoScroll: true,
     listeners: {
       // call this function on every dragmove event
-      move: dragMoveListener,
+      move: dragMoveListener_note,
 
       // call this function on every dragend event
       end (event) {
@@ -424,7 +424,48 @@ interact('.draggable')
     }
   })
 
-  function dragMoveListener (event) {
+  interact('.draggable_clip')
+  .draggable({
+    listeners: { move: window.dragMoveListener_clip },
+    inertia: true,
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ]
+  })
+  .draggable({
+    // enable inertial throwing
+    inertia: true,
+    // keep the element within the area of it's parent
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ],
+    // enable autoScroll
+    autoScroll: true,
+    listeners: {
+      // call this function on every dragmove event
+      move: dragMoveListener_clip,
+
+      // call this function on every dragend event
+      end (event) {
+        var textEl = event.target.querySelector('p')
+
+        textEl && (textEl.textContent =
+          'moved a distance of ' +
+          (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                    Math.pow(event.pageY - event.y0, 2) | 0))
+            .toFixed(2) + 'px')
+      }
+    }
+  })
+
+
+  function dragMoveListener_note (event) {
     var target = event.target
     // keep the dragged position in the data-x/data-y attributes
     var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
@@ -437,7 +478,18 @@ interact('.draggable')
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
-
+  
+  function dragMoveListener_clip (event) {
+    var target = event.target
+    // keep the dragged position in the data-x/data-y attributes
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+    var y = 0
+    // translate the element
+    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
+    // update the posiion attributes
+    target.setAttribute('data-x', x)
+  }
 
   //clip alc track 설정용 코드
   
@@ -515,7 +567,7 @@ interact('.draggable')
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
       console.log("Check clip", get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
-      //createTrackClipObject('melody-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
+      createTrackClipObject('melody-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
       //console.log(event.target)
     }
   })
