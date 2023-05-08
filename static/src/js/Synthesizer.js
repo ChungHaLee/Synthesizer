@@ -152,12 +152,20 @@ function get_msg_input(msg){
     input_value: parseInt(msg.substr(6,2), 16)
   }
 }
+export function piano_player(input_pitch, attackRelase){
+  if(attackRelase){
+    polySynth.triggerAttack(input_pitch);
+  }
+  else{
+    polySynth.triggerRelease(input_pitch);
+  }
+}
+
+
 
 function piano_key_input(input_id, input_value){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-
-  polySynth.triggerAttack(input_pitch);
-
+  piano_player(input_pitch, true);
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
   note_set.value = input_value; //output : 0 ~ 127
@@ -167,11 +175,15 @@ function piano_key_input(input_id, input_value){
 
 function piano_key_release(input_id){
   let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
+  piano_player(input_pitch, false);
   note_set.pitch = input_id;  //output : 0 ~ 127
   note_set.note = input_pitch; //output : C0 ~ B7
-  polySynth.triggerRelease(input_pitch);
   const event = new CustomEvent('noteRelease', { detail: note_set });
   SyntheysizerEvents.dispatchEvent(event);
+}
+
+export function beat_player(input_id){
+  MetalSynth.triggerAttackRelease("8n", 0.05);
 }
 
 function pad_input(input_id){
@@ -198,6 +210,17 @@ function pad_input(input_id){
     SyntheysizerEvents.dispatchEvent(event);
 }
 
+
+export function dialInitialize(){
+  dial_set.value = [[0.0, 0.0, 0.0, 0.0], 
+                    [0.0, 0.0, 0.0, 0.0]] 
+  const event = new CustomEvent('dialInput', { detail: dial_set });
+  SyntheysizerEvents.dispatchEvent(event);
+  for(let i = 70; i < 78; i++){
+    dial_effect(i, 0);
+  }
+  
+}
 function dial_input(input_id, input_value){
   //console.log("dial_input", input_id, );
   if(input_id > 69){  //there are except case in joystick

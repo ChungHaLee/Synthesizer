@@ -153,3 +153,39 @@ export class MusicClip {
   }
 
 }
+
+export class MusicTrack{
+  constructor (userId = 0, Track_name = "MusicTrack"){
+    this.userId = userId;
+    this.Track_name = Track_name;
+    this.TemplateClip = [];
+    this.MelodyClipIdList = [];
+    this.BeatClipIdList = [];
+    this.TemplateTime = [];
+    this.MelodyTime = [];
+    this.BeatTime = [];
+  }
+  setMusicClip(musicClip, clipTime){
+    if(MusicClip.getClipType == MusicClipType.Melody){
+      this.MelodyClipIdList.push(musicClip.getClipId);
+      this.MelodyTime.push(clipTime);
+    }
+    else{
+      this.BeatClipIdList.push(musicClip.getClipId);
+      this.BeatTime.push(clipTime);
+    }
+  }
+  setTemplateClip(templateClip, clipTime){
+    this.MelodyClipIdList.push(0);
+    this.MelodyTime.push(clipTime);
+  }
+  setMusicClip(Melody_clip_array){  //Track의 Clip 정리 코드
+    const MaxId = Math.max.apply(null, this.MelodyClipIdList);
+  }
+  setBeatClip(Beat_clip_array){  //Track의 Clip 정리 코드
+    const MaxId = Math.max.apply(null, this.BeatClipIdList);
+  }
+  saveTrack(){
+    console.log("save the Music Track");
+  }
+}

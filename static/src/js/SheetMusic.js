@@ -1,6 +1,6 @@
-import { SyntheysizerEvents, MusicClip, MusicClipType} from './Share.js';
+import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack} from './Share.js';
+import {piano_player, beat_player, dialInitialize} from './Synthesizer.js';
 //최소 범위 A2 ~ C7
-
 
 const clip_box_width = 1880;
 const clip_start_px = 60;
@@ -12,13 +12,16 @@ let duration = 30
 let clipduration = document.getElementById("clipduration");
 let timeLine1 = document.getElementById("timeLine1");
 let timeLine2 = document.getElementById("timeLine2");
+const Template_clip_array = [];
 const Melody_clip_array = [];
-const Beat_clip_array = []  ;
+const Beat_clip_array = [];
 let current_clip_type = MusicClipType.Melody;
-let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration)
-let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration)
+let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
 let onNoteList = []
+let previousNote = []
 
+const TrackObject = new MusicTrack();
 
 clipduration.addEventListener("change", function(){
   duration = parseFloat(clipduration.value);
@@ -54,6 +57,7 @@ function stopRecording(){//Timer를 중지하는 코드
 }
 function updateTime() { //시간에 따라 업데이트 해야하는 함수들
   currentTime += 1/fps;
+  musicPlayer(currentTime);
   $("#slider").slider("value",time_to_px(currentTime, duration));
   timeLine2.style.left = time_to_px(currentTime, duration) + "px";
   timeLine1.style.left = time_to_px(currentTime, duration) + "px";
@@ -66,6 +70,51 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
     stopRecording() //끝 도달하면 자동으로 종료
   }
 }
+function musicPlayer(currentTime){
+  if(current_clip_type == MusicClipType.Melody){
+    let currentNote = melody_clip.getcurrentNoteSet(currentTime)
+    notePlayer(currentNote, previousNote);
+    previousNote = melody_clip.getcurrentNoteSet(currentTime); // Meldoy Test1
+  }
+  else{
+    let currentBeat = beat_clip.getcurrentNoteSet(currentTime); // Beat Test1
+    for (let beat of currentBeat){
+      beat_player(beat)
+    }
+  }
+}
+function notePlayer(currentNote, previousNote){
+  //console.log(currentNote, previousNote);
+  //piano_player(currentNote[0], true);
+  var exclusiveArr1 = currentNote.filter(function(val) {
+    return previousNote.indexOf(val) === -1;
+  });
+  var exclusiveArr2 = previousNote.filter(function(val) {
+    return currentNote.indexOf(val) === -1;
+  });
+  if(exclusiveArr1.length > 0){
+    //console.log("Inpnut", exclusiveArr1);
+    for( let note of exclusiveArr1){
+      piano_player(note, true);
+    }  
+  }
+  if(exclusiveArr2.length > 0){
+    //console.log("Ouput ", exclusiveArr2);
+    for( let note of exclusiveArr2){
+      piano_player(note, false);
+    }  
+  }
+}
+function stopAllNotePlayer(){
+  if(previousNote.length > 0){
+    //console.log("Ouput ", exclusiveArr2);
+    for( let note of previousNote){
+      piano_player(note, false);
+    }  
+  }
+  previousNote - []
+}
+
 function startTimer() {
   if (!timer) { // 타이머가 이미 실행 중이지 않은 경우에만 실행
     timer = setInterval(updateTime, 1 / fps * 1000); // 0.01초 간격으로 updateTime 함수 실행
@@ -188,6 +237,7 @@ document.getElementById("sheetMusicPlayButton").addEventListener('click', functi
 })
 document.getElementById("sheetMusicPauseButton").addEventListener('click', function (){
   stopRecording();
+  stopAllNotePlayer();
 })
 
 SyntheysizerEvents.addEventListener('noteInput', function (e){
@@ -317,12 +367,6 @@ $("#slider_track").slider({ //Timer 슬라이더
 });
 
 
-
-
-
-
-
-
 //Note Interaction용
 interact('.resize-drag')
   .resizable({
@@ -424,46 +468,46 @@ interact('.draggable')
     }
   })
 
-  interact('.draggable_clip')
-  .draggable({
-    listeners: { move: window.dragMoveListener_clip },
-    inertia: true,
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ]
-  })
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
-    // enable autoScroll
-    autoScroll: true,
-    listeners: {
-      // call this function on every dragmove event
-      move: dragMoveListener_clip,
+  //track 위치 이동용 코드
+interact('.draggable_clip')
+.draggable({
+  listeners: { move: window.dragMoveListener_clip },
+  inertia: true,
+  modifiers: [
+    interact.modifiers.restrictRect({
+      restriction: 'parent',
+      endOnly: true
+    })
+  ]
+})
+.draggable({
+  // enable inertial throwing
+  inertia: true,
+  // keep the element within the area of it's parent
+  modifiers: [
+    interact.modifiers.restrictRect({
+      restriction: 'parent',
+      endOnly: true
+    })
+  ],
+  // enable autoScroll
+  autoScroll: true,
+  listeners: {
+    // call this function on every dragmove event
+    move: dragMoveListener_clip,
 
-      // call this function on every dragend event
-      end (event) {
-        var textEl = event.target.querySelector('p')
+    // call this function on every dragend event
+    end (event) {
+      var textEl = event.target.querySelector('p')
 
-        textEl && (textEl.textContent =
-          'moved a distance of ' +
-          (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-                    Math.pow(event.pageY - event.y0, 2) | 0))
-            .toFixed(2) + 'px')
-      }
+      textEl && (textEl.textContent =
+        'moved a distance of ' +
+        (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                  Math.pow(event.pageY - event.y0, 2) | 0))
+          .toFixed(2) + 'px')
     }
-  })
-
+  }
+})
 
   function dragMoveListener_note (event) {
     var target = event.target
@@ -478,7 +522,7 @@ interact('.draggable')
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
-  
+
   function dragMoveListener_clip (event) {
     var target = event.target
     // keep the dragged position in the data-x/data-y attributes
@@ -490,6 +534,7 @@ interact('.draggable')
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
+
 
   //clip alc track 설정용 코드
   
@@ -535,9 +580,7 @@ interact('.draggable')
     accept: '#melody-drop',
     // Require a 75% element overlap for a drop to be possible
     overlap: 0.75,
-  
     // listen for drop related events:
-  
     ondropactivate: function (event) {
       // add active dropzone feedback
       event.target.classList.add('drop-active')
@@ -566,7 +609,7 @@ interact('.draggable')
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
-      console.log("Check clip", get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
+      //console.log("Check clip", get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
       createTrackClipObject('melody-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
       //console.log(event.target)
     }
@@ -577,9 +620,7 @@ interact('.draggable')
     accept: '#beat-drop',
     // Require a 75% element overlap for a drop to be possible
     overlap: 0.75,
-  
     // listen for drop related events:
-  
     ondropactivate: function (event) {
       // add active dropzone feedback
       event.target.classList.add('drop-active')
@@ -602,14 +643,14 @@ interact('.draggable')
     ondrop: function (event) {
       //event.relatedTarget.textContent = 'Dropped'
       //createTrackClipObject('beat-dropzone',get_clip(event.target.getAttribute("clip_id"), event.target.getAttribute("clip_type")))
-      
+  
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
       console.log("Check clip", event.relatedTarget.getAttribute("clip_id"), event.relatedTarget.getAttribute("clip_type"))
-      //createTrackClipObject('beat-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
+      createTrackClipObject('beat-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
       //console.log("Check clip", (event.target.getAttribute("clip_id"), event.target.getAttribute("clip_type")))
       //console.log(event.target)
     }
