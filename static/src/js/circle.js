@@ -213,13 +213,14 @@ function createShape(){
     
   }
 
-  geometry = new THREE.IcosahedronGeometry( 12, dial_four );
+  geometry = new THREE.IcosahedronGeometry( dial_two, dial_four );
+
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
     particleMaterial = new THREE.PointsMaterial({
       map: texture,
       color: color,
       blending: THREE.AdditiveBlending,
-      size: dial_three * 0.03
+      size: dial_three * 0.026
   })});
 
 
