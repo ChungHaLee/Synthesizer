@@ -8,6 +8,13 @@ div#content{
     position: absolute;
 }
 
+
+canvas#granim-canvas{
+    width: 800px;
+    height: 600px;
+    order: 2
+}
+
 p#identityVisual{
     display: none;
 }

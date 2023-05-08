@@ -1,7 +1,4 @@
 import * as THREE from 'three';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass'
-import { RenderPass } from 'three/addons/postprocessing/RenderPass'
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer'
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitchMulti } from './audio.js'
@@ -10,10 +7,10 @@ import { SyntheysizerEvents, note_set, pad_set, dial_set} from './Share.js';
 
 
 
-let controls, bloomComposer;
+let controls;
 let camera, scene, renderer;
-let geometry, material, material1, material2, material3, energy = 0;
-let compoCenter, compoCenter1, compoCenter2, compoCenter3;
+let geometry, material, energy = 0;
+let compoCenter;
 let particleMaterial;
 let container;
 let FrameRate = 0;
@@ -26,52 +23,40 @@ let ambientLight, spotLight, pointLight;
 var pitchInfo;
 
 
-// bloom renderer
-// const renderScene = new RenderPass(scene, camera);
-// const bloomPass = new UnrealBloomPass(
-//   new THREE.Vector2(window.innerWidth, window.innerHeight),
-//   1.5,
-//   0.4,
-//   0.85
-// );
-
-
-// bloomPass.threshold = 0;
-
-// bloomPass.radius = 1;
-// bloomPass.strength = dial_two * 0.05;
-// bloomPass.exposure = dial_two * 0.01
-
-// bloomComposer = new EffectComposer(renderer);
-// bloomComposer.setSize(window.innerWidth, window.innerHeight);
-// bloomComposer.addPass(renderScene);
-// bloomComposer.addPass(bloomPass);
-// bloomComposer.render();
-
-
 
 
 // html 버튼 요소
+// const templateSaveButton = document.getElementById("templateSave");
+// let AudioObject = document.getElementById("audio");
+// let playButton  = document.getElementById("playButton")
+// let musicDuration = 60;
+
+// let dialTWO = [];
 
 
 
-const templateSaveButton = document.getElementById("templateSave");
-let AudioObject = document.getElementById("audio");
-let playButton  = document.getElementById("playButton")
-let musicDuration = 60;
+String.prototype.format = function() {
+  var formatted = this, i = 0;
+  while (/%s/.test(formatted))
+    formatted = formatted.replace("%s", arguments[i++]);
+  return formatted;
+}
 
-let dialTWO = [];
 
-// 시각화 구분자 단어
-let identityVisualization = document.getElementById('identityVisual');
+function backgroundColor(){
+  if (isNaN(dial_one)){
+    var backgroundColor = new THREE.Color("hsl(0, 100%, 1%)")
+  } else {
+    var dial_one_edit = dial_one * 360 / 127
+    backgroundColor = new THREE.Color("hsl(%s, 100%, 20%)".format(dial_one_edit));
+  }
+  return backgroundColor
+}
 
 // init function
 function init() {
-
-
-
     scene = new THREE.Scene();
-    scene.background = new THREE.Color('#000000')
+    scene.background = new THREE.Color('black')
 
     // canvas
     renderer = new THREE.WebGLRenderer( { antialias: true });
@@ -85,6 +70,9 @@ function init() {
   
     container = document.getElementById('shape-canvas')
     
+
+
+    
     container.appendChild( renderer.domElement )
     renderer.autoClear = false;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -93,15 +81,18 @@ function init() {
 
 
     group = new THREE.Group();
-    scene.add(group);
-
-   
+    
+    scene.add(group);  
 
     controls = new OrbitControls( camera, container );
     controls.update();
     createCircle_Vanilla();
-  
+
   };
+
+
+
+
 
 // 베이스 도형
 
@@ -109,10 +100,9 @@ function createCircle_Vanilla(){
 
   geometry = new THREE.CircleGeometry( 10, 60 );
   material = new THREE.MeshBasicMaterial();
-
-
   compoCenter = new THREE.Mesh(geometry, material);
   compoCenter.position.set(1, 0, 0);
+
   pointLight = new THREE.PointLight(0xffffff, 1);
   pointLight.position.set(200, 200, 200);
   scene.add(pointLight);
@@ -198,33 +188,40 @@ function colorByPitch(){
     return pitchColor;
   }
 
-
+//   function createPrimitive() {
+//     var primitive = new primitiveElement();
+//     scene.add(primitive.mesh);
+//  }
 
 // 3D 도형
 
 function createShape(){
+  scene.background = new THREE.Color('black')
 
   color = colorByPitch();
   gradientColor = colorByWheel();
   
   if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
-    geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.07));
+    geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
   } else {
     geometry = new THREE.IcosahedronGeometry(0.05, 0);
   }
 
-  // geometry = new THREE.IcosahedronGeometry(0.05 * dial_two, 0 + dial_four);
+
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
     particleMaterial = new THREE.PointsMaterial({
       map: texture,
       color: color,
       blending: THREE.AdditiveBlending,
-      size: dial_four * 0.03
+      size: dial_four * 0.5,
+      depthWrite: false,
+      sizeAttenuation: false
   })});
 
 
-  const pointLight = new THREE.PointLight( 0xffffff, 1);
-  camera.add(pointLight);
+
+  const pointLight = new THREE.PointLight( gradientColor, 1, 100 );
+  group.add(pointLight);
 
 
   compoCenter = new THREE.Points(geometry, particleMaterial);
@@ -232,6 +229,9 @@ function createShape(){
 
   group.add( compoCenter );
 
+
+  let realBG = backgroundColor();
+  scene.background = realBG;
 
 
 
