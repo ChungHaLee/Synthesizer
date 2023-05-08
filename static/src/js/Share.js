@@ -1,5 +1,3 @@
-//공용 변수 관리를 위해 만든 코드
-
 export const SyntheysizerEvents = window;
 
 export const note_set = {
@@ -33,14 +31,29 @@ const MusicNote = {
   start: 0.0,
   end: -1.0
 }
+export class TemplateClip{
+  constructor(Clip_id, duration = 30, instrument_id = 0){
+    this.Clip_id = Clip_id;
+    this.duration = duration;
+    this.instrument_id = instrument_id;
+    this.dial_set = [[0.0, 0.0, 0.0, 0.0], 
+                     [0.0, 0.0, 0.0, 0.0]]
+  }
+  set_dial(dial_set){
+    this.dial_set = dial_set
+  }
+  get_dial(){
+    return this.dial_set;
+  }
+}
+
 
 export class MusicClip {
-  constructor (Type, Clip_id, duration = 15, instrument_id = 0) {
-      console.log("music Type : ", Type, "Clip_id", Clip_id,  duration = 15);
+  constructor (Type, Clip_id, duration = 30) {
+      console.log("music Type : ", Type, "Clip_id", Clip_id,  "duration", duration);
       this.Type = Type;
       this.Clip_id = Clip_id;
       this.duration = duration;
-      this.instrument_id = instrument_id;
       if(Type==MusicClipType.Melody){
         this.melodyNoteSet = [];
         this.melodyTimeset = [];
@@ -160,34 +173,60 @@ export class MusicTrack{
   constructor (userId = 0, Track_name = "MusicTrack"){
     this.userId = userId;
     this.Track_name = Track_name;
-    this.TemplateClip = [];
+
+    this.TemplateIdClip = [];
     this.MelodyClipIdList = [];
     this.BeatClipIdList = [];
-    this.TemplateTime = [];
-    this.MelodyTime = [];
-    this.BeatTime = [];
+
+    this.TemplateTimeset = [];
+    this.MelodyTimeset = [];
+    this.BeatTimeset = [];
   }
   setMusicClip(musicClip, clipTime){
-    if(MusicClip.getClipType == MusicClipType.Melody){
-      this.MelodyClipIdList.push(musicClip.getClipId);
-      this.MelodyTime.push(clipTime);
+    if(musicClip.getClipType() == MusicClipType.Melody){
+      this.MelodyClipIdList.push(musicClip.getClipId());
+      let duration = musicClip.getDuration();
+      this.MelodyTimeset.push([clipTime, clipTime + duration]);
+      console.log("Add Melody box", this.MelodyClipIdList);
     }
     else{
-      this.BeatClipIdList.push(musicClip.getClipId);
-      this.BeatTime.push(clipTime);
+      this.BeatClipIdList.push(musicClip.getClipId());
+      let duration = musicClip.getDuration();
+      this.BeatTimeset.push([clipTime, clipTime + duration]);
+      console.log("Add Beat box", this.BeatClipIdList);
     }
   }
-  setTemplateClip(templateClip, clipTime){
-    this.MelodyClipIdList.push(0);
-    this.MelodyTime.push(clipTime);
+  setTemplateClip(templateId, clipTime){
+    this.TemplateIdClip.push(templateId);
+    this.TemplateTimeset.push(clipTime);
+    console.log("Add Template box", this.TemplateIdClip);
   }
-  setMusicClip(Melody_clip_array){  //Track의 Clip 정리 코드
-    const MaxId = Math.max.apply(null, this.MelodyClipIdList);
+  editMusicClip(type, clip_id, deltaTime){
+    if(type == MusicClipType.Melody){
+      this.MelodyTimeset[clip_id][0] += deltaTime;
+      this.MelodyTimeset[clip_id][1] += deltaTime;
+    }
+    else{
+      this.BeatTimeset[clip_id][0] += deltaTime;
+      this.BeatTimeset[clip_id][1] += deltaTime;
+    }
   }
-  setBeatClip(Beat_clip_array){  //Track의 Clip 정리 코드
-    const MaxId = Math.max.apply(null, this.BeatClipIdList);
+  getTempalateId(){
+    return this.TemplateIdClip.length;
   }
-  saveTrack(){
-    console.log("save the Music Track");
+  getMelodyId(){
+    return this.MelodyClipIdList.length;
   }
+  getBeatId(){
+    return this.BeatClipIdList.length;
+  }
+  // setMusicClip(Melody_clip_array){  //Track의 Clip 정리 코드
+  //   const MaxId = Math.max.apply(null, this.MelodyClipIdList);
+  // }
+  // setBeatClip(Beat_clip_array){  //Track의 Clip 정리 코드
+  //   const MaxId = Math.max.apply(null, this.BeatClipIdList);
+  // }
+  // saveTrack(){
+  //   console.log("save the Music Track");
+  // }
 }

@@ -1,4 +1,4 @@
-import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack} from './Share.js';
+import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip} from './Share.js';
 import {piano_player, beat_player, dialInitialize} from './Synthesizer.js';
 //최소 범위 A2 ~ C7
 
@@ -6,21 +6,25 @@ const clip_box_width = 1880;
 const clip_start_px = 60;
 let fps = 30;
 let currentTime = 0.0;
+let currentTime_track = 0.0;
 let play_state = false;
+let play_state_track = false;
 let timer = null;
 let duration = 30
+let duration_track = 300;
 let clipduration = document.getElementById("clipduration");
 let timeLine1 = document.getElementById("timeLine1");
 let timeLine2 = document.getElementById("timeLine2");
+let timeLine3 = document.getElementById("timeLine3");
 const Template_clip_array = [];
 const Melody_clip_array = [];
 const Beat_clip_array = [];
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+let template_clip = new TemplateClip(Template_clip_array.length);
 let onNoteList = [];
 let previousNote = [];
-let template_clip = [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]];
 const TrackObject = new MusicTrack();
 
 clipduration.addEventListener("change", function(){//Clip의 시간을 바꾸면 실행하는 코드
@@ -211,8 +215,8 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       Melody_clip_array.push(melody_clip);
       melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
       Template_clip_array.push(template_clip);
-      template_clip = [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]];
-      dialInitialize();
+      template_clip = new TemplateClip(Template_clip_array.length);
+      //dialInitialize();
       alert("Melody Clip saved")
       clearNoteClip(MusicClipType.Melody);
       initializeTimer();
@@ -263,7 +267,7 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
   }
 })
 SyntheysizerEvents.addEventListener('dialInput', function(e){
-  template_clip = e.detail.value;
+  template_clip.set_dial(e.detail.value);
 })
 
 
@@ -311,12 +315,12 @@ function changeMusicClip(noteIndex, deltaTimeset){//노트 위치, 크기 편집
   }
 }
 
-
-
-
-
-
-//track 용 코드
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------- Track용 추가 코드 ------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
 
 //Track Clip Icon 생성용 코드
 function createClipBox(musicClip) { //Melody, Beat 노트 생성
@@ -352,13 +356,15 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
 }
 
 //Track Clip Object 생성용 코드(melody, Beat용)
-function createTrackClipObject(dropzoneName, musicClip){
+function createTrackClipObject(dropzoneName, musicClip, box_id){
   let currenctCliptType = musicClip.getClipType();
   let clip_id = musicClip.getClipId();
   let duration = musicClip.getDuration();
+  console.log("duration Check", duration);
   const trackClip = document.createElement("div");
   trackClip.classList.add("draggable_clip");
   trackClip.style.width = duration * 10 + "px"
+
   if(currenctCliptType == MusicClipType.Melody){
     trackClip.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "melody-drop");
@@ -368,17 +374,23 @@ function createTrackClipObject(dropzoneName, musicClip){
     //dragdrop.setAttribute("id", "beat-drop");
   }
   let boxItem = document.getElementById(dropzoneName);
+  trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
+  trackClip.setAttribute("box_type", currenctCliptType); // clip_type 속성 추가
   boxItem.appendChild(trackClip);
+  return trackClip.offsetLeft
 }
 
 //Track Clip Object 생성용 코드(Template용)
-function createTrackClipObject_template(dropzoneName, clip_id){
+function createTrackClipObject_template(dropzoneName, clip_id, box_id){
   const trackClip = document.createElement("div");
   trackClip.classList.add("resize-drag_clip");
   trackClip.style.width = 300 + "px"
-  trackClip.textContent = "Template_" + clip_id
   let boxItem = document.getElementById(dropzoneName);
+  trackClip.textContent = "Template_" + clip_id
+  trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
+  trackClip.setAttribute("box_type", MusicClipType.Template); // clip_type 속성 추가
   boxItem.appendChild(trackClip);
+  return trackClip.offsetLeft
 }
 
 
@@ -394,18 +406,61 @@ function get_clip(clipType, clip_id){
   }
 }
 
-$("#slider_track").slider({ //Timer 슬라이더
+$("#slider_track").slider({ //Timer 슬라이더2
   value: 0,
   min: 0,
-  max: 600,
+  max: duration_track*10,
   step: 0.1,
   slide: function( event, ui ) {
-
+    timeLine3.style.left = (ui.value) + "px";
+    currentTime_track = ui.value/10;
   }
 });
+function startTrack(){//Timer를 시작하는 코드
+  play_state_track = true;
+  startTimer2();
+}
+function stopTrack(){//Timer를 중지하는 코드
+  play_state_track = false;
+  stopTimer2();
+}
+function startTimer2() {
+  if (!timer) { // 타이머가 이미 실행 중이지 않은 경우에만 실행
+    timer = setInterval(updateTime2, 1 / fps * 1000); // 0.01초 간격으로 updateTime 함수 실행
+  }
+}
+function stopTimer2() {
+  clearInterval(timer); // 타이머 정지
+  timer = null; // 타이머 변수 초기화
+}
+
+function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
+  currentTime_track += 1/fps;
+  //musicPlayer(currentTime);
+  $("#slider_track").slider("value",currentTime_track*10);
+  timeLine3.style.left = (currentTime_track*10) + "px";
+  
+  if(currentTime_track >= duration_track){
+    stopRecording() //끝 도달하면 자동으로 종료
+  }
+}
+
+document.getElementById("trackMusicPlayButton").addEventListener('click', function (){
+  startTrack();
+})
+document.getElementById("trackMusicPauseButton").addEventListener('click', function (){
+  stopTrack();
+})
+
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------- Note Interaction용 ----------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
 
 
-//Note Interaction용
+//Piano clip note 
 interact('.resize-drag')
   .resizable({
     edges: { top: false, left: true, bottom: false, right: true },
@@ -463,7 +518,7 @@ interact('.resize-drag')
       }
     }
   })
-
+  // Track Template
   interact('.resize-drag_clip')
   .resizable({
     edges: { top: false, left: false, bottom: false, right: true },
@@ -482,7 +537,7 @@ interact('.resize-drag')
     }
   })
 
-//note 위치 이동용 코드
+//beat clip note 
 interact('.draggable')
   .draggable({
     listeners: { move: window.dragMoveListener_note },
@@ -523,7 +578,7 @@ interact('.draggable')
     }
   })
 
-  //track 위치 이동용 코드
+//track music box
 interact('.draggable_clip')
 .draggable({
   listeners: { move: window.dragMoveListener_clip },
@@ -571,7 +626,7 @@ interact('.draggable_clip')
     var y = 0
     // translate the element
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-    console.log( "id:", event.target.getAttribute("note_id"), "Add timeset:", [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)]);
+    //console.log( "id:", event.target.getAttribute("note_id"), "Add timeset:", [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)]);
     changeMusicClip(event.target.getAttribute("note_id"), [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)])
     // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
     // update the posiion attributes
@@ -585,14 +640,15 @@ interact('.draggable_clip')
     var y = 0
     // translate the element
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    //console.log( "type:", event.target.getAttribute("box_type"), "id:", event.target.getAttribute("box_id"), "Add timeset:", event.dx/10);
+    TrackObject.editMusicClip(event.target.getAttribute("box_type"), event.target.getAttribute("box_id"), event.dx/10)
     // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
     // update the posiion attributes
     target.setAttribute('data-x', x)
   }
 
 
-  //clip alc track 설정용 코드
-  
+  //clip dropzone 설정용 코드
   interact('.template-dropzone').dropzone({
     // only accept elements matching this CSS selector
     accept: '#template-drop',
@@ -627,7 +683,10 @@ interact('.draggable_clip')
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
-      createTrackClipObject_template('template-dropzone', event.relatedTarget.getAttribute("clip_id"))
+      const tempalteId = event.relatedTarget.getAttribute("clip_id")
+      const clipTime = createTrackClipObject_template('template-dropzone', tempalteId, TrackObject.getTempalateId())
+      console.log("clip Time Check", clipTime/10);
+      TrackObject.setTemplateClip(tempalteId, clipTime/10)
     }
   })
 
@@ -665,9 +724,10 @@ interact('.draggable_clip')
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
-      //console.log("Check clip", get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
-      createTrackClipObject('melody-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
-      //console.log(event.target)
+       const Tmp_clip = get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id"))
+      const clipTime = createTrackClipObject('melody-dropzone', Tmp_clip, TrackObject.getMelodyId())
+      console.log("clip Time Check", clipTime/10);
+      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
     }
   })
 
@@ -705,10 +765,10 @@ interact('.draggable_clip')
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
-      console.log("Check clip", event.relatedTarget.getAttribute("clip_id"), event.relatedTarget.getAttribute("clip_type"))
-      createTrackClipObject('beat-dropzone', get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id")))
-      //console.log("Check clip", (event.target.getAttribute("clip_id"), event.target.getAttribute("clip_type")))
-      //console.log(event.target)
+      const Tmp_clip = get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id"))
+      const clipTime = createTrackClipObject('beat-dropzone', Tmp_clip, TrackObject.getBeatId())
+      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
+      console.log("clip Time Check", clipTime/10);
     }
   })
   
