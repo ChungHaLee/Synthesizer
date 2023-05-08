@@ -188,7 +188,8 @@ export function beat_player(input_id){
 
 function pad_input(input_id){
   //console.log("pad id", input_id);
-  MetalSynth.triggerAttackRelease("8n", 0.05);
+  //MetalSynth.triggerAttackRelease("8n", 0.05);
+  beat_player(input_id)
   pad_set.id = input_id - 36;
   // switch (pad_set.id){
   //   case 0:
@@ -241,12 +242,12 @@ function dial_effect(input_id, input_value){
       case 70: // AutoWah
         console.log("autoWah", input_value)
         if(dial_bool[0]){
-          // console.log("disconnect");
+          console.log("disconnect");
           polySynth.disconnect(autoWah);
           dial_bool[0] = false;
         }
         if(input_value > 10){
-          // console.log("connect");
+          console.log("connect");
           autoWah.Q.value = Normaizing(input_value, [1, 10]);
           polySynth.connect(autoWah);
           dial_bool[0] = true;

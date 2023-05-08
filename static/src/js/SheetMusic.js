@@ -18,12 +18,12 @@ const Beat_clip_array = [];
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
-let onNoteList = []
-let previousNote = []
-
+let onNoteList = [];
+let previousNote = [];
+let template_clip = [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]];
 const TrackObject = new MusicTrack();
 
-clipduration.addEventListener("change", function(){
+clipduration.addEventListener("change", function(){//Clip의 시간을 바꾸면 실행하는 코드
   duration = parseFloat(clipduration.value);
   noteSizeAllOff();
   clearNoteClip(current_clip_type);
@@ -70,20 +70,20 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
     stopRecording() //끝 도달하면 자동으로 종료
   }
 }
-function musicPlayer(currentTime){
+function musicPlayer(currentTime){  //음이나 비트 소리를 재생하는 코드
   if(current_clip_type == MusicClipType.Melody){
     let currentNote = melody_clip.getcurrentNoteSet(currentTime)
     notePlayer(currentNote, previousNote);
-    previousNote = melody_clip.getcurrentNoteSet(currentTime); // Meldoy Test1
+    previousNote = melody_clip.getcurrentNoteSet(currentTime);
   }
   else{
-    let currentBeat = beat_clip.getcurrentNoteSet(currentTime); // Beat Test1
+    let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
     for (let beat of currentBeat){
       beat_player(beat)
     }
   }
 }
-function notePlayer(currentNote, previousNote){
+function notePlayer(currentNote, previousNote){ //피아노 음 재생용 함수
   //console.log(currentNote, previousNote);
   //piano_player(currentNote[0], true);
   var exclusiveArr1 = currentNote.filter(function(val) {
@@ -210,6 +210,9 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       createClipBox(melody_clip);
       Melody_clip_array.push(melody_clip);
       melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+      Template_clip_array.push(template_clip);
+      template_clip = [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]];
+      dialInitialize();
       alert("Melody Clip saved")
       clearNoteClip(MusicClipType.Melody);
       initializeTimer();
@@ -259,6 +262,12 @@ SyntheysizerEvents.addEventListener('padInput', function (e){
     let PadItem = createResizeDragElement(e.detail.id, time_to_px(currentTime, duration), beat_clip.getNoteIndex(), MusicClipType.Beat);
   }
 })
+SyntheysizerEvents.addEventListener('dialInput', function(e){
+  template_clip = e.detail.value;
+})
+
+
+
 
 function removeAllElementsByClassName(className) {//
   const elements = document.getElementsByClassName(className);
@@ -304,20 +313,35 @@ function changeMusicClip(noteIndex, deltaTimeset){//노트 위치, 크기 편집
 
 
 
+
+
+
 //track 용 코드
+
+//Track Clip Icon 생성용 코드
 function createClipBox(musicClip) { //Melody, Beat 노트 생성
   let currenctCliptType = musicClip.getClipType();
   let clip_id = musicClip.getClipId();
   //let clip_id = 0
   const dragdrop = document.createElement("div");
   dragdrop.classList.add("drag-drop");  // resize-drag로 생성
-  dragdrop.setAttribute("clip_id", clip_id); // note_id 속성 추가
-  dragdrop.setAttribute("clip_type", currenctCliptType); // note_id 속성 추가
+  dragdrop.setAttribute("clip_id", clip_id); // clip_id 속성 추가
+  dragdrop.setAttribute("clip_type", currenctCliptType); // clip_type 속성 추가
   if(currenctCliptType == MusicClipType.Melody){
     dragdrop.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "melody-drop");
     let boxItem = document.getElementById("MelodydropContainer");
     boxItem.appendChild(dragdrop);
+
+    //Template Icon 생성은 Melody 생성에 동시에 만들어지도록 설정
+    const dragdrop_template = document.createElement("div");
+    dragdrop_template.classList.add("drag-drop");  // resize-drag로 생성
+    dragdrop_template.setAttribute("clip_id", clip_id); // clip_id 속성 추가
+    dragdrop_template.setAttribute("clip_type", MusicClipType.Template); // clip_type 속성 추가
+    dragdrop_template.textContent = "Template_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop_template.setAttribute("id", "template-drop");
+    let boxItem_template = document.getElementById("TemplatedropContainer");
+    boxItem_template.appendChild(dragdrop_template);
   }
   else{
     dragdrop.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
@@ -326,6 +350,8 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
     boxItem.appendChild(dragdrop);
   }
 }
+
+//Track Clip Object 생성용 코드(melody, Beat용)
 function createTrackClipObject(dropzoneName, musicClip){
   let currenctCliptType = musicClip.getClipType();
   let clip_id = musicClip.getClipId();
@@ -341,10 +367,22 @@ function createTrackClipObject(dropzoneName, musicClip){
     trackClip.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "beat-drop");
   }
-
   let boxItem = document.getElementById(dropzoneName);
   boxItem.appendChild(trackClip);
 }
+
+//Track Clip Object 생성용 코드(Template용)
+function createTrackClipObject_template(dropzoneName, clip_id){
+  const trackClip = document.createElement("div");
+  trackClip.classList.add("resize-drag_clip");
+  trackClip.style.width = 300 + "px"
+  trackClip.textContent = "Template_" + clip_id
+  let boxItem = document.getElementById(dropzoneName);
+  boxItem.appendChild(trackClip);
+}
+
+
+//clip 정보를 가져오는 코드
 function get_clip(clipType, clip_id){
   if(clipType == MusicClipType.Melody){
     return Melody_clip_array[clip_id]
@@ -410,7 +448,6 @@ interact('.resize-drag')
     ],
     // enable autoScroll
     autoScroll: true,
-
     listeners: {
       // call this function on every dragmove event
       move: dragMoveListener_note,
@@ -423,6 +460,24 @@ interact('.resize-drag')
           (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
                      Math.pow(event.pageY - event.y0, 2) | 0))
             .toFixed(2) + 'px')
+      }
+    }
+  })
+
+  interact('.resize-drag_clip')
+  .resizable({
+    edges: { top: false, left: false, bottom: false, right: true },
+    listeners: {
+      move: function (event) {
+        let { x, y } = event.target.dataset
+        x = (parseFloat(x) || 0) + event.deltaRect.left
+        y = (parseFloat(y) || 0) + event.deltaRect.top
+        Object.assign(event.target.style, {
+          width: `${event.rect.width}px`,
+          height: `${event.rect.height}px`,
+          transform: `translate(${x}px, ${y}px)`
+        })
+        Object.assign(event.target.dataset, { x, y })
       }
     }
   })
@@ -572,6 +627,7 @@ interact('.draggable_clip')
       // remove active dropzone feedback
       event.target.classList.remove('drop-active')
       event.target.classList.remove('drop-target')
+      createTrackClipObject_template('template-dropzone', event.relatedTarget.getAttribute("clip_id"))
     }
   })
 
