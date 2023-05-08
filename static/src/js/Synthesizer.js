@@ -218,12 +218,12 @@ function dial_effect(input_id, input_value){
       case 70: // AutoWah
         console.log("autoWah", input_value)
         if(dial_bool[0]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(autoWah);
           dial_bool[0] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           autoWah.Q.value = Normaizing(input_value, [1, 10]);
           polySynth.connect(autoWah);
           dial_bool[0] = true;
@@ -232,12 +232,12 @@ function dial_effect(input_id, input_value){
       case 71:
         console.log("crusher", input_value)
         if(dial_bool[1]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(crusher);
           dial_bool[1] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 8]));
           polySynth.connect(crusher);
           dial_bool[1] = true;
@@ -246,12 +246,12 @@ function dial_effect(input_id, input_value){
       case 72:
         console.log("cheby", input_value)
         if(dial_bool[2]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(cheby);
           dial_bool[2] = false;
         }
         if(input_value > 10){  
-          console.log("connect");
+          // console.log("connect");
           cheby.order = parseInt(Normaizing(input_value, [1, 80]));
           polySynth.connect(cheby);
           dial_bool[2] = true;
@@ -260,12 +260,12 @@ function dial_effect(input_id, input_value){
       case 73:
         console.log("chorus", input_value)
         if(dial_bool[3]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(chorus);
           dial_bool[3] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           //chorus = new Tone.Chorus(Normaizing(input_value, [1, 10]), 2.5, 0.5).toDestination();
           chorus.frequency.value = Normaizing(input_value, [1, 10])
           polySynth.connect(chorus);
@@ -275,12 +275,12 @@ function dial_effect(input_id, input_value){
       case 74:
         console.log("feedbackDelay", input_value)
         if(dial_bool[4]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(feedbackDelay);
           dial_bool[4] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
           feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.8]);
           polySynth.connect(feedbackDelay);
@@ -290,12 +290,12 @@ function dial_effect(input_id, input_value){
       case 75:
         console.log("freeverb", input_value)
         if(dial_bool[5]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(freeverb);
           dial_bool[5] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           freeverb.dampening = input_value * 20;
           polySynth.connect(freeverb);
           dial_bool[5] = true;
@@ -304,12 +304,12 @@ function dial_effect(input_id, input_value){
       case 76:
         console.log("phaser", input_value)
         if(dial_bool[6]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(phaser);
           dial_bool[6] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           // phaser = new Tone.Phaser({
           //   frequency: 150,
           //   octaves: parseInt(Normaizing(input_value, [1, 10])),
@@ -324,12 +324,12 @@ function dial_effect(input_id, input_value){
       case 77:
         console.log("vibrato", input_value)
         if(dial_bool[7]){
-          console.log("disconnect");
+          // console.log("disconnect");
           polySynth.disconnect(vibrato);
           dial_bool[7] = false;
         }
         if(input_value > 10){
-          console.log("connect");
+          // console.log("connect");
           //vibrato = new Tone.Vibrato(Normaizing(input_value, [1, 10]), 0.1).toDestination();
           vibrato.frequency.value = Normaizing(input_value, [1, 10]);
           polySynth.connect(vibrato);

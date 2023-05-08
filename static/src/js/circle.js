@@ -167,6 +167,7 @@ function colorByPitch(){
   let blue = '#004FFF'
   let violet = '#5D00E1'
   let pink = '#CF003D'
+
   if (pitch == '48'){ // 도
       pitchColor = red
   } else if (pitch == '49'){ // 도샾++
@@ -203,24 +204,22 @@ function colorByPitch(){
 
 function createShape(){
 
-      
-
   color = colorByPitch();
   gradientColor = colorByWheel();
-  if (dial_three == 'undefined'){
-    dial_three = 1
+  
+  if (dial_two > 10 || dial_three > 10 || dial_four > 10){
+    geometry = new THREE.IcosahedronGeometry(dial_two, Math.ceil(dial_four * 0.1));
   } else {
-    
+    geometry = new THREE.IcosahedronGeometry(0.05, 0);
   }
 
-  geometry = new THREE.IcosahedronGeometry( dial_two, dial_four );
 
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
     particleMaterial = new THREE.PointsMaterial({
       map: texture,
       color: color,
       blending: THREE.AdditiveBlending,
-      size: dial_three * 0.026
+      size: dial_three * 0.03
   })});
 
 
