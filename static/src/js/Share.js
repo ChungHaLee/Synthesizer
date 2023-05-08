@@ -24,7 +24,7 @@ export const joystick_set = {
 export const MusicClipType = {
   Melody: "Melody",
   Beat: "Beat",
-  Base: "Base"
+  Template: "Template"
 }
 
 const MusicNote = {
@@ -136,22 +136,24 @@ export class MusicClip {
   getcurrentNoteSet(currentTime){
     const noteSet = []
     if(this.Type==MusicClipType.Melody){
-      return [this.melodyNoteSet, this.melodyTimeset]
+      //return [this.melodyNoteSet, this.melodyTimeset]
+      for (let i = 0; i < this.melodyTimeset.length; i++) {
+        if (this.melodyTimeset[i][0] <= currentTime && currentTime < this.melodyTimeset[i][1]) {
+          noteSet.push(this.melodyNoteSet[i]);
+        }
+      }
+      return noteSet;
     }
     else{
-      return [this.beatSet, this.beatTime]
-    }
-  }
-  getCurrentNoteByTime(timeSetArray, currentTime) {
-    const indexes = [];
-    for (let i = 0; i < timeSetArray.length; i++) {
-      if (timeSetArray[i][0] <= currentTime && currentTime < timeSetArray[i][1]) {
-        indexes.push(i);
+      //return [this.beatSet, this.beatTime]
+      for (let i = 0; i < this.beatTime.length; i++) {
+        if (this.beatTime[i] - 1/60 <= currentTime && currentTime < this.beatTime[i] + 1/60) {
+          noteSet.push(this.beatSet[i]);
+        }
       }
+      return noteSet;
     }
-    return indexes;
   }
-
 }
 
 export class MusicTrack{
