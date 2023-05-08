@@ -207,19 +207,19 @@ function createShape(){
   color = colorByPitch();
   gradientColor = colorByWheel();
   
-  if (dial_two > 10 || dial_three > 10 || dial_four > 10){
-    geometry = new THREE.IcosahedronGeometry(dial_two, Math.ceil(dial_four * 0.1));
+  if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
+    geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.07));
   } else {
     geometry = new THREE.IcosahedronGeometry(0.05, 0);
   }
 
-
+  // geometry = new THREE.IcosahedronGeometry(0.05 * dial_two, 0 + dial_four);
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
     particleMaterial = new THREE.PointsMaterial({
       map: texture,
       color: color,
       blending: THREE.AdditiveBlending,
-      size: dial_three * 0.03
+      size: dial_four * 0.03
   })});
 
 
