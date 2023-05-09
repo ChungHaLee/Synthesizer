@@ -33,21 +33,37 @@ let group;
 let ambientLight, spotLight, pointLight;
 var pitchInfo;
 
+
+
+// color info
+
 let red = 'hsl(0,99%,41%)'
 let redorange = 'hsl(24,99%,41%)'
 let orange = 'hsl(36,99%,41%)'
 let orangeyellow = 'hsl(46,99%,41%)'
 let yellow = 'hsl(55,99%,41%)'
-let green = 'hsl(84,99%,41%)'
-let greenblue = 'hsl(125,99%,41%)'
+let green = 'hsl(129,100%,31%)'
+let greenblue = 'hsl(179,100%,27%)'
 let blue = 'hsl(186,99%,41%)'
 let blueviolet = '#2E93FF'
-let violet = 'hsl(213,99%,41%)'
+let violet = 'hsl(273,99%,40%)'
 let violetpink = 'hsl(284,100%,34%)'
 let pink = 'hsl(329,100%,39%)'
 let magenta = 'hsl(346,100%,39%)'
 
-
+let redhigh = 'hsl(0,100%,25%)'
+let redorangehigh = 'hsl(25,100%,24%)'
+let orangehigh = 'hsl(36,100%,24%)'
+let orangeyellowhigh = 'hsl(48,100%,24%)'
+let yellowhigh = 'hsl(57,100%,26%)'
+let greenhigh = 'hsl(120,100%,19%)'
+let greenbluehigh = 'hsl(178,100%,18%)'
+let bluehigh = 'hsl(210,100%,22%)'
+let blueviolethigh = 'hsl(246,100%,22%)'
+let violethigh = 'hsl(275,100%,22%)'
+let violetpinkhigh = 'hsl(308,100%,22%)'
+let pinkhigh = 'hsl(323,100%,21%)'
+let magentahigh = 'hsl(351,100%,21%)'
 
 
 
@@ -60,14 +76,6 @@ String.prototype.format = function() {
 }
 
 
-// function backgroundColor(){
-//   if (beat == 0){
-//     var backgroundColor = new THREE.Color("hsl(0, 0%, 100%)")
-//   } else {
-//     var backgroundColor = new THREE.Color("hsl(0, 100%, 1%)")
-//   }
-//   return backgroundColor
-// }
 
 // init function
 function init() {
@@ -166,21 +174,41 @@ function colorByPitch(pitchNum){
     pitchColor = blueviolet
   } else if (pitchNum == '57'){ // 라
     pitchColor = violet
-  } else if (pitchNum=='58'){ // 라샾
+  } else if (pitchNum == '58'){ // 라샾
     pitchColor = violetpink
-  } else if (pitchNum=='59'){ // 시
+  } else if (pitchNum == '59'){ // 시
     pitchColor = pink
-  } else if (pitchNum=='60'){
+  } else if (pitchNum == '60'){
     pitchColor = magenta
+  } else if (pitchNum == '61'){
+    pitchColor = redhigh
+  } else if (pitchNum == '62'){
+    pitchColor = redorangehigh
+  } else if (pitchNum == '63'){
+    pitchColor = orangehigh
+  } else if (pitchNum == '64'){
+    pitchColor = orangeyellowhigh
+  } else if (pitchNum == '65'){
+    pitchColor = yellowhigh
+  } else if (pitchNum ==' 66'){
+    pitchColor = greenhigh
+  } else if (pitchNum == '67'){
+    pitchColor = greenbluehigh
+  } else if (pitchNum ==' 68'){
+    pitchColor = bluehigh
+  } else if (pitchNum == '69'){
+    pitchColor = blueviolethigh
+  } else if (pitchNum == '70'){
+    pitchColor = violethigh
+  } else if (pitchNum == '71'){
+    pitchColor = violetpinkhigh
+  } else if (pitchNum == '72'){
+    pitchColor = pinkhigh
+  } else if (pitchNum == '73'){
+    pitchColor = magentahigh
   }
     return pitchColor;
   }
-
-
-
-
-
-
 
 
 
@@ -199,13 +227,14 @@ function createShape(){
     color2 = '#FFFFFF'
   }
 
-
-
-
-  if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
-    geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
+  geometry = new THREE.IcosahedronGeometry(15, 15);
+  
+  if (dial_two == undefined || dial_three == undefined){
+    dial_two = 5
+    dial_three = 5
+    geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
   } else {
-    geometry = new THREE.IcosahedronGeometry(0.05, 0);
+    geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
     dial_one = 127
   }
 
@@ -217,10 +246,10 @@ function createShape(){
       blendEquation: THREE.AddEquation,
       blendSrc: THREE.SrcAlphaFactor,
       blendDst:THREE.OneMinusSrcAlphaFactor,
-      size: dial_four * 0.5,
+      size: (dial_four * 0.5) + 10,
       depthWrite: false,
       sizeAttenuation: false,
-      opacity: dial_one/127,
+      opacity: (dial_one/130) + 0.15,
       transparent: true
   })});
 
@@ -236,20 +265,20 @@ function createShape(){
 
 
 
-  material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
-    particleMaterial2 = new THREE.PointsMaterial({
-      map: texture,
-      color: color2,
-      blending: THREE.CustomBlending,
-      blendEquation: THREE.AddEquation,
-      blendSrc: THREE.SrcAlphaFactor,
-      blendDst:THREE.OneMinusSrcAlphaFactor,
-      size: dial_four * 0.5,
-      depthWrite: false,
-      sizeAttenuation: false,
-      opacity: dial_one/127,
-      transparent: true
-  })});
+  // material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
+  //   particleMaterial2 = new THREE.PointsMaterial({
+  //     map: texture,
+  //     color: color2,
+  //     blending: THREE.CustomBlending,
+  //     blendEquation: THREE.AddEquation,
+  //     blendSrc: THREE.SrcAlphaFactor,
+  //     blendDst:THREE.OneMinusSrcAlphaFactor,
+  //     size: (dial_four * 0.5) + 10,
+  //     depthWrite: false,
+  //     sizeAttenuation: false,
+  //     opacity: (dial_one/130) + 0.15,
+  //     transparent: true
+  // })});
 
   addGeometryAgain();
 
@@ -270,14 +299,16 @@ function addGeometryAgain(){
   }
   
   if (polyPitchArray.length == 2){
-    // scene.background = new THREE.Color('black')
-    
-    if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
-      geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-    } else {
-      geometry = new THREE.IcosahedronGeometry(0.05, 0);
-    }
 
+      if (dial_two == undefined || dial_three == undefined){
+        dial_two = 5
+        dial_three = 5
+        geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
+      } else {
+        geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
+        dial_one = 127
+      }
+    
 
     material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
       particleMaterial = new THREE.PointsMaterial({
@@ -287,10 +318,10 @@ function addGeometryAgain(){
         blendEquation: THREE.AddEquation,
         blendSrc: THREE.SrcAlphaFactor,
         blendDst:THREE.OneMinusSrcAlphaFactor,
-        size: dial_four * 0.5,
+        size: (dial_four * 0.5) + 10,
         depthWrite: false,
         sizeAttenuation: false,
-        opacity: dial_one/127,
+        opacity: (dial_one/130) + 0.15,
         transparent: true
     })});
 
@@ -299,17 +330,19 @@ function addGeometryAgain(){
     group.add(pointLight);
 
 
-    compoCenter = new THREE.Points(geometry, particleMaterial);
-    compoCenter.position.set(5*(pitchOne-48)/4 - 15, 5*(pitchOne-48)/6 - 10, -10);
+    // compoCenter = new THREE.Points(geometry, particleMaterial);
+    // compoCenter.position.set(5*(pitchOne-48)/4 - 15, 5*(pitchOne-48)/6 - 10, -10);
 
-    group.add( compoCenter );
+    // group.add( compoCenter );
 
-      if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
-        geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-      } else {
-        geometry2 = new THREE.IcosahedronGeometry(0.05, 0);
-        dial_one = 127
-      }
+    if (dial_two == undefined || dial_three == undefined){
+      dial_two = 5
+      dial_three = 5
+      geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
+    } else {
+      geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
+      dial_one = 127
+    }
 
       material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
         particleMaterial2 = new THREE.PointsMaterial({
@@ -319,10 +352,10 @@ function addGeometryAgain(){
           blendEquation: THREE.AddEquation,
           blendSrc: THREE.SrcAlphaFactor,
           blendDst:THREE.OneMinusSrcAlphaFactor,
-          size: dial_four * 0.5,
+          size: (dial_four * 0.5) + 10,
           depthWrite: false,
           sizeAttenuation: false,
-          opacity: dial_one/127,
+          opacity: (dial_one/130) + 0.15,
           transparent: true
       })});
 
@@ -345,7 +378,7 @@ let polyBeatArray = []
 SyntheysizerEvents.addEventListener('noteInput', function (e){
   energy = e.detail.value * 10 / 127
   pitch = e.detail.pitch; // 48~72
-
+  
   if (!polyPitchArray.includes(pitch)) {
     polyPitchArray.push(pitch);
   }
@@ -421,12 +454,8 @@ function animate() {
 
           if (polyPitchArray.length == 0){  
             deleteBasics()
-            // particleMaterial.opacity = 0;
-            // particleMaterial2.opacity = 0;
             
           } else {
-            // particleMaterial.opacity = 1;
-            // particleMaterial2.opacity = 1;
           }
           
 
