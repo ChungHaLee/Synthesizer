@@ -230,7 +230,7 @@ function pad_output(input_id){
 SyntheysizerEvents.addEventListener('templateLoad', function (e){
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
   dial_set.value = e.detail;
-  console.log("set chnaged", dial_set);
+  //console.log("set chnaged", dial_set);
   const event = new CustomEvent('dialInput', { detail: dial_set });
   SyntheysizerEvents.dispatchEvent(event);
   //console.log(dial_set);

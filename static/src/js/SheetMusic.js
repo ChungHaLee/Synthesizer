@@ -19,9 +19,9 @@ let timeLine2 = document.getElementById("timeLine2");
 let timeLine3 = document.getElementById("timeLine3");
 let FileInput = document.getElementById("fileUpload");
 
-let Template_clip_array = [];
-let Melody_clip_array = [];
-let Beat_clip_array = [];
+const Template_clip_array = [];
+const Melody_clip_array = [];
+const Beat_clip_array = [];
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
@@ -30,8 +30,7 @@ let onNoteList = [];
 let previousNote = [];
 let previousNote_track = [];
 let TrackObject = new MusicTrack();
-
-
+let previousDial_ID = -1;
 
 
 function InitializeAllSetting(){
@@ -40,9 +39,9 @@ function InitializeAllSetting(){
   play_state = false;
   play_state_track = false;
   duration_track = 300;
-  Template_clip_array = [];
-  Melody_clip_array = [];
-  Beat_clip_array = [];
+  Template_clip_array.length = 0;
+  Melody_clip_array.length = 0;
+  Beat_clip_array.length = 0;
   melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
   beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
   template_clip = new TemplateClip(Template_clip_array.length);
@@ -51,6 +50,7 @@ function InitializeAllSetting(){
   previousNote = [];
   previousNote_track = [];
   TrackObject = new MusicTrack();
+  previousDial_ID = -1;
   stopRecording();
   stopTrack();
   clearNoteClip(MusicClipType.Beat);
@@ -383,7 +383,7 @@ function createTrackClipObject(dropzoneName, musicClip, box_id){
   let currenctCliptType = musicClip.getClipType();
   let clip_id = musicClip.getClipId();
   let duration = musicClip.getDuration();
-  console.log("duration Check", duration);
+  //console.log("duration Check", duration);
   const trackClip = document.createElement("div");
   trackClip.classList.add("draggable_clip");
   trackClip.style.width = duration * 10 + "px"
@@ -465,6 +465,7 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
   let cur_track_set = TrackObject.getcurrentClipSet(currentTime_track);
   //console.log("Test Track", cur_track_set);
   if(cur_track_set[0].length > 0){
+    //console.log(Template_clip_array);
     templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
   }
   if(cur_track_set[1].length > 0){
@@ -498,13 +499,13 @@ function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리
   }
 }
 function templatePlayerClip(inputClip){
-  let dial_set = inputClip.get_dial();
-  if(dial_set != template_clip.get_dial()){
-    console.log("dial_set_change", dial_set);
-    const event = new CustomEvent('templateLoad', { detail: dial_set });
-    SyntheysizerEvents.dispatchEvent(event);
-    template_clip.set_dial(dial_set);
-  }
+  //console.log("id", inputClip.get_Clip_id())
+  if(inputClip.get_Clip_id() != previousDial_ID){
+     console.log("dial_changed : ", inputClip.get_dial() ,inputClip.get_Clip_id());
+     const event = new CustomEvent('templateLoad', { detail: inputClip.get_dial() });
+     SyntheysizerEvents.dispatchEvent(event);
+     previousDial_ID = inputClip.get_Clip_id();
+}
 }
 function clearAllBoxClip(){// 편집기에 모든 노트 제거
   removeAllElementsByClassName("resize-drag_clip");
