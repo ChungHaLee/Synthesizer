@@ -70,6 +70,10 @@ let phaser = new Tone.Phaser({
 let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 let dial_bool = [false, false, false, false, false, false, false, false]
 
+
+
+
+
 // const synth = new Tone.Synth().chain(chorus).toDestination();
 // const AMsynth = new Tone.AMSynth().toDestination();
 // const duoSynth = new Tone.DuoSynth().toDestination();
@@ -236,10 +240,10 @@ export function dialInitialize(){
 function dial_input(input_id, input_value){
   //console.log("dial_input", input_id, );
   if(input_id > 69){  //there are except case in joystick
-    //dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
-    //const event = new CustomEvent('dialInput', { detail: dial_set });
-    //SyntheysizerEvents.dispatchEvent(event);
-    //dial_effect(input_id, input_value);
+    dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
+    const event = new CustomEvent('dialInput', { detail: dial_set });
+    SyntheysizerEvents.dispatchEvent(event);
+    dial_effect(input_id, input_value);
   }
 }
 
