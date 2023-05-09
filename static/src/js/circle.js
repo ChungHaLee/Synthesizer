@@ -17,37 +17,35 @@ let particleMaterial;
 let particleMaterial2;
 
 
+
 let container;
 let FrameRate = 0;
 let pitch, pitchColor
-
-
 let pitch1, pitch2
 let pitchOne, pitchTwo
 let gradientColor;
-let color1;
-let color2;
+let color1, color2;
 
 let dial_one, dial_two, dial_three, dial_four, dial_five, dial_six, dial_seven, dial_eight;
-
+let beat, backgroundColor;
 
 let group;
 let ambientLight, spotLight, pointLight;
 var pitchInfo;
 
-let red = '#C20000'
-let redorange = '#FF4814'
-let orange = '#FF1A00'
-let orangeyellow = '#FFCF00'
-let yellow = '#FF3B00'
-let green = '#008000'
-let greenblue = '#29FA00'
-let blue = '#004FFF'
+let red = 'hsl(0,99%,41%)'
+let redorange = 'hsl(24,99%,41%)'
+let orange = 'hsl(36,99%,41%)'
+let orangeyellow = 'hsl(46,99%,41%)'
+let yellow = 'hsl(55,99%,41%)'
+let green = 'hsl(84,99%,41%)'
+let greenblue = 'hsl(125,99%,41%)'
+let blue = 'hsl(186,99%,41%)'
 let blueviolet = '#2E93FF'
-let violet = '#5D00E1'
-let violetpink = '#ff69b4'
-let pink = '#CF003D'
-let magenta = '#808080'
+let violet = 'hsl(213,99%,41%)'
+let violetpink = 'hsl(284,100%,34%)'
+let pink = 'hsl(329,100%,39%)'
+let magenta = 'hsl(346,100%,39%)'
 
 
 
@@ -63,11 +61,10 @@ String.prototype.format = function() {
 
 
 // function backgroundColor(){
-//   if (isNaN(dial_one)){
-//     var backgroundColor = new THREE.Color("hsl(0, 100%, 1%)")
+//   if (beat == 0){
+//     var backgroundColor = new THREE.Color("hsl(0, 0%, 100%)")
 //   } else {
-//     var dial_one_edit = dial_one * 360 / 127
-//     backgroundColor = new THREE.Color("hsl(%s, 100%, 20%)".format(dial_one_edit));
+//     var backgroundColor = new THREE.Color("hsl(0, 100%, 1%)")
 //   }
 //   return backgroundColor
 // }
@@ -121,9 +118,9 @@ function createCircle_Vanilla(){
   compoCenter2 = new THREE.Mesh(geometry2, material2);
   compoCenter2.position.set(1, 0, 0);
 
-  pointLight = new THREE.PointLight(0xffffff, 1);
-  pointLight.position.set(200, 200, 200);
-  scene.add(pointLight);
+  // pointLight = new THREE.PointLight(0xffffff, 1);
+  // pointLight.position.set(200, 200, 200);
+  // scene.add(pointLight);
 
   group.add( compoCenter );
   group.add( compoCenter2 );
@@ -202,24 +199,29 @@ function createShape(){
     color2 = '#FFFFFF'
   }
 
-  scene.background = new THREE.Color('black')
+
 
 
   if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
     geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
   } else {
     geometry = new THREE.IcosahedronGeometry(0.05, 0);
+    dial_one = 127
   }
 
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
     particleMaterial = new THREE.PointsMaterial({
       map: texture,
       color: color1,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.CustomBlending,
+      blendEquation: THREE.AddEquation,
+      blendSrc: THREE.SrcAlphaFactor,
+      blendDst:THREE.OneMinusSrcAlphaFactor,
       size: dial_four * 0.5,
       depthWrite: false,
       sizeAttenuation: false,
-      opacity: 1
+      opacity: dial_one/127,
+      transparent: true
   })});
 
 
@@ -234,11 +236,26 @@ function createShape(){
 
 
 
-  // let realBG = backgroundColor();
-  // scene.background = realBG;
+  material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
+    particleMaterial2 = new THREE.PointsMaterial({
+      map: texture,
+      color: color2,
+      blending: THREE.CustomBlending,
+      blendEquation: THREE.AddEquation,
+      blendSrc: THREE.SrcAlphaFactor,
+      blendDst:THREE.OneMinusSrcAlphaFactor,
+      size: dial_four * 0.5,
+      depthWrite: false,
+      sizeAttenuation: false,
+      opacity: dial_one/127,
+      transparent: true
+  })});
+
   addGeometryAgain();
 
 }
+
+
 
 function addGeometryAgain(){
   if (polyPitchArray.length != 0){
@@ -253,9 +270,7 @@ function addGeometryAgain(){
   }
   
   if (polyPitchArray.length == 2){
-    scene.background = new THREE.Color('black')
-
-
+    // scene.background = new THREE.Color('black')
     
     if (dial_one > 0 || dial_two > 0 || dial_three > 0 || dial_four > 0){
       geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
@@ -268,11 +283,15 @@ function addGeometryAgain(){
       particleMaterial = new THREE.PointsMaterial({
         map: texture,
         color: color1,
-        blending: THREE.AdditiveBlending,
+        blending: THREE.CustomBlending,
+        blendEquation: THREE.AddEquation,
+        blendSrc: THREE.SrcAlphaFactor,
+        blendDst:THREE.OneMinusSrcAlphaFactor,
         size: dial_four * 0.5,
         depthWrite: false,
         sizeAttenuation: false,
-        opacity: 1
+        opacity: dial_one/127,
+        transparent: true
     })});
 
 
@@ -289,17 +308,22 @@ function addGeometryAgain(){
         geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
       } else {
         geometry2 = new THREE.IcosahedronGeometry(0.05, 0);
+        dial_one = 127
       }
 
       material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
         particleMaterial2 = new THREE.PointsMaterial({
           map: texture,
           color: color2,
-          blending: THREE.AdditiveBlending,
+          blending: THREE.CustomBlending,
+          blendEquation: THREE.AddEquation,
+          blendSrc: THREE.SrcAlphaFactor,
+          blendDst:THREE.OneMinusSrcAlphaFactor,
           size: dial_four * 0.5,
           depthWrite: false,
           sizeAttenuation: false,
-          opacity: 1
+          opacity: dial_one/127,
+          transparent: true
       })});
 
 
@@ -315,23 +339,44 @@ function addGeometryAgain(){
 
 //-------------------------신디 관련 컨트롤용 코드입니다.-----------------------------//
 let polyPitchArray = [] // 현재 입력으로 사용되고 있는 Note들의 Array
+let polyBeatArray = []
+
+
 SyntheysizerEvents.addEventListener('noteInput', function (e){
   energy = e.detail.value * 10 / 127
   pitch = e.detail.pitch; // 48~72
+
   if (!polyPitchArray.includes(pitch)) {
     polyPitchArray.push(pitch);
   }
+
   compoCenter.position.set(10, 0, 0);
 })
+
+
 
 SyntheysizerEvents.addEventListener('noteRelease', function (e){
   polyPitchArray = polyPitchArray.filter((item) => item !== e.detail.pitch);
 })
 
 
+
 SyntheysizerEvents.addEventListener('padInput', function (e){
-  console.log("In Circle Pad id: ", e.detail.id); //그냥 패드 id입니다. 0~7로 8개가 표시됩니다.
+  //console.log("In Circle Pad id: ", e.detail.id); //그냥 패드 id입니다. 0~7로 8개가 표시됩니다.
+  if (!polyBeatArray.includes(e.detail.id)) {
+    polyBeatArray.push(e.detail.id);
+  }
 })
+
+
+
+SyntheysizerEvents.addEventListener('padOutput', function (e){
+  //console.log("In Circle Pad id: ", e.detail.id); //그냥 패드 id입니다. 0~7로 8개가 표시됩니다.
+  polyBeatArray = polyBeatArray.filter((item) => item !== e.detail.id);
+})
+
+
+
 
 
 SyntheysizerEvents.addEventListener('dialInput', function (e){
@@ -355,6 +400,12 @@ SyntheysizerEvents.addEventListener('joystickInpnut', function (e){ // 조이스
 })
 
 
+function beatBGChanger(){
+    scene.background = new THREE.Color('white')
+
+}
+
+
 function animate() {
 
     requestAnimationFrame(animate);
@@ -367,12 +418,24 @@ function animate() {
     if (FrameRate % 4 == 0){
           deleteBasics();
           createShape();
-          if (polyPitchArray.length == 0){
-            particleMaterial.opacity = 0;
+
+          if (polyPitchArray.length == 0){  
+            deleteBasics()
+            // particleMaterial.opacity = 0;
+            // particleMaterial2.opacity = 0;
             
           } else {
-            particleMaterial.opacity = 1;
+            // particleMaterial.opacity = 1;
+            // particleMaterial2.opacity = 1;
           }
+          
+
+          if (polyBeatArray[0] == 0){
+            scene.background = new THREE.Color('#999999')
+          } else {
+            scene.background = new THREE.Color('black')
+          }
+
           render();
         } 
 
@@ -396,7 +459,6 @@ function render() {
       renderer.render(scene, camera);
   }
 
-// optionalVisualization();
 
 
 // BASIC EVENTS
