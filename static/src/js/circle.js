@@ -313,9 +313,6 @@ function addGeometryAgain(){
 
 
 
-
-
-
 //-------------------------신디 관련 컨트롤용 코드입니다.-----------------------------//
 let polyPitchArray = [] // 현재 입력으로 사용되고 있는 Note들의 Array
 SyntheysizerEvents.addEventListener('noteInput', function (e){
@@ -362,9 +359,11 @@ function animate() {
 
     requestAnimationFrame(animate);
 
+
     // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
     FrameRate = FrameRate + 1
     
+
     if (FrameRate % 4 == 0){
           deleteBasics();
           createShape();
