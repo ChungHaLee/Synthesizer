@@ -5,6 +5,11 @@ export const note_set = {
   note: 0,
   value: 0
 };
+export const poly_note_set = {
+  pitch: [],
+  note : [],
+  value : []
+}
 
 export const pad_set = {
   id: 0,

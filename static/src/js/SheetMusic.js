@@ -1,9 +1,9 @@
 import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip} from './Share.js';
-import {piano_player, beat_player, dialInitialize} from './Synthesizer.js';
+import { piano_player, beat_player, dialInitialize} from './Synthesizer.js';
 //최소 범위 A2 ~ C7
 
-const clip_box_width = 1880;
-const clip_start_px = 60;
+const clip_box_width = 940;
+const clip_start_px = 30;
 const fps = 30;
 let currentTime = 0.0;
 let currentTime_track = 0.0;
@@ -122,7 +122,6 @@ function musicPlayer(currentTime){  //음이나 비트 소리를 재생하는 �
   }
 }
 function notePlayer(currentNote, previousNote){ //피아노 음 재생용 함수
-  //console.log(currentNote, previousNote);
   //piano_player(currentNote[0], true);
   var exclusiveArr1 = currentNote.filter(function(val) {
     return previousNote.indexOf(val) === -1;
@@ -244,33 +243,23 @@ document.getElementById("sheetMusicBeatButton").addEventListener('click', functi
 })
 document.getElementById("sheetMusicSaveButton").addEventListener('click', function (){
   if(current_clip_type == MusicClipType.Melody){     //멜로디 클립 저장 시
-    if(melody_clip.getNoteIndex() != -1){
-      createClipBox(melody_clip);
-      Melody_clip_array.push(melody_clip);
-      melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
-      Template_clip_array.push(template_clip);
-      template_clip = new TemplateClip(Template_clip_array.length);
-      //dialInitialize();
-      alert("Melody Clip saved")
-      clearNoteClip(MusicClipType.Melody);
-      initializeTimer();
-    }
-    else{
-      alert("There isn't any note in clip");
-    }
+    createClipBox(melody_clip);
+    Melody_clip_array.push(melody_clip);
+    melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+    Template_clip_array.push(template_clip);
+    template_clip = new TemplateClip(Template_clip_array.length);
+    //dialInitialize();
+    alert("Melody Clip saved")
+    clearNoteClip(MusicClipType.Melody);
+    initializeTimer();
   }
   else{                                         //비트   클립 저장시
-    if(beat_clip.getNoteIndex() != -1){
-      createClipBox(beat_clip);
-      Beat_clip_array.push(beat_clip);
-      beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
-      alert("Beat Clip saved")
-      clearNoteClip(MusicClipType.Beat);
-      initializeTimer();
-    }
-    else{
-      alert("There isn't any note in clip");
-    }
+    createClipBox(beat_clip);
+    Beat_clip_array.push(beat_clip);
+    beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+    alert("Beat Clip saved")
+    clearNoteClip(MusicClipType.Beat);
+    initializeTimer();
   }
 })
 document.getElementById("sheetMusicPlayButton").addEventListener('click', function (){
@@ -508,11 +497,14 @@ function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리
     beat_player(beat);
   }
 }
-function templatePlayerClip(template_clip){
-  let dial_set = template_clip.get_dial();
-  //console.log("dial_set_change", dial_set);
-  const event = new CustomEvent('templateLoad', { detail: dial_set });
-  SyntheysizerEvents.dispatchEvent(event);
+function templatePlayerClip(inputClip){
+  let dial_set = inputClip.get_dial();
+  if(dial_set != template_clip.get_dial()){
+    console.log("dial_set_change", dial_set);
+    const event = new CustomEvent('templateLoad', { detail: dial_set });
+    SyntheysizerEvents.dispatchEvent(event);
+    template_clip.set_dial(dial_set);
+  }
 }
 function clearAllBoxClip(){// 편집기에 모든 노트 제거
   removeAllElementsByClassName("resize-drag_clip");
@@ -524,9 +516,17 @@ document.getElementById("trackMusicPlayButton").addEventListener('click', functi
 })
 document.getElementById("trackMusicPauseButton").addEventListener('click', function (){
   stopTrack();
-  stopAllNotePlayer();
+  stopAllNotePlayer2();
 })
-
+function stopAllNotePlayer2(){
+  if(previousNote_track.length > 0){
+    //console.log("Ouput ", exclusiveArr2);
+    for( let note of previousNote_track){
+      piano_player(note, false);
+    }  
+  }
+  previousNote_track - []
+}
 // 객체를 JSON 파일로 다운로드하는 함수
 function downloadJsonFile(filename, data) {
   const jsonData = JSON.stringify(data);

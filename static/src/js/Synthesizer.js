@@ -1,5 +1,5 @@
 import {JZZ} from "./JZZ.js"
-import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set} from './Share.js';
+import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set, poly_note_set} from './Share.js';
 
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
@@ -155,34 +155,40 @@ function get_msg_input(msg){
     input_value: parseInt(msg.substr(6,2), 16)
   }
 }
-export function piano_player(input_pitch, attackRelase){
+export function piano_player(input_note, attackRelase, value = 127){
   if(attackRelase){
-    polySynth.triggerAttack(input_pitch);
+    polySynth.triggerAttack(input_note);
+    note_set.pitch = note2Pitch(input_note);  //output : 0 ~ 127
+    note_set.note = input_note; //output : C0 ~ B7
+    note_set.value = value; //output : 0 ~ 127
+    const event = new CustomEvent('noteInput', { detail: note_set });
+    SyntheysizerEvents.dispatchEvent(event);
   }
   else{
-    polySynth.triggerRelease(input_pitch);
+    polySynth.triggerRelease(input_note);
+    note_set.pitch = note2Pitch(input_note);  //output : 0 ~ 127
+    note_set.note = input_note; //output : C0 ~ B7
+    const event = new CustomEvent('noteRelease', { detail: note_set });
+    SyntheysizerEvents.dispatchEvent(event);
   }
 }
-
-
+function note2Pitch(input_note){
+  //console.log("input", input_note.slice(0,-1), input_note.slice(-1));
+  let num = noteType.findIndex((num) => num == input_note.slice(0,1));
+  return num + noteType.length * parseInt(input_note.slice(-1))
+}
+function pitch2Note(input_pitch){
+  return noteType[input_pitch%12] + String(parseInt(input_pitch/12))
+}
 
 function piano_key_input(input_id, input_value){
-  let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  piano_player(input_pitch, true);
-  note_set.pitch = input_id;  //output : 0 ~ 127
-  note_set.note = input_pitch; //output : C0 ~ B7
-  note_set.value = input_value; //output : 0 ~ 127
-  const event = new CustomEvent('noteInput', { detail: note_set });
-  SyntheysizerEvents.dispatchEvent(event);
+  let input_note = pitch2Note(input_id)
+  piano_player(input_note, true);
 }
 
 function piano_key_release(input_id){
-  let input_pitch = noteType[input_id%12] + String(parseInt(input_id/12))
-  piano_player(input_pitch, false);
-  note_set.pitch = input_id;  //output : 0 ~ 127
-  note_set.note = input_pitch; //output : C0 ~ B7
-  const event = new CustomEvent('noteRelease', { detail: note_set });
-  SyntheysizerEvents.dispatchEvent(event);
+  let input_note = pitch2Note(input_id)
+  piano_player(input_note, false);
 }
 function restartAudio(audioElement) {
   audioElement.currentTime = 0; // 재생 위치를 0으로 설정
@@ -218,9 +224,10 @@ function pad_input(input_id){
 SyntheysizerEvents.addEventListener('templateLoad', function (e){
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
   dial_set.value = e.detail;
+  console.log("set chnaged", dial_set);
   const event = new CustomEvent('dialInput', { detail: dial_set });
   SyntheysizerEvents.dispatchEvent(event);
-  console.log(dial_set);
+  //console.log(dial_set);
   //for(let i = 70; i < 78; i++){
   //  dial_effect(i, dial_set.value[parseInt((i-70)/4)][(i-70)%4]);
   //}

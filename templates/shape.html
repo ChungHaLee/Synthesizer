@@ -50,59 +50,27 @@
     </div>    
 
     
-    <div class="fixed-track-container">
-        duration : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
-        <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
-        <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
-        <button class="trackMusicButton"id="trackMusicRemoveClipButton"> Remove Note </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton"> Save track</button>
-        <button class="trackMusicButton"id="trackMusicLoadButton"> Load track</button>
-        <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
-        <div id="slider_track" style="width: 3000px; height: 15px;"></div>
-        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:35px; height: 90%"></div>
-        <div class="grid-container" id="TrackContainer">
-            <!-- <div class="track-item" track_type="template">Visualization </div>
-            <div class="track-item" track_type="Meolody">Melody </div>
-            <div class="track-item" track_type="Beat">Beat </div> -->
-            <div id="dropzoneGroup">
-                Template
-                <div id="template-dropzone" class="template-dropzone" style="width: 3000px;"></div>
-                Melody
-                <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px;"></div>
-                Beat
-                <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px;"></div>
-            </div>
-            <div id="TemplatedropContainer">
-                <!-- <div id="yes-drop" class="drag-drop"> Test 1 </div> -->
-            </div>
-            <div id="MelodydropContainer">
-                <!-- <div id="yes-drop" class="drag-drop"> Test 3 </div> -->
-            </div>
-            <div id="BeatdropContainer">
-                <!-- <div id="yes-drop" class="drag-drop"> Test 5 </div> -->
-            </div>
-        </div>
-    </div>
+
     <div id = "audioClipContainer" style="display:none;">
     <audio src="../static/src/sound/clap.wav" id = "beat1"></audio>
-    <audio src="../static/src/sound/dog.wav" id = "beat2"></audio>
+    <audio src="../static/src/sound/cat.wav" id = "beat2"></audio>
     <audio src="../static/src/sound/ride.wav" id = "beat3"></audio>
     <audio src="../static/src/sound/snare.wav" id = "beat4"></audio>
     </div>
-    <div id = 'sheetMusicController'>
-        <button class="sheetMusicButton"id="sheetMusicMelodyButton"> Melody </button>
-        <button class="sheetMusicButton"id="sheetMusicBeatButton"> Beat </button>
-        <button class="sheetMusicButton"id="sheetMusicSaveButton"> Save </button>
-        duration : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
-        <button class="sheetMusicButton"id="sheetMusicPlayButton"> Play </button>
-        <button class="sheetMusicButton"id="sheetMusicPauseButton"> Pause </button>
-        <button class="sheetMusicButton"id="sheetMusicRemoveNoteButton"> Remove Note </button>
-        <div id="slider" style="width: 1820px; left:60px;"></div>
-    </div>
-    <div class="fixed-container">
+    <div class="fixed-clip-container">
+        <div id = 'sheetMusicController'>
+            <button class="sheetMusicButton"id="sheetMusicMelodyButton"> Melody </button>
+            <button class="sheetMusicButton"id="sheetMusicBeatButton"> Beat </button>
+            <button class="sheetMusicButton"id="sheetMusicSaveButton"> Save </button>
+            duration : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
+            <button class="sheetMusicButton"id="sheetMusicPlayButton"> Play </button>
+            <button class="sheetMusicButton"id="sheetMusicPauseButton"> Pause </button>
+            <button class="sheetMusicButton"id="sheetMusicRemoveNoteButton"> Remove Note </button>
+            <div id="slider" style="width: 910px; height:10px; left:30px;"></div>
+        </div>
         <div class="grid-container" id="MelodyContainer">
-            <div class="vertical-line" id="startLine", style="left:60px;"></div>
-            <div class="vertical-line" id="timeLine1" style="background-color:green; left:60px;"></div>
+            <div class="vertical-line" id="startLine", style="left:30px;"></div>
+            <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
             <div class="grid-item" id="timeScale"></div>
             <div class="grid-item" id="box_C4">C4</div>
             <div class="grid-item" id="box_C#4">C#4</div>
@@ -131,15 +99,47 @@
             <div class="grid-item" id="box_C6">C6  </div>
         </div>
         <div class="grid-container" id="BeatContainer" style="display:none;">
-            <div class="vertical-line" id="startLine2", style="left:60px; height: 120%;"></div>
-            <div class="vertical-line" id="timeLine2" style="background-color:green; left:60px; height: 120%"></div>
+            <div class="vertical-line" id="startLine2", style="left:30px; height: 460px;"></div>
+            <div class="vertical-line" id="timeLine2" style="background-color:green; left:30px; height: 460px"></div>
             <div class="grid-item" id="box_0" style="height:100px;">Beat1 </div>
             <div class="grid-item" id="box_1" style="height:100px;">Beat2 </div>
             <div class="grid-item" id="box_2" style="height:100px;">Beat3 </div>
             <div class="grid-item" id="box_3" style="height:100px;">Beat4 </div>
         </div>
     </div>
-
+    <div class="fixed-track-container">
+        duration : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
+        <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
+        <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
+        <button class="trackMusicButton"id="trackMusicRemoveClipButton"> Remove Note </button>
+        <button class="trackMusicButton"id="trackMusicSaveButton"> Save track</button>
+        <button class="trackMusicButton"id="trackMusicLoadButton"> Load track</button>
+        <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
+        <div id="slider_track" style="width: 3000px; height: 15px;"></div>
+        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:35px; height: 90%"></div>
+        <div class="grid-container" id="TrackContainer">
+            <!-- <div class="track-item" track_type="template">Visualization </div>
+            <div class="track-item" track_type="Meolody">Melody </div>
+            <div class="track-item" track_type="Beat">Beat </div> -->
+            <div id="dropzoneGroup">
+                Template
+                <div id="template-dropzone" class="template-dropzone" style="width: 3000px; height: 25px;"></div>
+                Melody
+                <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px; height: 25px"></div>
+                Beat
+                <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px; height: 25px"></div>
+            </div>
+            <div id="TemplatedropContainer">
+                <!-- <div id="yes-drop" class="drag-drop"> Test 1 </div> -->
+            </div>
+            <div id="MelodydropContainer">
+                <!-- <div id="yes-drop" class="drag-drop"> Test 3 </div> -->
+            </div>
+            <div id="BeatdropContainer">
+                <!-- <div id="yes-drop" class="drag-drop"> Test 5 </div> -->
+            </div>
+        </div>
+    </div>
 
         <br>
         <div id="customSliders">
