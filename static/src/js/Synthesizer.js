@@ -128,6 +128,7 @@ function set_synthesiser(msg){
         pad_input(synthesiser_msg.input_id)
         break;
       case "89":  //Release the touch pad
+        pad_output(synthesiser_msg.input_id)
         break;
       case "b0":  //Moving the dial or Moving the joystick(up,down)
         if(synthesiser_msg.input_id != 1){
@@ -220,7 +221,12 @@ function pad_input(input_id){
   const event = new CustomEvent('padInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
-
+function pad_output(input_id){
+  beat_player(input_id - 36)
+  pad_set.id = input_id - 36;
+  const event = new CustomEvent('padOutput', { detail: pad_set });
+  SyntheysizerEvents.dispatchEvent(event);
+}
 SyntheysizerEvents.addEventListener('templateLoad', function (e){
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
   dial_set.value = e.detail;
