@@ -267,17 +267,17 @@ function Normaizing(input_value, minmaxList){
 function dial_effect(input_id, input_value){
     switch (input_id){
       case 70:
-        console.log("chorus", input_value)
+        console.log("feedbackDelay", input_value)
         if(dial_bool[0]){
           // console.log("disconnect");
-          polySynth.disconnect(chorus);
+          polySynth.disconnect(feedbackDelay);
           dial_bool[0] = false;
         }
         if(input_value > 10){
           // console.log("connect");
-          //chorus = new Tone.Chorus(Normaizing(input_value, [1, 10]), 2.5, 0.5).toDestination();
-          chorus.frequency.value = Normaizing(input_value, [1, 10])
-          polySynth.connect(chorus);
+          //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
+          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.8]);
+          polySynth.connect(feedbackDelay);
           dial_bool[0] = true;
         }
         break;
@@ -310,31 +310,31 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 73:
-        console.log("autoWah", input_value)
+        console.log("chorus", input_value)
         if(dial_bool[3]){
-          console.log("disconnect");
-          polySynth.disconnect(autoWah);
+          // console.log("disconnect");
+          polySynth.disconnect(chorus);
           dial_bool[3] = false;
         }
         if(input_value > 10){
-          console.log("connect");
-          autoWah.Q.value = Normaizing(input_value, [1, 10]);
-          polySynth.connect(autoWah);
+          // console.log("connect");
+          //chorus = new Tone.Chorus(Normaizing(input_value, [1, 10]), 2.5, 0.5).toDestination();
+          chorus.frequency.value = Normaizing(input_value, [1, 10])
+          polySynth.connect(chorus);
           dial_bool[3] = true;
         }
         break;
       case 74:
-        console.log("feedbackDelay", input_value)
+        console.log("autoWah", input_value)
         if(dial_bool[4]){
-          // console.log("disconnect");
-          polySynth.disconnect(feedbackDelay);
+          //console.log("disconnect");
+          polySynth.disconnect(autoWah);
           dial_bool[4] = false;
         }
         if(input_value > 10){
-          // console.log("connect");
-          //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
-          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.8]);
-          polySynth.connect(feedbackDelay);
+          //console.log("connect");
+          autoWah.Q.value = Normaizing(input_value, [1, 10]);
+          polySynth.connect(autoWah);
           dial_bool[4] = true;
         }
         break;
