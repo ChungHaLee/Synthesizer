@@ -4,7 +4,7 @@ import {piano_player, beat_player, dialInitialize} from './Synthesizer.js';
 
 const clip_box_width = 1880;
 const clip_start_px = 60;
-let fps = 30;
+const fps = 30;
 let currentTime = 0.0;
 let currentTime_track = 0.0;
 let play_state = false;
@@ -12,20 +12,53 @@ let play_state_track = false;
 let timer = null;
 let duration = 30
 let duration_track = 300;
+
 let clipduration = document.getElementById("clipduration");
 let timeLine1 = document.getElementById("timeLine1");
 let timeLine2 = document.getElementById("timeLine2");
 let timeLine3 = document.getElementById("timeLine3");
-const Template_clip_array = [];
-const Melody_clip_array = [];
-const Beat_clip_array = [];
+let FileInput = document.getElementById("fileUpload");
+
+let Template_clip_array = [];
+let Melody_clip_array = [];
+let Beat_clip_array = [];
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
 let template_clip = new TemplateClip(Template_clip_array.length);
 let onNoteList = [];
 let previousNote = [];
-const TrackObject = new MusicTrack();
+let previousNote_track = [];
+let TrackObject = new MusicTrack();
+
+
+
+
+function InitializeAllSetting(){
+  currentTime = 0.0;
+  currentTime_track = 0.0;
+  play_state = false;
+  play_state_track = false;
+  duration_track = 300;
+  Template_clip_array = [];
+  Melody_clip_array = [];
+  Beat_clip_array = [];
+  melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+  beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+  template_clip = new TemplateClip(Template_clip_array.length);
+  current_clip_type = MusicClipType.Melody;
+  onNoteList = [];
+  previousNote = [];
+  previousNote_track = [];
+  TrackObject = new MusicTrack();
+  stopRecording();
+  stopTrack();
+  clearNoteClip(MusicClipType.Beat);
+  clearNoteClip(MusicClipType.Melody);
+  clearAllBoxClip();
+  initializeTimer();
+  initializeTimer2();
+}
 
 clipduration.addEventListener("change", function(){//Clip의 시간을 바꾸면 실행하는 코드
   duration = parseFloat(clipduration.value);
@@ -43,6 +76,7 @@ clipduration.addEventListener("change", function(){//Clip의 시간을 바꾸면
   }
   if(current_clip_type == MusicClipType.Melody){
     melody_clip.setDuration(duration);
+    template_clip.set_duration(duration);
     loadClip(melody_clip, duration);
   }
   else{
@@ -384,7 +418,7 @@ function createTrackClipObject(dropzoneName, musicClip, box_id){
 function createTrackClipObject_template(dropzoneName, clip_id, box_id){
   const trackClip = document.createElement("div");
   trackClip.classList.add("resize-drag_clip");
-  trackClip.style.width = 300 + "px"
+  trackClip.style.width = duration * 10 + "px"
   let boxItem = document.getElementById(dropzoneName);
   trackClip.textContent = "Template_" + clip_id
   trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
@@ -439,19 +473,194 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
   //musicPlayer(currentTime);
   $("#slider_track").slider("value",currentTime_track*10);
   timeLine3.style.left = (currentTime_track*10) + "px";
-  
+  let cur_track_set = TrackObject.getcurrentClipSet(currentTime_track);
+  //console.log("Test Track", cur_track_set);
+  if(cur_track_set[0].length > 0){
+    templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
+  }
+  if(cur_track_set[1].length > 0){
+    musicPlayerMelodyClip(currentTime_track - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
+  }
+  if(cur_track_set[2].length > 0){
+    musicPlayerBeatClip(currentTime_track - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
+  }
   if(currentTime_track >= duration_track){
     stopRecording() //끝 도달하면 자동으로 종료
   }
 }
 
+function initializeTimer2(){ //Timer 초기화
+  stopTrack();
+  currentTime_track = 0.0;
+  $("#slider_track").slider("value",currentTime_track*10);
+  timeLine3.style.left = currentTime_track + "px";
+}
+
+function musicPlayerMelodyClip(currentTime, melody_clip){  //음이나 비트 소리를 재생하는 코드
+  let currentNote = melody_clip.getcurrentNoteSet(currentTime);
+  notePlayer(currentNote, previousNote_track);
+  previousNote_track = melody_clip.getcurrentNoteSet(currentTime);
+}
+
+function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리를 재생하는 코드
+  let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
+  for (let beat of currentBeat){
+    beat_player(beat);
+  }
+}
+function templatePlayerClip(template_clip){
+  let dial_set = template_clip.get_dial();
+  //console.log("dial_set_change", dial_set);
+  const event = new CustomEvent('templateLoad', { detail: dial_set });
+  SyntheysizerEvents.dispatchEvent(event);
+}
+function clearAllBoxClip(){// 편집기에 모든 노트 제거
+  removeAllElementsByClassName("resize-drag_clip");
+  removeAllElementsByClassName("draggable_clip");
+  removeAllElementsByClassName("drag-drop");
+}
 document.getElementById("trackMusicPlayButton").addEventListener('click', function (){
   startTrack();
 })
 document.getElementById("trackMusicPauseButton").addEventListener('click', function (){
   stopTrack();
+  stopAllNotePlayer();
 })
 
+// 객체를 JSON 파일로 다운로드하는 함수
+function downloadJsonFile(filename, data) {
+  const jsonData = JSON.stringify(data);
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = url;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+//Track이랑 Clip을 따로 파일로 저장하는 함수, Track은 Clip의 위치값만 있기 때문에 한 번에 가져와야함
+document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
+  let MusicTrackObejct = {
+    "user_Id": TrackObject.getUserId(),
+    "id_set" : TrackObject.getIdData(),
+    "time_set" : TrackObject.getTimeData()
+  }
+  downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
+  for(let i = 0; i < Template_clip_array.length; i ++){
+    let templateObejct = {
+      "CLip id": Template_clip_array[i].get_Clip_id(),
+      "duration": Template_clip_array[i].get_duration(),
+      "instrument": Template_clip_array[i].get_instrument(),
+      "dial_set": Template_clip_array[i].get_dial()
+    }
+    downloadJsonFile("template_clip_" + i, MusicTrackObejct); 
+  }
+  for(let i = 0; i < Melody_clip_array.length; i ++){
+    let MusicObejct = {
+      "Type": Melody_clip_array[i].getClipType(),
+      "CLip id": Melody_clip_array[i].getClipId(),
+      "duration": Melody_clip_array[i].getDuration(),
+      "noteSet": Melody_clip_array[i].getMusicClip()[0],
+      "timeSet": Melody_clip_array[i].getMusicClip()[1]
+    }
+    downloadJsonFile("Melody_clip_" + i, MusicObejct); 
+  }
+  for(let i = 0; i < Beat_clip_array.length; i ++){
+    let MusicObejct = {
+      "Type": Beat_clip_array[i].getClipType(),
+      "CLip id": Beat_clip_array[i].getClipId(),
+      "duration": Beat_clip_array[i].getDuration(),
+      "noteSet": Beat_clip_array[i].getMusicClip()[0],
+      "timeSet": Beat_clip_array[i].getMusicClip()[1]
+    }
+    downloadJsonFile("Beat_clip_" + i, MusicObejct); 
+  }
+})
+document.getElementById("trackMusicLoadButton").addEventListener('click', function (){
+  InitializeAllSetting();
+  FileInput.click();
+})
+FileInput.addEventListener('change', function(e){
+  const Files = e.target.files;
+  console.log(Files);
+  for(let jsonfile of Files){
+    if(jsonfile.name.includes("Melody")){
+      Melody_upload(jsonfile);
+    }
+    if(jsonfile.name.includes("Beat")){
+      Beat_upload(jsonfile);
+    }
+    if(jsonfile.name.includes("template")){
+      Template_upload(jsonfile);
+    }
+  }
+  for(let jsonfile of Files){
+    if(jsonfile.name.includes("MusicTrack")){
+      Track_upload(jsonfile);
+    }
+  }
+  // const file = e.target.files[0];
+  // const reader = new FileReader();
+  // reader.onload = function(event) {
+  //   const contents = event.target.result;
+  //   const jsonObject = JSON.parse(contents);
+  //   if(AudioObject.src == ""){
+  //     alert("First, Need to input the music")
+  //   }
+  //   else if(musicName.files[0].name != jsonObject["music"]){
+  //     alert("It doesn't match the music in this template.")
+  //   }
+  //   else{
+  //     InitializeAllSetting();
+  //     visualizationList = jsonObject["visualization"];
+  //     backgroundColorList = jsonObject["backgroundColorList"];
+  //     objectColorList = jsonObject["objectColor"];
+  //     objectPositionXList = jsonObject["objectPositionX"];
+  //     objectPositionYList = jsonObject["objectPositionY"];
+  //     objectPositionZList = jsonObject["objectPositionZ"];
+  //     timeTableList = jsonObject["timeTable"];
+  //     volumeList = jsonObject["volume"];
+  //     for(var i =1; i< visualizationList.length+1; i++){
+  //       ButtonMaker(i)
+  //     }
+  //     loadTemplate(1);
+  //   }
+  // };
+  // reader.readAsText(file);
+})
+function Track_upload(file){
+  const json = readJsonFile(file);
+  console.log(json); // 읽어온 Json 출력
+}
+function Melody_upload(file){
+  const json = readJsonFile(file);
+  console.log(json); // 읽어온 Json 출력
+}
+function Beat_upload(file){
+  const json = readJsonFile(file);
+  console.log(json); // 읽어온 Json 출력
+}
+function Template_upload(file){
+  const json = readJsonFile(file);
+  console.log(json); // 읽어온 Json 출력
+}
+function readJsonFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const json = JSON.parse(reader.result);
+        resolve(json);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    reader.readAsText(file);
+  });
+}
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------- Note Interaction용 ----------------------------------------------------//
@@ -669,6 +878,12 @@ interact('.draggable_clip')
       dropzoneElement.classList.add('drop-target')
       draggableElement.classList.add('can-drop')
       //draggableElement.textContent = 'Dragged in'
+      event.target.classList.remove('drop-active')
+      event.target.classList.remove('drop-target')
+      const tempalteId = parseInt(event.relatedTarget.getAttribute("clip_id"));
+      const clipTime = createTrackClipObject_template('template-dropzone', tempalteId, TrackObject.getTempalateId())
+      console.log("clip Time Check", clipTime/10);
+      TrackObject.setTemplateClip(tempalteId, clipTime/10)
     },
     ondragleave: function (event) {
       // remove the drop feedback style
@@ -681,12 +896,6 @@ interact('.draggable_clip')
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
-      event.target.classList.remove('drop-active')
-      event.target.classList.remove('drop-target')
-      const tempalteId = event.relatedTarget.getAttribute("clip_id")
-      const clipTime = createTrackClipObject_template('template-dropzone', tempalteId, TrackObject.getTempalateId())
-      console.log("clip Time Check", clipTime/10);
-      TrackObject.setTemplateClip(tempalteId, clipTime/10)
     }
   })
 
@@ -708,6 +917,12 @@ interact('.draggable_clip')
       dropzoneElement.classList.add('drop-target')
       draggableElement.classList.add('can-drop')
       //draggableElement.textContent = 'Dragged in'
+      event.target.classList.remove('drop-active')
+      event.target.classList.remove('drop-target')
+       const Tmp_clip = get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id"))
+      const clipTime = createTrackClipObject('melody-dropzone', Tmp_clip, TrackObject.getMelodyId())
+      console.log("clip Time Check", clipTime/10);
+      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
     },
     ondragleave: function (event) {
       // remove the drop feedback style
@@ -722,12 +937,6 @@ interact('.draggable_clip')
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
-      event.target.classList.remove('drop-active')
-      event.target.classList.remove('drop-target')
-       const Tmp_clip = get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id"))
-      const clipTime = createTrackClipObject('melody-dropzone', Tmp_clip, TrackObject.getMelodyId())
-      console.log("clip Time Check", clipTime/10);
-      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
     }
   })
 
@@ -749,6 +958,12 @@ interact('.draggable_clip')
       dropzoneElement.classList.add('drop-target')
       draggableElement.classList.add('can-drop')
       //draggableElement.textContent = 'Dragged in'
+      event.target.classList.remove('drop-active')
+      event.target.classList.remove('drop-target')
+      const Tmp_clip = get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id"))
+      const clipTime = createTrackClipObject('beat-dropzone', Tmp_clip, TrackObject.getBeatId())
+      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
+      console.log("clip Time Check", clipTime/10);
     },
     ondragleave: function (event) {
       // remove the drop feedback style
@@ -763,12 +978,6 @@ interact('.draggable_clip')
     },
     ondropdeactivate: function (event) {
       // remove active dropzone feedback
-      event.target.classList.remove('drop-active')
-      event.target.classList.remove('drop-target')
-      const Tmp_clip = get_clip(event.relatedTarget.getAttribute("clip_type"), event.relatedTarget.getAttribute("clip_id"))
-      const clipTime = createTrackClipObject('beat-dropzone', Tmp_clip, TrackObject.getBeatId())
-      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
-      console.log("clip Time Check", clipTime/10);
     }
   })
   

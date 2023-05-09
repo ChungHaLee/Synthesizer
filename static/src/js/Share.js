@@ -32,15 +32,27 @@ const MusicNote = {
   end: -1.0
 }
 export class TemplateClip{
-  constructor(Clip_id, duration = 30, instrument_id = 0){
+  constructor(Clip_id, duration = 30, instrument = 0){
     this.Clip_id = Clip_id;
     this.duration = duration;
-    this.instrument_id = instrument_id;
+    this.instrument = instrument;
     this.dial_set = [[0.0, 0.0, 0.0, 0.0], 
                      [0.0, 0.0, 0.0, 0.0]]
   }
   set_dial(dial_set){
     this.dial_set = dial_set
+  }
+  set_duration(duration){
+    this.duration = duration;
+  }
+  get_Clip_id(){
+    return this.Clip_id;
+  }
+  get_duration(){
+    return this.duration;
+  }
+  get_instrument(){
+    return this.instrument;
   }
   get_dial(){
     return this.dial_set;
@@ -170,17 +182,16 @@ export class MusicClip {
 }
 
 export class MusicTrack{
-  constructor (userId = 0, Track_name = "MusicTrack"){
+  constructor (userId = 0, id_set = [[],[],[]], time_set = [[], [], []]){
     this.userId = userId;
-    this.Track_name = Track_name;
 
-    this.TemplateIdClip = [];
-    this.MelodyClipIdList = [];
-    this.BeatClipIdList = [];
+    this.TemplateIdClip = id_set[0];
+    this.MelodyClipIdList = id_set[1];
+    this.BeatClipIdList = id_set[2];
 
-    this.TemplateTimeset = [];
-    this.MelodyTimeset = [];
-    this.BeatTimeset = [];
+    this.TemplateTimeset = time_set[0];
+    this.MelodyTimeset = time_set[1];
+    this.BeatTimeset = time_set[2];
   }
   setMusicClip(musicClip, clipTime){
     if(musicClip.getClipType() == MusicClipType.Melody){
@@ -196,9 +207,9 @@ export class MusicTrack{
       console.log("Add Beat box", this.BeatClipIdList);
     }
   }
-  setTemplateClip(templateId, clipTime){
+  setTemplateClip(templateId, clipTime){  //지금 코드가 조금 꼬여서 임의로 Template은 30초 길이로 고정
     this.TemplateIdClip.push(templateId);
-    this.TemplateTimeset.push(clipTime);
+    this.TemplateTimeset.push([clipTime, clipTime + 30]);
     console.log("Add Template box", this.TemplateIdClip);
   }
   editMusicClip(type, clip_id, deltaTime){
@@ -219,6 +230,39 @@ export class MusicTrack{
   }
   getBeatId(){
     return this.BeatClipIdList.length;
+  }
+  getcurrentClipSet(currentTime){
+    const Meldoy_set = []
+    const Beat_set = []
+    const Template_set = []
+    for (let i = 0; i < this.TemplateTimeset.length; i++) {
+      if (this.TemplateTimeset[i][0] <= currentTime && currentTime < this.TemplateTimeset[i][1]) {
+        Template_set.push(this.TemplateTimeset[i][0]);  // 시간이 먼저
+        Template_set.push(this.TemplateIdClip[i]);
+      }
+    }
+    for (let i = 0; i < this.MelodyTimeset.length; i++) {
+      if (this.MelodyTimeset[i][0] <= currentTime && currentTime < this.MelodyTimeset[i][1]) {
+        Meldoy_set.push(this.MelodyTimeset[i][0]);
+        Meldoy_set.push(this.MelodyClipIdList[i]);
+      }
+    }
+    for (let i = 0; i < this.BeatTimeset.length; i++) {
+      if (this.BeatTimeset[i][0] <= currentTime && currentTime < this.BeatTimeset[i][1]) {
+        Beat_set.push(this.BeatTimeset[i][0]);
+        Beat_set.push(this.BeatClipIdList[i]);
+      }
+    }
+    return [Template_set, Meldoy_set, Beat_set];  //순서는 항상 Template, Melody, Beat로 고정
+  }
+  getUserId(){
+    return this.userId;
+  }
+  getIdData(){
+    return [this.TemplateIdClip, this.MelodyClipIdList, this.BeatClipIdList]
+  }
+  getTimeData(){
+    return [this.TemplateTimeset, this.MelodyTimeset, this.BeatTimeset]
   }
   // setMusicClip(Melody_clip_array){  //Track의 Clip 정리 코드
   //   const MaxId = Math.max.apply(null, this.MelodyClipIdList);

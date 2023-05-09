@@ -10,6 +10,12 @@ filter.set({
   frequency: "C4",
   type:"highpass"
 });
+
+const beatAudio1 = document.getElementById('beat1');
+const beatAudio2 = document.getElementById('beat2');
+const beatAudio3 = document.getElementById('beat3');
+const beatAudio4 = document.getElementById('beat4');
+
 //AutoWah >> 울리는 효과
 // const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
 // autoWah.Q.value = 6;
@@ -64,13 +70,6 @@ let phaser = new Tone.Phaser({
 let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 let dial_bool = [false, false, false, false, false, false, false, false]
 
-
-
-
-
-
-
-
 // const synth = new Tone.Synth().chain(chorus).toDestination();
 // const AMsynth = new Tone.AMSynth().toDestination();
 // const duoSynth = new Tone.DuoSynth().toDestination();
@@ -107,8 +106,8 @@ const sampler = new Tone.Sampler({
 
 
 // Beat
-const MetalSynth = new Tone.MetalSynth().toDestination();
-const noiseSynth = new Tone.NoiseSynth().toDestination();
+//const MetalSynth = new Tone.MetalSynth().toDestination();
+//const noiseSynth = new Tone.NoiseSynth().toDestination();
 
 
 
@@ -181,35 +180,47 @@ function piano_key_release(input_id){
   const event = new CustomEvent('noteRelease', { detail: note_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
-
+function restartAudio(audioElement) {
+  audioElement.currentTime = 0; // 재생 위치를 0으로 설정
+  audioElement.play(); // 오디오 재생 시작
+}
 export function beat_player(input_id){
-  MetalSynth.triggerAttackRelease("8n", 0.05);
+  switch (input_id){
+    case 0:
+      restartAudio(beatAudio1);
+      break;
+    case 1:
+      restartAudio(beatAudio2);
+      break;
+    case 2:
+      restartAudio(beatAudio3);
+      break;
+    case 3:
+      restartAudio(beatAudio4);
+      break;
+    default:
+      break;
+  }
+  //MetalSynth.triggerAttackRelease("8n", 0.05);
 }
 
 function pad_input(input_id){
-  //console.log("pad id", input_id);
-  //MetalSynth.triggerAttackRelease("8n", 0.05);
-  beat_player(input_id)
+  beat_player(input_id - 36)
   pad_set.id = input_id - 36;
-  // switch (pad_set.id){
-  //   case 0:
-  //     beat1Sound.play();
-  //     break;
-  //   case 1:
-  //     beat2Sound.play();
-  //     break;
-  //   case 2:
-  //     beat3Sound.play();
-  //     break;
-  //   case 3:
-  //     beat4Sound.play();
-  //     break;
-  //   default:
-  //     break;
-  //   }
-    const event = new CustomEvent('padInput', { detail: pad_set });
-    SyntheysizerEvents.dispatchEvent(event);
+  const event = new CustomEvent('padInput', { detail: pad_set });
+  SyntheysizerEvents.dispatchEvent(event);
 }
+
+SyntheysizerEvents.addEventListener('templateLoad', function (e){
+  // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.
+  dial_set.value = e.detail;
+  const event = new CustomEvent('dialInput', { detail: dial_set });
+  SyntheysizerEvents.dispatchEvent(event);
+  console.log(dial_set);
+  //for(let i = 70; i < 78; i++){
+  //  dial_effect(i, dial_set.value[parseInt((i-70)/4)][(i-70)%4]);
+  //}
+})
 
 
 export function dialInitialize(){
@@ -225,17 +236,16 @@ export function dialInitialize(){
 function dial_input(input_id, input_value){
   //console.log("dial_input", input_id, );
   if(input_id > 69){  //there are except case in joystick
-    dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
-    const event = new CustomEvent('dialInput', { detail: dial_set });
-    SyntheysizerEvents.dispatchEvent(event);
-    dial_effect(input_id, input_value);
+    //dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
+    //const event = new CustomEvent('dialInput', { detail: dial_set });
+    //SyntheysizerEvents.dispatchEvent(event);
+    //dial_effect(input_id, input_value);
   }
 }
 
 function Normaizing(input_value, minmaxList){
   return minmaxList[0] + (minmaxList[1] - minmaxList[0]) * ((input_value - 10) / (127 - 10));
 }
-
 
 function dial_effect(input_id, input_value){
     switch (input_id){

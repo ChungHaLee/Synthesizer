@@ -55,7 +55,9 @@
         <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
         <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
         <button class="trackMusicButton"id="trackMusicRemoveClipButton"> Remove Note </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton"> save </button>
+        <button class="trackMusicButton"id="trackMusicSaveButton"> Save track</button>
+        <button class="trackMusicButton"id="trackMusicLoadButton"> Load track</button>
+        <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 3000px; height: 15px;"></div>
         <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:35px; height: 90%"></div>
         <div class="grid-container" id="TrackContainer">
@@ -81,7 +83,12 @@
             </div>
         </div>
     </div>
-
+    <div id = "audioClipContainer" style="display:none;">
+    <audio src="../static/src/sound/clap.wav" id = "beat1"></audio>
+    <audio src="../static/src/sound/dog.wav" id = "beat2"></audio>
+    <audio src="../static/src/sound/ride.wav" id = "beat3"></audio>
+    <audio src="../static/src/sound/snare.wav" id = "beat4"></audio>
+    </div>
     <div id = 'sheetMusicController'>
         <button class="sheetMusicButton"id="sheetMusicMelodyButton"> Melody </button>
         <button class="sheetMusicButton"id="sheetMusicBeatButton"> Beat </button>
