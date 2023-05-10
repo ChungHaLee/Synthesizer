@@ -259,7 +259,7 @@ function createShape(){
 
 
   compoCenter = new THREE.Points(geometry, particleMaterial);
-  compoCenter.position.set(5*(pitchOne-48)/4 - 15, 5*(pitchOne-48)/6 - 10, -10);
+  compoCenter.position.set(15*(pitchOne-48)/4 - 55, 13*(pitchOne-48)/6 - 35, -10);
 
   group.add( compoCenter );
 
@@ -361,7 +361,7 @@ function addGeometryAgain(){
 
 
       compoCenter2 = new THREE.Points(geometry2, particleMaterial2);
-      compoCenter2.position.set(5*(pitchTwo-48)/4 - 15, 5*(pitchTwo-48)/6 - 10, -10);
+      compoCenter2.position.set(15*(pitchTwo-48)/4 - 55, 13*(pitchTwo-48)/6 - 35, -10);
 
       group.add( compoCenter2 );
     
