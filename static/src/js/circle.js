@@ -235,7 +235,11 @@ function createShape(){
     geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
   } else {
     geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-    dial_one = 127
+    if (dial_one == undefined){
+      dial_one = 127
+    } else {
+      
+    }
   }
 
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
@@ -306,7 +310,11 @@ function addGeometryAgain(){
         geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
       } else {
         geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-        dial_one = 127
+        if (dial_one == undefined){
+          dial_one = 127
+        } else {
+
+        }
       }
     
 
@@ -341,7 +349,11 @@ function addGeometryAgain(){
       geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
     } else {
       geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-      dial_one = 127
+        if (dial_one == undefined){
+          dial_one = 127
+        } else {
+          
+        }
     }
 
       material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
