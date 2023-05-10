@@ -86,7 +86,7 @@ function init() {
     renderer = new THREE.WebGLRenderer( { antialias: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(800, 600);
+    renderer.setSize(1150, 600);
 
 
     camera = new THREE.PerspectiveCamera(70, renderer.domElement.width/renderer.domElement.height, 2, 2000);
