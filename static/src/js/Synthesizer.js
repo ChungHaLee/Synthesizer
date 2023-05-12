@@ -117,6 +117,7 @@ const sampler = new Tone.Sampler({
 
 function set_synthesiser(msg){
   let synthesiser_msg = get_msg_input(msg)
+  console.log("msg input ", msg);
     switch (synthesiser_msg.input_type){
       case "90":  //Press the piano keys
         piano_key_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
@@ -222,7 +223,6 @@ function pad_input(input_id){
   SyntheysizerEvents.dispatchEvent(event);
 }
 function pad_output(input_id){
-  beat_player(input_id - 36)
   pad_set.id = input_id - 36;
   const event = new CustomEvent('padOutput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
