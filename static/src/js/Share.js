@@ -74,22 +74,24 @@ export class MusicClip {
       if(Type==MusicClipType.Melody){
         this.melodyNoteSet = [];
         this.melodyTimeset = [];
+        this.melodyNoteId = 0;
       }
       if(Type==MusicClipType.Beat){
         this.beatSet = [];
         this.beatTime = [];
+        this.beatSetId = 0;
       }
   }
   setType(type){
     console.log("Set Type: ", type);
     this.Type = type;
   }
-
   setNoteInput(note, time) {
     if(this.Type==MusicClipType.Melody){
       //console.log("Pitch input Time:", pitch, time);
       this.melodyNoteSet.push(note);
       this.melodyTimeset.push([time, -1]);
+      this.melodyNoteId +=1;
     }
     else{
       alert("This Cilp type is Melody");
@@ -117,6 +119,7 @@ export class MusicClip {
       //console.log("Beat input Time:", pad_id, time);
       this.beatSet.push(pad_id);
       this.beatTime.push(time);
+      this.beatSetId+=1;
     }
     else{
       alert("This Clip type is Beat");
@@ -137,6 +140,17 @@ export class MusicClip {
       this.beatTime[noteIndex] += deltaTimeset[0];
     }
   }
+  deleteNote(noteIndex){
+    console.log("delete note", noteIndex);
+    if(this.Type==MusicClipType.Melody){
+      this.melodyNoteSet.splice(noteIndex,1);
+      this.melodyTimeset.splice(noteIndex,1);
+    }
+    else{
+      this.beatSet.splice(noteIndex,1);
+      this.beatTime.splice(noteIndex,1);
+    }
+  }
   getClipId(){
     return this.Clip_id;
   }
@@ -148,10 +162,10 @@ export class MusicClip {
   }
   getNoteIndex(){
     if(this.Type==MusicClipType.Melody){
-      return this.melodyNoteSet.length - 1;
+      return this.melodyNoteId;
     }
     else{
-      return this.beatSet.length - 1;
+      return this.beatSetId;
     }
   }
   getMusicClip(){

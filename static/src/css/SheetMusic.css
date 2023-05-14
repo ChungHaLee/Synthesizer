@@ -80,10 +80,11 @@
 
 .resize-drag {
     width: 10px;
-    height: 9px;
+    height: 20px;
     border-radius: 5px;
+    vertical-align: middle;
     padding: 0px;
-    margin: 0.3rem;
+    margin: 0.0rem;
     background-color: #29e;
     color:#29e;
     font-size: 5px;

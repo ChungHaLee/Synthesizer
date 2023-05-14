@@ -3,7 +3,6 @@ import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set, poly_not
 
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
-
 //AutiFilter >> 그냥 필터!
 const filter = new Tone.Filter().toDestination();
 filter.set({
@@ -70,10 +69,6 @@ let phaser = new Tone.Phaser({
 let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 let dial_bool = [false, false, false, false, false, false, false, false]
 
-
-
-
-
 // const synth = new Tone.Synth().chain(chorus).toDestination();
 // const AMsynth = new Tone.AMSynth().toDestination();
 // const duoSynth = new Tone.DuoSynth().toDestination();
@@ -117,13 +112,12 @@ const sampler = new Tone.Sampler({
 
 function set_synthesiser(msg){
   let synthesiser_msg = get_msg_input(msg)
-  console.log("msg input ", msg);
     switch (synthesiser_msg.input_type){
       case "90":  //Press the piano keys
         piano_key_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
         break;
       case "80":  //Release the piano keys
-      piano_key_release(synthesiser_msg.input_id)
+        piano_key_release(synthesiser_msg.input_id)
         break;
       case "99":  //tap the touch pad
         pad_input(synthesiser_msg.input_id)
@@ -186,11 +180,20 @@ function pitch2Note(input_pitch){
 function piano_key_input(input_id, input_value){
   let input_note = pitch2Note(input_id)
   piano_player(input_note, true);
+  note_set.pitch = input_id;  //output : 0 ~ 127
+  note_set.note = input_note; //output : C0 ~ B7
+  note_set.value = input_value; //output : 0 ~ 127
+  const event = new CustomEvent('pianoKeyInput', { detail: note_set });
+  SyntheysizerEvents.dispatchEvent(event);
 }
 
 function piano_key_release(input_id){
   let input_note = pitch2Note(input_id)
   piano_player(input_note, false);
+  note_set.pitch = input_id;  //output : 0 ~ 127
+  note_set.note = input_note; //output : C0 ~ B7
+  const event = new CustomEvent('pianoKeyOutput', { detail: note_set });
+  SyntheysizerEvents.dispatchEvent(event);
 }
 function restartAudio(audioElement) {
   audioElement.currentTime = 0; // 재생 위치를 0으로 설정
