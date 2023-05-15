@@ -66,21 +66,20 @@ export class TemplateClip{
 
 
 export class MusicClip {
-  constructor (Type, Clip_id, duration = 30) {
+  constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = []) {
       console.log("music Type : ", Type, "Clip_id", Clip_id,  "duration", duration);
       this.Type = Type;
       this.Clip_id = Clip_id;
       this.duration = duration;
       if(Type==MusicClipType.Melody){
-        this.melodyNoteSet = [];
-        this.melodyTimeset = [];
-        this.lyrics = [];
-        this.melodyNoteId = 0;
+        this.melodyNoteSet = arraySet;
+        this.melodyTimeset = timeSet;
+        this.melodyNoteId = arraySet.length;
       }
       if(Type==MusicClipType.Beat){
-        this.beatSet = [];
-        this.beatTime = [];
-        this.beatSetId = 0;
+        this.beatSet = arraySet;
+        this.beatTime = timeSet;
+        this.beatSetId = arraySet.length;
       }
   }
   setType(type){

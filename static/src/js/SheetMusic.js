@@ -725,6 +725,7 @@ const tmp_template_array = []
 
 document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
   let MusicTrackObejct = {
+    "Type":"MusicTrack",
     "user_Id": TrackObject.getUserId(),
     "id_set" : TrackObject.getIdData(),
     "time_set" : TrackObject.getTimeData()
@@ -732,12 +733,13 @@ document.getElementById("trackMusicSaveButton").addEventListener('click', functi
   downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
   for(let i = 0; i < Template_clip_array.length; i ++){
     let templateObejct = {
+      "Type": MusicClipType.Template,
       "CLip id": Template_clip_array[i].get_Clip_id(),
       "duration": Template_clip_array[i].get_duration(),
       "instrument": Template_clip_array[i].get_instrument(),
       "dial_set": Template_clip_array[i].get_dial()
     }
-    downloadJsonFile("template_clip_" + i, MusicTrackObejct); 
+    downloadJsonFile("template_clip_" + i, templateObejct); 
   }
   for(let i = 0; i < Melody_clip_array.length; i ++){
     let MusicObejct = {
@@ -769,55 +771,65 @@ document.getElementById("trackMusicLoadButton").addEventListener('click', functi
 })
 FileInput.addEventListener('change', function(e){
   const Files = e.target.files;
-  //console.log(Files);
-  for(let jsonfile of Files){
-    if(jsonfile.name.includes("Melody")){
-      Melody_upload(jsonfile);
-    }
-    if(jsonfile.name.includes("Beat")){
-      Beat_upload(jsonfile);
-    }
-    if(jsonfile.name.includes("template")){
-      Template_upload(jsonfile);
-    }
-  }
-  for(let jsonfile of Files){
-    if(jsonfile.name.includes("MusicTrack")){
-      Track_upload(jsonfile);
-    }
-  }
-})
-function Track_upload(file){
-  const json = readJsonFile(file);
-  console.log("Track_upload",json); // 읽어온 Json 출력
-}
-function Melody_upload(file){
-  const json = readJsonFile(file);
-  console.log("Melody_upload", json); // 읽어온 Json 출력
-}
-function Beat_upload(file){
-  const json = readJsonFile(file);
-  console.log("Beat_upload", json); // 읽어온 Json 출력
-}
-function Template_upload(file){
-  const json = readJsonFile(file);
-  console.log("Template_upload", json); // 읽어온 Json 출력
-}
-function readJsonFile(file) {
-  return new Promise((resolve, reject) => {
+  for(let file of Files){
     const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const json = JSON.parse(reader.result);
-        resolve(json);
-        return json.result;
-      } catch (error) {
-        reject(error);
+    reader.onload = function(event) {
+      const contents = event.target.result;
+      const jsonObject = JSON.parse(contents);
+      if(jsonObject["Type"]==MusicClipType.Melody){
+        let Tmp_melody_clip = new MusicClip(jsonObject["Type"], jsonObject["CLip_id"], jsonObject["duration"], jsonObject["noteSet"], jsonObject["TimeSet"])
+        console.log("Melody push", Tmp_melody_clip);
+        tmp_Meldoy_array.push(Tmp_melody_clip)
+      }
+      if(jsonObject["Type"]==MusicClipType.Beat){
+        let Tmp_beat_clip = new MusicClip(jsonObject["Type"], jsonObject["CLip_id"], jsonObject["duration"], jsonObject["noteSet"], jsonObject["TimeSet"]);
+        console.log("Beat push", Tmp_beat_clip);
+        tmp_Beat_array.push(Tmp_beat_clip);
+      }
+      if(jsonObject["Type"]==MusicClipType.Template){
+        let Tmp_template_clip = new TemplateClip(jsonObject["CLip_id"], jsonObject["duration"], jsonObject["instrument"]);
+        Tmp_template_clip.set_dial(jsonObject["dial_set"]);
+        console.log("Template push", Tmp_template_clip);
+        tmp_template_array.push(Tmp_template_clip);
+      }
+      if(jsonObject["Type"]=="MusicTrack"){
+        TrackObject = new MusicTrack(jsonObject["user_Id"], jsonObject["id_set"], jsonObject["time_set"]);
+        console.log("TrackObject : ", TrackObject);
       }
     };
     reader.readAsText(file);
-  });
-}
+  }
+  // for(let i = 0; i<tmp_Meldoy_array.length; i++){
+  //   console.log("loop check")
+  //   for(let melodyclip of tmp_Meldoy_array){
+  //     if(melodyclip.getClipId()==i){
+  //       Melody_clip_array.push(melodyclip);
+  //       console.log('create clip', melodyclip)
+  //       createClipBox(melodyclip);
+  //     }
+  //   }
+  // }
+  // for(let i = 0; i<tmp_Beat_array.length; i++){
+  //   for(let beatclip of tmp_Beat_array){
+  //     if(beatclip.getClipId()==i){
+  //       Beat_clip_array.push(beatclip);
+  //       console.log('create clip', beatclip)
+  //       createClipBox(beatclip);
+  //     }
+  //   }
+  // }
+  // for(let i = 0; i<tmp_template_array.length; i++){
+  //   for(let templateCLip of tmp_template_array){
+  //     if(templateCLip.get_Clip_id()==i){
+  //       Template_clip_array.push(templateCLip);
+  //       console.log('create clip', templateCLip)
+  //       createTemplateClipBox(templateCLip);
+  //     }
+  //   }
+  // }
+})
+
+
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------- Note Interaction용 ----------------------------------------------------//
