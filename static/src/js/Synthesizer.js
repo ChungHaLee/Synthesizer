@@ -270,7 +270,7 @@ function Normaizing(input_value, minmaxList){
 function dial_effect(input_id, input_value){
     switch (input_id){
       case 70:
-        console.log("feedbackDelay", input_value)
+        //console.log("feedbackDelay", input_value)
         if(dial_bool[0]){
           // console.log("disconnect");
           polySynth.disconnect(feedbackDelay);
@@ -285,7 +285,7 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 71:
-        console.log("crusher", input_value)
+        //console.log("crusher", input_value)
         if(dial_bool[1]){
           // console.log("disconnect");
           polySynth.disconnect(crusher);
@@ -299,7 +299,7 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 72:
-        console.log("cheby", input_value)
+        //console.log("cheby", input_value)
         if(dial_bool[2]){
           // console.log("disconnect");
           polySynth.disconnect(cheby);
@@ -313,7 +313,7 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 73:
-        console.log("chorus", input_value)
+        //console.log("chorus", input_value)
         if(dial_bool[3]){
           // console.log("disconnect");
           polySynth.disconnect(chorus);

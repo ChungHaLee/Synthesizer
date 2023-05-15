@@ -166,6 +166,9 @@ export class MusicClip {
   getDuration(){
     return this.duration;
   }
+  getLyrics(){
+    return this.lyrics;
+  }
   getNoteIndex(){
     if(this.Type==MusicClipType.Melody){
       return this.melodyNoteId;

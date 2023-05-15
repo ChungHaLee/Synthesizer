@@ -43,12 +43,15 @@
 
 
     <div id="midiContainer">
-        <button data-action = "open_midi_in">open</button> 
-        <button data-action = "close_midi_in">close</button> 
+        <button data-action = "open_midi_in">신디 연결</button> 
+        <button data-action = "close_midi_in">신디 해제</button> 
         MIDI: <span id="midiInName">NONE</span>
         <!-- <span id="currnet_note" style = "display: none;">NONE</span> -->
     </div>    
-
+    <div id="hapticContainer">
+        <button data-action = "hapticConnect">햅틱 연결</button> 
+        <button data-action = "hapticDisconnect">햅틱 해제</button> 
+    </div> 
     
 
     <div id = "audioClipContainer" style="display:none;">
@@ -59,18 +62,15 @@
     </div>
     <div class="fixed-clip-container">
         <div id = 'sheetMusicController'>
-            <button class="sheetMusicButton"id="sheetMusicMelodyButton"> Melody </button>
-            <button class="sheetMusicButton"id="sheetMusicBeatButton"> Beat </button>
-            duration : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
-            <button class="sheetMusicButton"id="sheetMusicSaveButton"> Save </button>
-            <button class="sheetMusicButton"id="sheetTemplateSaveButton"> Template Save </button>
-            <button class="sheetMusicButton"id="sheetMusicPlayButton"> Play </button>
-            <button class="sheetMusicButton"id="sheetMusicPauseButton"> Pause </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteNoteButton"> Delete </button>
-            <br>
-            lyrics : <input type="text" id="sheetMusiclyricsInput">
-            <button class="sheetMusicButton"id="sheetMusicLyricsButton"> Push </button>
-            <br>
+            <button class="sheetMusicButton"id="sheetMusicMelodyButton"> 멜로디 </button>
+            <button class="sheetMusicButton"id="sheetMusicBeatButton"> 비트 </button>
+            <button class="sheetMusicButton"id="sheetMusicTemplateButton"> 템플릿 </button>
+            클립 길이 : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
+            <button class="sheetMusicButton"id="sheetMusicSaveButton"> 저장 </button>
+            <button class="sheetMusicButton"id="sheetTemplateSaveButton"> 템플릿 저장 </button>
+            <button class="sheetMusicButton"id="sheetMusicPlayButton"> 재생 </button>
+            <button class="sheetMusicButton"id="sheetMusicPauseButton"> 정지 </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton"> 삭제 </button>
             <div id="slider" style="width: 910px; height:10px; left:30px;"></div>
             
         </div>
@@ -78,48 +78,48 @@
             <div class="vertical-line" id="startLine", style="left:30px;"></div>
             <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
             <div class="grid-item" id="timeScale"></div>
-            <div class="grid-item" id="box_C4">C4</div>
-            <div class="grid-item" id="box_C#4">C#4</div>
-            <div class="grid-item" id="box_D4">D4</div>
-            <div class="grid-item" id="box_D#4">D#4 </div>
-            <div class="grid-item" id="box_E4">E4 </div>
-            <div class="grid-item" id="box_F4">F4 </div>
-            <div class="grid-item" id="box_F#4">F#4 </div>
-            <div class="grid-item" id="box_G4">G4 </div>
-            <div class="grid-item" id="box_G#4">G#4 </div>
-            <div class="grid-item" id="box_A4">A4 </div>
-            <div class="grid-item" id="box_A#4">A#4</div>
-            <div class="grid-item" id="box_B4">B4 </div>
-            <div class="grid-item" id="box_C5">C5 </div>
-            <div class="grid-item" id="box_C#5">C#5 </div>
-            <div class="grid-item" id="box_D5">D5 </div>
-            <div class="grid-item" id="box_D#5">D#5</div>
-            <div class="grid-item" id="box_E5">E5 </div>
-            <div class="grid-item" id="box_F5">F5 </div>
-            <div class="grid-item" id="box_F#5">F#5 </div>
-            <div class="grid-item" id="box_G5">G5 </div>
-            <div class="grid-item" id="box_G#5">G#5 </div>
-            <div class="grid-item" id="box_A5">A5 </div>
-            <div class="grid-item" id="box_A#5">A#5 </div>
-            <div class="grid-item" id="box_B5">B5  </div>
-            <div class="grid-item" id="box_C6">C6  </div>
+            <div class="grid-item" id="box_C4">도4</div>
+            <div class="grid-item" id="box_C#4">도#4</div>
+            <div class="grid-item" id="box_D4">레4</div>
+            <div class="grid-item" id="box_D#4">레#4 </div>
+            <div class="grid-item" id="box_E4">미4 </div>
+            <div class="grid-item" id="box_F4">파4 </div>
+            <div class="grid-item" id="box_F#4">파#4 </div>
+            <div class="grid-item" id="box_G4">솔4 </div>
+            <div class="grid-item" id="box_G#4">솔#4 </div>
+            <div class="grid-item" id="box_A4">라4 </div>
+            <div class="grid-item" id="box_A#4">라#4</div>
+            <div class="grid-item" id="box_B4">시4 </div>
+            <div class="grid-item" id="box_C5">도5 </div>
+            <div class="grid-item" id="box_C#5">도#5 </div>
+            <div class="grid-item" id="box_D5">레5 </div>
+            <div class="grid-item" id="box_D#5">레#5</div>
+            <div class="grid-item" id="box_E5">미5 </div>
+            <div class="grid-item" id="box_F5">파5 </div>
+            <div class="grid-item" id="box_F#5">파#5 </div>
+            <div class="grid-item" id="box_G5">솔5 </div>
+            <div class="grid-item" id="box_G#5">솔#5 </div>
+            <div class="grid-item" id="box_A5">라5 </div>
+            <div class="grid-item" id="box_A#5">라#5 </div>
+            <div class="grid-item" id="box_B5">시5  </div>
+            <div class="grid-item" id="box_C6">도6  </div>
         </div>
         <div class="grid-container" id="BeatContainer" style="display:none;">
             <div class="vertical-line" id="startLine2", style="left:30px; height: 460px;"></div>
             <div class="vertical-line" id="timeLine2" style="background-color:green; left:30px; height: 460px"></div>
-            <div class="grid-item" id="box_0" style="height:100px;">Beat1 </div>
-            <div class="grid-item" id="box_1" style="height:100px;">Beat2 </div>
-            <div class="grid-item" id="box_2" style="height:100px;">Beat3 </div>
-            <div class="grid-item" id="box_3" style="height:100px;">Beat4 </div>
+            <div class="grid-item" id="box_0" style="height:100px;">비트1 </div>
+            <div class="grid-item" id="box_1" style="height:100px;">비트2 </div>
+            <div class="grid-item" id="box_2" style="height:100px;">비트3 </div>
+            <div class="grid-item" id="box_3" style="height:100px;">비트4 </div>
         </div>
     </div>
     <div class="fixed-track-container">
-        duration : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
-        <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
-        <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
-        <button class="trackMusicButton"id="trackMusicRemoveClipButton"> Remove Note </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton"> Save track</button>
-        <button class="trackMusicButton"id="trackMusicLoadButton"> Load track</button>
+        트렉 길이 : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
+        <button class="trackMusicButton"id="trackMusicPlayButton"> 재생 </button>
+        <button class="trackMusicButton"id="trackMusicPauseButton"> 정지 </button>
+        <button class="trackMusicButton"id="trackMusicDeleteButton"> 클립 삭제 </button>
+        <button class="trackMusicButton"id="trackMusicSaveButton"> 노래 저장</button>
+        <button class="trackMusicButton"id="trackMusicLoadButton"> 노래 불러오기</button>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 3000px; height: 15px;"></div>
         <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:35px; height: 90%"></div>
@@ -128,11 +128,11 @@
             <div class="track-item" track_type="Meolody">Melody </div>
             <div class="track-item" track_type="Beat">Beat </div> -->
             <div id="dropzoneGroup">
-                Template
+                템플릿
                 <div id="template-dropzone" class="template-dropzone" style="width: 3000px; height: 25px;"></div>
-                Melody
+                멜로디
                 <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px; height: 25px"></div>
-                Beat
+                비트
                 <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px; height: 25px"></div>
             </div>
             <div id="TemplatedropContainer">

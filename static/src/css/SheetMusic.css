@@ -1,6 +1,6 @@
 .vertical-line {
     position: absolute;
-    top: 40px;
+    top: 20px;
     width: 2px;
     height: 572px;
     background-color: black;
@@ -41,10 +41,10 @@
     font-size: 0.2em;
   }
 .fixed-clip-container {
-    margin-top: -630px;
-    margin-left: 1200px;
+    margin-top: -650px;
+    margin-left: 1150px;
     position: absolute; /* or 'absolute' or 'fixed', depending on your needs */
-    width: 800px; /* Set the desired width */
+    width: 750px; /* Set the desired width */
     height: 600px; /* Set the desired height */
     overflow: auto; /* Enables scrolling when the content exceeds the container's size */
     padding: 0px;
@@ -77,6 +77,7 @@
   touch-action: none;
   user-select: none;
   display: inline-block;
+  text-align: center;
 }
 
 .resize-drag {
@@ -87,9 +88,10 @@
     padding: 0px;
     margin: 0.0rem;
     background-color: #29e;
-    color:rgb(0, 0, 0);
+    color:rgb(255, 255, 255);
     font-size: 8px;
     font-family: sans-serif;
+    text-align: center;
     touch-action: none;
     /* This makes things *much* easier */
     box-sizing: border-box;
@@ -109,6 +111,7 @@
   background-color: rgb(226, 245, 56);;
   color:rgb(0, 0, 0);
   font-size: 5px;
+  text-align: center;
   border-radius: 0.75em;
   touch-action: none;
   user-select: none;
@@ -203,7 +206,7 @@
   color: #fff;
   background-color: #29e;
   border: solid 2px #fff;
-
+  text-align: center;
   touch-action: none;
   transform: translate(0px, 0px);
 
