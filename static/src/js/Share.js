@@ -166,9 +166,6 @@ export class MusicClip {
   getDuration(){
     return this.duration;
   }
-  getLyrics(){
-    return this.lyrics;
-  }
   getNoteIndex(){
     if(this.Type==MusicClipType.Melody){
       return this.melodyNoteId;
@@ -291,6 +288,32 @@ export class MusicTrack{
   }
   getTimeData(){
     return [this.TemplateTimeset, this.MelodyTimeset, this.BeatTimeset]
+  }
+  getTemplateSet(){
+    return [this.TemplateIdClip, this.TemplateTimeset]
+  }
+  getMelodySet(){
+    return [this.MelodyClipIdList, this.MelodyTimeset]
+  }
+  getBeatSet(){
+    return [this.BeatClipIdList, this.BeatTimeset]
+  }
+  deleteClip(clipType, clipIndex){
+    console.log("delete Track", clipType, clipIndex);
+    if(clipType != null){
+      if(clipType == MusicClipType.Template){
+        this.TemplateIdClip.splice(clipIndex,1)
+        this.TemplateTimeset.splice(clipIndex,1)
+      }
+      else if(clipType == MusicClipType.Melody){
+        this.MelodyClipIdList.splice(clipIndex,1)
+        this.MelodyTimeset.splice(clipIndex,1)
+      }
+      else{
+        this.BeatClipIdList.splice(clipIndex,1)
+        this.BeatTimeset.splice(clipIndex,1)
+      }
+    }
   }
   // setMusicClip(Melody_clip_array){  //Track의 Clip 정리 코드
   //   const MaxId = Math.max.apply(null, this.MelodyClipIdList);
