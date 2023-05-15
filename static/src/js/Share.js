@@ -74,6 +74,7 @@ export class MusicClip {
       if(Type==MusicClipType.Melody){
         this.melodyNoteSet = [];
         this.melodyTimeset = [];
+        this.lyrics = [];
         this.melodyNoteId = 0;
       }
       if(Type==MusicClipType.Beat){
@@ -86,11 +87,12 @@ export class MusicClip {
     console.log("Set Type: ", type);
     this.Type = type;
   }
-  setNoteInput(note, time) {
+  setNoteInput(note, time, lyric="") {
     if(this.Type==MusicClipType.Melody){
       //console.log("Pitch input Time:", pitch, time);
       this.melodyNoteSet.push(note);
       this.melodyTimeset.push([time, -1]);
+      this.lyrics.push(lyric)
       this.melodyNoteId +=1;
     }
     else{
@@ -128,8 +130,11 @@ export class MusicClip {
   setDuration(duration){
     this.duration = duration;
   }
-  serInstrument(instrument_id){
+  setInstrument(instrument_id){
     this.instrument_id = instrument_id;
+  }
+  setLyrics(noteIndex, lyric){
+    this.lyrics[noteIndex] = lyric;
   }
   editNote(noteIndex, deltaTimeset){
     if(this.Type==MusicClipType.Melody){
@@ -145,6 +150,7 @@ export class MusicClip {
     if(this.Type==MusicClipType.Melody){
       this.melodyNoteSet.splice(noteIndex,1);
       this.melodyTimeset.splice(noteIndex,1);
+      this.lyrics.splice(noteIndex,1);
     }
     else{
       this.beatSet.splice(noteIndex,1);

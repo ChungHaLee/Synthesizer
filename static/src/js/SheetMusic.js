@@ -194,6 +194,7 @@ function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, B
     console.log("Note Id:", resizeDrag.getAttribute("note_id"));
     noteClickIndex = resizeDrag.getAttribute("note_id");
   })
+  noteClickIndex = noteId;
   boxItem.appendChild(resizeDrag);
   return resizeDrag
 }
@@ -252,7 +253,7 @@ document.getElementById("sheetTemplateSaveButton").addEventListener('click', fun
     alert("Template Clip saved")
   }
   else{
-    Template_clip_array[template_clip.getClipId()] = template_clip;
+    Template_clip_array[template_clip.get_Clip_id()] = template_clip;
     alert("Template Clip resaved")
   }
 })
@@ -309,6 +310,19 @@ document.getElementById("sheetMusicDeleteNoteButton").addEventListener('click', 
     }
   }
 })
+document.getElementById("sheetMusicLyricsButton").addEventListener('click', function (){
+  let Lyrics = document.getElementById("sheetMusiclyricsInput").value
+  if(current_clip_type == MusicClipType.Melody){
+    melody_clip.setLyrics(noteClickIndex,Lyrics)
+    const elements = document.getElementsByClassName("resize-drag");
+    for (const element of elements) {
+      if (element.getAttribute('note_id') === noteClickIndex) {
+          element.textContent = Lyrics;
+      }
+    }
+  }
+})
+
 
 /* Synthesizer Event Code */
 SyntheysizerEvents.addEventListener('pianoKeyInput', function (e){
