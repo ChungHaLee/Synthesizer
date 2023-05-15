@@ -10,7 +10,8 @@ module.exports = {
         JZZ: path.resolve(__dirname, "src", "js", "JZZ.js"),
         Synthesizer: path.resolve(__dirname, "src", "js", "Synthesizer.js"),
         Share: path.resolve(__dirname, "src", "js", "Share.js"),
-        SheetMusic: path.resolve(__dirname, "src", "js", "SheetMusic.js")
+        SheetMusic: path.resolve(__dirname, "src", "js", "SheetMusic.js"),
+        haptic: path.resolve(__dirname, "src", "js", "haptic.js")
     },
     mode: "development",
     target: "web",

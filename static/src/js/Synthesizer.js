@@ -14,7 +14,6 @@ const beatAudio1 = document.getElementById('beat1');
 const beatAudio2 = document.getElementById('beat2');
 const beatAudio3 = document.getElementById('beat3');
 const beatAudio4 = document.getElementById('beat4');
-
 //AutoWah >> 울리는 효과
 // const autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
 // autoWah.Q.value = 6;
@@ -200,6 +199,8 @@ function restartAudio(audioElement) {
   audioElement.play(); // 오디오 재생 시작
 }
 export function beat_player(input_id){
+  document.getElementById('HapticPlayButton').click();
+  //console.log("tap Check");
   switch (input_id){
     case 0:
       restartAudio(beatAudio1);
@@ -216,7 +217,6 @@ export function beat_player(input_id){
     default:
       break;
   }
-  //MetalSynth.triggerAttackRelease("8n", 0.05);
 }
 
 function pad_input(input_id){
@@ -270,7 +270,7 @@ function Normaizing(input_value, minmaxList){
 function dial_effect(input_id, input_value){
     switch (input_id){
       case 70:
-        //console.log("feedbackDelay", input_value)
+        console.log("feedbackDelay", input_value)
         if(dial_bool[0]){
           // console.log("disconnect");
           polySynth.disconnect(feedbackDelay);
@@ -285,7 +285,7 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 71:
-        //console.log("crusher", input_value)
+        console.log("crusher", input_value)
         if(dial_bool[1]){
           // console.log("disconnect");
           polySynth.disconnect(crusher);
@@ -299,7 +299,7 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 72:
-        //console.log("cheby", input_value)
+        console.log("cheby", input_value)
         if(dial_bool[2]){
           // console.log("disconnect");
           polySynth.disconnect(cheby);
@@ -313,7 +313,7 @@ function dial_effect(input_id, input_value){
         }
         break;
       case 73:
-        //console.log("chorus", input_value)
+        console.log("chorus", input_value)
         if(dial_bool[3]){
           // console.log("disconnect");
           polySynth.disconnect(chorus);
@@ -363,12 +363,6 @@ function dial_effect(input_id, input_value){
           dial_bool[6] = false;
         }
         if(input_value > 10){
-          // console.log("connect");
-          // phaser = new Tone.Phaser({
-          //   frequency: 150,
-          //   octaves: parseInt(Normaizing(input_value, [1, 10])),
-          //   baseFrequency: 1000
-          // }).toDestination();
           phaser.frequency.value = Normaizing(input_value, [1, 150]);
           //phaser.octaves = parseInt(Normaizing(input_value, [1, 10])),
           polySynth.connect(phaser);

@@ -49,8 +49,10 @@
         <!-- <span id="currnet_note" style = "display: none;">NONE</span> -->
     </div>    
     <div id="hapticContainer">
-        <button data-action = "hapticConnect">햅틱 연결</button> 
-        <button data-action = "hapticDisconnect">햅틱 해제</button> 
+        <button data-action = "SearchHapticDevice">햅틱 연결</button> 
+        <button data-action = "DisconnectHapticDevice">햅틱 해제</button> 
+        <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none;">Play</button>
+        세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
     </div> 
     
 
@@ -276,6 +278,7 @@
     <script type="module" defer src="./static/src/js/dist/JZZ.js"></script>
     <script type="module" defer src="./static/src/js/dist/Synthesizer.js"></script>
     <script type="module" defer src="./static/src/js/dist/SheetMusic.js"></script>
+    <script type="module" defer src="./static/src/js/dist/haptic.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
