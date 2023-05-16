@@ -86,12 +86,11 @@ export class MusicClip {
     console.log("Set Type: ", type);
     this.Type = type;
   }
-  setNoteInput(note, time, lyric="") {
+  setNoteInput(note, time) {
     if(this.Type==MusicClipType.Melody){
       //console.log("Pitch input Time:", pitch, time);
       this.melodyNoteSet.push(note);
       this.melodyTimeset.push([time, -1]);
-      this.lyrics.push(lyric)
       this.melodyNoteId +=1;
     }
     else{
