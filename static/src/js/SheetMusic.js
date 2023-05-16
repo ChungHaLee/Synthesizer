@@ -409,7 +409,7 @@ function removeAllElementsByClassName(className) {//
 function clearNoteClip(type){// 편집기에 모든 노트 제거
   if(type == MusicClipType.Melody){
     removeAllElementsByClassName("resize-drag");
-    removeAllElementsByClassName("draggable_clip_lyrics");
+    removeAllElementsByClassName("resize-lyrics");
   }
   else{
     removeAllElementsByClassName("draggable");
