@@ -409,6 +409,7 @@ function removeAllElementsByClassName(className) {//
 function clearNoteClip(type){// 편집기에 모든 노트 제거
   if(type == MusicClipType.Melody){
     removeAllElementsByClassName("resize-drag");
+    removeAllElementsByClassName("draggable_clip_lyrics");
   }
   else{
     removeAllElementsByClassName("draggable");
@@ -440,6 +441,72 @@ function changeMusicClip(noteIndex, deltaTimeset){ // 노트 위치, 크기 편�
   else{
     beat_clip.editNote(noteIndex, deltaTimeset)
   }
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------가사 관련 추가 코드---------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------//
+
+let lyricsId = 0
+document.getElementById("LyricsPushButton").addEventListener("click", function(){
+  let lyricsText = document.getElementById("lyricsInputer").value;
+  createLyricsbject(lyricsId, lyricsText)
+  lyricsId += 1;
+})
+function createLyricsbject(note_id, lyricsText){
+  const boxItem = document.getElementById("LyricsBox1");
+  const lyricsNote = document.createElement("div");
+  lyricsNote.classList.add("resize-lyrics");
+  lyricsNote.style.left = "30px";
+  lyricsNote.style.width = time_to_px(duration/3) + "px";
+  lyricsNote.textContent = lyricsText
+  lyricsNote.setAttribute("note_id", note_id); // clip_id 속성 추가
+  lyricsNote.addEventListener("click", function(){
+    console.log("id", lyricsNote.getAttribute("note_id"));
+  })
+  boxItem.appendChild(lyricsNote);
+}
+interact('.resize-lyrics')
+  .resizable({
+    edges: { top: false, left: true, bottom: false, right: true },
+    listeners: {
+      move: function (event) {
+        let { x, y } = event.target.dataset
+        x = (parseFloat(x) || 0) + event.deltaRect.left
+        y = (parseFloat(y) || 0) + event.deltaRect.top
+        Object.assign(event.target.style, {
+          width: `${event.rect.width}px`,
+          height: `${event.rect.height}px`,
+          transform: `translate(${x}px, ${y}px)`
+        })
+        Object.assign(event.target.dataset, { x, y })
+      }
+    }
+  })
+  .draggable({
+    listeners: { move: window.dragMoveListener_lyrics },
+    inertia: true,
+    modifiers: [
+      interact.modifiers.restrictRect({
+        restriction: 'parent',
+        endOnly: true
+      })
+    ]
+  })
+
+function dragMoveListener_lyrics (event) {
+  var target = event.target
+  // keep the dragged position in the data-x/data-y attributes
+  var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+  var y = 0
+  // translate the element
+  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+  //console.log( "type:", event.target.getAttribute("box_type"), "id:", event.target.getAttribute("box_id"), "Add timeset:", event.dx/10);
+  // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
+  // update the posiion attributes
+  target.setAttribute('data-x', x)
 }
 
 //-------------------------------------------------------------------------------------------------------------------//

@@ -40,7 +40,7 @@
     <div id="shape-canvas">
         <!-- <canvas id="granim-canvas"></canvas> -->
     </div>
-
+    <div class="lyrics-displayer" id="lyricsDisplay"></div>
 
     <div id="midiContainer">
         <button data-action = "open_midi_in">신디 연결</button> 
@@ -79,7 +79,7 @@
         <div class="grid-container" id="MelodyContainer">
             <div class="vertical-line" id="startLine", style="left:30px;"></div>
             <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
-            <div class="grid-item" id="timeScale"></div>
+            <div class="grid-item" id="LyricsBox1" style="height:20px;">가사: </div>
             <div class="grid-item" id="box_C4">도4</div>
             <div class="grid-item" id="box_C#4">도#4</div>
             <div class="grid-item" id="box_D4">레4</div>
@@ -114,6 +114,10 @@
             <div class="grid-item" id="box_2" style="height:100px;">비트3 </div>
             <div class="grid-item" id="box_3" style="height:100px;">비트4 </div>
         </div>
+    </div>
+    <div id="'lyricsContainer" style=" margin-left: 1150px; margin-top: -40px; position: absolute; ">
+        가사 : <input type="text" id="lyricsInputer" style="width: 600px; height:30px">
+        <button class="sheetMusicLyricsButton"id="LyricsPushButton"> 입력 </button>
     </div>
     <div class="fixed-track-container">
         트렉 길이 : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
