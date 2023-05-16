@@ -66,11 +66,11 @@
         <div id = 'sheetMusicController'>
             <button class="sheetMusicButton"id="sheetMusicMelodyButton"> 새 멜로디 </button>
             <button class="sheetMusicButton"id="sheetMusicBeatButton"> 새 비트 </button>
-            <button class="sheetMusicButton"id="sheetMusicTemplateButton"> 새 템플릿 </button>
-            클립 길이 : <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
+            <button class="sheetMusicButton"id="sheetMusicTemplateButton"> 새 음악 효과 </button>
+            클립 길이 <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
             <button class="sheetMusicButton"id="sheetMusicSaveButton"> 클립 저장 </button>
-            <button class="sheetMusicButton"id="sheetTemplateSaveButton"> 템플릿 저장 </button>
-            <button class="sheetMusicButton"id="sheetMusicPlayButton"> 재생 </button>
+            <button class="sheetMusicButton"id="sheetTemplateSaveButton"> 음악 효과 저장 </button>
+            <button class="sheetMusicButton"id="sheetMusicPlayButton"> 시작 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton"> 정지 </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton"> 삭제 </button>
             <div id="slider" style="width: 910px; height:10px; left:30px;"></div>
@@ -79,7 +79,7 @@
         <div class="grid-container" id="MelodyContainer">
             <div class="vertical-line" id="startLine", style="left:30px;"></div>
             <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
-            <div class="grid-item" id="LyricsBox1" style="height:20px;">가사: </div>
+            <div class="grid-item" id="LyricsBox1" style="height:20px;">가사</div>
             <div class="grid-item" id="box_C4">도4</div>
             <div class="grid-item" id="box_C#4">도#4</div>
             <div class="grid-item" id="box_D4">레4</div>
@@ -116,11 +116,11 @@
         </div>
     </div>
     <div id="'lyricsContainer" style=" margin-left: 1150px; margin-top: -40px; position: absolute; ">
-        가사 : <input type="text" id="lyricsInputer" style="width: 600px; height:30px">
+        가사:  <input type="text" id="lyricsInputer" style="width: 600px; height:30px">
         <button class="sheetMusicLyricsButton"id="LyricsPushButton"> 입력 </button>
     </div>
     <div class="fixed-track-container">
-        트렉 길이 : <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
+        트랙 길이 <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300">
         <button class="trackMusicButton"id="trackMusicPlayButton"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton"> 정지 </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton"> 클립 삭제 </button>
@@ -134,11 +134,11 @@
             <div class="track-item" track_type="Meolody">Melody </div>
             <div class="track-item" track_type="Beat">Beat </div> -->
             <div id="dropzoneGroup">
-                템플릿
+                <p style="font-size: 15px"> 음악 효과 </p>
                 <div id="template-dropzone" class="template-dropzone" style="width: 3000px; height: 25px;"></div>
-                멜로디
+                <p style="font-size: 15px"> 멜로디 </p>
                 <div id="melody-dropzone" class="melody-dropzone" style="width: 3000px; height: 25px"></div>
-                비트
+                <p style="font-size: 15px"> 비트 </p>
                 <div id="beat-dropzone" class="beat-dropzone" style="width: 3000px; height: 25px"></div>
             </div>
             <div id="TemplatedropContainer">

@@ -104,6 +104,8 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
     stopRecording() //끝 도달하면 자동으로 종료
   }
 }
+// $( "#slider" ).css( "width", "20px" );
+// $( "#slider" ).css( "height", "10px" );
 $("#slider").slider({ //Timer 슬라이더
   value: clip_start_px,
   min: clip_start_px,
@@ -550,7 +552,7 @@ function createTemplateClipBox(template_clip){
     //console.log("current Clip Type:", dragdrop_template.getAttribute("clip_type"),"current Clip id", dragdrop_template.getAttribute("clip_id"))
     loadFromTrackToTemplateClip(dragdrop_template.getAttribute("clip_id"));
   })
-    dragdrop_template.textContent = "템플릿 " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop_template.textContent = "효과 " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop_template.setAttribute("id", "template-drop");
     let boxItem_template = document.getElementById("TemplatedropContainer");
     boxItem_template.appendChild(dragdrop_template);
@@ -593,7 +595,7 @@ function createTrackClipObject_template(dropzoneName, clip_id, box_id){
   trackClip.classList.add("resize-drag_clip");
   trackClip.style.width = duration * 10 + "px"
   let boxItem = document.getElementById(dropzoneName);
-  trackClip.textContent = "템플릿_" + clip_id
+  trackClip.textContent = "효과_" + clip_id
   trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
   trackClip.setAttribute("box_type", MusicClipType.Template); // clip_type 속성 추가
   trackClip.addEventListener("click", function(){
