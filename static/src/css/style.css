@@ -3,6 +3,20 @@ html, body {
     overflow: hidden;
 }
 
+
+#slider > span{
+    width: 30px;
+    height: 10px;
+    color: #2b2928
+}
+
+#slider_track > span{
+    width: 30px;
+    height: 10px;
+
+}
+
+
 div#content{
     margin-top: 20px;
     position: absolute;

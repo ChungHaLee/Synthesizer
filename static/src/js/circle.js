@@ -86,7 +86,7 @@ function init() {
     renderer = new THREE.WebGLRenderer( { antialias: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(1150, 600);
+    renderer.setSize(1140, 600);
 
 
     camera = new THREE.PerspectiveCamera(70, renderer.domElement.width/renderer.domElement.height, 2, 2000);
@@ -468,11 +468,17 @@ function animate() {
             deleteBasics()
             
           } else {
+
           }
           
-
           if (polyBeatArray[0] == 0){
-            scene.background = new THREE.Color('#999999')
+            scene.background = new THREE.Color('#FFFFFF')
+          } else if (polyBeatArray[0] == 1) {
+            scene.background = new THREE.Color('#929292')
+          } else if (polyBeatArray[0] == 2) {
+            scene.background = new THREE.Color('#4B4B4B')
+          } else if (polyBeatArray[0] == 3) {
+            scene.background = new THREE.Color('#1A1A1A')
           } else {
             scene.background = new THREE.Color('black')
           }
