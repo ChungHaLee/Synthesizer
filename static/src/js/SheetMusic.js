@@ -2,16 +2,14 @@ import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip}
 import { piano_player, beat_player, dialInitialize} from './Synthesizer.js';
 //최소 범위 A2 ~ C7
 
-const clip_box_width = 940;
+const clip_box_width = 1860;
 const clip_start_px = 30;
 const fps = 30;
 let currentTime = 0.0;
 let currentTime_track = 0.0;
 let play_state = false;
-let play_state_track = false;
 let timer = null;
-let duration = 30;
-let duration_track = 300;
+let duration = document.getElementById("clipduration");
 
 let clipduration = document.getElementById("clipduration");
 let timeLine1 = document.getElementById("timeLine1");
@@ -22,6 +20,7 @@ let FileInput = document.getElementById("fileUpload");
 const Template_clip_array = [];
 const Melody_clip_array = [];
 const Beat_clip_array = [];
+
 let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
@@ -39,12 +38,18 @@ let noteClickIndex = -1;
 let trackClickIndex = -1;
 let trackClickType = null
 
+
+var tag = document.createElement('script'); 
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
+
 function InitializeAllSetting(){
   currentTime = 0.0;
   currentTime_track = 0.0;
   play_state = false;
-  play_state_track = false;
-  duration_track = 300;
   Template_clip_array.length = 0;
   Melody_clip_array.length = 0;
   Beat_clip_array.length = 0;
@@ -97,6 +102,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
   timeLine2.style.left = time_to_px(currentTime, duration) + "px";
   timeLine1.style.left = time_to_px(currentTime, duration) + "px";
   // console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
+  updateTime2()
   for (let item of onNoteList){
     noteResizeChanger(item, time_to_px(currentTime, duration));
   }
@@ -445,71 +451,6 @@ function changeMusicClip(noteIndex, deltaTimeset){ // 노트 위치, 크기 편�
   }
 }
 
-//-------------------------------------------------------------------------------------------------------------------//
-//-------------------------------------------------------------------------------------------------------------------//
-//---------------------------------------------가사 관련 추가 코드---------------------------------------------------//
-//-------------------------------------------------------------------------------------------------------------------//
-//-------------------------------------------------------------------------------------------------------------------//
-
-let lyricsId = 0
-document.getElementById("LyricsPushButton").addEventListener("click", function(){
-  let lyricsText = document.getElementById("lyricsInputer").value;
-  createLyricsbject(lyricsId, lyricsText)
-  lyricsId += 1;
-})
-function createLyricsbject(note_id, lyricsText){
-  const boxItem = document.getElementById("LyricsBox1");
-  const lyricsNote = document.createElement("div");
-  lyricsNote.classList.add("resize-lyrics");
-  lyricsNote.style.left = "30px";
-  lyricsNote.style.width = time_to_px(duration/3) + "px";
-  lyricsNote.textContent = lyricsText
-  lyricsNote.setAttribute("note_id", note_id); // clip_id 속성 추가
-  lyricsNote.addEventListener("click", function(){
-    console.log("id", lyricsNote.getAttribute("note_id"));
-  })
-  boxItem.appendChild(lyricsNote);
-}
-interact('.resize-lyrics')
-  .resizable({
-    edges: { top: false, left: true, bottom: false, right: true },
-    listeners: {
-      move: function (event) {
-        let { x, y } = event.target.dataset
-        x = (parseFloat(x) || 0) + event.deltaRect.left
-        y = (parseFloat(y) || 0) + event.deltaRect.top
-        Object.assign(event.target.style, {
-          width: `${event.rect.width}px`,
-          height: `${event.rect.height}px`,
-          transform: `translate(${x}px, ${y}px)`
-        })
-        Object.assign(event.target.dataset, { x, y })
-      }
-    }
-  })
-  .draggable({
-    listeners: { move: window.dragMoveListener_lyrics },
-    inertia: true,
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ]
-  })
-
-function dragMoveListener_lyrics (event) {
-  var target = event.target
-  // keep the dragged position in the data-x/data-y attributes
-  var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-  var y = 0
-  // translate the element
-  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-  //console.log( "type:", event.target.getAttribute("box_type"), "id:", event.target.getAttribute("box_id"), "Add timeset:", event.dx/10);
-  // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
-  // update the posiion attributes
-  target.setAttribute('data-x', x)
-}
 
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
@@ -622,57 +563,34 @@ function get_clip(clipType, clip_id){
 $("#slider_track").slider({ //Timer 슬라이더2
   value: 0,
   min: 0,
-  max: duration_track*10,
+  max: duration,
   step: 0.1,
   slide: function( event, ui ) {
     timeLine3.style.left = (ui.value) + "px";
-    currentTime_track = ui.value/10;
+    currentTime = ui.value/10;
   }
 });
-function startTrack(){//Timer를 시작하는 코드
-  play_state_track = true;
-  startTimer2();
-}
-function stopTrack(){//Timer를 중지하는 코드
-  play_state_track = false;
-  stopTimer2();
-}
-function startTimer2() {
-  if (!timer) { // 타이머가 이미 실행 중이지 않은 경우에만 실행
-    timer = setInterval(updateTime2, 1 / fps * 1000); // 0.01초 간격으로 updateTime 함수 실행
-  }
-}
-function stopTimer2() {
-  clearInterval(timer); // 타이머 정지
-  timer = null; // 타이머 변수 초기화
-}
 
 function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
-  currentTime_track += 1/fps;
   //musicPlayer(currentTime);
-  $("#slider_track").slider("value",currentTime_track*10);
-  timeLine3.style.left = (currentTime_track*10) + "px";
-  let cur_track_set = TrackObject.getcurrentClipSet(currentTime_track);
+  $("#slider_track").slider("value",currentTime*10);
+  timeLine3.style.left = (currentTime*10) + "px";
+  let cur_track_set = TrackObject.getcurrentClipSet(currentTime);
   //console.log("Test Track", cur_track_set[0][1]);
   if(cur_track_set[0].length > 0){
     //console.log(Template_clip_array);
     templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
   }
   if(cur_track_set[1].length > 0){
-    musicPlayerMelodyClip(currentTime_track - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
+    musicPlayerMelodyClip(currentTime - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
   }
   if(cur_track_set[2].length > 0){
-    musicPlayerBeatClip(currentTime_track - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
-  }
-  if(currentTime_track >= duration_track){
-    stopRecording() // 끝 도달하면 자동으로 종료
+    musicPlayerBeatClip(currentTime - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
   }
 }
 function initializeTimer2(){ // Timer 초기화
-  stopTrack();
-  currentTime_track = 0.0;
-  $("#slider_track").slider("value",currentTime_track*10);
-  timeLine3.style.left = currentTime_track + "px";
+  $("#slider_track").slider("value",currentTime*10);
+  timeLine3.style.left = currentTime + "px";
 }
 function musicPlayerMelodyClip(currentTime, melody_clip){  //음이나 비트 소리를 재생하는 코드
   let currentNote = melody_clip.getcurrentNoteSet(currentTime);
@@ -707,10 +625,10 @@ function InitializeAllTrack(){
   removeAllElementsByClassName("draggable_clip");
 }
 document.getElementById("trackMusicPlayButton").addEventListener('click', function (){
-  startTrack();
+  //startTrack();
 })
 document.getElementById("trackMusicPauseButton").addEventListener('click', function (){
-  stopTrack();
+  //stopTrack();
   stopAllNotePlayer2();
 })
 document.getElementById("trackMusicDeleteButton").addEventListener('click', function (){

@@ -1,8 +1,8 @@
 .vertical-line {
     position: absolute;
-    top: 22px;
+    top: 23px;
     width: 2px;
-    height: 595px;
+    height: 440px;
     background-color: black;
     transform: translateX(0%);
   }
@@ -27,10 +27,11 @@
     background-color: rgb(245, 245, 245); /* 격자 항목의 배경색 설정 */
     padding: 5px; /* 격자 항목 내부의 여백 설정 */
     border: 1px solid black; /* 격자 항목의 테두리 설정 */
-    height: 9.5px;
-    width: 940px;
-    font-size: 10px;
+    height: 5px;
+    width: 1860px;
+    font-size: 8px;
     font-weight: bold;
+    vertical-align: center;
   }
   .track-item {
     background-color: rgb(255, 255, 255); /* 격자 항목의 배경색 설정 */
@@ -50,11 +51,11 @@
     font-size: 0.2em;
   }
 .fixed-clip-container {
-    margin-top: -678px;
-    margin-left: 1150px;
-    position: absolute; /* or 'absolute' or 'fixed', depending on your needs */
-    width: 740px; /* Set the desired width */
-    height: 620px; /* Set the desired height */
+    /* margin-top: -678px; */
+    /* margin-left: 1150px; */
+    position: relative; /* or 'absolute' or 'fixed', depending on your needs */
+    width: 1900px; /* Set the desired width */
+    height: 470px; /* Set the desired height */
     overflow: auto; /* Enables scrolling when the content exceeds the container's size */
     padding: 0px;
     border: 5px solid rgb(0, 38, 255);

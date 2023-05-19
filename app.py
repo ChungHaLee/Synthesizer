@@ -3,6 +3,8 @@ import os
 
 app = Flask(__name__)
 
+user_name = ""
+user_emailAdress = ""
 
 ## 필요한 함수 선언 
 
@@ -23,11 +25,13 @@ app = Flask(__name__)
 
 
 @app.route('/', methods=['POST', 'GET'])
-def shape():
-    return render_template('shape.html')
+def login():
+    return render_template('login.html')
 
 
-
+@app.route('/melody', methods=['POST', 'GET'])
+def shape_melody():
+    return render_template('shape_melody.html')
 
 
 if __name__ == '__main__':
