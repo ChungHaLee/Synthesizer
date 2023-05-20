@@ -2,11 +2,8 @@ import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip}
 import { piano_player, beat_player, dialInitialize} from './Synthesizer.js';
 //최소 범위 A2 ~ C7
 
-const clip_box_width = 1860;
-const clip_start_px = 30;
 const fps = 30;
 let currentTime = 0.0;
-let currentTime_track = 0.0;
 let play_state = false;
 let timer = null;
 let duration = document.getElementById("clipduration");
@@ -37,18 +34,52 @@ let trackActivaqte = false;
 let noteClickIndex = -1;
 let trackClickIndex = -1;
 let trackClickType = null
+const clip_box_width = 1800;
+const clip_start_px = 30;
+let player;
 
+function createPlayer() {
+    player = new window.YT.Player('player1', {
+        height: '390',
+        width: '640',
+        videoId: 'iHGv2nIvodo', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
 
-var tag = document.createElement('script'); 
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+function onPlayerReady(event) { //비디오 duration을 Clip 길이로 설정
+  changeClipDuration(player.getDuration())
+}
+
+function onPlayerStateChange(event) {
+    if (event.data == window.YT.PlayerState.PLAYING) {
+        let currentTime = player.getCurrentTime();
+        console.log("Current Time: ", currentTime);
+        startRecording();
+    }
+    if (event.data == window.YT.PlayerState.ENDED || event.data == window.YT.PlayerState.PAUSED){
+        console.log("stop video")
+        stopRecording();
+        stopAllNotePlayer();
+    } 
+}
+
+// Check if YT is already loaded
+if (window.YT && window.YT.Player) {
+    createPlayer();
+} else {
+    // If not, wait for the API to load
+    window.onYouTubeIframeAPIReady = createPlayer;
+}
+
 
 
 
 function InitializeAllSetting(){
   currentTime = 0.0;
-  currentTime_track = 0.0;
   play_state = false;
   Template_clip_array.length = 0;
   Melody_clip_array.length = 0;
@@ -96,13 +127,13 @@ function stopTimer() {  // 타이머 정지 코드
   timer = null; // 타이머 변수 초기화
 }
 function updateTime() { //시간에 따라 업데이트 해야하는 함수들
-  currentTime += 1/fps;
+  currentTime = player.getCurrentTime();
   musicPlayer(currentTime);
   $("#slider").slider("value",time_to_px(currentTime, duration));
   timeLine2.style.left = time_to_px(currentTime, duration) + "px";
   timeLine1.style.left = time_to_px(currentTime, duration) + "px";
   // console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
-  updateTime2()
+  // updateTime2()
   for (let item of onNoteList){
     noteResizeChanger(item, time_to_px(currentTime, duration));
   }
@@ -120,7 +151,7 @@ $("#slider").slider({ //Timer 슬라이더
   slide: function( event, ui ) {
     timeLine1.style.left = (ui.value) + "px";
     timeLine2.style.left = (ui.value) + "px";
-    currentTime = px_to_time(ui.value, duration);
+    player.seekTo(px_to_time(ui.value, duration), true);
     noteSizeAllOff();
   }
 });
@@ -311,11 +342,13 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
   }
 })
 document.getElementById("sheetMusicPlayButton").addEventListener('click', function (){
-  startRecording();
+  //startRecording();
+  player.playVideo();
 })
 document.getElementById("sheetMusicPauseButton").addEventListener('click', function (){
-  stopRecording();
+  //stopRecording();
   stopAllNotePlayer();
+  player.pauseVideo();
 })
 document.getElementById("sheetMusicDeleteButton").addEventListener('click', function (){
   if(noteClickIndex!=1){
@@ -385,7 +418,11 @@ SyntheysizerEvents.addEventListener('dialInput', function(e){
 
 /*Clip Edit code*/
 clipduration.addEventListener("change", function(){ //Clip duration change code
-  duration = parseFloat(clipduration.value);
+  changeClipDuration(parseFloat(clipduration.value));
+})
+function changeClipDuration(inputDuration){
+  duration = inputDuration
+  console.log("Clip duration Set : ", duration);
   noteSizeAllOff();
   clearNoteClip(current_clip_type);
   if(time_to_px(currentTime, duration) >= clip_box_width){
@@ -407,7 +444,7 @@ clipduration.addEventListener("change", function(){ //Clip duration change code
     beat_clip.setDuration(duration);
     loadClip(beat_clip, duration);
   }
-})
+}
 function removeAllElementsByClassName(className) {//
   const elements = document.getElementsByClassName(className);
   while (elements.length > 0) {

@@ -40,9 +40,7 @@
     <div id="shape-canvas">
         <!-- <canvas id="granim-canvas"></canvas> -->
     </div>
-    <div class="lyrics-displayer" id="lyricsDisplay" style = "display:none">Test</div>
-
-    <div id="midiContainer">
+    <div id="DeviceConnectorContainer">
         <button data-action = "open_midi_in">신디 연결</button> 
         <button data-action = "close_midi_in">신디 해제</button> 
         MIDI: <span id="midiInName">NONE</span>
@@ -52,46 +50,25 @@
         세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
     </div>        
     <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
-        <!-- <iframe width="800" height="405" src="https://www.youtube.com/embed/iDjQSdN_ig8" frameborder="0" 
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-        id = "player"></iframe> -->
-        <iframe id="player" type="text/html" width="800" height="405"
-         src="https://www.youtube.com/embed/iDjQSdN_ig8?rel=0&amp;controls=0&amp;showinfo=0&amp;enablejsapi=1&amp;version=3&amp;playerapiid=ytplayer" 
-         frameborder="0" gesture="media" allow="encrypted-media"></iframe>
-        <!-- ?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1  -->
-        <!-- <video id="myVideo" width="800" height="405" controls>
-            <source src='https://www.youtube.com/embed/iDjQSdN_ig8' width='800' height='405' frameborder='0'" type="video/mp4">
-          </video> -->
+        <div id="player1"></div>
+        <div id="player2" style="display:none;"></div>
         <br>
         <button class="videoSelectButton"id="exampleVideoButton"> 예시 </button>
         <button class="videoSelectButton"id="danceVideoButton"> 댄스 </button>
     </div>
 
-
-    <div id = "audioClipContainer" style="display:none;">
-    <audio src="../static/src/sound/clap.wav" id = "beat1"></audio>
-    <audio src="../static/src/sound/cat.wav" id = "beat2"></audio>
-    <audio src="../static/src/sound/ride.wav" id = "beat3"></audio>
-    <audio src="../static/src/sound/snare.wav" id = "beat4"></audio>
-    </div>
     <div class="fixed-clip-container">
         <div id = 'sheetMusicController'>
-            <button class="sheetMusicButton"id="sheetMusicMelodyButton"> 새 멜로디 </button>
-            <button class="sheetMusicButton"id="sheetMusicBeatButton"> 새 비트 </button>
-            <button class="sheetMusicButton"id="sheetMusicTemplateButton"> 새 음악 효과 </button>
-            클립 길이 <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30">
             <button class="sheetMusicButton"id="sheetMusicSaveButton"> 클립 저장 </button>
-            <button class="sheetMusicButton"id="sheetTemplateSaveButton"> 음악 효과 저장 </button>
             <button class="sheetMusicButton"id="sheetMusicPlayButton"> 시작 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton"> 정지 </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton"> 삭제 </button>
-            <div id="slider" style="width: 1820px; height:10px; left:30px;"></div>
+            <div id="slider" style="width: 1770px; height:10px; left:30px;"></div>
             
         </div>
         <div class="grid-container" id="MelodyContainer">
             <div class="vertical-line" id="startLine", style="left:30px;"></div>
             <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
-            <!-- <div class="grid-item" id="LyricsBox1" style="height:20px;">가사</div> -->
             <div class="grid-item" id="box_C4">도4</div>
             <div class="grid-item" id="box_C#4">도#4</div>
             <div class="grid-item" id="box_D4">레4</div>
@@ -118,6 +95,10 @@
             <div class="grid-item" id="box_B5">시5  </div>
             <div class="grid-item" id="box_C6">도6  </div>
         </div>
+
+
+
+        <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
         <div class="grid-container" id="BeatContainer" style="display:none;">
             <div class="vertical-line" id="startLine2", style="left:30px; height: 460px;"></div>
             <div class="vertical-line" id="timeLine2" style="background-color:green; left:30px; height: 460px"></div>
@@ -126,8 +107,36 @@
             <div class="grid-item" id="box_2" style="height:100px;">비트3 </div>
             <div class="grid-item" id="box_3" style="height:100px;">비트4 </div>
         </div>
+        <!-- 비트 부분 -->
     </div>
-    <div class="fixed-track-container">
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 여기 밑은 기능 구현을 위한 부분이라  display none이라 수정 안해도 괜찮습니다. -->
+    <div id = "audioClipContainer" style="display:none;">
+        <audio src="../static/src/sound/clap.wav" id = "beat1"></audio>
+        <audio src="../static/src/sound/cat.wav" id = "beat2"></audio>
+        <audio src="../static/src/sound/ride.wav" id = "beat3"></audio>
+        <audio src="../static/src/sound/snare.wav" id = "beat4"></audio>
+    </div>
+    <div id ="ClipSettingController" style="display:none;">
+        <button class="sheetMusicButton"id="sheetMusicMelodyButton"style="display:none;"> 새 멜로디 </button>
+        <button class="sheetMusicButton"id="sheetMusicBeatButton"style="display:none;"> 새 비트 </button>
+        <button class="sheetMusicButton"id="sheetMusicTemplateButton"style="display:none;"> 새 음악 효과 </button>
+        <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30"style="display:none;">
+        <button class="sheetMusicButton"id="sheetTemplateSaveButton"style="display:none;"> 음악 효과 저장 </button>
+    </div>
+    <div class="fixed-track-container" style="display:none;">
         트랙 길이 <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="30">
         <button class="trackMusicButton"id="trackMusicPlayButton"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton"> 정지 </button>
@@ -138,9 +147,6 @@
         <div id="slider_track" style="width: 3000px; height: 15px;"></div>
         <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:35px; height: 90%"></div>
         <div class="grid-container" id="TrackContainer">
-            <!-- <div class="track-item" track_type="template">Visualization </div>
-            <div class="track-item" track_type="Meolody">Melody </div>
-            <div class="track-item" track_type="Beat">Beat </div> -->
             <div id="dropzoneGroup">
                 <p style="font-size: 15px; margin: 1px;"> 음악 효과 </p>
                 <div id="template-dropzone" class="template-dropzone" style="width: 3000px; height: 30px;"></div>
@@ -296,7 +302,7 @@
     
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tunajs/1.0.1/tuna.js"></script>
-    <!-- <script src="https://www.youtube.com/iframe_api"></script> -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/midi/0.0.0/midi.js"></script> -->
