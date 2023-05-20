@@ -148,7 +148,6 @@ export class MusicClip {
     if(this.Type==MusicClipType.Melody){
       this.melodyNoteSet.splice(noteIndex,1);
       this.melodyTimeset.splice(noteIndex,1);
-      this.lyrics.splice(noteIndex,1);
     }
     else{
       this.beatSet.splice(noteIndex,1);
