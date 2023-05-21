@@ -21,12 +21,12 @@ body{
   }
   
 .grid-item {
-  margin-left: 50px;
+  margin-left: 20px;
   background-color: #fcfcfc; /* 격자 항목의 배경색 설정 */
   padding: 5px; /* 격자 항목 내부의 여백 설정 */
   border: 1px solid rgba(94,104,121,0.6); 
   height: 20px;
-  width: 1700px;
+  width: 1780px;
   font-size: 8px;
   font-weight: bold;
   vertical-align: center;
@@ -45,7 +45,7 @@ body{
     /* margin-top: -678px; */
     /* margin-left: 1150px; */
     position: relative; /* or 'absolute' or 'fixed', depending on your needs */
-    width: 1750px; /* Set the desired width */
+    width: 1850px; /* Set the desired width */
     height: 470px; /* Set the desired height */
     overflow: auto; /* Enables scrolling when the content exceeds the container's size */
     padding: 0px;
@@ -91,6 +91,7 @@ body{
 #active {
   background-color: rgb(17, 255, 0);
 }
+
 .draggable {
   width: 3px;
   height: 100px;
@@ -104,11 +105,13 @@ body{
   display: inline-block;
   position: absolute;
 }
+
 .indraggable {
   width: 3px;
-  height: 100px;
+  height: 90px;
   padding: 1px;
-  margin: 0.3rem;
+  /* margin: 0.5rem; */
+  margin-top: -7px;
   background-color: rgb(9, 255, 0);
   color: rgb(0, 0, 0);
   border-radius: 0.75em;

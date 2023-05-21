@@ -7,10 +7,10 @@
     <!-- Style -->
     <link type="text/css" href="../static/src/css/style.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/SheetMusic.css" rel="stylesheet">
-    <link type="text/css" href="../static/src/css/melody.css" rel="stylesheet">
+    <link type="text/css" href="../static/src/css/melodyandbeat.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/buttons.css" rel="stylesheet">
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
@@ -42,9 +42,7 @@
         <button data-action = "open_midi_in" class="synthesizer">신디 연결</button> 
         <button data-action = "close_midi_in" class="synthesizer">신디 해제</button> 
         MIDI: <span id="midiInName">NONE</span>
-        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+
 
         <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 280px;">햅틱 연결</button> 
         <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">햅틱 해제</button> 
@@ -63,7 +61,7 @@
         <br>
     </div>
     <div id = "pageControlContainer" style="position:absolute;  margin-top: -460px; margin-left: 1750px;">
-        <button class="sheetMusicButton"id="sheetMusicSaveButton" style="display:none;"> 저장하기 </button>
+        <button class="sheetMusicButton"id="sheetMusicSaveButton"> <i class="fa fa-save"></i> </button>
         <br>
         <button class="pageControl"id="PreviousButton" onclick="window.location.href='/'" style="margin-top: 100px;"> &laquo; </button>
         <br>
@@ -79,7 +77,7 @@
             <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> 정지 </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="float: right; margin-right: 40px;"> 삭제 </button>
             <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="float: right;  margin-right: 20px;"> 전체 삭제 </button>
-            <div id="slider" style="width: 1670px; height: 20px; margin-left: 60px; margin-top: 10px; left:30px;"></div>
+            <div id="slider" style="width: 1720px; height: 20px; margin-left: 60px; margin-top: 10px; left:30px;"></div>
             
         </div>
         <div class="grid-container" id="MelodyContainer">
@@ -103,12 +101,12 @@
 
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
         <div class="grid-container" id="BeatContainer" style="display:none;">
-            <div class="vertical-line" id="startLine2", style="left:30px; height: 460px;"></div>
-            <div class="vertical-line" id="timeLine2" style="background-color:green; left:30px; height: 460px"></div>
-            <div class="grid-item" id="box_0" style="height:100px;">비트1 </div>
-            <div class="grid-item" id="box_1" style="height:100px;">비트2 </div>
-            <div class="grid-item" id="box_2" style="height:100px;">비트3 </div>
-            <div class="grid-item" id="box_3" style="height:100px;">비트4 </div>
+            <div class="vertical-line" id="startLine2", style="left:30px; "></div>
+            <div class="vertical-line" id="timeLine2" style="background-color:green; left:30px; "></div>
+            <div class="grid-item" id="box_0" style="height:100px;"> 비트1 </div>
+            <div class="grid-item" id="box_1" style="height:100px;"> 비트2 </div>
+            <div class="grid-item" id="box_2" style="height:100px;"> 비트3 </div>
+            <div class="grid-item" id="box_3" style="height:100px;"> 비트4 </div>
         </div>
         <!-- 비트 부분 -->
     </div>
