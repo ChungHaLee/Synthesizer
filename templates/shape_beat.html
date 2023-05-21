@@ -56,10 +56,17 @@
         <button class="videoSelectButton"id="exampleVideoButton"> 예시 </button>
         <button class="videoSelectButton"id="danceVideoButton"> 댄스 </button>
     </div>
-
+    <div id = "pageControlContainer" style="position:absolute;  margin-top: -460px; margin-left: 1750px;">
+        <button class="sheetMusicButton"id="sheetMusicSaveButton"> 저장하기 </button>
+        <br>
+        <form action="/melody" method="POST">
+            <button class="pageControl"id="PreviousButton"> 이전 페이지 </button>
+        </form>
+        <br>
+        <button class="pageControl"id="NextButton"> 다음 페이지 </button>
+    </div>
     <div class="fixed-clip-container">
         <div id = 'sheetMusicController'>
-            <button class="sheetMusicButton"id="sheetMusicSaveButton"> 클립 저장 </button>
             <button class="sheetMusicButton"id="sheetMusicPlayButton"> 재생 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton"> 정지 </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton"> 삭제 </button>

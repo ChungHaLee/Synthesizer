@@ -49,17 +49,25 @@
         <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none;">Play</button>
         세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
     </div>        
-    <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
+    <div id = "ExampleVideo" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
         <div id="player1"></div>
         <div id="player2" style="display:none;"></div>
         <br>
         <button class="videoSelectButton"id="exampleVideoButton"> 예시 </button>
         <button class="videoSelectButton"id="danceVideoButton"> 댄스 </button>
     </div>
+    <div id = "pageControlContainer" style="position:absolute;  margin-top: -460px; margin-left: 1750px;">
+        <button class="sheetMusicButton"id="sheetMusicSaveButton"> 저장하기 </button>
+        <br>
+        <button class="pageControl"id="PreviousButton" onclick="window.location.href='/'"> 이전 페이지 </button>
+        <br>
+        <button class="pageControl"id="NextButton"onclick="window.location.href='/beat'"> 다음 페이지 </button>
+    </div>
+    
+
 
     <div class="fixed-clip-container">
         <div id = 'sheetMusicController'>
-            <button class="sheetMusicButton"id="sheetMusicSaveButton"> 클립 저장 </button>
             <button class="sheetMusicButton"id="sheetMusicPlayButton"> 재생 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton"> 정지 </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton"> 삭제 </button>

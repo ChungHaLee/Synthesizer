@@ -38,6 +38,7 @@ const clip_box_width = 1800;
 const clip_start_px = 30;
 let player = null;
 let practiceMode = true
+document.getElementById("sheetMusicSaveButton").disabled = true;
 
 function createPlayer1() {
   player = new window.YT.Player('player1', {
@@ -109,6 +110,7 @@ document.getElementById("exampleVideoButton").addEventListener('click', function
   document.getElementById("player1").style.display = 'block' 
   document.getElementById("player2").style.display = 'none'
   practiceMode = true;
+  document.getElementById("sheetMusicSaveButton").disabled = true;
 })
 document.getElementById("danceVideoButton").addEventListener('click', function(){
   practiceMode = false;
@@ -117,7 +119,7 @@ document.getElementById("danceVideoButton").addEventListener('click', function()
     stopRecording();
     stopAllNotePlayer();
   }
-  clearExampleClip();
+  clearExampleClip(current_clip_type);
   if(practiceMode){
     if (window.YT && window.YT.Player) {
       createPlayer2();
@@ -129,6 +131,7 @@ document.getElementById("danceVideoButton").addEventListener('click', function()
   document.getElementById("player1").style.display = 'none' 
   document.getElementById("player2").style.display = 'block'
   practiceMode = false;
+  document.getElementById("sheetMusicSaveButton").disabled = false;
 })
 
 function settingExample(){
