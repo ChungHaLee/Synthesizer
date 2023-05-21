@@ -25,24 +25,24 @@ user_emailAdress = ""
 
 
 @app.route('/', methods=['POST', 'GET'])
-def login():
+def login(): 
     return render_template('login.html')
 
 
 @app.route('/melody', methods=['POST', 'GET'])
-def shape_melody():
-    return render_template('shape_melody.html')
+def shape():
+    return render_template('shape.html')
 
 
 
-@app.route('/beat', methods=['POST', 'GET'])
-def shape_beat():
-    return render_template('shape_beat.html')
+@app.route('/edit', methods=['POST', 'GET'])
+def edit():
+    return render_template('edit.html')
 
 
-@app.route('/template', methods=['POST', 'GET'])
-def shape_template():
-    return render_template('shape_template.html')
+# @app.route('/template', methods=['POST', 'GET'])
+# def shape_template():
+#     return render_template('shape_template.html')
 
 
 if __name__ == '__main__':

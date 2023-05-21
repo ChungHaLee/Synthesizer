@@ -18,7 +18,7 @@ const Template_clip_array = [];
 const Melody_clip_array = [];
 const Beat_clip_array = [];
 
-let current_clip_type = document.getElementById('htmlType').innerHTML;
+let current_clip_type = MusicClipType.Melody;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
 let template_clip = new TemplateClip(Template_clip_array.length);
@@ -34,14 +34,29 @@ let trackActivaqte = false;
 let noteClickIndex = -1;
 let trackClickIndex = -1;
 let trackClickType = null
-const clip_box_width = 1800;
-const clip_start_px = 30;
-let player = null;
+const clip_box_width = 1810;
+const clip_start_px = 80;
+let player1 = null;
+let player2 = null;
 let practiceMode = true
 document.getElementById("sheetMusicSaveButton").disabled = true;
 
+
+// Check if YT is already loaded
+if (window.YT && window.YT.Player) {
+  createPlayer1();
+  createPlayer2();
+} else {
+  // If not, wait for the API to load
+  window.onYouTubeIframeAPIReady = function() {
+      createPlayer1();
+      createPlayer2();
+  };
+}
+
+
 function createPlayer1() {
-  player = new window.YT.Player('player1', {
+  player1 = new window.YT.Player('player1', {
       height: '390',
       width: '640',
       videoId: 'Q9OUlAVasqE', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
@@ -53,10 +68,10 @@ function createPlayer1() {
 }
 
 function createPlayer2() {
-  player = new window.YT.Player('player2', {
+  player2 = new window.YT.Player('player2', {
       height: '390',
       width: '640',
-      videoId: 'J1AdPY73qxo', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
+      videoId: 'sCr6mtjqHz4', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
       events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -65,91 +80,263 @@ function createPlayer2() {
 }
 
 function onPlayerReady(event) { //비디오 duration을 Clip 길이로 설정
-  console.log("Get Video Clip", player.getDuration());
-  changeClipDuration(player.getDuration());
+  if(practiceMode){
+    console.log("Get Video Clip", player1.getDuration());
+    changeClipDuration(player1.getDuration());
+  }
+  else{
+    console.log("Get Video Clip", player2.getDuration());
+    changeClipDuration(player2.getDuration());
+  }
   settingExample();
+  document.getElementById("synthConnector").click();
 }
 
 function onPlayerStateChange(event) {
     if (event.data == window.YT.PlayerState.PLAYING) {
-        let currentTime = player.getCurrentTime();
-        console.log("Current Time: ", currentTime);
         startRecording();
     }
     if (event.data == window.YT.PlayerState.ENDED || event.data == window.YT.PlayerState.PAUSED){
-        console.log("stop video")
         stopRecording();
         stopAllNotePlayer();
     } 
 }
 
-// Check if YT is already loaded
-if (window.YT && window.YT.Player) {
-  createPlayer2();
-  createPlayer1();
-} else {
-  // If not, wait for the API to load
-  window.onYouTubeIframeAPIReady = createPlayer2;
-  window.onYouTubeIframeAPIReady = createPlayer1;
-}
 document.getElementById("exampleVideoButton").addEventListener('click', function(){
+  practiceMode = true;
   if(play_state){
-    player.pauseVideo();
+    player1.pauseVideo();
+    player2.pauseVideo();
+    player1.seekTo(0);
+    player2.seekTo(0);
     stopRecording();
     stopAllNotePlayer();
+    play_state = false;
   }
+  changeClipDuration(player1.getDuration());
+  clearExampleClip(current_clip_type);
   settingExample();
-  if(!practiceMode){
-    if (window.YT && window.YT.Player) {
-      createPlayer1();
-    } else {
-      // If not, wait for the API to load
-      window.onYouTubeIframeAPIReady = createPlayer1;
-    }
-  }
+  // if (window.YT && window.YT.Player) {
+  //   createPlayer1();
+  // } else {
+  //   // If not, wait for the API to load
+  //   window.onYouTubeIframeAPIReady = createPlayer1;
+  // }
   document.getElementById("player1").style.display = 'block' 
   document.getElementById("player2").style.display = 'none'
-  practiceMode = true;
   document.getElementById("sheetMusicSaveButton").disabled = true;
+  if(Melody_clip_array.length ==0){
+    clearNoteClip(MusicClipType.Melody);
+    melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+  }
+  else{
+    clearNoteClip(MusicClipType.Beat);
+    beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+  }
 })
 document.getElementById("danceVideoButton").addEventListener('click', function(){
   practiceMode = false;
   if(play_state){
-    player.pauseVideo();
+    player1.pauseVideo();
+    player2.pauseVideo();
+    player1.seekTo(0);
+    player2.seekTo(0);
     stopRecording();
     stopAllNotePlayer();
+    play_state = false;
   }
   clearExampleClip(current_clip_type);
-  if(practiceMode){
-    if (window.YT && window.YT.Player) {
-      createPlayer2();
-    } else {
-      // If not, wait for the API to load
-      window.onYouTubeIframeAPIReady = createPlayer2;
-    }
-  }
+  changeClipDuration(player2.getDuration());
+  // if (window.YT && window.YT.Player) {
+  //   createPlayer2();
+  // } else {
+  //   // If not, wait for the API to load
+  //   window.onYouTubeIframeAPIReady = createPlayer2;
+  // }
   document.getElementById("player1").style.display = 'none' 
   document.getElementById("player2").style.display = 'block'
-  practiceMode = false;
   document.getElementById("sheetMusicSaveButton").disabled = false;
+  if(current_clip_type == MusicClipType.Melody){
+    clearNoteClip(MusicClipType.Melody);
+    if(Melody_clip_array.length ==0){
+      melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+    }
+    else{
+      melody_clip = Melody_clip_array[0]
+    }
+    loadClip(melody_clip, melody_clip.getDuration())
+    //melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+  }
+  else if(current_clip_type == MusicClipType.Beat){
+    clearNoteClip(MusicClipType.Beat);
+    if(Beat_clip_array.length ==0){
+      beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+    }
+    else{
+      beat_clip = Beat_clip_array[0]
+    }
+    loadClip(beat_clip, beat_clip.getDuration())
+    //beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+  }
 })
 
 function settingExample(){
-  if(current_clip_type == MusicClipType.Melody){
-    const clipDuration = 32
-    const clipNoteset = ["G5","E5","D5","C5","D5","E5","G5","E5","D5","C5","A5","E5","D5","C5","D5","E5","A4","G5","E5","D5","C5","D5","E5","G5","E5","D5","C5","A5","E5","D5","C5","D5","E5","A5","D5","A5","G5","A5","G5","A5","G5","E5","D5","E5","G5","E5","D5","A4","C5"]
-    const clipTimeset = [[0.5720410801086426,0.7300410724792481],[1.1610019294281007,1.2907990114440917],[1.4237989084472655,1.5540709179840089],[1.7190708798370362,1.8473000343322754],[2.1814630190734863,2.314463154495239],[2.4460749465942384,2.5120749313354493],[2.7430760114440917,2.8764059485015867],[3.3050919828338623,3.3710919675750732],[3.601070954223633,3.667070938964844],[3.8980990190734865,4.0300148836517335],[4.921056057220459,5.0193979294281],[5.448078870300293,5.515079020980835],[5.746056007629394,5.846544973297119],[6.043545,6.173041082015991],[6.636477931335449,6.767477973297119],[6.937605017166137,6.966605061035156],[7.26400212588501,8.685083061035156],[9.640039020980835,9.775039011444091],[10.201064992370606,10.267064977111817],[10.466885992370605,10.531886049591064],[10.829255876022339,10.960059885559081],[11.419733024795532,11.51973316784668],[11.653087794006348,11.765088020980835],[11.952059024795533,12.08105897329712],[12.5110841411438,12.643084110626221],[12.874066879837036,12.939066937057495],[13.171033851226806,13.368070917984008],[14.19523022125244,14.385710173568725],[14.787166091552734,14.896900954223632],[15.084900917984008,15.211124885559082],[15.447746007629394,15.54674622315979],[16.10807395613098,16.173827908447265],[16.375828049591064,16.404827855041503],[16.703048125885008,18.45108102479553],[19.208072062942506,19.37358789891052],[20.134640938964843,20.29910494087219],[20.464018870300293,20.597019005722046],[21.650081870300294,21.815736038146973],[22.016539980926513,22.147540022888183],[22.320095160217285,22.445095160217285],[22.70805482833862,22.809270990463258],[22.973271024795533,23.43309004005432],[24.09308415449524,24.32402906866455],[24.984623984741212,25.128623799728395],[25.281047122070312,25.413047091552734],[25.621105076293944,25.646105171661375],[25.942291998092653,26.074030173568726],[26.30606394277954,26.403064064849854],[26.60307215258789,28.02907389128113]]
-    let exampleClip = new MusicClip(MusicClipType.Melody, 1, clipDuration, clipNoteset, clipTimeset)
-    loadExampleClip(exampleClip, duration, 1);
-  }
-  else{
-    const clipDuration = 33
-    const clipNoteset = [0,2,0,2,0,2,0,2,0,1,0,1,0,1,0,1,0,2,0,2,1,2,1,2,0,2,0,2,1,2,1,2,1,2,2,0,2,2,0,2,2,0,2,2,0,3,0,3,0,3,3,0,3,3,3,0,3,3,3,0,0,0,0,2,0,2,3,1,3,2,2,1,2,3,2]
-    const clipTimeset = [0.8923350743865966,1.3215988893737793,1.783887082015991,2.210053062942505,2.6426171792907716,3.071248047683716,3.5009819771118162,3.937069855041504,4.357986919891357,4.688954977111816,5.150106043869019,5.546112814987183,5.973742160217285,6.371558003814697,6.767146973297119,7.203359017166138,7.669121959945679,8.086711982833862,8.516056912261963,8.946046946594238,9.373160093460083,9.804123950408936,10.232187963760376,10.694013051498413,11.123076032424926,11.520072929428101,11.948057003814696,12.375916809265137,12.805368946594239,13.235294948501586,13.670276024795532,14.139074061035156,14.587094043869019,15.049020977111816,15.214032072479249,15.447037007629394,15.809105036239623,15.973025893188476,16.27105195803833,16.63296491416931,16.80208719645691,17.096145074386598,17.537091994277954,17.723091864578247,17.987112175476074,18.383171019073487,18.812052855041504,19.208062897003174,19.638008064849853,20.071020120162963,20.891656049591063,21.452100020980836,21.81414294468689,22.21116015258789,22.64113691607666,23.036157864578247,23.431101112533568,23.870385104904173,24.323038141143797,25.314036114440917,26.105072834060667,26.93616991989136,27.757107160217284,28.11808784550476,28.513469032424926,28.952086952316286,29.3380860038147,29.8010610705719,30.19804004005432,30.626112114440918,30.659112106811524,31.023299990463258,31.452135992370607,31.886031036239626,32.30906002861023]
-    let exampleClip = new MusicClip(MusicClipType.Beat, 1, clipDuration, clipNoteset, clipTimeset)
-    loadExampleClip(exampleClip, duration, 1);
+  if(practiceMode){
+    if(current_clip_type == MusicClipType.Melody){
+      const clipDuration = 32
+      const clipNoteset = ["G5","E5","D5","C5","D5","E5","G5","E5","D5","C5","A5","E5","D5","C5","D5","E5","A4","G5","E5","D5","C5","D5","E5","G5","E5","D5","C5","A5","E5","D5","C5","D5","E5","A5","D5","A5","G5","A5","G5","A5","G5","E5","D5","E5","G5","E5","D5","A4","C5"]
+      const clipTimeset = [[0.5720410801086426,0.7300410724792481],[1.1610019294281007,1.2907990114440917],[1.4237989084472655,1.5540709179840089],[1.7190708798370362,1.8473000343322754],[2.1814630190734863,2.314463154495239],[2.4460749465942384,2.5120749313354493],[2.7430760114440917,2.8764059485015867],[3.3050919828338623,3.3710919675750732],[3.601070954223633,3.667070938964844],[3.8980990190734865,4.0300148836517335],[4.921056057220459,5.0193979294281],[5.448078870300293,5.515079020980835],[5.746056007629394,5.846544973297119],[6.043545,6.173041082015991],[6.636477931335449,6.767477973297119],[6.937605017166137,6.966605061035156],[7.26400212588501,8.685083061035156],[9.640039020980835,9.775039011444091],[10.201064992370606,10.267064977111817],[10.466885992370605,10.531886049591064],[10.829255876022339,10.960059885559081],[11.419733024795532,11.51973316784668],[11.653087794006348,11.765088020980835],[11.952059024795533,12.08105897329712],[12.5110841411438,12.643084110626221],[12.874066879837036,12.939066937057495],[13.171033851226806,13.368070917984008],[14.19523022125244,14.385710173568725],[14.787166091552734,14.896900954223632],[15.084900917984008,15.211124885559082],[15.447746007629394,15.54674622315979],[16.10807395613098,16.173827908447265],[16.375828049591064,16.404827855041503],[16.703048125885008,18.45108102479553],[19.208072062942506,19.37358789891052],[20.134640938964843,20.29910494087219],[20.464018870300293,20.597019005722046],[21.650081870300294,21.815736038146973],[22.016539980926513,22.147540022888183],[22.320095160217285,22.445095160217285],[22.70805482833862,22.809270990463258],[22.973271024795533,23.43309004005432],[24.09308415449524,24.32402906866455],[24.984623984741212,25.128623799728395],[25.281047122070312,25.413047091552734],[25.621105076293944,25.646105171661375],[25.942291998092653,26.074030173568726],[26.30606394277954,26.403064064849854],[26.60307215258789,28.02907389128113]]
+      let exampleClip = new MusicClip(MusicClipType.Melody, 1, clipDuration, clipNoteset, clipTimeset)
+      loadExampleClip(exampleClip, duration, 1);
+    }
+    else if(current_clip_type == MusicClipType.Beat){
+      const clipDuration = 33
+      const clipNoteset = [0,2,0,2,0,2,0,2,0,1,0,1,0,1,0,1,0,2,0,2,1,2,1,2,0,2,0,2,1,2,1,2,1,2,2,0,2,2,0,2,2,0,2,2,0,3,0,3,0,3,3,0,3,3,3,0,3,3,3,0,0,0,0,2,0,2,3,1,3,2,2,1,2,3,2]
+      const clipTimeset = [0.8923350743865966,1.3215988893737793,1.783887082015991,2.210053062942505,2.6426171792907716,3.071248047683716,3.5009819771118162,3.937069855041504,4.357986919891357,4.688954977111816,5.150106043869019,5.546112814987183,5.973742160217285,6.371558003814697,6.767146973297119,7.203359017166138,7.669121959945679,8.086711982833862,8.516056912261963,8.946046946594238,9.373160093460083,9.804123950408936,10.232187963760376,10.694013051498413,11.123076032424926,11.520072929428101,11.948057003814696,12.375916809265137,12.805368946594239,13.235294948501586,13.670276024795532,14.139074061035156,14.587094043869019,15.049020977111816,15.214032072479249,15.447037007629394,15.809105036239623,15.973025893188476,16.27105195803833,16.63296491416931,16.80208719645691,17.096145074386598,17.537091994277954,17.723091864578247,17.987112175476074,18.383171019073487,18.812052855041504,19.208062897003174,19.638008064849853,20.071020120162963,20.891656049591063,21.452100020980836,21.81414294468689,22.21116015258789,22.64113691607666,23.036157864578247,23.431101112533568,23.870385104904173,24.323038141143797,25.314036114440917,26.105072834060667,26.93616991989136,27.757107160217284,28.11808784550476,28.513469032424926,28.952086952316286,29.3380860038147,29.8010610705719,30.19804004005432,30.626112114440918,30.659112106811524,31.023299990463258,31.452135992370607,31.886031036239626,32.30906002861023]
+      let exampleClip = new MusicClip(MusicClipType.Beat, 1, clipDuration, clipNoteset, clipTimeset)
+      loadExampleClip(exampleClip, duration, 1);
+    }
   }
 }
+
+document.getElementById("PreviousButton").addEventListener("click", function(){
+  console.log("previous check")
+  if(current_clip_type == MusicClipType.Melody){
+    console.log('to Login')
+    document.getElementById("loginPage").click();
+  }
+  else if(current_clip_type == MusicClipType.Beat){
+    console.log("to Melody")
+    if(play_state){
+      player1.pauseVideo();
+      player2.pauseVideo();
+      player1.seekTo(0);
+      player2.seekTo(0);
+      stopRecording();
+      stopAllNotePlayer();
+      play_state = false;
+    }
+    current_clip_type = MusicClipType.Melody;
+    document.getElementById("BeatContainer").style.display = 'none' 
+    document.getElementById("MelodyContainer").style.display = 'block'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    clearNoteClip(MusicClipType.Beat);
+    initializeTimer();
+    document.getElementById("danceVideoButton").click();
+    addClipToTrack(false, false, false);
+  }
+  else{
+    console.log('to Beat')
+    if(play_state){
+      player1.pauseVideo();
+      player2.pauseVideo();
+      player1.seekTo(0);
+      player2.seekTo(0);
+      stopRecording();
+      stopAllNotePlayer();
+      play_state = false;
+    }
+    current_clip_type = MusicClipType.Beat;
+    document.getElementById("BeatContainer").style.display = 'block'
+    document.getElementById("MelodyContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    clearNoteClip(MusicClipType.Beat);
+    initializeTimer();
+    document.getElementById("danceVideoButton").click();
+    addClipToTrack(true, false, false);
+  }
+})
+
+document.getElementById("NextButton").addEventListener("click", function(){
+  console.log("next check")
+  if(current_clip_type == MusicClipType.Melody){
+    console.log("to Beat")
+    if(play_state){
+      player1.pauseVideo();
+      player2.pauseVideo();
+      player1.seekTo(0);
+      player2.seekTo(0);
+      stopRecording();
+      stopAllNotePlayer();
+      play_state = false;
+    }
+    current_clip_type = MusicClipType.Beat;
+    document.getElementById("BeatContainer").style.display = 'block'
+    document.getElementById("MelodyContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    clearNoteClip(MusicClipType.Beat);
+    initializeTimer();
+    document.getElementById("exampleVideoButton").click();
+    addClipToTrack(true, false, false);
+  }
+  else if(current_clip_type == MusicClipType.Beat){
+    console.log("to Tempalte")
+    if(play_state){
+      player1.pauseVideo();
+      player2.pauseVideo();
+      player1.seekTo(0);
+      player2.seekTo(0);
+      stopRecording();
+      stopAllNotePlayer();
+      play_state = false;
+    }
+    current_clip_type = MusicClipType.Template;
+    document.getElementById("BeatContainer").style.display = 'none'
+    document.getElementById("MelodyContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'block'
+    document.getElementById("danceVideoButton").click();
+    addClipToTrack(true, true, false);
+  }
+  else{
+    console.log("to Save")
+    if(play_state){
+      player1.pauseVideo();
+      player2.pauseVideo();
+      player1.seekTo(0);
+      player2.seekTo(0);
+      stopRecording();
+      stopAllNotePlayer();
+      play_state = false;
+    }
+    current_clip_type = MusicClipType.Template;
+    document.getElementById("BeatContainer").style.display = 'none'
+    document.getElementById("MelodyContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("danceVideoButton").click();
+    player2.mute();
+    addClipToTrack(true, true, true);
+  }
+})
+
+function addClipToTrack(melodyBool, BeatBool, TemplateBool){
+  TrackObject = new MusicTrack(); 
+  InitializeAllTrack();
+  if(melodyBool){
+    if(Melody_clip_array.length > 0){
+      const Tmp_clip = get_clip(MusicClipType.Melody, 0)
+      const clipTime = createTrackClipObject('melody-dropzone', Tmp_clip.getClipType(), Tmp_clip.getClipId(), Tmp_clip.getDuration(), TrackObject.getMelodyId())
+      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
+    }
+  }
+  if(BeatBool){
+    if(Beat_clip_array.length > 0){
+      const Tmp_clip = get_clip(MusicClipType.Beat, 0)
+      const clipTime = createTrackClipObject('beat-dropzone', Tmp_clip.getClipType(), Tmp_clip.getClipId(), Tmp_clip.getDuration(), TrackObject.getMelodyId())
+      TrackObject.setMusicClip(Tmp_clip, clipTime/10)
+    }
+  }
+  if(TemplateBool){
+    if(Template_clip_array.length > 0){
+      const tempalteId = parseInt(0);
+      const clipTime = createTrackClipObject_template('template-dropzone', tempalteId, TrackObject.getTempalateId())
+      TrackObject.setTemplateClip(tempalteId, clipTime/10)
+    }
+  }
+}
+
+
+
+
 
 function InitializeAllSetting(){
   currentTime = 0.0;
@@ -200,13 +387,18 @@ function stopTimer() {  // 타이머 정지 코드
   timer = null; // 타이머 변수 초기화
 }
 function updateTime() { //시간에 따라 업데이트 해야하는 함수들
-  currentTime = player.getCurrentTime();
+  if(practiceMode){
+    currentTime = player1.getCurrentTime();
+  }
+  else{
+    currentTime = player2.getCurrentTime();
+  }
   musicPlayer(currentTime);
   $("#slider").slider("value",time_to_px(currentTime, duration));
-  timeLine2.style.left = time_to_px(currentTime, duration) + "px";
-  timeLine1.style.left = time_to_px(currentTime, duration) + "px";
+  timeLine2.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
+  timeLine1.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
   // console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
-  // updateTime2()
+  updateTime2(currentTime)
   for (let item of onNoteList){
     noteResizeChanger(item, time_to_px(currentTime, duration));
   }
@@ -222,9 +414,14 @@ $("#slider").slider({ //Timer 슬라이더
   max: clip_box_width,
   step: 0.01,
   slide: function( event, ui ) {
-    timeLine1.style.left = (ui.value) + "px";
-    timeLine2.style.left = (ui.value) + "px";
-    player.seekTo(px_to_time(ui.value, duration), true);
+    timeLine1.style.left = ((ui.value)-clip_start_px) + "px";
+    timeLine2.style.left = ((ui.value)-clip_start_px) + "px";
+    if(practiceMode){
+      player1.seekTo(px_to_time(ui.value, duration), true);
+    }
+    else{
+      player2.seekTo(px_to_time(ui.value, duration), true);
+    }
     noteSizeAllOff();
   }
 });
@@ -232,8 +429,8 @@ function initializeTimer(){ //Timer 초기화
   stopRecording();
   currentTime = 0.0;
   $("#slider").slider("value",time_to_px(currentTime, duration));
-  timeLine2.style.left = time_to_px(currentTime, duration) + "px";
-  timeLine1.style.left = time_to_px(currentTime, duration) + "px";
+  timeLine2.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
+  timeLine1.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
 }
 function time_to_px(time, duration){ //Time을 Px로 변환하는 코드
   return clip_start_px + time / duration * (clip_box_width - clip_start_px)
@@ -251,7 +448,7 @@ function musicPlayer(currentTime){  //음, 비트 소리를 재생하는 코드
     notePlayer(currentNote, previousNote);
     previousNote = melody_clip.getcurrentNoteSet(currentTime);
   }
-  else{
+  else if(current_clip_type == MusicClipType.Beat){
     let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
     for (let beat of currentBeat){
       beat_player(beat)
@@ -288,7 +485,63 @@ function stopAllNotePlayer(){ //재생되는 음을 모두 정지하는
   }
   previousNote = []
 }
-
+function OctaveToColor(octave){
+  switch(octave){
+    case "C4":
+      return 'hsl(0,99%,41%)'
+    case "C#4":
+      return 'hsl(24,99%,41%)';
+    case "D4":
+      return 'hsl(36,99%,41%)';
+    case "D#4":
+      return 'hsl(46,99%,41%)';
+    case "E4":
+      return 'hsl(55,99%,41%)';
+    case "F4":
+      return 'hsl(129,100%,31%)';
+    case "F#4":
+      return 'hsl(179,100%,27%)';
+    case "G4":
+      return 'hsl(186,99%,41%)';
+    case "G#4":
+      return  '#2E93FF';
+    case "A4":
+      return 'hsl(273,99%,40%)';
+    case "A#4":
+      return  'hsl(284,100%,34%)';
+    case "B4":
+      return 'hsl(329,100%,39%)';
+    //let magenta = 'hsl(346,100%,39%)'
+    case "C5":
+      return 'hsl(0,100%,25%)'
+    case "C#5":
+      return 'hsl(25,100%,24%)'
+    case "D5":
+      return 'hsl(36,100%,24%)'
+    case "D#5":
+      return 'hsl(48,100%,24%)'
+    case "E5":
+      return  'hsl(57,100%,26%)'
+    case "F5":
+      return  'hsl(120,100%,19%)'
+    case "F#5":
+      return 'hsl(178,100%,18%)'
+    case "G5":
+      return 'hsl(210,100%,22%)'
+    case "G#5":
+      return 'hsl(246,100%,22%)'
+    case "A5":
+      return 'hsl(275,100%,22%)'
+    case "A#5":
+      return  'hsl(308,100%,22%)'
+    case "B5":
+      return  'hsl(323,100%,21%)'
+    case "C6":
+      return  'hsl(351,100%,21%)'
+    default:
+      return 'hsl(0,100%,0%)'
+  }
+}
 
 /*Cilp Note Object creater*/
 function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, Beat 노트 생성
@@ -299,6 +552,7 @@ function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, B
     const Itemid = "box_" + note.substr(0, note.length - 1); 
     boxItem = document.getElementById(Itemid);
     resizeDrag.textContent = note.substr(note.length - 1, note.length);
+    resizeDrag.style.backgroundColor =  OctaveToColor(note)
   }
   else{
     resizeDrag.classList.add("draggable");  // resize-drag로 생성
@@ -422,44 +676,68 @@ document.getElementById("sheetTemplateSaveButton").addEventListener('click', fun
 })
 
 document.getElementById("sheetMusicSaveButton").addEventListener('click', function (){
-  if(current_clip_type == MusicClipType.Melody){     // Melody Save 
-    if(melody_clip.getClipId() == Melody_clip_array.length){
-    createClipBox(melody_clip);
-    Melody_clip_array.push(melody_clip);
-    melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
-    //dialInitialize();
-    alert("Melody Clip saved")
-    clearNoteClip(MusicClipType.Melody);
-    initializeTimer();
+  if(play_state){
+    player1.pauseVideo();
+    player2.pauseVideo();
+    stopRecording();
+    stopAllNotePlayer();
+    play_state = false;
   }
+  if(current_clip_type == MusicClipType.Melody){     // Melody Save 
+    if(Melody_clip_array.length == 0){
+      createClipBox(melody_clip);
+      Melody_clip_array.push(melody_clip);
+      alert("Melody Clip saved")
+      initializeTimer();
+    }
     else{
       Melody_clip_array[melody_clip.getClipId()] = melody_clip;
       alert("Melody Clip resaved")
     }
   }
-  else{      
-    if(beat_clip.getClipId() == Beat_clip_array.length){                                   // Beat Save
-    createClipBox(beat_clip);
-    Beat_clip_array.push(beat_clip);
-    beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
-    alert("Beat Clip saved")
-    clearNoteClip(MusicClipType.Beat);
-    initializeTimer();
-  }
+  else if(current_clip_type == MusicClipType.Beat){      
+    if(Beat_clip_array.length==0){                                   // Beat Save
+      createClipBox(beat_clip);
+      Beat_clip_array.push(beat_clip);
+      alert("Beat Clip saved")
+      initializeTimer();
+    }
     else{
       Beat_clip_array[beat_clip.getClipId()] = beat_clip;
       alert("Beat Clip resaved")
     }
   }
+  else{
+    if(Template_clip_array.length==0){ 
+      createTemplateClipBox(template_clip);
+      Beat_clip_array.push(template_clip);
+      alert("Template Clip saved");
+      initializeTimer();
+    }
+    else{
+      Template_clip_array[template_clip.get_Clip_id()] = template_clip;
+      alert("Template Clip resaved")
+    }
+  }
 })
 document.getElementById("sheetMusicPlayButton").addEventListener('click', function (){
   //startRecording();
-  player.playVideo();
+  if(practiceMode){
+    player1.playVideo();
+  }
+  else{
+    player2.playVideo();
+  }
 })
 document.getElementById("sheetMusicPauseButton").addEventListener('click', function (){
   //stopRecording();
   stopAllNotePlayer();
-  player.pauseVideo();
+  if(practiceMode){
+    player1.pauseVideo();
+  }
+  else{
+    player2.pauseVideo();
+  }
 })
 document.getElementById("sheetMusicDeleteButton").addEventListener('click', function (){
   if(noteClickIndex!=1){
@@ -468,7 +746,7 @@ document.getElementById("sheetMusicDeleteButton").addEventListener('click', func
       clearNoteClip(MusicClipType.Melody);
       loadClip(melody_clip, melody_clip.getDuration())
     }
-    else{
+    else if(current_clip_type == MusicClipType.Beat){
       beat_clip.deleteNote(noteClickIndex);
       clearNoteClip(MusicClipType.Beat);
       loadClip(beat_clip, beat_clip.getDuration())
@@ -477,14 +755,15 @@ document.getElementById("sheetMusicDeleteButton").addEventListener('click', func
 })
 document.getElementById("sheetMusicAllDeleteButton").addEventListener('click', function (){
     if(current_clip_type == MusicClipType.Melody){
-      melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+      melody_clip = new MusicClip(MusicClipType.Melody, 0, duration);
       clearNoteClip(MusicClipType.Melody);
     }
-    else{
-      beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+    else if(current_clip_type == MusicClipType.Beat){
+      beat_clip = new MusicClip(MusicClipType.Beat, 0, duration);
       clearNoteClip(MusicClipType.Beat);
     }
 })
+
 
 
 
@@ -538,6 +817,10 @@ SyntheysizerEvents.addEventListener('dialInput', function(e){
   doubleChecker += 1
   if(doubleChecker%2 ==0){
   template_clip.set_dial(e.detail.value);
+  document.getElementById("dial_1").value = e.detail.value[0][0]
+  document.getElementById("dial_2").value = e.detail.value[0][1]
+  document.getElementById("dial_3").value = e.detail.value[0][2]
+  document.getElementById("dial_4").value = e.detail.value[0][3]
   }
 })
 
@@ -552,20 +835,20 @@ function changeClipDuration(inputDuration){
   clearNoteClip(current_clip_type);
   if(time_to_px(currentTime, duration) >= clip_box_width){
     $("#slider").slider("value", clip_box_width);
-    timeLine2.style.left = clip_box_width + "px";
-    timeLine1.style.left = clip_box_width + "px";
+    timeLine2.style.left = (clip_box_width-clip_start_px) + "px";
+    timeLine1.style.left = (clip_box_width-clip_start_px) + "px";
   }
   else{
     $("#slider").slider("value",time_to_px(currentTime, duration));
-    timeLine2.style.left = time_to_px(currentTime, duration) + "px";
-    timeLine1.style.left = time_to_px(currentTime, duration) + "px";
+    timeLine2.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
+    timeLine1.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
   }
   if(current_clip_type == MusicClipType.Melody){
     melody_clip.setDuration(duration);
     template_clip.set_duration(duration);
     loadClip(melody_clip, duration);
   }
-  else{
+  else if(current_clip_type == MusicClipType.Beat){
     beat_clip.setDuration(duration);
     loadClip(beat_clip, duration);
   }
@@ -641,7 +924,7 @@ function changeMusicClip(noteIndex, deltaTimeset){ // 노트 위치, 크기 편�
   if(current_clip_type == MusicClipType.Melody){
     melody_clip.editNote(noteIndex, deltaTimeset)
   }
-  else{
+  else if(current_clip_type == MusicClipType.Beat){
     beat_clip.editNote(noteIndex, deltaTimeset)
   }
 }
@@ -680,11 +963,11 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
 }
 function createTemplateClipBox(template_clip){
   let clip_id = template_clip.get_Clip_id()
-    const dragdrop_template = document.createElement("div");
-    dragdrop_template.classList.add("drag-drop");  // resize-drag로 생성
-    dragdrop_template.setAttribute("clip_id", clip_id); // clip_id 속성 추가
-    dragdrop_template.setAttribute("clip_type", MusicClipType.Template); // clip_type 속성 추가
-    dragdrop_template.addEventListener("click", function(){
+  const dragdrop_template = document.createElement("div");
+  dragdrop_template.classList.add("drag-drop");  // resize-drag로 생성
+  dragdrop_template.setAttribute("clip_id", clip_id); // clip_id 속성 추가
+  dragdrop_template.setAttribute("clip_type", MusicClipType.Template); // clip_type 속성 추가
+  dragdrop_template.addEventListener("click", function(){
     //console.log("current Clip Type:", dragdrop_template.getAttribute("clip_type"),"current Clip id", dragdrop_template.getAttribute("clip_id"))
     loadFromTrackToTemplateClip(dragdrop_template.getAttribute("clip_id"));
   })
@@ -766,7 +1049,7 @@ $("#slider_track").slider({ //Timer 슬라이더2
   }
 });
 
-function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
+function updateTime2(currentTime) { //시간에 따라 업데이트 해야하는 함수들
   //musicPlayer(currentTime);
   $("#slider_track").slider("value",currentTime*10);
   timeLine3.style.left = (currentTime*10) + "px";
