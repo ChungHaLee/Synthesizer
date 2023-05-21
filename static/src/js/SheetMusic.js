@@ -489,7 +489,6 @@ document.getElementById("sheetMusicAllDeleteButton").addEventListener('click', f
 
 
 
-
 // document.getElementById("sheetMusicLyricsButton").addEventListener('click', function (){
 //   let Lyrics = document.getElementById("sheetMusiclyricsInput").value
 //   if(current_clip_type == MusicClipType.Melody){

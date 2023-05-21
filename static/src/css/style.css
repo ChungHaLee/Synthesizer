@@ -3,11 +3,17 @@ html, body {
     overflow: hidden;
 }
 
+#shape-canvas > canvas{
+    margin-left: 40px;
+    margin-bottom: -20px;
+}
+
+
 
 #slider > span{
     width: 30px;
-    height: 10px;
-    color: #2b2928
+    height: 20px;
+    background: linear-gradient(144deg,hsl(0, 0%, 95%), #808080 50%,#5d5454);
 }
 
 #slider_track > span{

@@ -7,7 +7,8 @@
     <!-- Style -->
     <link type="text/css" href="../static/src/css/style.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/SheetMusic.css" rel="stylesheet">
-    <!-- <link type="text/css" href="../static/src/css/menu.css" rel="stylesheet"> -->
+    <link type="text/css" href="../static/src/css/melody.css" rel="stylesheet">
+    <link type="text/css" href="../static/src/css/buttons.css" rel="stylesheet">
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
@@ -37,47 +38,53 @@
 </head>
 
 <body>
-    <div id="shape-canvas">
-        <!-- <canvas id="granim-canvas"></canvas> -->
-    </div>
     <div id="DeviceConnectorContainer">
-        <button data-action = "open_midi_in">신디 연결</button> 
-        <button data-action = "close_midi_in">신디 해제</button> 
+        <button data-action = "open_midi_in" class="synthesizer">신디 연결</button> 
+        <button data-action = "close_midi_in" class="synthesizer">신디 해제</button> 
         MIDI: <span id="midiInName">NONE</span>
-        <button data-action = "SearchHapticDevice">햅틱 연결</button> 
-        <button data-action = "DisconnectHapticDevice">햅틱 해제</button> 
+        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 280px;">햅틱 연결</button> 
+        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">햅틱 해제</button> 
+        
         <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none;">Play</button>
         세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
-    </div>        
+    </div>    
+    <div id="shape-canvas">
+        <!-- <canvas id="granim-canvas"></canvas> -->
+    </div>    
     <div id = "ExampleVideo" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
+        <button class="videoSelectButton"id="exampleVideoButton"> 예시 </button>
+        <button class="videoSelectButton"id="danceVideoButton"> 댄스 </button>
         <div id="player1"></div>
         <div id="player2" style="display:none;"></div>
         <br>
-        <button class="videoSelectButton"id="exampleVideoButton"> 예시 </button>
-        <button class="videoSelectButton"id="danceVideoButton"> 댄스 </button>
     </div>
     <div id = "pageControlContainer" style="position:absolute;  margin-top: -460px; margin-left: 1750px;">
-        <button class="sheetMusicButton"id="sheetMusicSaveButton"> 저장하기 </button>
+        <button class="sheetMusicButton"id="sheetMusicSaveButton" style="display:none;"> 저장하기 </button>
         <br>
-        <button class="pageControl"id="PreviousButton" onclick="window.location.href='/'"> 이전 페이지 </button>
+        <button class="pageControl"id="PreviousButton" onclick="window.location.href='/'" style="margin-top: 100px;"> &laquo; </button>
         <br>
-        <button class="pageControl"id="NextButton"onclick="window.location.href='/beat'"> 다음 페이지 </button>
+        <br>
+        <button class="pageControl"id="NextButton"onclick="window.location.href='/beat'"> &raquo; </button>
     </div>
     
 
 
     <div class="fixed-clip-container">
         <div id = 'sheetMusicController'>
-            <button class="sheetMusicButton"id="sheetMusicPlayButton"> 재생 </button>
-            <button class="sheetMusicButton"id="sheetMusicPauseButton"> 정지 </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteButton"> 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton"> 전체 삭제 </button>
-            <div id="slider" style="width: 1770px; height:10px; left:30px;"></div>
+            <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 50px;"> 재생 </button>
+            <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> 정지 </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="float: right; margin-right: 40px;"> 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="float: right;  margin-right: 20px;"> 전체 삭제 </button>
+            <div id="slider" style="width: 1670px; height: 20px; margin-left: 60px; margin-top: 10px; left:30px;"></div>
             
         </div>
         <div class="grid-container" id="MelodyContainer">
-            <div class="vertical-line" id="startLine", style="left:30px;"></div>
-            <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
+            <div class="vertical-line" id="startLine", style="left:30px; margin-left: 60px; "></div>
+            <div class="vertical-line" id="timeLine1" style="background-color:green; margin-left: 60px; left:30px;"></div>
             <div class="grid-item" id="box_B">시  </div>
             <div class="grid-item" id="box_A#">라# </div>
             <div class="grid-item" id="box_A">라 </div>
