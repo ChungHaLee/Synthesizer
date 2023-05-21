@@ -2,7 +2,7 @@ div.fixed-clip-container{
     margin-top: 30px;
     margin-left: 40px;
     position: relative; /* or 'absolute' or 'fixed', depending on your needs */
-    width: 1830px; /* Set the desired width */
+    width: 1840px; /* Set the desired width */
     height: 470px; /* Set the desired height */
     /* overflow: auto; Enables scrolling when the content exceeds the container's size */
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
