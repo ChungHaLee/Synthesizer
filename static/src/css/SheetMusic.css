@@ -19,7 +19,7 @@
   background-color: rgb(245, 245, 245); /* 격자 항목의 배경색 설정 */
   padding: 5px; /* 격자 항목 내부의 여백 설정 */
   border: 1px solid black; /* 격자 항목의 테두리 설정 */
-  height: 5px;
+  height: 22px;
   width: 1820px;
   font-size: 8px;
   font-weight: bold;
@@ -51,15 +51,33 @@
   padding: 0px;
   margin: 0.0rem;
   background-color: #29e;
-  color:rgb(255, 255, 255);
-  font-size: 8px;
+  color:rgb(0, 0, 0);
+  font-size: 12px;
   font-family: sans-serif;
   text-align: center;
   touch-action: none;
   /* This makes things *much* easier */
   box-sizing: border-box;
   display: inline-block;
-    position: absolute;
+  position: absolute;
+}
+.inresize-drag {
+  width: 10px;
+  height: 20px;
+  border-radius: 5px;
+  vertical-align: middle;
+  padding: 0px;
+  margin: 0.0rem;
+  background-color: rgb(85, 255, 0);
+  color:rgb(0, 0, 0);
+  font-size: 12px;
+  font-family: sans-serif;
+  text-align: center;
+  touch-action: none;
+  /* This makes things *much* easier */
+  box-sizing: border-box;
+  display: inline-block;
+  position: absolute;
 }
 #active {
   background-color: rgb(17, 255, 0);
@@ -77,7 +95,19 @@
   display: inline-block;
   position: absolute;
 }
-
+.indraggable {
+  width: 3px;
+  height: 100px;
+  padding: 1px;
+  margin: 0.3rem;
+  background-color: rgb(9, 255, 0);
+  color: rgb(0, 0, 0);
+  border-radius: 0.75em;
+  touch-action: none;
+  user-select: none;
+  display: inline-block;
+  position: absolute;
+}
 
 
 /*Track 설정을 위한 CSS 부분 급하게 만든거라 많이 지저분합니다... 수정할께요*/

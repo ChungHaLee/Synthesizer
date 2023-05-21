@@ -67,7 +67,7 @@
             <div id="slider" style="width: 1770px; height:10px; left:30px;"></div>
             
         </div>
-        <div class="grid-container" id="MelodyContainer">
+        <div class="grid-container" id="MelodyContainer"style="display:none;">
             <div class="vertical-line" id="startLine", style="left:30px;"></div>
             <div class="vertical-line" id="timeLine1" style="background-color:green; left:30px;"></div>
             <div class="grid-item" id="box_B">시  </div>
@@ -87,7 +87,7 @@
 
 
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
-        <div class="grid-container" id="BeatContainer" style="display:none;">
+        <div class="grid-container" id="BeatContainer">
             <div class="vertical-line" id="startLine2", style="left:30px; height: 460px;"></div>
             <div class="vertical-line" id="timeLine2" style="background-color:green; left:30px; height: 460px"></div>
             <div class="grid-item" id="box_0" style="height:100px;">비트1 </div>
@@ -111,7 +111,7 @@
 
 
     <!-- 여기 밑은 기능 구현을 위한 부분이라 display none이라 수정 안해도 괜찮습니다. -->
-    <div id = 'htmlType' style="display:none;">Melody</div>
+    <div id = 'htmlType' style="display:none;">Beat</div>
     <div id = "audioClipContainer" style="display:none;">
         <audio src="../static/src/sound/clap.wav" id = "beat1"></audio>
         <audio src="../static/src/sound/cat.wav" id = "beat2"></audio>

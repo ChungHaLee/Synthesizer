@@ -34,5 +34,16 @@ def shape_melody():
     return render_template('shape_melody.html')
 
 
+
+@app.route('/beat', methods=['POST', 'GET'])
+def shape_beat():
+    return render_template('shape_beat.html')
+
+
+@app.route('/template', methods=['POST', 'GET'])
+def shape_template():
+    return render_template('shape_template.html')
+
+
 if __name__ == '__main__':
   app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 2000)), debug=True, use_reloader=False)
