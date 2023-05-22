@@ -279,7 +279,7 @@ function dial_effect(input_id, input_value){
         if(input_value > 10){
           // console.log("connect");
           //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
-          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.8]);
+          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.5]);
           polySynth.connect(feedbackDelay);
           dial_bool[0] = true;
         }
@@ -293,7 +293,7 @@ function dial_effect(input_id, input_value){
         }
         if(input_value > 10){
           // console.log("connect");
-          crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 8]));
+          crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 3]));
           polySynth.connect(crusher);
           dial_bool[1] = true;
         }
@@ -307,7 +307,7 @@ function dial_effect(input_id, input_value){
         }
         if(input_value > 10){  
           // console.log("connect");
-          cheby.order = parseInt(Normaizing(input_value, [1, 80]));
+          cheby.order = parseInt(Normaizing(input_value, [1, 20]));
           polySynth.connect(cheby);
           dial_bool[2] = true;
         }
@@ -322,66 +322,9 @@ function dial_effect(input_id, input_value){
         if(input_value > 10){
           // console.log("connect");
           //chorus = new Tone.Chorus(Normaizing(input_value, [1, 10]), 2.5, 0.5).toDestination();
-          chorus.frequency.value = Normaizing(input_value, [1, 10])
+          chorus.frequency.value = Normaizing(input_value, [1, 7])
           polySynth.connect(chorus);
           dial_bool[3] = true;
-        }
-        break;
-      case 74:
-        console.log("autoWah", input_value)
-        if(dial_bool[4]){
-          //console.log("disconnect");
-          polySynth.disconnect(autoWah);
-          dial_bool[4] = false;
-        }
-        if(input_value > 10){
-          //console.log("connect");
-          autoWah.Q.value = Normaizing(input_value, [1, 10]);
-          polySynth.connect(autoWah);
-          dial_bool[4] = true;
-        }
-        break;
-      case 75:
-        console.log("freeverb", input_value)
-        if(dial_bool[5]){
-          // console.log("disconnect");
-          polySynth.disconnect(freeverb);
-          dial_bool[5] = false;
-        }
-        if(input_value > 10){
-          // console.log("connect");
-          freeverb.dampening = input_value * 20;
-          polySynth.connect(freeverb);
-          dial_bool[5] = true;
-        }
-        break;
-      case 76:
-        console.log("phaser", input_value)
-        if(dial_bool[6]){
-          // console.log("disconnect");
-          polySynth.disconnect(phaser);
-          dial_bool[6] = false;
-        }
-        if(input_value > 10){
-          phaser.frequency.value = Normaizing(input_value, [1, 150]);
-          //phaser.octaves = parseInt(Normaizing(input_value, [1, 10])),
-          polySynth.connect(phaser);
-          dial_bool[6] = true;
-        }
-        break;
-      case 77:
-        console.log("vibrato", input_value)
-        if(dial_bool[7]){
-          // console.log("disconnect");
-          polySynth.disconnect(vibrato);
-          dial_bool[7] = false;
-        }
-        if(input_value > 10){
-          // console.log("connect");
-          //vibrato = new Tone.Vibrato(Normaizing(input_value, [1, 10]), 0.1).toDestination();
-          vibrato.frequency.value = Normaizing(input_value, [1, 10]);
-          polySynth.connect(vibrato);
-          dial_bool[7] = true;
         }
         break;
       default:
