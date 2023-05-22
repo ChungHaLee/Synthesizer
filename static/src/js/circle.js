@@ -16,7 +16,8 @@ let compoCenter2;
 let particleMaterial;
 let particleMaterial2;
 
-
+let sizeValue;
+let opacityValue;
 
 let container;
 let FrameRate = 0;
@@ -126,10 +127,6 @@ function createCircle_Vanilla(){
   compoCenter2 = new THREE.Mesh(geometry2, material2);
   compoCenter2.position.set(1, 0, 0);
 
-  // pointLight = new THREE.PointLight(0xffffff, 1);
-  // pointLight.position.set(200, 200, 200);
-  // scene.add(pointLight);
-
   group.add( compoCenter );
   group.add( compoCenter2 );
 
@@ -226,20 +223,19 @@ function createShape(){
     color1 = '#FFFFFF'
     color2 = '#FFFFFF'
   }
-
+  console.log('이거', dial_one, dial_two, dial_three, dial_four)
   geometry = new THREE.IcosahedronGeometry(15, 15);
   
-  if (dial_two == undefined || dial_three == undefined){
-    dial_two = 5
-    dial_three = 5
+  if (dial_one == undefined || dial_two == undefined || dial_three == undefined || dial_four == undefined){
+    dial_one = 0
+    dial_two = 0
+    dial_three = 0
+    dial_four = 0
     geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
   } else {
     geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-    if (dial_one == undefined){
-      dial_one = 127
-    } else {
-      
-    }
+    opacityValue = (-0.85 * dial_one / 127) + 1
+    sizeValue = (-70 * dial_four / 127) + 80
   }
 
   material = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
@@ -250,10 +246,10 @@ function createShape(){
       blendEquation: THREE.AddEquation,
       blendSrc: THREE.SrcAlphaFactor,
       blendDst:THREE.OneMinusSrcAlphaFactor,
-      size: (dial_four * 0.5) + 10,
+      size: sizeValue,
       depthWrite: false,
       sizeAttenuation: false,
-      opacity: (dial_one/130) + 0.15,
+      opacity: opacityValue,
       transparent: true
   })});
 
@@ -266,23 +262,6 @@ function createShape(){
   compoCenter.position.set(15*(pitchOne-48)/4 - 55, 13*(pitchOne-48)/6 - 35, -10);
 
   group.add( compoCenter );
-
-
-
-  // material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
-  //   particleMaterial2 = new THREE.PointsMaterial({
-  //     map: texture,
-  //     color: color2,
-  //     blending: THREE.CustomBlending,
-  //     blendEquation: THREE.AddEquation,
-  //     blendSrc: THREE.SrcAlphaFactor,
-  //     blendDst:THREE.OneMinusSrcAlphaFactor,
-  //     size: (dial_four * 0.5) + 10,
-  //     depthWrite: false,
-  //     sizeAttenuation: false,
-  //     opacity: (dial_one/130) + 0.15,
-  //     transparent: true
-  // })});
 
   addGeometryAgain();
 
@@ -304,17 +283,16 @@ function addGeometryAgain(){
   
   if (polyPitchArray.length == 2){
 
-      if (dial_two == undefined || dial_three == undefined){
-        dial_two = 5
-        dial_three = 5
+      if (dial_one == undefined || dial_two == undefined || dial_three == undefined || dial_four == undefined){
+        dial_one = 0
+        dial_two = 0
+        dial_three = 0
+        dial_four = 0
         geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
       } else {
         geometry = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-        if (dial_one == undefined){
-          dial_one = 127
-        } else {
-
-        }
+        opacityValue = (-0.85 * dial_one / 127) + 1
+        sizeValue = (-70 * dial_four / 127) + 80
       }
     
 
@@ -326,10 +304,10 @@ function addGeometryAgain(){
         blendEquation: THREE.AddEquation,
         blendSrc: THREE.SrcAlphaFactor,
         blendDst:THREE.OneMinusSrcAlphaFactor,
-        size: (dial_four * 0.5) + 10,
+        size: sizeValue,
         depthWrite: false,
         sizeAttenuation: false,
-        opacity: (dial_one/130) + 0.15,
+        opacity: opacityValue,
         transparent: true
     })});
 
@@ -338,22 +316,16 @@ function addGeometryAgain(){
     group.add(pointLight);
 
 
-    // compoCenter = new THREE.Points(geometry, particleMaterial);
-    // compoCenter.position.set(5*(pitchOne-48)/4 - 15, 5*(pitchOne-48)/6 - 10, -10);
-
-    // group.add( compoCenter );
-
-    if (dial_two == undefined || dial_three == undefined){
-      dial_two = 5
-      dial_three = 5
+    if (dial_one == undefined || dial_two == undefined || dial_three == undefined || dial_four == undefined){
+      dial_one = 0
+      dial_two = 0
+      dial_three = 0
+      dial_four = 0
       geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.5));
     } else {
       geometry2 = new THREE.IcosahedronGeometry(0.5 * dial_two, Math.ceil(dial_three*0.1));
-        if (dial_one == undefined){
-          dial_one = 127
-        } else {
-          
-        }
+      opacityValue = (-0.85 * dial_one / 127) + 1
+      sizeValue = (-70 * dial_four / 127) + 80
     }
 
       material2 = new THREE.TextureLoader().load('/static/src/images/circle.png', (texture) => {
@@ -364,10 +336,10 @@ function addGeometryAgain(){
           blendEquation: THREE.AddEquation,
           blendSrc: THREE.SrcAlphaFactor,
           blendDst:THREE.OneMinusSrcAlphaFactor,
-          size: (dial_four * 0.5) + 10,
+          size: sizeValue,
           depthWrite: false,
           sizeAttenuation: false,
-          opacity: (dial_one/130) + 0.15,
+          opacity: opacityValue,
           transparent: true
       })});
 
