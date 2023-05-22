@@ -95,10 +95,16 @@ function onPlayerReady(event) { //비디오 duration을 Clip 길이로 설정
 function onPlayerStateChange(event) {
     if (event.data == window.YT.PlayerState.PLAYING) {
         startRecording();
+        if(saveModeCheck){
+          canvasRecordingStart()
+        }
     }
     if (event.data == window.YT.PlayerState.ENDED || event.data == window.YT.PlayerState.PAUSED){
         stopRecording();
         stopAllNotePlayer();
+        if(saveModeCheck){
+          canvasRecordingStop()
+        }
     } 
 }
 
@@ -233,6 +239,7 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
   }
   else{
     console.log('to Melody')
+    saveModeCheck  = false
     if(play_state){
       player1.pauseVideo();
       player2.pauseVideo();
@@ -346,9 +353,31 @@ function addClipToTrack(melodyBool, BeatBool, TemplateBool){
 
 let mediaRecorder = null;
 const arrVideoData = [];
-function canvasRecordingStart(){
+async function canvasRecordingStart(){
   // 캔버스 영역 화면을 스트림으로 취득
-  const mediaStream = document.getElementById("shape-canvas").captureStream();
+  const mediaStream = document.getElementById("shape-canvas").firstElementChild.captureStream();
+
+  // Get audio stream
+  //const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+
+  // Combine video and audio streams
+  //let combinedStream = new MediaStream([...mediaStream.getTracks(), ...audioStream.getTracks()]);
+
+  
+  // // Get display and audio streams
+  // const displayMediaOptions = {
+  //   video: {
+  //     cursor: 'always'
+  //   },
+  //   audio: true
+  // };
+  // const displayStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+  // // Combine canvas video and display audio streams
+  // let combinedStream = new MediaStream([...canvasStream.getVideoTracks(), ...displayStream.getAudioTracks()]);
+
+
+
 
   // MediaRecorder(녹화기) 객체 생성
   mediaRecorder = new MediaRecorder(mediaStream);
@@ -1110,17 +1139,16 @@ function updateTime2(currentTime) { //시간에 따라 업데이트 해야하는
   //musicPlayer(currentTime);
   $("#slider_track").slider("value",currentTime*10);
   timeLine3.style.left = (currentTime*10) + "px";
-  let cur_track_set = TrackObject.getcurrentClipSet(currentTime);
   //console.log("Test Track", cur_track_set[0][1]);
-  if(cur_track_set[0].length > 0){
+  if(Template_clip_array.length > 0){
     //console.log(Template_clip_array);
-    templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
+    templatePlayerClip(Template_clip_array[0]);
   }
-  if(cur_track_set[1].length > 0){
-    musicPlayerMelodyClip(currentTime - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
+  if(Melody_clip_array.length > 0){
+    musicPlayerMelodyClip(currentTime, Melody_clip_array[0]);
   }
-  if(cur_track_set[2].length > 0){
-    musicPlayerBeatClip(currentTime - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
+  if(Beat_clip_array.length > 0){
+    musicPlayerBeatClip(currentTime, Beat_clip_array[0]);
   }
 }
 function initializeTimer2(){ // Timer 초기화
