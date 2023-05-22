@@ -56,21 +56,20 @@ body{
   }
 .resize-drag {
   width: 10px;
-  height: 20px;
-  border-radius: 5px;
+  height: 30px;
+  border-radius: 3px;
   vertical-align: middle;
-  padding: 0px;
-  margin: 0.0rem;
-  background-color: #29e;
-  color:rgb(0, 0, 0);
+  margin-top: -5px;
   font-size: 12px;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   text-align: center;
   touch-action: none;
   /* This makes things *much* easier */
   box-sizing: border-box;
   display: inline-block;
   position: absolute;
+  font-size: 16px;
+  color: white;
 }
 .inresize-drag {
   width: 10px;

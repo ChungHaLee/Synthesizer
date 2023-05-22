@@ -450,7 +450,7 @@ function animate() {
           } else if (polyBeatArray[0] == 2) {
             scene.background = new THREE.Color('#4B4B4B')
           } else if (polyBeatArray[0] == 3) {
-            scene.background = new THREE.Color('#1A1A1A')
+            scene.background = new THREE.Color('#d6d6d6')
           } else {
             scene.background = new THREE.Color('black')
           }
