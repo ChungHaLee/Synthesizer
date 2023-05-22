@@ -59,7 +59,7 @@ function createPlayer1() {
   player1 = new window.YT.Player('player1', {
       height: '390',
       width: '640',
-      videoId: 'Tg7sKy6pHDY', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
+      videoId: 'q1T2C3a0LvI', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
       events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
