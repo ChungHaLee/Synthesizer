@@ -12,19 +12,23 @@ div.fixed-clip-container{
 }
 
 #startLine{
-    height: 374px;
+    height: 383px;
+    position: absolute;
 }
 #timeLine1{
-    height: 374px;
+    height: 383px;
+    position: absolute;
 }
 
 
 
 #startLine2{
     /* margin-top: -10px; */
-    height: 364px;
+    position: absolute;
+    height: 368px;
 }
 #timeLine2{
     /* margin-top: -10px; */
-    height: 364px;
+    position: absolute;
+    height: 368px;
 }
