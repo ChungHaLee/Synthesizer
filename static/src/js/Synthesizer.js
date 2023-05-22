@@ -244,8 +244,8 @@ SyntheysizerEvents.addEventListener('templateLoad', function (e){
 
 
 export function dialInitialize(){
-  dial_set.value = [[50.0, 50.0, 50.0, 50.0], 
-                  [50.0, 50.0, 50.0, 50.0]]
+  dial_set.value = [[0.0, 0.0, 0.0, 0.0], 
+                  [0.0, 0.0, 0.0, 0.0]]
   const event = new CustomEvent('dialInput', { detail: dial_set });
   SyntheysizerEvents.dispatchEvent(event);
   for(let i = 70; i < 78; i++){

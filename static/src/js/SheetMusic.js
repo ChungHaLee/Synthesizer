@@ -250,7 +250,7 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     initializeTimer();
     document.getElementById("danceVideoButton").click();
     addClipToTrack(true, false, false);
-
+    document.getElementById("exampleVideoButton").disabled = false;
   }
 })
 
@@ -312,6 +312,8 @@ document.getElementById("NextButton").addEventListener("click", function(){
     document.getElementById("danceVideoButton").click();
     player2.mute();
     addClipToTrack(true, true, true);
+    document.getElementById("exampleVideoButton").disabled = true;
+    
   }
 })
 
@@ -340,6 +342,50 @@ function addClipToTrack(melodyBool, BeatBool, TemplateBool){
     }
   }
 }
+
+let mediaRecorder = null;
+const arrVideoData = [];
+function canvasRecordingStart(){
+  // 캔버스 영역 화면을 스트림으로 취득
+  const mediaStream = document.getElementById("shape-canvas").captureStream();
+
+  // MediaRecorder(녹화기) 객체 생성
+  mediaRecorder = new MediaRecorder(mediaStream);
+
+  // MediaRecorder.dataavailable 이벤트 처리
+  mediaRecorder.ondataavailable = (event)=>{
+      // 스트림 데이터(Blob)가 들어올 때마다 배열에 담아둔다.
+      arrVideoData.push(event.data);
+  }
+
+  // MediaRecorder.stop 이벤트 처리
+  mediaRecorder.onstop = (event)=>{
+      // 들어온 스트림 데이터들(Blob)을 통합한 Blob객체를 생성
+      const blob = new Blob(arrVideoData);
+
+      // BlobURL 생성: 통합한 스트림 데이터를 가르키는 임시 주소를 생성
+      const blobURL = window.URL.createObjectURL(blob);
+
+      // 다운로드 구현
+      const $anchor = document.createElement("a"); // 앵커 태그 생성
+      document.body.appendChild($anchor);
+      $anchor.style.display = "none";
+      $anchor.href = blobURL; // 다운로드 경로 설정
+      $anchor.download = "test.webm"; // 파일명 설정
+      $anchor.click(); // 앵커 클릭
+      
+      // 배열 초기화
+      arrVideoData.splice(0);
+  }
+
+  // 녹화 시작
+  mediaRecorder.start(); 
+}
+function canvasRecordingStop(){
+  // 녹화 중단!
+  mediaRecorder.stop(); 
+}
+
 
 
 
