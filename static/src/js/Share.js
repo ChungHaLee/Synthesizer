@@ -16,8 +16,8 @@ export const pad_set = {
 };
 
 export const dial_set = {
-  value: [[50.0, 50.0, 50.0, 50.0], 
-          [50.0, 50.0, 50.0, 50.0]]  //순서대로  [21, 22, 23, 24]]
+  value: [[0.0, 0.0, 0.0, 0.0], 
+          [0.0, 0.0, 0.0, 0.0]]  //순서대로  [21, 22, 23, 24]]
 }; 
 
 export const joystick_set = {
@@ -41,8 +41,8 @@ export class TemplateClip{
     this.Clip_id = Clip_id;
     this.duration = duration;
     this.instrument = instrument;
-    this.dial_set = [[50.0, 50.0, 50.0, 50.0], 
-                     [50.0, 50.0, 50.0, 50.0]]
+    this.dial_set = [[0.0, 0.0, 0.0, 0.0], 
+                     [0.0, 0.0, 0.0, 0.0]]
   }
   set_dial(dial_set){
     this.dial_set = dial_set

@@ -40,7 +40,7 @@ let player1 = null;
 let player2 = null;
 let practiceMode = true
 document.getElementById("sheetMusicSaveButton").disabled = true;
-
+let saveModeCheck = false
 
 // Check if YT is already loaded
 if (window.YT && window.YT.Player) {
@@ -296,6 +296,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   // }
   else{
     console.log("to Save")
+    saveModeCheck  = true
     if(play_state){
       player1.pauseVideo();
       player2.pauseVideo();
