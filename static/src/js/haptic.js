@@ -76,9 +76,19 @@ class HapticDevice {
     
     async request() {
       let options = {
-        "filters": [{
+        "filters": [
+        {
           "namePrefix": "Haptic"
-        }],
+        }
+        // {
+        //     "namePrefix": "Haptic",
+        //     "deviceAddress": "XX:XX:XX:XX:XX:XX" // Replace with the first Bluetooth address
+        // },
+        // {
+        //     "namePrefix": "Haptic",
+        //     "deviceAddress": "YY:YY:YY:YY:YY:YY" // Replace with the second Bluetooth address
+        // }
+        ],
         "optionalServices": ["6e400001-b5a3-f393-e0a9-e50e24dcca9e"],
         "acceptAllDevices": false
       };
