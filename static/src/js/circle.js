@@ -220,10 +220,8 @@ function createShape(){
     color1 = colorByPitch(pitchOne);
     color2 = colorByPitch(pitchTwo);
   } else {
-    // color1 = '#FFFFFF'
-    // color2 = '#FFFFFF'
-    color1 = colorByPitch(pitchOne);
-    color2 = colorByPitch(pitchTwo);
+    color1 = '#FFFFFF'
+    color2 = '#FFFFFF'
   }
   //console.log('이거', dial_one, dial_two, dial_three, dial_four)
   geometry = new THREE.IcosahedronGeometry(15, 15);
@@ -279,10 +277,8 @@ function addGeometryAgain(){
     color1 = colorByPitch(pitchOne);
     color2 = colorByPitch(pitchTwo);
   } else {
-    // color1 = '#FFFFFF'
-    // color2 = '#FFFFFF'
-    color1 = colorByPitch(pitchOne);
-    color2 = colorByPitch(pitchTwo);
+    color1 = '#FFFFFF'
+    color2 = '#FFFFFF'
   }
   
   if (polyPitchArray.length == 2){
