@@ -540,7 +540,7 @@ function musicPlayer(currentTime){  //음, 비트 소리를 재생하는 코드
     let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
     for (let beat of currentBeat){
       beat_player(beat);
-      //setTimeout(beat_output_play(beat), 100);
+      setTimeout(() => beat_output_play(beat), 100);
     }
   }
 }
@@ -1170,7 +1170,7 @@ function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리
   let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
   for (let beat of currentBeat){
     beat_player(beat);
-    //setTimeout(beat_output_play(beat), 100);
+    setTimeout(() => beat_output_play(beat), 100);
   }
 }
 function templatePlayerClip(inputClip){
