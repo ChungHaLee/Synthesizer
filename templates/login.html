@@ -17,15 +17,16 @@
 <body>
     <div class="login">
         <div class="form">
+          <p>비즈햅 신디사이저</p>
           <form action="/melody" method="POST" class="login-form">
             <!-- <img src = "../static/src/images/loginImage1.png" alt = "My Image1">
             <img src = "../static/src/images/loginImage2.png" alt = "My Image1">
             <img src = "../static/src/images/loginImage3.png" alt = "My Image1"> -->
-            <p>비즈햅 신디사이저</p>
-            <input type="text" name="id_name" placeholder="이름"/>
-            <input type="text" name="id_mailAddress" placeholder="이메일 주소"/>
-            <button type="submit">노래 만들기</button>
-          </form>  
+            <input type="text" name="username"  placeholder="이름"/>
+            <input type="text" name="email" placeholder="이메일 주소"/>
+            <input type="number" name="musicType" value = 1 placeholder="음악 넘버"/>
+            <button type="submit" value="Music1">음악 만들기</button>
+          </form>
         </div>
     </div>
 </body>

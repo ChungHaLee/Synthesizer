@@ -199,6 +199,9 @@ function restartAudio(audioElement) {
   audioElement.play(); // 오디오 재생 시작
 }
 export function beat_player(input_id){
+  pad_set.id = input_id;
+  const event = new CustomEvent('padInput', { detail: pad_set });
+  SyntheysizerEvents.dispatchEvent(event);
   document.getElementById('HapticPlayButton').click();
   //console.log("tap Check");
   switch (input_id){
@@ -218,17 +221,20 @@ export function beat_player(input_id){
       break;
   }
 }
+export function beat_output_play(input_id){
+  pad_set.id = input_id;
+  const event = new CustomEvent('padOutput', { detail: pad_set });
+  SyntheysizerEvents.dispatchEvent(event);
+}
 
 function pad_input(input_id){
-  beat_player(input_id - 36)
   pad_set.id = input_id - 36;
-  const event = new CustomEvent('padInput', { detail: pad_set });
+  beat_player(input_id - 36)
+  const event = new CustomEvent('padkeyInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
 function pad_output(input_id){
-  pad_set.id = input_id - 36;
-  const event = new CustomEvent('padOutput', { detail: pad_set });
-  SyntheysizerEvents.dispatchEvent(event);
+  beat_output_play(input_id - 36)
 }
 SyntheysizerEvents.addEventListener('templateLoad', function (e){
   // console.log("In Circle note: ", e.detail.value); //범위가 0~127입니다.

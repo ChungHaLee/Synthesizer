@@ -38,6 +38,9 @@
 </head>
 
 <body>
+    <div id = "userName" style="display:none;">{{ username }}</div>
+    <div id = "userEmail"style="display:none;">{{ email }}</div>
+    <div id = "musicType"style="display:none;">{{ musicType }}</div>
     <div id="DeviceConnectorContainer">
         <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">신디 연결</button> 
         <button data-action = "close_midi_in" class="synthesizer">신디 해제</button> 
@@ -121,7 +124,7 @@
             Effect 4 : <input type="range" min="0" max="127" value="50" id="dial_4" style="width: 900px;height: 80; margin-left: 200px; margin-top: 50px; pointer-events: none;">
         </div> -->
     </div>
-
+    <button class="trackMusicButton"id="trackMusicSaveButton">Test</button>
 
 
 
@@ -154,7 +157,7 @@
         <button class="trackMusicButton"id="trackMusicPlayButton"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton"> 정지 </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton"> 클립 삭제 </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton"> 노래 저장</button>
+        <!-- <button class="trackMusicButton"id="trackMusicSaveButton"> 노래 저장</button> -->
         <button class="trackMusicButton"id="trackMusicLoadButton"> 노래 불러오기</button>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 3000px; height: 15px;"></div>

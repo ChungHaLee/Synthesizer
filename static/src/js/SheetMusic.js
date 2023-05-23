@@ -1,5 +1,5 @@
 import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip} from './Share.js';
-import { piano_player, beat_player, dialInitialize} from './Synthesizer.js';
+import { piano_player, beat_player, dialInitialize, beat_output_play} from './Synthesizer.js';
 //최소 범위 A2 ~ C7
 
 const fps = 30;
@@ -42,24 +42,44 @@ let practiceMode = true
 document.getElementById("sheetMusicSaveButton").disabled = true;
 let saveModeCheck = false
 
+const userName = document.getElementById("userName").innerHTML
+const userEmail = document.getElementById("userEmail").innerHTML
+const musicId = parseInt(document.getElementById("musicType").innerHTML);
+setVideo();
+
 // Check if YT is already loaded
-if (window.YT && window.YT.Player) {
-  createPlayer1();
-  createPlayer2();
-} else {
-  // If not, wait for the API to load
-  window.onYouTubeIframeAPIReady = function() {
-      createPlayer1();
-      createPlayer2();
-  };
+function createVideo(id){
+  if (window.YT && window.YT.Player) {
+    createPlayer1(id);
+    createPlayer2(id);
+  } else {
+    // If not, wait for the API to load
+    window.onYouTubeIframeAPIReady = function() {
+        createPlayer1(id);
+        createPlayer2(id);
+    };
+  }
+}
+
+function setVideo(){
+  switch(musicId){
+    case 1:
+      return createVideo("Tg7sKy6pHDY")
+    case 2:
+      return createVideo("vPVS7RvcNNw")
+    case 3:
+      return createVideo("rhWJfpRo_2c")
+    default:
+      return createVideo("Tg7sKy6pHDY")
+  }
 }
 
 
-function createPlayer1() {
+function createPlayer1(id) {
   player1 = new window.YT.Player('player1', {
       height: '390',
       width: '640',
-      videoId: 'q1T2C3a0LvI', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
+      videoId: id, // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
       events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -67,11 +87,11 @@ function createPlayer1() {
   });
 }
 
-function createPlayer2() {
+function createPlayer2(id) {
   player2 = new window.YT.Player('player2', {
       height: '390',
       width: '640',
-      videoId: 'Tg7sKy6pHDY', // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
+      videoId: id, // 유투브 Share에 있는 ID 입력, 단 일부 영상은 안됌(이유를 모름)
       events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
@@ -110,15 +130,13 @@ function onPlayerStateChange(event) {
 
 document.getElementById("exampleVideoButton").addEventListener('click', function(){
   practiceMode = true;
-  if(play_state){
-    player1.pauseVideo();
-    player2.pauseVideo();
-    player1.seekTo(0);
-    player2.seekTo(0);
-    stopRecording();
-    stopAllNotePlayer();
-    play_state = false;
-  }
+  player1.seekTo(0);
+  player2.seekTo(0);
+  player1.pauseVideo();
+  player2.pauseVideo();
+  stopRecording();
+  stopAllNotePlayer();
+  play_state = false;
   changeClipDuration(player1.getDuration());
   //clearExampleClip(current_clip_type);
   //settingExample();
@@ -142,15 +160,13 @@ document.getElementById("exampleVideoButton").addEventListener('click', function
 })
 document.getElementById("danceVideoButton").addEventListener('click', function(){
   practiceMode = false;
-  if(play_state){
-    player1.pauseVideo();
-    player2.pauseVideo();
-    player1.seekTo(0);
-    player2.seekTo(0);
-    stopRecording();
-    stopAllNotePlayer();
-    play_state = false;
-  }
+  player1.seekTo(0);
+  player2.seekTo(0);
+  player1.pauseVideo();
+  player2.pauseVideo();
+  stopRecording();
+  stopAllNotePlayer();
+  play_state = false;
   //clearExampleClip(current_clip_type);
   changeClipDuration(player2.getDuration());
   // if (window.YT && window.YT.Player) {
@@ -165,13 +181,7 @@ document.getElementById("danceVideoButton").addEventListener('click', function()
   if(current_clip_type == MusicClipType.Melody){
     clearNoteClip(MusicClipType.Melody);
     if(Melody_clip_array.length ==0){
-      const clipDuration = 30
-      const clipNoteset = ["F5","F5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","C5","C5","F5","F5","D#5","D#5","F5","F5","C5","C5","C5","C5","D#5","D#5","F5","F5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","F5","F5","C5","C5","C5","C5","D#5","D#5","F5","F5","F5","F5","C6","C6","A#5","A#5","A#5","A#5","G#5","G#5","F5","F5","G#5","G#5","F5","F5","D#5","D#5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","F5","F5","C5","C5","C5","C5","D#5","D#5","F5","F5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","F5","F5"]
-      const clipTimeset = [[0.647954979019165,-1],[0.647954979019165,0.7470661106262207],[0.8470660152587891,-1],[0.8470660152587891,1.2373997959136962],[1.2373997959136962,-1],[1.2373997959136962,1.3703999313354491],[1.3703999313354491,-1],[1.3703999313354491,1.7671941277923584],[1.7671941277923584,-1],[1.7671941277923584,1.9711941239776611],[1.9711941239776611,-1],[1.9711941239776611,2.378771],[2.3367709446868896,-1],[2.3367709446868896,2.602014068664551],[2.725013975204468,-1],[2.725013975204468,2.986477881744385],[3.0848358264312745,-1],[3.0848358264312745,3.2848358741149903],[3.2848358741149903,-1],[3.2848358741149903,3.4912540972747803],[3.450253969482422,-1],[3.450253969482422,3.653189933242798],[3.6151898264312745,-1],[3.6151898264312745,3.8782518054504393],[4.016251816894531,-1],[4.016251816894531,4.214254028610229],[4.244254,-1],[4.244254,4.341253883651733],[4.410256877929688,-1],[4.410256877929688,4.636256948501587],[4.801935043869019,-1],[4.801935043869019,4.967346921798706],[5.000346914169311,-1],
-                          [5.000346914169311,5.494518055313111],[5.661517872207642,-1],[5.661517872207642,5.759305024795532],[5.831305051498413,-1],[5.831305051498413,6.133816137329101],[6.220816030517578,-1],[6.220816030517578,6.486191051498413],[6.617578112533569,-1],[6.617578112533569,6.685578190734863],[6.815630940872192,-1],[6.815630940872192,7.771677996185303],[7.746677900817871,-1],[7.746677900817871,7.911396954223632],[7.911396954223632,-1],[7.911396954223632,8.336253040054322],[8.369420165939331,-1],[8.369420165939331,8.631942],[8.728941883651734,-1],[8.728941883651734,9.098498996185302],[9.098498996185302,-1],[9.098498996185302,9.302419824523925],[9.39441983215332,-1],[9.39441983215332,9.519944225067139],[9.519944225067139,-1],[9.519944225067139,9.670944009536743],[9.670944009536743,-1],[9.670944009536743,9.753039973297119],[9.854040043869018,-1],[9.854040043869018,9.937039988555908],[9.998631034332275,-1],[9.998631034332275,10.265501106811524],[10.28750118119812,-1],[10.28750118119812,10.423501099182129],[10.379501188827515,-1],[10.379501188827515,10.743215855041504],[10.817222066757202,-1],[10.817222066757202,10.942222066757202],[11.008222051498413,-1],[11.008222051498413,11.474490202178956],[11.702572950408936,-1],[11.702572950408936,11.741572984741211],[11.838704011444092,-1],[11.838704011444092,12.202460937057495],[12.263460807357788,-1],[12.263460807357788,12.623494062942505],[12.599255144958496,-1],[12.599255144958496,12.689494047683716],[12.794494066757203,-1],[12.794494066757203,12.986207019073486],
-                          [12.986207019073486,-1],[12.986207019073486,13.219377912261963],[13.152378,-1],[13.152378,13.266377843597413],[13.35437790272522,-1],[13.35437790272522,13.61115286076355],[13.61115286076355,-1],[13.61115286076355,13.820468053405762],[13.820468053405762,-1],[13.820468053405762,13.975521064849854],[13.943521,-1],[13.943521,14.338442020980835],[14.338442020980835,-1],[14.338442020980835,14.636548137329102],[14.702548122070313,-1],[14.702548122070313,14.968961091552734],[15.09839498664856,-1],[15.09839498664856,15.166395064849853],[15.269394990463256,-1],[15.269394990463256,15.533779917984008],[15.533779917984008,-1],[15.533779917984008,15.692114064849854],[15.66611404196167,-1],[15.66611404196167,15.933416072479249],[16.061416093460082,-1],[16.061416093460082,16.286133965667723],[16.286133965667723,-1],[16.286133965667723,16.784363087738036],[16.784363087738036,-1],[16.784363087738036,17.02023212588501],[17.12123195803833,-1],[17.12123195803833,17.609739110626222],[17.74741118310547,-1],[17.74741118310547,17.83641116975403],[17.905411175476075,-1],[17.905411175476075,18.267891047683715],[18.303891061035156,-1],[18.303891061035156,18.57058894659424],[18.63058888937378,-1],[18.63058888937378,18.729937020980834],[18.82893699809265,-1],[18.82893699809265,19.222282946594238],[19.264868990463256,-1],[19.264868990463256,19.359869019073486],[19.390868917984008,-1],[19.390868917984008,19.75131011253357],[19.82081601335144,-1],[19.82081601335144,19.948816034332275],[19.995815965667724,-1],[19.995815965667724,20.24800915068054],
-                          [20.416937122070312,-1],[20.416937122070312,20.61939501335144],[20.745394940872192,-1],[20.745394940872192,21.007351064849853],[21.11235084550476,-1],[21.11235084550476,21.239734],[21.271734064849852,-1],[21.271734064849852,21.403700980926512],[21.46770087220764,-1],[21.46770087220764,21.59970108010864],[21.59970108010864,-1],[21.59970108010864,21.832057921798707],[22.030837102996827,-1],[22.030837102996827,22.233084973297117],[22.260084923706053,-1],[22.260084923706053,22.363084849319456],[22.39608508010864,-1],[22.39608508010864,22.629477160217284],[22.829621937057496,-1],[22.829621937057496,23.060766110626222],[23.085765967575075,-1],[23.085765967575075,23.585562851226808]]
-      melody_clip = new MusicClip(MusicClipType.Melody, 1, clipDuration, clipNoteset, clipTimeset)
+      melody_clip = getExample();
     }
     else{
       melody_clip = Melody_clip_array[0]
@@ -191,6 +201,24 @@ document.getElementById("danceVideoButton").addEventListener('click', function()
     //beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
   }
 })
+
+function getExample(){
+  if(musicId ==1){
+    const clipDuration = 30
+    const clipNoteset = ["F5","F5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","C5","C5","F5","F5","D#5","D#5","F5","F5","C5","C5","C5","C5","D#5","D#5","F5","F5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","F5","F5","C5","C5","C5","C5","D#5","D#5","F5","F5","F5","F5","C6","C6","A#5","A#5","A#5","A#5","G#5","G#5","F5","F5","G#5","G#5","F5","F5","D#5","D#5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","F5","F5","C5","C5","C5","C5","D#5","D#5","F5","F5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","F5","F5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","C5","C5","D#5","D#5","D#5","D#5","F5","F5"]
+    const clipTimeset = [[0.647954979019165,-1],[0.647954979019165,0.7470661106262207],[0.8470660152587891,-1],[0.8470660152587891,1.2373997959136962],[1.2373997959136962,-1],[1.2373997959136962,1.3703999313354491],[1.3703999313354491,-1],[1.3703999313354491,1.7671941277923584],[1.7671941277923584,-1],[1.7671941277923584,1.9711941239776611],[1.9711941239776611,-1],[1.9711941239776611,2.378771],[2.3367709446868896,-1],[2.3367709446868896,2.602014068664551],[2.725013975204468,-1],[2.725013975204468,2.986477881744385],[3.0848358264312745,-1],[3.0848358264312745,3.2848358741149903],[3.2848358741149903,-1],[3.2848358741149903,3.4912540972747803],[3.450253969482422,-1],[3.450253969482422,3.653189933242798],[3.6151898264312745,-1],[3.6151898264312745,3.8782518054504393],[4.016251816894531,-1],[4.016251816894531,4.214254028610229],[4.244254,-1],[4.244254,4.341253883651733],[4.410256877929688,-1],[4.410256877929688,4.636256948501587],[4.801935043869019,-1],[4.801935043869019,4.967346921798706],[5.000346914169311,-1],
+                        [5.000346914169311,5.494518055313111],[5.661517872207642,-1],[5.661517872207642,5.759305024795532],[5.831305051498413,-1],[5.831305051498413,6.133816137329101],[6.220816030517578,-1],[6.220816030517578,6.486191051498413],[6.617578112533569,-1],[6.617578112533569,6.685578190734863],[6.815630940872192,-1],[6.815630940872192,7.771677996185303],[7.746677900817871,-1],[7.746677900817871,7.911396954223632],[7.911396954223632,-1],[7.911396954223632,8.336253040054322],[8.369420165939331,-1],[8.369420165939331,8.631942],[8.728941883651734,-1],[8.728941883651734,9.098498996185302],[9.098498996185302,-1],[9.098498996185302,9.302419824523925],[9.39441983215332,-1],[9.39441983215332,9.519944225067139],[9.519944225067139,-1],[9.519944225067139,9.670944009536743],[9.670944009536743,-1],[9.670944009536743,9.753039973297119],[9.854040043869018,-1],[9.854040043869018,9.937039988555908],[9.998631034332275,-1],[9.998631034332275,10.265501106811524],[10.28750118119812,-1],[10.28750118119812,10.423501099182129],[10.379501188827515,-1],[10.379501188827515,10.743215855041504],[10.817222066757202,-1],[10.817222066757202,10.942222066757202],[11.008222051498413,-1],[11.008222051498413,11.474490202178956],[11.702572950408936,-1],[11.702572950408936,11.741572984741211],[11.838704011444092,-1],[11.838704011444092,12.202460937057495],[12.263460807357788,-1],[12.263460807357788,12.623494062942505],[12.599255144958496,-1],[12.599255144958496,12.689494047683716],[12.794494066757203,-1],[12.794494066757203,12.986207019073486],
+                        [12.986207019073486,-1],[12.986207019073486,13.219377912261963],[13.152378,-1],[13.152378,13.266377843597413],[13.35437790272522,-1],[13.35437790272522,13.61115286076355],[13.61115286076355,-1],[13.61115286076355,13.820468053405762],[13.820468053405762,-1],[13.820468053405762,13.975521064849854],[13.943521,-1],[13.943521,14.338442020980835],[14.338442020980835,-1],[14.338442020980835,14.636548137329102],[14.702548122070313,-1],[14.702548122070313,14.968961091552734],[15.09839498664856,-1],[15.09839498664856,15.166395064849853],[15.269394990463256,-1],[15.269394990463256,15.533779917984008],[15.533779917984008,-1],[15.533779917984008,15.692114064849854],[15.66611404196167,-1],[15.66611404196167,15.933416072479249],[16.061416093460082,-1],[16.061416093460082,16.286133965667723],[16.286133965667723,-1],[16.286133965667723,16.784363087738036],[16.784363087738036,-1],[16.784363087738036,17.02023212588501],[17.12123195803833,-1],[17.12123195803833,17.609739110626222],[17.74741118310547,-1],[17.74741118310547,17.83641116975403],[17.905411175476075,-1],[17.905411175476075,18.267891047683715],[18.303891061035156,-1],[18.303891061035156,18.57058894659424],[18.63058888937378,-1],[18.63058888937378,18.729937020980834],[18.82893699809265,-1],[18.82893699809265,19.222282946594238],[19.264868990463256,-1],[19.264868990463256,19.359869019073486],[19.390868917984008,-1],[19.390868917984008,19.75131011253357],[19.82081601335144,-1],[19.82081601335144,19.948816034332275],[19.995815965667724,-1],[19.995815965667724,20.24800915068054],
+                        [20.416937122070312,-1],[20.416937122070312,20.61939501335144],[20.745394940872192,-1],[20.745394940872192,21.007351064849853],[21.11235084550476,-1],[21.11235084550476,21.239734],[21.271734064849852,-1],[21.271734064849852,21.403700980926512],[21.46770087220764,-1],[21.46770087220764,21.59970108010864],[21.59970108010864,-1],[21.59970108010864,21.832057921798707],[22.030837102996827,-1],[22.030837102996827,22.233084973297117],[22.260084923706053,-1],[22.260084923706053,22.363084849319456],[22.39608508010864,-1],[22.39608508010864,22.629477160217284],[22.829621937057496,-1],[22.829621937057496,23.060766110626222],[23.085765967575075,-1],[23.085765967575075,23.585562851226808]]
+    return new MusicClip(MusicClipType.Melody, 1, clipDuration, clipNoteset, clipTimeset)
+  }
+  else{
+    melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+  }
+}
+
+
+
 
 function settingExample(){
   if(practiceMode){
@@ -213,21 +241,19 @@ function settingExample(){
 
 document.getElementById("PreviousButton").addEventListener("click", function(){
   console.log("previous check")
+  player1.seekTo(0);
+  player2.seekTo(0);
+  player1.pauseVideo();
+  player2.pauseVideo();
+  stopRecording();
+  stopAllNotePlayer();
+  play_state = false;
   if(current_clip_type == MusicClipType.Beat){
     console.log('to Login')
     document.getElementById("loginPage").click();
   }
   else if(current_clip_type == MusicClipType.Melody){
     console.log("to Beat")
-    if(play_state){
-      player1.pauseVideo();
-      player2.pauseVideo();
-      player1.seekTo(0);
-      player2.seekTo(0);
-      stopRecording();
-      stopAllNotePlayer();
-      play_state = false;
-    }
     current_clip_type = MusicClipType.Beat;
     document.getElementById("BeatContainer").style.display = 'block'
     document.getElementById("MelodyContainer").style.display = 'none'
@@ -240,15 +266,6 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
   else{
     console.log('to Melody')
     saveModeCheck  = false
-    if(play_state){
-      player1.pauseVideo();
-      player2.pauseVideo();
-      player1.seekTo(0);
-      player2.seekTo(0);
-      stopRecording();
-      stopAllNotePlayer();
-      play_state = false;
-    }
     current_clip_type = MusicClipType.Melody;
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
@@ -256,24 +273,22 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
     document.getElementById("danceVideoButton").click();
-    addClipToTrack(true, false, false);
+    addClipToTrack(false, false, false);
     document.getElementById("exampleVideoButton").disabled = false;
   }
 })
 
 document.getElementById("NextButton").addEventListener("click", function(){
   console.log("next check")
+  player1.seekTo(0);
+  player2.seekTo(0);
+  player1.pauseVideo();
+  player2.pauseVideo();
+  stopRecording();
+  stopAllNotePlayer();
+  play_state = false;
   if(current_clip_type == MusicClipType.Beat){
     console.log("to Melody")
-    if(play_state){
-      player1.pauseVideo();
-      player2.pauseVideo();
-      player1.seekTo(0);
-      player2.seekTo(0);
-      stopRecording();
-      stopAllNotePlayer();
-      play_state = false;
-    }
     current_clip_type = MusicClipType.Melody;
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
@@ -281,7 +296,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
     document.getElementById("exampleVideoButton").click();
-    addClipToTrack(true, false, false);
+    addClipToTrack(false, false, false);
   }
   // else if(current_clip_type == MusicClipType.Melodys){
   //   console.log("to Tempalte")
@@ -304,15 +319,6 @@ document.getElementById("NextButton").addEventListener("click", function(){
   else{
     console.log("to Save")
     saveModeCheck  = true
-    if(play_state){
-      player1.pauseVideo();
-      player2.pauseVideo();
-      player1.seekTo(0);
-      player2.seekTo(0);
-      stopRecording();
-      stopAllNotePlayer();
-      play_state = false;
-    }
     current_clip_type = MusicClipType.Template;
     document.getElementById("BeatContainer").style.display = 'none'
     document.getElementById("MelodyContainer").style.display = 'none'
@@ -321,7 +327,6 @@ document.getElementById("NextButton").addEventListener("click", function(){
     player2.mute();
     addClipToTrack(true, true, true);
     document.getElementById("exampleVideoButton").disabled = true;
-    
   }
 })
 
@@ -401,7 +406,7 @@ async function canvasRecordingStart(){
       document.body.appendChild($anchor);
       $anchor.style.display = "none";
       $anchor.href = blobURL; // 다운로드 경로 설정
-      $anchor.download = "test.webm"; // 파일명 설정
+      $anchor.download = userName + "_" + userEmail + ".webm"; // 파일명 설정
       $anchor.click(); // 앵커 클릭
       
       // 배열 초기화
@@ -534,7 +539,8 @@ function musicPlayer(currentTime){  //음, 비트 소리를 재생하는 코드
   else if(current_clip_type == MusicClipType.Beat){
     let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
     for (let beat of currentBeat){
-      beat_player(beat)
+      beat_player(beat);
+      setTimeout(beat_output_play(beat), 10);
     }
   }
 }
@@ -889,7 +895,7 @@ SyntheysizerEvents.addEventListener('pianoKeyOutput', function (e){
   }
   }
 })
-SyntheysizerEvents.addEventListener('padInput', function (e){
+SyntheysizerEvents.addEventListener('padkeyInput', function (e){
   doubleChecker += 1
   if(doubleChecker%2 ==0){
   if(play_state && current_clip_type == MusicClipType.Beat){
@@ -903,10 +909,10 @@ SyntheysizerEvents.addEventListener('dialInput', function(e){
   doubleChecker += 1
   if(doubleChecker%2 ==0){
   template_clip.set_dial(e.detail.value);
-  document.getElementById("dial_1").value = e.detail.value[0][0]
-  document.getElementById("dial_2").value = e.detail.value[0][1]
-  document.getElementById("dial_3").value = e.detail.value[0][2]
-  document.getElementById("dial_4").value = e.detail.value[0][3]
+  //document.getElementById("dial_1").value = e.detail.value[0][0]
+  //document.getElementById("dial_2").value = e.detail.value[0][1]
+  //document.getElementById("dial_3").value = e.detail.value[0][2]
+  //document.getElementById("dial_4").value = e.detail.value[0][3]
   }
 })
 
@@ -1164,6 +1170,7 @@ function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리
   let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
   for (let beat of currentBeat){
     beat_player(beat);
+    setTimeout(beat_output_play(beat), 10);
   }
 }
 function templatePlayerClip(inputClip){
@@ -1280,7 +1287,7 @@ document.getElementById("trackMusicSaveButton").addEventListener('click', functi
     "id_set" : TrackObject.getIdData(),
     "time_set" : TrackObject.getTimeData()
   }
-  downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
+  //downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
   for(let i = 0; i < Template_clip_array.length; i ++){
     let templateObejct = {
       "Type": MusicClipType.Template,

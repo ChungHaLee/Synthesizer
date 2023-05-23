@@ -223,7 +223,7 @@ function createShape(){
     color1 = '#FFFFFF'
     color2 = '#FFFFFF'
   }
-  console.log('이거', dial_one, dial_two, dial_three, dial_four)
+  //console.log('이거', dial_one, dial_two, dial_three, dial_four)
   geometry = new THREE.IcosahedronGeometry(15, 15);
   
   if (dial_one == undefined || dial_two == undefined || dial_three == undefined || dial_four == undefined){
