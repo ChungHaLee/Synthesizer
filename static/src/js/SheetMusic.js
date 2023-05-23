@@ -38,8 +38,7 @@ const clip_box_width = 1810;
 const clip_start_px = 80;
 let player1 = null;
 let player2 = null;
-let practiceMode = true
-document.getElementById("sheetMusicSaveButton").disabled = true;
+let practiceMode = false
 let saveModeCheck = false
 
 const userName = document.getElementById("userName").innerHTML
@@ -50,13 +49,13 @@ setVideo();
 // Check if YT is already loaded
 function createVideo(id){
   if (window.YT && window.YT.Player) {
-    createPlayer1(id);
     createPlayer2(id);
+    createPlayer1(id);
   } else {
     // If not, wait for the API to load
     window.onYouTubeIframeAPIReady = function() {
-        createPlayer1(id);
         createPlayer2(id);
+        createPlayer1(id);
     };
   }
 }
@@ -124,6 +123,7 @@ function onPlayerStateChange(event) {
         stopAllNotePlayer();
         if(saveModeCheck){
           canvasRecordingStop()
+          saveModeCheck = false
         }
     } 
 }
@@ -286,7 +286,8 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     current_clip_type = MusicClipType.Beat;
     document.getElementById("BeatContainer").style.display = 'block'
     document.getElementById("MelodyContainer").style.display = 'none'
-    //document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("sheetMusicRecordButton").style.display = 'none'
     clearNoteClip(MusicClipType.Beat);
     initializeTimer();
     document.getElementById("danceVideoButton").click();
@@ -298,7 +299,8 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     current_clip_type = MusicClipType.Melody;
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
-    //document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("sheetMusicRecordButton").style.display = 'none'
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
     document.getElementById("danceVideoButton").click();
@@ -321,10 +323,11 @@ document.getElementById("NextButton").addEventListener("click", function(){
     current_clip_type = MusicClipType.Melody;
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
-    //document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("sheetMusicRecordButton").style.display = 'none'
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
-    document.getElementById("exampleVideoButton").click();
+    document.getElementById("danceVideoButton").click();
     addClipToTrack(false, false, false);
   }
   // else if(current_clip_type == MusicClipType.Melodys){
@@ -347,11 +350,11 @@ document.getElementById("NextButton").addEventListener("click", function(){
   // }
   else{
     console.log("to Save")
-    saveModeCheck  = true
     current_clip_type = MusicClipType.Template;
     document.getElementById("BeatContainer").style.display = 'none'
     document.getElementById("MelodyContainer").style.display = 'none'
-    //document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("TemplateContainer").style.display = 'block'
+    document.getElementById("sheetMusicRecordButton").style.display = 'block'
     document.getElementById("danceVideoButton").click();
     player2.mute();
     addClipToTrack(true, true, true);
@@ -840,7 +843,19 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       alert("Template Clip resaved")
     }
   }
+  document.getElementById("trackMusicSaveButton").click()
 })
+document.getElementById("sheetMusicRecordButton").addEventListener("click", function(){
+  saveModeCheck = true;
+  if(practiceMode){
+    player1.playVideo();
+  }
+  else{
+    player2.playVideo();
+  }
+})
+
+
 document.getElementById("sheetMusicPlayButton").addEventListener('click', function (){
   //startRecording();
   if(practiceMode){
@@ -938,10 +953,10 @@ SyntheysizerEvents.addEventListener('dialInput', function(e){
   doubleChecker += 1
   if(doubleChecker%2 ==0){
   template_clip.set_dial(e.detail.value);
-  //document.getElementById("dial_1").value = e.detail.value[0][0]
-  //document.getElementById("dial_2").value = e.detail.value[0][1]
-  //document.getElementById("dial_3").value = e.detail.value[0][2]
-  //document.getElementById("dial_4").value = e.detail.value[0][3]
+  document.getElementById("dial_1").value = e.detail.value[0][0]
+  document.getElementById("dial_2").value = e.detail.value[0][1]
+  document.getElementById("dial_3").value = e.detail.value[0][2]
+  document.getElementById("dial_4").value = e.detail.value[0][3]
   }
 })
 

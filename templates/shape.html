@@ -58,8 +58,8 @@
     </div>    
     
     <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
-        <div id="player1"></div>
-        <div id="player2" style="display:none;"></div>
+        <div id="player1" style="display:none;"></div>
+        <div id="player2"></div>
         <br>
         <button class="videoSelectButton"id="exampleVideoButton" style="margin-top: -40px;"> 메뉴1 </button>
         <button class="videoSelectButton"id="danceVideoButton" style="margin-top: -40px;"> 메뉴2 </button>
@@ -81,6 +81,7 @@
             <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> 정지 </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 50px; margin-right: 40px;"> 삭제 </button>
             <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 20px;"> 전체 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> 녹화하기 </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 35px; margin-top: 10px; left:30px;"></div>
             
         </div>
@@ -114,7 +115,7 @@
         </div>
         <!-- 비트 부분 -->
 
-        <!-- <div class="grid-container" id="TemplateContainer" style="display:none; margin-left: 200px;">
+        <div class="grid-container" id="TemplateContainer" style="display:none; margin-left: 200px;">
             Effect 1 : <input type="range" min="0" max="127" value="50" id="dial_1" style="width: 900px;height: 80; margin-left: 200px; margin-top: 50px; pointer-events: none;">
             <br>
             Effect 2 : <input type="range" min="0" max="127" value="50" id="dial_2" style="width: 900px;height: 80; margin-left: 200px; margin-top: 50px; pointer-events: none;">
@@ -122,9 +123,9 @@
             Effect 3 : <input type="range" min="0" max="127" value="50" id="dial_3" style="width: 900px;height: 80; margin-left: 200px; margin-top: 50px; pointer-events: none;">
             <br>
             Effect 4 : <input type="range" min="0" max="127" value="50" id="dial_4" style="width: 900px;height: 80; margin-left: 200px; margin-top: 50px; pointer-events: none;">
-        </div> -->
+        </div>
     </div>
-    <button class="trackMusicButton"id="trackMusicSaveButton">Test</button>
+
 
 
 
@@ -149,6 +150,7 @@
         <button class="sheetMusicButton"id="sheetMusicMelodyButton"style="display:none;"> 새 멜로디 </button>
         <button class="sheetMusicButton"id="sheetMusicBeatButton"style="display:none;"> 새 비트 </button>
         <button class="sheetMusicButton"id="sheetMusicTemplateButton"style="display:none;"> 새 음악 효과 </button>
+        <button class="trackMusicButton"id="trackMusicSaveButton" style="display:none;">음악 저장</button>
         <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30"style="display:none;">
         <button class="sheetMusicButton"id="sheetTemplateSaveButton"style="display:none;"> 음악 효과 저장 </button>
     </div>
