@@ -64,13 +64,13 @@ function createVideo(id){
 function setVideo(){
   switch(musicId){
     case 1:
-      return createVideo("Tg7sKy6pHDY")
+      return createVideo("ZbdPiR0eC08")
     case 2:
       return createVideo("vPVS7RvcNNw")
     case 3:
       return createVideo("rhWJfpRo_2c")
     default:
-      return createVideo("Tg7sKy6pHDY")
+      return createVideo("ZbdPiR0eC08")
   }
 }
 
