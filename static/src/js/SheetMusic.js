@@ -388,6 +388,20 @@ function addClipToTrack(melodyBool, BeatBool, TemplateBool){
   }
 }
 
+function convertCharacters(inputString) {
+  let convertedString = '';
+  for (let i = 0; i < inputString.length; i++) {
+    if (inputString[i] === '.') {
+      convertedString += '_';
+    } else if (inputString[i] === '@') {
+      convertedString += '()';
+    } else {
+      convertedString += inputString[i];
+    }
+  }
+  return convertedString;
+}
+
 let mediaRecorder = null;
 const arrVideoData = [];
 async function canvasRecordingStart(){
@@ -438,7 +452,7 @@ async function canvasRecordingStart(){
       document.body.appendChild($anchor);
       $anchor.style.display = "none";
       $anchor.href = blobURL; // 다운로드 경로 설정
-      $anchor.download = userName + "_" + userEmail + ".mp4"; // 파일명 설정
+      $anchor.download = convertCharacters(userName + "_" + userEmail) + ".mp4"; // 파일명 설정
       $anchor.click(); // 앵커 클릭
       
       // 배열 초기화
