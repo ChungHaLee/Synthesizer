@@ -230,6 +230,7 @@ export function beat_output_play(input_id){
 function pad_input(input_id){
   pad_set.id = input_id - 36;
   beat_player(input_id - 36)
+  console.log("test")
   const event = new CustomEvent('padkeyInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
 }

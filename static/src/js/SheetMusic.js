@@ -817,13 +817,13 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       Melody_clip_array.push(melody_clip);
       createTemplateClipBox(template_clip);
       Template_clip_array.push(template_clip);
-      alert("멜로디, 효과 클립 저장")
+      alert("멜로디 클립 저장")
       initializeTimer();
     }
     else{
       Template_clip_array[template_clip.get_Clip_id()] = template_clip;
       Melody_clip_array[melody_clip.getClipId()] = melody_clip;
-      alert("멜로디, 효과 클립 다시 저장")
+      alert("멜로디 클립 다시 저장")
     }
   }
   else if(current_clip_type == MusicClipType.Beat){      
@@ -918,8 +918,8 @@ document.getElementById("sheetMusicAllDeleteButton").addEventListener('click', f
 //     const elements = document.getElementsByClassName("resize-drag");
 //     for (const element of elements) {
 //       if (element.getAttribute('note_id') === noteClickIndex) {
-//           element.textContent = Lyrics;
-//       }
+//           element.textContent = Lyrics;e
+//       }current_clip_type
 //     }
 //   }
 // })
@@ -949,21 +949,21 @@ SyntheysizerEvents.addEventListener('pianoKeyOutput', function (e){
 SyntheysizerEvents.addEventListener('padkeyInput', function (e){
   doubleChecker += 1
   if(doubleChecker%2 ==0){
-  if(play_state && current_clip_type == MusicClipType.Beat){
-    beat_clip.setBeatInput(e.detail.id, currentTime);
-    console.log("Pad Input")
-    let PadItem = createResizeDragElement(e.detail.id, time_to_px(currentTime, duration), beat_clip.getNoteIndex(), MusicClipType.Beat);
-  }
+    if(play_state && current_clip_type == MusicClipType.Beat){
+      beat_clip.setBeatInput(e.detail.id, currentTime);
+      console.log("Pad Input")
+      let PadItem = createResizeDragElement(e.detail.id, time_to_px(currentTime, duration), beat_clip.getNoteIndex(), MusicClipType.Beat);
+    }
   }
 })
 SyntheysizerEvents.addEventListener('dialInput', function(e){
   doubleChecker += 1
   if(doubleChecker%2 ==0){
-  template_clip.set_dial(e.detail.value);
-  document.getElementById("dial_1").value = e.detail.value[0][0]
-  document.getElementById("dial_2").value = e.detail.value[0][1]
-  document.getElementById("dial_3").value = e.detail.value[0][2]
-  document.getElementById("dial_4").value = e.detail.value[0][3]
+    template_clip.set_dial(e.detail.value);
+    document.getElementById("dial_1").value = e.detail.value[0][0]
+    document.getElementById("dial_2").value = e.detail.value[0][1]
+    document.getElementById("dial_3").value = e.detail.value[0][2]
+    document.getElementById("dial_4").value = e.detail.value[0][3]
   }
 })
 
@@ -1339,41 +1339,47 @@ document.getElementById("trackMusicSaveButton").addEventListener('click', functi
     "time_set" : TrackObject.getTimeData()
   }
   //downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
-  for(let i = 0; i < Template_clip_array.length; i ++){
-    let templateObejct = {
-      "userName":userName,
-      "musicName":musicId,
-      "Type": MusicClipType.Template,
-      "CLip id": Template_clip_array[i].get_Clip_id(),
-      "duration": Template_clip_array[i].get_duration(),
-      "instrument": Template_clip_array[i].get_instrument(),
-      "dial_set": Template_clip_array[i].get_dial()
+  if(current_clip_type == MusicClipType.Template){
+    for(let i = 0; i < Template_clip_array.length; i ++){
+      let templateObejct = {
+        "userName":userName,
+        "musicName":musicId,
+        "Type": MusicClipType.Template,
+        "CLip id": Template_clip_array[i].get_Clip_id(),
+        "duration": Template_clip_array[i].get_duration(),
+        "instrument": Template_clip_array[i].get_instrument(),
+        "dial_set": Template_clip_array[i].get_dial()
+      }
+      downloadJsonFile("template_clip_" + userName + "_" + musicId, templateObejct); 
     }
-    downloadJsonFile("template_clip_" + userName + "_" + musicId, templateObejct); 
   }
-  for(let i = 0; i < Melody_clip_array.length; i ++){
-    let MusicObejct = {
-      "userName":userName,
-      "musicName":musicId,
-      "Type": Melody_clip_array[i].getClipType(),
-      "CLip id": Melody_clip_array[i].getClipId(),
-      "duration": Melody_clip_array[i].getDuration(),
-      "noteSet": Melody_clip_array[i].getMusicClip()[0],
-      "timeSet": Melody_clip_array[i].getMusicClip()[1],
+  if(current_clip_type == MusicClipType.Melody){
+    for(let i = 0; i < Melody_clip_array.length; i ++){
+      let MusicObejct = {
+        "userName":userName,
+        "musicName":musicId,
+        "Type": Melody_clip_array[i].getClipType(),
+        "CLip id": Melody_clip_array[i].getClipId(),
+        "duration": Melody_clip_array[i].getDuration(),
+        "noteSet": Melody_clip_array[i].getMusicClip()[0],
+        "timeSet": Melody_clip_array[i].getMusicClip()[1],
+      }
+      downloadJsonFile("Melody_clip_" + userName + "_" + musicId, MusicObejct); 
     }
-    downloadJsonFile("Melody_clip_" + userName + "_" + musicId, MusicObejct); 
   }
-  for(let i = 0; i < Beat_clip_array.length; i ++){
-    let MusicObejct = {
-      "userName":userName,
-      "musicName":musicId,
-      "Type": Beat_clip_array[i].getClipType(),
-      "CLip id": Beat_clip_array[i].getClipId(),
-      "duration": Beat_clip_array[i].getDuration(),
-      "noteSet": Beat_clip_array[i].getMusicClip()[0],
-      "timeSet": Beat_clip_array[i].getMusicClip()[1]
+  if(current_clip_type == MusicClipType.Beat){
+    for(let i = 0; i < Beat_clip_array.length; i ++){
+      let MusicObejct = {
+        "userName":userName,
+        "musicName":musicId,
+        "Type": Beat_clip_array[i].getClipType(),
+        "CLip id": Beat_clip_array[i].getClipId(),
+        "duration": Beat_clip_array[i].getDuration(),
+        "noteSet": Beat_clip_array[i].getMusicClip()[0],
+        "timeSet": Beat_clip_array[i].getMusicClip()[1]
+      }
+      downloadJsonFile("Beat_clip_" + userName + "_" + musicId, MusicObejct); 
     }
-    downloadJsonFile("Beat_clip_" + userName + "_" + musicId, MusicObejct); 
   }
 })
 document.getElementById("trackMusicLoadButton").addEventListener('click', function (){
