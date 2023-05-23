@@ -180,7 +180,7 @@ document.getElementById("danceVideoButton").addEventListener('click', function()
   document.getElementById("sheetMusicSaveButton").disabled = false;
   if(current_clip_type == MusicClipType.Melody){
     clearNoteClip(MusicClipType.Melody);
-    if(Melody_clip_array.length ==0){
+    if(Melody_clip_array.length == 0){
       melody_clip = getExample();
     }
     else{
@@ -213,7 +213,7 @@ function getExample(){
     return new MusicClip(MusicClipType.Melody, 1, clipDuration, clipNoteset, clipTimeset)
   }
   else{
-    melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+    return new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
   }
 }
 
@@ -540,7 +540,7 @@ function musicPlayer(currentTime){  //음, 비트 소리를 재생하는 코드
     let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
     for (let beat of currentBeat){
       beat_player(beat);
-      setTimeout(beat_output_play(beat), 10);
+      //setTimeout(beat_output_play(beat), 100);
     }
   }
 }
@@ -1170,7 +1170,7 @@ function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리
   let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
   for (let beat of currentBeat){
     beat_player(beat);
-    setTimeout(beat_output_play(beat), 10);
+    //setTimeout(beat_output_play(beat), 100);
   }
 }
 function templatePlayerClip(inputClip){
