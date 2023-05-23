@@ -438,7 +438,7 @@ async function canvasRecordingStart(){
       document.body.appendChild($anchor);
       $anchor.style.display = "none";
       $anchor.href = blobURL; // 다운로드 경로 설정
-      $anchor.download = userName + "_" + userEmail + ".webm"; // 파일명 설정
+      $anchor.download = userName + "_" + userEmail + ".mp4"; // 파일명 설정
       $anchor.click(); // 앵커 클릭
       
       // 배열 초기화
@@ -604,7 +604,14 @@ function stopAllNotePlayer(){ //재생되는 음을 모두 정지하는
       piano_player(note, false);
     }  
   }
+  if(previousNote_track.length > 0){
+    //console.log("Ouput ", exclusiveArr2);
+    for(let note of previousNote_track){
+      piano_player(note, false);
+    }  
+  }
   previousNote = []
+  previousNote_track = []
 }
 function OctaveToColor(octave){
   switch(octave){
