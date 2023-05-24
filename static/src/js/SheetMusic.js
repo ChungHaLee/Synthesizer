@@ -325,6 +325,12 @@ document.getElementById("NextButton").addEventListener("click", function(){
     document.getElementById("MelodyContainer").style.display = 'block'
     document.getElementById("TemplateContainer").style.display = 'none'
     document.getElementById("sheetMusicRecordButton").style.display = 'none'
+
+    if(Melody_clip_array.length == 0){
+      Melody_clip_array.push(melody_clip);
+    } else {
+      
+    }
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
     document.getElementById("danceVideoButton").click();
