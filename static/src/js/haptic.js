@@ -40,6 +40,7 @@ class HapticArray{
         let index = this.find_index(id)
         if (index != -1){
             this.devices[index].disconnect(haptic_listener)
+            // console.log('haptic listener', haptic_listener)
             this.devices.splice(index, 1);
             console.log("device successfully disconneted" );
         }
@@ -79,6 +80,7 @@ class HapticDevice {
         "filters": [
         {
           "namePrefix": "Haptic"
+        //   "": 'My3n5xtL7oMT8ChSVKs1gQ=='
         }
         // {
         //     "namePrefix": "Haptic",
@@ -93,6 +95,10 @@ class HapticDevice {
         "acceptAllDevices": false
       };
       this.device = await navigator.bluetooth.requestDevice(options);
+
+    alert('HAPTIC ID:', this.device.id);
+
+
       if (!this.device) {write
         throw "No device selected";
       }
