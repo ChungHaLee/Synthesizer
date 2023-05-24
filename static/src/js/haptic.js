@@ -96,7 +96,7 @@ class HapticDevice {
       };
       this.device = await navigator.bluetooth.requestDevice(options);
 
-    alert('HAPTIC ID:', this.device.id);
+    alert(this.device.id);
 
 
       if (!this.device) {write
