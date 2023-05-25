@@ -444,13 +444,13 @@ function animate() {
           }
           
           if (polyBeatArray[0] == 0){
-            scene.background = new THREE.Color('#FFFFFF')
+            scene.background = new THREE.Color('#FF9EAA')
           } else if (polyBeatArray[0] == 1) {
-            scene.background = new THREE.Color('#929292')
+            scene.background = new THREE.Color('#FFC39E')
           } else if (polyBeatArray[0] == 2) {
-            scene.background = new THREE.Color('#4B4B4B')
+            scene.background = new THREE.Color('#FFF39E')
           } else if (polyBeatArray[0] == 3) {
-            scene.background = new THREE.Color('#d6d6d6')
+            scene.background = new THREE.Color('#AAFF9E')
           } else {
             scene.background = new THREE.Color('black')
           }
