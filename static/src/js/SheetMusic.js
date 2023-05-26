@@ -901,6 +901,8 @@ document.getElementById("sheetMusicPauseButton").addEventListener('click', funct
   else{
     player2.pauseVideo();
   }
+
+  stopAllNotePlayer();
 })
 document.getElementById("sheetMusicDeleteButton").addEventListener('click', function (){
   if(noteClickIndex!=1){
