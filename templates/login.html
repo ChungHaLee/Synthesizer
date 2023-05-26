@@ -15,19 +15,25 @@
 </head>
 
 <body>
-    <div class="login">
-        <div class="form">
-          <p>비즈햅 신디사이저</p>
-          <form action="/melody" method="POST" class="login-form">
-            <!-- <img src = "../static/src/images/loginImage1.png" alt = "My Image1">
-            <img src = "../static/src/images/loginImage2.png" alt = "My Image1">
-            <img src = "../static/src/images/loginImage3.png" alt = "My Image1"> -->
-            <input type="text" name="username"  placeholder="이름"/>
-            <input type="text" name="email" placeholder="이메일 주소"/>
-            <input type="number" name="musicType" value = 1 placeholder="음악 넘버"/>
-            <button type="submit" value="Music1">음악 만들기</button>
-          </form>
-        </div>
-    </div>
+  <div class="bg-video">
+    <video class="bg-video__content" autoplay muted loop>
+      <source src="./static/src/video/synthesizer.mp4" type="video/mp4" />
+      <!-- <source src="img/video.webm" type="video/webm" /> -->
+      <!-- Your browser is not supported! -->
+    </video>
+  </div>
+
+  <div class="login">
+      <div class="form">
+        <p>비즈햅 신디사이저</p>
+        <form action="/melody" method="POST" class="login-form">
+
+          <input type="text" name="username"  placeholder="이름"/>
+          <input type="text" name="email" placeholder="이메일 주소"/>
+          <input type="number" name="musicType" value = 1 placeholder="음악 넘버"/>
+          <button type="submit" value="Music1">음악 만들기</button>
+        </form>
+      </div>
+  </div>
 </body>
 </html>
