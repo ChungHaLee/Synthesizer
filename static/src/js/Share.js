@@ -148,6 +148,12 @@ export class MusicClip {
       this.beatTime[noteIndex] += deltaTimeset[0];
     }
   }
+  editLyrics(lyricid, deltaTimeset){
+    if(this.Type==MusicClipType.Melody){
+      this.lyrictimeSet[lyricid][0] += deltaTimeset[0];
+      this.lyrictimeSet[lyricid][1] += deltaTimeset[1];
+    }
+  }
   deleteNote(noteIndex){
     console.log("delete note", noteIndex);
     if(this.Type==MusicClipType.Melody){
@@ -208,7 +214,7 @@ export class MusicClip {
   }
 
   getLyrics(currentTime){
-    console.log(this.lyricSet, this.lyrictimeSet)
+    //console.log(this.lyricSet, this.lyrictimeSet)
     for (let i = 0; i < this.lyrictimeSet.length; i++) {
       if (this.lyrictimeSet[i][0] <= currentTime && currentTime < this.lyrictimeSet[i][1]) {
         return this.lyricSet[i];

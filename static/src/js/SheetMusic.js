@@ -487,7 +487,7 @@ function InitializeAllSetting(){
   melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
   beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
   template_clip = new TemplateClip(Template_clip_array.length);
-  current_clip_type = MusicClipType.Melody;
+  current_clip_type = MusicClipType.Beat;
   onNoteList = [];
   previousNote = [];
   previousNote_track = [];
@@ -535,7 +535,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
   timeLine1.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
   // console.log(onNoteList[0].style.left, time_to_px(currentTime, duration) + "px")
   // updateTime2(currentTime)
-  if(current_clip_type = MusicClipType.Melody){
+  if(current_clip_type == MusicClipType.Melody){
     document.getElementById("lyricsDisplay").innerHTML = melody_clip.getLyrics(currentTime);
   }
   for (let item of onNoteList){
@@ -574,7 +574,7 @@ function time_to_px(time, duration){ //Time을 Px로 변환하는 코드
   return clip_start_px + time / duration * (clip_box_width - clip_start_px)
 }
 function time_to_px_Scale(time, duration){ //Time을 Px로 변환하는 코드
-  return clip_start_px + time / duration * (clip_box_width - clip_start_px)
+  return time / duration * (clip_box_width - clip_start_px)
 }
 function px_to_time(px, duration){  //Px을 Time으로 변환하는 코드
   return (px - clip_start_px) * duration / (clip_box_width - clip_start_px)
@@ -1076,6 +1076,7 @@ function removeAllElementsByClassName(className) {//
 function clearNoteClip(type){// 편집기에 모든 노트 제거
   if(type == MusicClipType.Melody){
     removeAllElementsByClassName("resize-drag");
+    removeAllElementsByClassName("resize-lyrics");
   }
   else{
     removeAllElementsByClassName("draggable");
@@ -1142,7 +1143,11 @@ function changeMusicClip(noteIndex, deltaTimeset){ // 노트 위치, 크기 편�
     beat_clip.editNote(noteIndex, deltaTimeset)
   }
 }
-
+function changelyricsClip(noteIndex, deltaTimeset){ // 노트 위치, 크기 편집을 클립 시간에 반영
+  if(current_clip_type == MusicClipType.Melody){
+    melody_clip.editLyrics(noteIndex, deltaTimeset)
+  }
+}
 
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
@@ -1532,20 +1537,21 @@ FileInput.addEventListener('change', function(e){
 //-------------------------------------------------------------------------------------------------------------------//
 
 let lyricsId = 0;
-let lyricsDefaultTime = 10;
+let lyricsDefaultTime = 5;
 document.getElementById("LyricsPushButton").addEventListener("click", function(){
   let lyricsText = document.getElementById("lyricsInputer").value;
   createLyricsbject(lyricsId, lyricsText);
   melody_clip.setLyrics(lyricsText,[lyricsId * lyricsDefaultTime, (lyricsId+1) * lyricsDefaultTime])
   lyricsId += 1;
+  document.getElementById("lyricsInputer").value = ""
 })
 function createLyricsbject(note_id, lyricsText){
   const boxItem = document.getElementById("LyricsBox1");
   const lyricsNote = document.createElement("div");
   lyricsNote.classList.add("resize-lyrics");
-  //console.log(time_to_px(melody_clip.getLyricsLastTime()))
-  lyricsNote.style.left = time_to_px(melody_clip.getLyricsLastTime()) + "px";
-  lyricsNote.style.width = time_to_px(lyricsDefaultTime) + "px";
+  console.log(time_to_px(melody_clip.getLyricsLastTime(), duration))
+  lyricsNote.style.left = time_to_px(melody_clip.getLyricsLastTime(), duration) + "px";
+  lyricsNote.style.width = time_to_px_Scale(lyricsDefaultTime, duration) + "px";
   lyricsNote.textContent = lyricsText
   lyricsNote.setAttribute("note_id", note_id); // clip_id 속성 추가
   lyricsNote.addEventListener("click", function(){
@@ -1566,6 +1572,7 @@ interact('.resize-lyrics')
           height: `${event.rect.height}px`,
           transform: `translate(${x}px, ${y}px)`
         })
+        changelyricsClip(event.target.getAttribute("note_id"), [px_to_time_Scale(event.deltaRect.left, duration), px_to_time_Scale(event.deltaRect.left + event.deltaRect.width, duration)])
         Object.assign(event.target.dataset, { x, y })
       }
     }
@@ -1616,6 +1623,8 @@ function dragMoveListener_lyrics(event) {
   target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
   //console.log( "type:", event.target.getAttribute("box_type"), "id:", event.target.getAttribute("box_id"), "Add timeset:", event.dx/10);
   // console.log("Add Plus :", px_to_time(x, duration), "id:", target.getAttribute("note_id"));
+  
+  changelyricsClip(event.target.getAttribute("note_id"), [px_to_time_Scale(event.dx, duration), px_to_time_Scale(event.dx, duration)])
   // update the posiion attributes
   target.setAttribute('data-x', x)
 }
