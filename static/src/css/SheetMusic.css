@@ -131,14 +131,13 @@ body{
 }
 .resize-lyrics {
   width: 100px;
-  height: 20px;
+  height: 32px;
   padding: 5px;
   opacity : 0.8;
-  margin: 0rem;
-  background-color: rgb(0, 255, 149);
+  /* margin: 0rem; */
+  background-color: rgb(45, 255, 168);
   border: 1px solid black; /* 격자 항목의 테두리 설정 */
   color:rgb(0, 0, 0);
-  font-size: 10px;
   text-align: center;
   border-radius: 0.75em;
   touch-action: none;
@@ -147,19 +146,39 @@ body{
   /* This makes things *much* easier */
   box-sizing: border-box;
   /* position: absolute; */
+  font-size: 15px;
+  margin-top: -22px;
 }
 
 
 /*Track 설정을 위한 CSS 부분 급하게 만든거라 많이 지저분합니다... 수정할께요*/
 .fixed-track-container {
   position: relative; /* or 'absolute' or 'fixed', depending on your needs */
+  /* margin-left: 100px; */
   width: 730px; /* Set the desired width */
   height: 520px; /* Set the desired height */
   overflow: auto; /* Enables scrolling when the content exceeds the container's size */
-  padding: 0px;
-  border: 5px solid rgb(0, 38, 255);
-  font-size: 0.2em;
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+  overflow: hidden;
+  background-color: #fcfcfc;
+  border-radius: 15px;
 }
+
+/* #timeLine3{
+  height: 40px;
+  position: absolute;
+} */
+
+#slider_track > span{
+  width: 30px;
+  height: 20px;
+  background: linear-gradient(144deg,hsl(0, 0%, 95%), #808080 50%,#5d5454);
+
+}
+
+
+
+
 .draggable_clip {
   width: 100px;
   height: 20px;
@@ -271,7 +290,7 @@ body{
   padding: 2em 0.5em;
   margin: 1rem 0 0 1rem;
   width: 50px;
-  height: 8px;
+  height: 20px;
   color: #fff;
   background-color: #29e;
   border: solid 2px #fff;
@@ -285,4 +304,20 @@ body{
 .drag-drop.can-drop {
   color: #000;
   background-color: #4e4;
+}
+
+
+
+#melody-dropzone > div{
+   font-size: 15px;
+}
+
+#melody-drop{
+  text-align: center;
+  font-size: 15px;
+}
+
+
+#LyricsPushButton{
+  margin-top: -50px;
 }

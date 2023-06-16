@@ -16,11 +16,8 @@ html, body {
     background: linear-gradient(144deg,hsl(0, 0%, 95%), #808080 50%,#5d5454);
 }
 
-#slider_track > span{
-    width: 30px;
-    height: 10px;
 
-}
+
 
 
 div#content{

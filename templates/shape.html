@@ -56,7 +56,7 @@
     <div id="shape-canvas">
         <!-- <canvas id="granim-canvas"></canvas> -->
     </div>    
-    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: 20px; margin-left: 40px;">Test</div>
+    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: 20px; margin-left: 40px;">자막을 입력해주세요</div>
     <!--     
     <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
         <div id="player1" style="display:none;"></div>
@@ -75,8 +75,10 @@
         <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30"style="display:none;">
         <button class="sheetMusicButton"id="sheetTemplateSaveButton"style="display:none;"> 음악 효과 저장 </button>
     </div>
-    <div class="fixed-track-container" style="margin-top: -530px; margin-left: 1000px;">
-        트랙 길이 <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="30">
+    <div class="fixed-track-container" style="margin-top: -530px; margin-left: 1010px;">
+        <br>
+        <p style="font-size: 20px; margin: 1px;"> 트랙 길이 </p>
+        <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="30">
         <button class="trackMusicButton"id="trackMusicPlayButton"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton"> 정지 </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton"> 클립 삭제 </button>
@@ -84,14 +86,14 @@
         <button class="trackMusicButton"id="trackMusicLoadButton"> 노래 불러오기</button>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
-        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:35px; height: 90%"></div>
+        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:65px; height: 63%"></div>
         <div class="grid-container" id="TrackContainer">
             <div id="dropzoneGroup">
-                <p style="font-size: 15px; margin: 1px;"> 음악 효과 </p>
+                <p style="font-size: 20px; margin: 1px;"> 음악 효과 </p>
                 <div id="template-dropzone" class="template-dropzone" style="width: 700px; height: 70px;"></div>
-                <p style="font-size: 15px; margin: 1px;"> 멜로디 </p>
+                <p style="font-size: 20px; margin: 1px;"> 멜로디 </p>
                 <div id="melody-dropzone" class="melody-dropzone" style="width: 700px; height: 70px"></div>
-                <p style="font-size: 15px; margin: 1px;"> 비트 </p>
+                <p style="font-size: 20px; margin: 1px;"> 비트 </p>
                 <div id="beat-dropzone" class="beat-dropzone" style="width: 700px; height: 70px"></div>
             </div>
             <div id="TemplatedropContainer"style="width: 700px; height: 30px;">
@@ -128,13 +130,13 @@
         </div>
         <div class="grid-container" id="MelodyContainer" style="display:none">
             <div id="'lyricsContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
-                가사:  <input type="text" id="lyricsInputer" style="width: 600px; height:20px">
-                <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:70px; height:30px"> 입력 </button>
+                가사:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
+                <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:70px; height:35px; margin-bottom: -70px;"> 입력 </button>
             </div>
             <div class="vertical-line" id="startLine", style=" margin-top:-5px; left:0px; margin-left: 80px; "></div>
-            <div class="vertical-line" id="timeLine1" style="background-color:green; margin-top:-5px;  left:0px; margin-left: 80px; "></div> 
+            <div class="vertical-line" id="timeLine1" style="background-color:green; margin-top:-5px; left:0px; margin-left: 80px; "></div> 
             
-            <div class="grid-item" id="LyricsBox1" style="height:20px;">가사</div>
+            <div class="grid-item" id="LyricsBox1" style="height:20px; font-size: 18px;">가사</div>
             <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">시  </div>
             <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">라# </div>
             <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">라 </div>
