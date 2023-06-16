@@ -42,21 +42,21 @@
     <div id = "userEmail"style="display:none;">{{ email }}</div>
     <div id = "musicType"style="display:none;">{{ musicType }}</div>
     <div id="DeviceConnectorContainer">
-        <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">신디 연결</button> 
-        <button data-action = "close_midi_in" class="synthesizer">신디 해제</button> 
+        <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">MIDI ON</button> 
+        <button data-action = "close_midi_in" class="synthesizer">MIDI OFF</button> 
         MIDI: <span id="midiInName">NONE</span>
 
 
-        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 280px;">햅틱 연결</button> 
-        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">햅틱 해제</button> 
+        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 170px;">Haptic ON</button> 
+        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">Haptic OFF</button> 
         
         <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none;">Play</button>
-        세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
+        Intensity : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
     </div>    
     <div id="shape-canvas">
         <!-- <canvas id="granim-canvas"></canvas> -->
     </div>    
-    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: 20px; margin-left: 40px;">자막을 입력해주세요</div>
+    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: 20px; margin-left: 40px;">your lyrics goes here</div>
     <!--     
     <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
         <div id="player1" style="display:none;"></div>
@@ -77,23 +77,23 @@
     </div>
     <div class="fixed-track-container" style="margin-top: -530px; margin-left: 1010px;">
         <br>
-        <p style="font-size: 20px; margin: 1px;"> 트랙 길이 </p>
+        <p style="font-size: 20px; margin: 1px;"> Track </p>
         <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="30">
-        <button class="trackMusicButton"id="trackMusicPlayButton"> 재생 </button>
-        <button class="trackMusicButton"id="trackMusicPauseButton"> 정지 </button>
-        <button class="trackMusicButton"id="trackMusicDeleteButton"> 클립 삭제 </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton"> 노래 저장</button>
-        <button class="trackMusicButton"id="trackMusicLoadButton"> 노래 불러오기</button>
+        <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
+        <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
+        <button class="trackMusicButton"id="trackMusicDeleteButton"> Delete Clip </button>
+        <button class="trackMusicButton"id="trackMusicSaveButton"> Save Music </button>
+        <button class="trackMusicButton"id="trackMusicLoadButton"> Load Music </button>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
         <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:65px; height: 63%"></div>
         <div class="grid-container" id="TrackContainer">
             <div id="dropzoneGroup">
-                <p style="font-size: 20px; margin: 1px;"> 음악 효과 </p>
+                <p style="font-size: 20px; margin: 1px;"> Music Effect </p>
                 <div id="template-dropzone" class="template-dropzone" style="width: 700px; height: 70px;"></div>
-                <p style="font-size: 20px; margin: 1px;"> 멜로디 </p>
+                <p style="font-size: 20px; margin: 1px;"> Melody </p>
                 <div id="melody-dropzone" class="melody-dropzone" style="width: 700px; height: 70px"></div>
-                <p style="font-size: 20px; margin: 1px;"> 비트 </p>
+                <p style="font-size: 20px; margin: 1px;"> Beat </p>
                 <div id="beat-dropzone" class="beat-dropzone" style="width: 700px; height: 70px"></div>
             </div>
             <div id="TemplatedropContainer"style="width: 700px; height: 30px;">
@@ -120,58 +120,58 @@
     </div>
     <div class="fixed-clip-container">
         <div id = 'sheetMusicController'>
-            <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px;"> 재생 </button>
-            <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> 정지 </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 50px; margin-right: 40px;"> 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 20px;"> 전체 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> 녹화하기 </button>
+            <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px;"> Play </button>
+            <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> Pause </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 50px; margin-right: 40px;"> Delete It </button>
+            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 20px;"> Delete All </button>
+            <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> Record </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 35px; margin-top: 10px; left:30px;"></div>
             
         </div>
         <div class="grid-container" id="MelodyContainer" style="display:none">
             <div id="'lyricsContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
-                가사:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
-                <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:70px; height:35px; margin-bottom: -70px;"> 입력 </button>
+                Lyrics:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
+                <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:70px; height:35px; margin-bottom: -70px;"> Submit </button>
             </div>
             <div class="vertical-line" id="startLine", style=" margin-top:-5px; left:0px; margin-left: 80px; "></div>
             <div class="vertical-line" id="timeLine1" style="background-color:green; margin-top:-5px; left:0px; margin-left: 80px; "></div> 
             
-            <div class="grid-item" id="LyricsBox1" style="height:20px; font-size: 18px;">가사</div>
-            <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">시  </div>
-            <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">라# </div>
-            <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">라 </div>
-            <div class="grid-item" id="box_G#" style="background-color: rgb(157, 183, 255);">솔# </div>
-            <div class="grid-item" id="box_G" style="background-color: rgb(119, 230, 255);;">솔 </div>
-            <div class="grid-item" id="box_F#" style="background-color: rgb(118, 255, 246);">파# </div>
-            <div class="grid-item" id="box_F" style="background-color: rgb(165, 255, 156);">파 </div>
-            <div class="grid-item" id="box_E" style="background-color: rgb(250, 255, 147);">미 </div>
-            <div class="grid-item" id="box_D#" style="background-color: rgb(255, 234, 141);">레#</div>
-            <div class="grid-item" id="box_D" style="background-color: #ffc691;">레</div>
-            <div class="grid-item" id="box_C#" style="background-color: rgb(255, 172, 160);">도# </div>
-            <div class="grid-item" id="box_C" style="background-color: rgb(255, 150, 150);">도 </div>
+            <div class="grid-item" id="LyricsBox1" style="height:20px; font-size: 18px;">Lyrics</div>
+            <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">Ti  </div>
+            <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">La# </div>
+            <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">La </div>
+            <div class="grid-item" id="box_G#" style="background-color: rgb(157, 183, 255);">Sol# </div>
+            <div class="grid-item" id="box_G" style="background-color: rgb(119, 230, 255);;">Sol </div>
+            <div class="grid-item" id="box_F#" style="background-color: rgb(118, 255, 246);">Fa# </div>
+            <div class="grid-item" id="box_F" style="background-color: rgb(165, 255, 156);">Fa </div>
+            <div class="grid-item" id="box_E" style="background-color: rgb(250, 255, 147);">Mi </div>
+            <div class="grid-item" id="box_D#" style="background-color: rgb(255, 234, 141);">Re#</div>
+            <div class="grid-item" id="box_D" style="background-color: #ffc691;">Re</div>
+            <div class="grid-item" id="box_C#" style="background-color: rgb(255, 172, 160);">Do# </div>
+            <div class="grid-item" id="box_C" style="background-color: rgb(255, 150, 150);">Do </div>
         </div>
 
 
 
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
         <div class="grid-container" id="BeatContainer">
-            <div class="vertical-line" id="startLine2", style="margin-top:-5px; margin-left: 80px; "></div>
-            <div class="vertical-line" id="timeLine2" style="background-color:green; margin-top:-5px; margin-left: 80px; "></div>
-            <div class="grid-item" id="box_0" style="height:80px; margin-left: 30px; background-color: #FFFFFF;"> 비트1 </div>
-            <div class="grid-item" id="box_1" style="height:80px; margin-left: 30px; background-color: #929292;"> 비트2 </div>
-            <div class="grid-item" id="box_2" style="height:80px; margin-left: 30px; background-color: #727272;"> 비트3 </div>
-            <div class="grid-item" id="box_3" style="height:80px; margin-left: 30px; background-color: #d6d6d6;"> 비트4 </div>
+            <div class="vertical-line" id="startLine2", style="margin-top:-5px; margin-left: 90px; "></div>
+            <div class="vertical-line" id="timeLine2" style="background-color:green; margin-top:-5px; margin-left: 90px; "></div>
+            <div class="grid-item" id="box_0" style="height:80px; margin-left: 30px; background-color: #FFFFFF;"> Beat1 </div>
+            <div class="grid-item" id="box_1" style="height:80px; margin-left: 30px; background-color: #929292;"> Beat2 </div>
+            <div class="grid-item" id="box_2" style="height:80px; margin-left: 30px; background-color: #727272;"> Beat3 </div>
+            <div class="grid-item" id="box_3" style="height:80px; margin-left: 30px; background-color: #d6d6d6;"> Beat4 </div>
         </div>
         <!-- 비트 부분 -->
 
         <div class="grid-container" id="TemplateContainer" style="display:none; margin-left: 300px;">
-            진하게 <input type="range" min="0" max="127" value="50" id="dial_1" style="width: 900px;height: 80; margin-left: 100px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; 연하게
+            dark &nbsp;&nbsp;&nbsp; <input type="range" min="0" max="127" value="50" id="dial_1" style="width: 900px;height: 80; margin-left: 100px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; light
             <br>
-            뭉치게 <input type="range" min="0" max="127" value="50" id="dial_2" style="width: 900px;height: 80; margin-left: 100px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; 흩어지게
+            assembled <input type="range" min="0" max="127" value="50" id="dial_2" style="width: 900px;height: 80; margin-left: 60px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; scattered
             <br>
-            널널한 <input type="range" min="0" max="127" value="50" id="dial_3" style="width: 900px;height: 80; margin-left: 100px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; 빽빽한
+            spacious <input type="range" min="0" max="127" value="50" id="dial_3" style="width: 900px;height: 80; margin-left: 85px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; crowded
             <br>
-            크게 &nbsp;&nbsp;  <input type="range" min="0" max="127" value="50" id="dial_4" style="width: 900px;height: 80; margin-left: 100px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; 작게
+            large &nbsp; <input type="range" min="0" max="127" value="50" id="dial_4" style="width: 900px;height: 80; margin-left: 100px; margin-top: 50px; pointer-events: none;"> &nbsp;&nbsp;&nbsp;&nbsp; small
         </div>
     </div>
 

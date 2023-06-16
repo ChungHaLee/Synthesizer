@@ -1168,13 +1168,13 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
     loadFromTrackToMusicClip(dragdrop.getAttribute("clip_type"), dragdrop.getAttribute("clip_id"));
   })
   if(currenctCliptType == MusicClipType.Melody){
-    dragdrop.textContent = "멜로디 " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop.textContent = "Melody " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "melody-drop");
     let boxItem = document.getElementById("MelodydropContainer");
     boxItem.appendChild(dragdrop);
   }
   else{
-    dragdrop.textContent = "비트 " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop.textContent = "Beat " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "beat-drop");
     let boxItem = document.getElementById("BeatdropContainer");
     boxItem.appendChild(dragdrop);
@@ -1190,7 +1190,7 @@ function createTemplateClipBox(template_clip){
     //console.log("current Clip Type:", dragdrop_template.getAttribute("clip_type"),"current Clip id", dragdrop_template.getAttribute("clip_id"))
     loadFromTrackToTemplateClip(dragdrop_template.getAttribute("clip_id"));
   })
-    dragdrop_template.textContent = "효과 " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop_template.textContent = "Effect " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop_template.setAttribute("id", "template-drop");
     let boxItem_template = document.getElementById("TemplatedropContainer");
     boxItem_template.appendChild(dragdrop_template);
@@ -1208,11 +1208,11 @@ function createTrackClipObject(dropzoneName, clipType, clip_id, duration, box_id
   trackClip.style.width = duration * 3 + "px"
 
   if(clipType == MusicClipType.Melody){
-    trackClip.textContent = "멜로디_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    trackClip.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "melody-drop");
   }
   else{
-    trackClip.textContent = "비트_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    trackClip.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "beat-drop");
   }
   let boxItem = document.getElementById(dropzoneName);
@@ -1233,7 +1233,7 @@ function createTrackClipObject_template(dropzoneName, clip_id, box_id){
   trackClip.classList.add("resize-drag_clip");
   trackClip.style.width = duration * 3 + "px"
   let boxItem = document.getElementById(dropzoneName);
-  trackClip.textContent = "효과_" + clip_id
+  trackClip.textContent = "Effect_" + clip_id
   trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
   trackClip.setAttribute("box_type", MusicClipType.Template); // clip_type 속성 추가
   trackClip.addEventListener("click", function(){
