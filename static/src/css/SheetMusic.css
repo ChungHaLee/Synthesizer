@@ -127,8 +127,8 @@ body{
 /*Track 설정을 위한 CSS 부분 급하게 만든거라 많이 지저분합니다... 수정할께요*/
 .fixed-track-container {
   position: relative; /* or 'absolute' or 'fixed', depending on your needs */
-  width: 1860px; /* Set the desired width */
-  height: 360px; /* Set the desired height */
+  width: 700px; /* Set the desired width */
+  height: 490px; /* Set the desired height */
   overflow: auto; /* Enables scrolling when the content exceeds the container's size */
   padding: 0px;
   border: 5px solid rgb(0, 38, 255);

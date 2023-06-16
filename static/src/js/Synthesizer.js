@@ -38,7 +38,7 @@ const beatAudio4 = document.getElementById('beat4');
 // freeverb.dampening = 1000;
 
 //JCReverb >> 두 음이 울리는 느낌?
-const reverb = new Tone.JCReverb(0.4).toDestination();
+//const reverb = new Tone.JCReverb(0.4).toDestination();
 const delay = new Tone.FeedbackDelay(0.5).toDestination();;
 //const synth = new Tone.Synth().chain(delay, reverb);
 
