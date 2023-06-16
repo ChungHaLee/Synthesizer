@@ -66,7 +66,7 @@ export class TemplateClip{
 
 
 export class MusicClip {
-  constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = []) {
+  constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = [], lyricSet = [], lyrictimeSet = []) {
       console.log("music Type : ", Type, "Clip_id", Clip_id,  "duration", duration);
       this.Type = Type;
       this.Clip_id = Clip_id;
@@ -75,6 +75,10 @@ export class MusicClip {
         this.melodyNoteSet = arraySet;
         this.melodyTimeset = timeSet;
         this.melodyNoteId = arraySet.length;
+
+        this.lyricSet = lyricSet;
+        this.lyrictimeSet = lyrictimeSet;
+        this.lyricId = lyricSet.length;
       }
       if(Type==MusicClipType.Beat){
         this.beatSet = arraySet;
@@ -131,8 +135,9 @@ export class MusicClip {
   setInstrument(instrument_id){
     this.instrument_id = instrument_id;
   }
-  setLyrics(noteIndex, lyric){
-    this.lyrics[noteIndex] = lyric;
+  setLyrics(lyric, timeset){
+    this.lyricSet.push(lyric);
+    this.lyrictimeSet.push(timeset);
   }
   editNote(noteIndex, deltaTimeset){
     if(this.Type==MusicClipType.Melody){
@@ -200,6 +205,24 @@ export class MusicClip {
       }
       return noteSet;
     }
+  }
+
+  getLyrics(currentTime){
+    console.log(this.lyricSet, this.lyrictimeSet)
+    for (let i = 0; i < this.lyrictimeSet.length; i++) {
+      if (this.lyrictimeSet[i][0] <= currentTime && currentTime < this.lyrictimeSet[i][1]) {
+        return this.lyricSet[i];
+      }
+    }
+    return "";
+  }
+  getLyricsLastTime(){
+    if(this.lyrictimeSet.length >0){
+      return this.lyrictimeSet[this.lyrictimeSet.length-1][1];
+   }
+   else{
+    return 0;
+   }
   }
 }
 
