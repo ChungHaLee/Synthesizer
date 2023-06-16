@@ -146,8 +146,9 @@ body{
   /* This makes things *much* easier */
   box-sizing: border-box;
   position: absolute;
-  font-size: 15px;
-  margin-top: -22px;
+  font-size: 17px;
+
+  margin-top: -5px;
 }
 
 
