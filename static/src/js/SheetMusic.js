@@ -4,9 +4,13 @@ import { piano_player, beat_player, dialInitialize, beat_output_play} from './Sy
 
 const fps = 30;
 let currentTime = 0.0;
+let currentTrackTime = 0.0;
 let play_state = false;
+let play_state_track = false;
 let timer = null;
 let duration = document.getElementById("clipduration").value;
+let duration_track = document.getElementById("trackduration").value;
+
 
 let clipduration = document.getElementById("clipduration");
 let timeLine1 = document.getElementById("timeLine1");
@@ -36,6 +40,7 @@ let trackClickIndex = -1;
 let trackClickType = null
 const clip_box_width = 1810;
 const clip_start_px = 80;
+const track_box_width = 700;
 let player1 = null;
 let player2 = null;
 let practiceMode = false
@@ -480,7 +485,9 @@ function canvasRecordingStop(){
 
 function InitializeAllSetting(){
   currentTime = 0.0;
+  currentTrackTime = 0.0;
   play_state = false;
+  play_state_track = false;
   Template_clip_array.length = 0;
   Melody_clip_array.length = 0;
   Beat_clip_array.length = 0;
@@ -509,6 +516,7 @@ function InitializeAllSetting(){
 
 /* Timer Setting and Update code*/
 function startRecording(){//Timer를 시작하는 코드
+  stopTrack()
   play_state = true;
   startTimer();
 }
@@ -526,6 +534,43 @@ function stopTimer() {  // 타이머 정지 코드
   clearInterval(timer);
   timer = null; // 타이머 변수 초기화
 }
+
+
+// track timer code
+function startTrack(){//Timer를 시작하는 코드
+  stopRecording()
+  play_state_track = true;
+  startTimer2();
+}
+function stopTrack(){//Timer를 중지하는 코드
+  play_state_track = false;
+  noteSizeAllOff();
+  stopTimer2();
+}
+function startTimer2() { // 타이머 시작 코드
+  if (!timer) { // 타이머가 이미 실행 중이지 않은 경우에만 실행
+    timer = setInterval(updateTime2, 1 / fps * 1000); // 0.01초 간격으로 updateTime 함수 실행
+  }
+}
+function stopTimer2() {  // 타이머 정지 코드
+  clearInterval(timer);
+  timer = null; // 타이머 변수 초기화
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function updateTime() { //시간에 따라 업데이트 해야하는 함수들
   currentTime += 1/fps;
   musicPlayer(currentTime);
@@ -570,17 +615,17 @@ function initializeTimer(){ //Timer 초기화
   timeLine2.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
   timeLine1.style.left = (time_to_px(currentTime, duration)-clip_start_px) + "px";
 }
-function time_to_px(time, duration){ //Time을 Px로 변환하는 코드
-  return clip_start_px + time / duration * (clip_box_width - clip_start_px)
+function time_to_px(time, duration, width = clip_box_width, start = clip_start_px){ //Time을 Px로 변환하는 코드
+  return start + time / duration * (width - start)
 }
-function time_to_px_Scale(time, duration){ //Time을 Px로 변환하는 코드
-  return time / duration * (clip_box_width - clip_start_px)
+function time_to_px_Scale(time, duration, width = clip_box_width, start = clip_start_px){ //Time을 Px로 변환하는 코드
+  return time / duration * (width - start)
 }
-function px_to_time(px, duration){  //Px을 Time으로 변환하는 코드
-  return (px - clip_start_px) * duration / (clip_box_width - clip_start_px)
+function px_to_time(px, duration, width = clip_box_width, start = clip_start_px){  //Px을 Time으로 변환하는 코드
+  return (px - start) * duration / (width - start)
 }
-function px_to_time_Scale(px, duration){  //Px Scale을 Time Scale로 변환하는 코드
-  return px * duration / (clip_box_width - clip_start_px)
+function px_to_time_Scale(px, duration, width = clip_box_width, start = clip_start_px){  //Px Scale을 Time Scale로 변환하는 코드
+  return px * duration / (width - start)
 }
 /*Note Sound Maker*/
 function musicPlayer(currentTime){  //음, 비트 소리를 재생하는 코드
@@ -1205,7 +1250,7 @@ function createTrackClipObject(dropzoneName, clipType, clip_id, duration, box_id
   //console.log("duration Check", duration);
   const trackClip = document.createElement("div");
   trackClip.classList.add("draggable_clip");
-  trackClip.style.width = duration * 3 + "px"
+  trackClip.style.width = time_to_px(duration, duration_track, track_box_width, 0) + "px"
 
   if(clipType == MusicClipType.Melody){
     trackClip.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
@@ -1231,7 +1276,7 @@ function createTrackClipObject(dropzoneName, clipType, clip_id, duration, box_id
 function createTrackClipObject_template(dropzoneName, clip_id, box_id){
   const trackClip = document.createElement("div");
   trackClip.classList.add("resize-drag_clip");
-  trackClip.style.width = duration * 3 + "px"
+  trackClip.style.width = time_to_px(30, duration_track, track_box_width, 0) + "px"
   let boxItem = document.getElementById(dropzoneName);
   trackClip.textContent = "Effect_" + clip_id
   trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
@@ -1260,33 +1305,35 @@ function get_clip(clipType, clip_id){
 $("#slider_track").slider({ //Timer 슬라이더2
   value: 0,
   min: 0,
-  max: 700,
+  max: track_box_width,
   step: 0.1,
   slide: function( event, ui ) {
     timeLine3.style.left = (ui.value) + "px";
-    currentTime = ui.value/10;
+    currentTrackTime = px_to_time(ui.value, duration_track, track_box_width, 0)
+    console.log("Track Time", currentTrackTime)
   }
 });
 
-function updateTime2(currentTime) { //시간에 따라 업데이트 해야하는 함수들
+function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
+  currentTrackTime += 1/fps
   //musicPlayer(currentTime);
-  $("#slider_track").slider("value",currentTime*10);
-  timeLine3.style.left = (currentTime*10) + "px";
+  $("#slider_track").slider("value",time_to_px(currentTrackTime, duration_track, track_box_width, 0));
+  timeLine3.style.left = time_to_px(currentTrackTime, duration_track, track_box_width, 0) + "px";
   //console.log("Test Track", cur_track_set[0][1]);
   if(Template_clip_array.length > 0){
     //console.log(Template_clip_array);
     templatePlayerClip(Template_clip_array[0]);
   }
   if(Melody_clip_array.length > 0){
-    musicPlayerMelodyClip(currentTime, Melody_clip_array[0]);
+    musicPlayerMelodyClip(currentTrackTime, Melody_clip_array[0]);
   }
   if(Beat_clip_array.length > 0){
-    musicPlayerBeatClip(currentTime, Beat_clip_array[0]);
+    musicPlayerBeatClip(currentTrackTime, Beat_clip_array[0]);
   }
 }
 function initializeTimer2(){ // Timer 초기화
-  $("#slider_track").slider("value",currentTime*10);
-  timeLine3.style.left = currentTime + "px";
+  $("#slider_track").slider("value",time_to_px(currentTrackTime, duration_track, track_box_width, 0));
+  timeLine3.style.left = time_to_px(currentTrackTime, duration_track, track_box_width, 0) + "px";
 }
 function musicPlayerMelodyClip(currentTime, melody_clip){  //음이나 비트 소리를 재생하는 코드
   let currentNote = melody_clip.getcurrentNoteSet(currentTime);
@@ -1322,10 +1369,10 @@ function InitializeAllTrack(){
   removeAllElementsByClassName("draggable_clip");
 }
 document.getElementById("trackMusicPlayButton").addEventListener('click', function (){
-  //startTrack();
+  startTrack();
 })
 document.getElementById("trackMusicPauseButton").addEventListener('click', function (){
-  //stopTrack();
+  stopTrack();
   stopAllNotePlayer2();
 })
 document.getElementById("trackMusicDeleteButton").addEventListener('click', function (){
