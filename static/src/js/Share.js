@@ -230,6 +230,9 @@ export class MusicClip {
     return 0;
    }
   }
+  getAllLyrics(){
+    return [this.lyricSet, this.lyrictimeSet];
+  }
 }
 
 export class MusicTrack{

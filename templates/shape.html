@@ -45,13 +45,12 @@
         <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">MIDI ON</button> 
         <button data-action = "close_midi_in" class="synthesizer">MIDI OFF</button> 
         MIDI: <span id="midiInName">NONE</span>
-
-
         <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 170px;">Haptic ON</button> 
         <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">Haptic OFF</button> 
         
         <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none;">Play</button>
         Intensity : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
+        BPM : <input type="number" id="bpm" value="120" min="0" max="1000" step ="1" style="display:inline;"></input>
     </div>    
     <div id="shape-canvas">
         <!-- <canvas id="granim-canvas"></canvas> -->
