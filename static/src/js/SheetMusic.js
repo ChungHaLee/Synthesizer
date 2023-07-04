@@ -330,6 +330,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   if(current_clip_type == MusicClipType.Theme){
     current_clip_type = MusicClipType.Beat;
     document.getElementById("sheetMusicController").style.display = "block";
+    document.getElementById("trackContainer").style.display = "block";
     document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'block';
     document.getElementById("MelodyContainer").style.display = 'none';
@@ -486,6 +487,8 @@ function convertCharacters(inputString) {
 // }
 /*-----------------------------MIDI 파일 생성용 코드-----------------------------------------*/
 
+
+
 function generateMidi() {
   var file = new Midi.File();
   var track = new Midi.Track();
@@ -499,15 +502,21 @@ function generateMidi() {
   // }
 
 
-  track.addNote(0, 'c4', 32, 14);
-  track.addNote(0, 'd4', 32, 15);
-  track.addNote(0, 'e4', 32, 16);
-  track.addNote(0, 'f4', 32, 17);
-  track.addNote(0, 'g4', 32, 25);
-  track.addNote(0, 'a4', 32, 26);
-  track.addNote(0, 'b4', 32, 27);
-  track.addNote(0, 'c5', 32, 28);
+  // track.addNote(0, 'c4', 32, 14);
+  // track.addNote(0, 'd4', 32, 15);
+  // track.addNote(0, 'e4', 32, 16);
+  // track.addNote(0, 'f4', 32, 17);
+  // track.addNote(0, 'g4', 32, 25);
+  // track.addNote(0, 'a4', 32, 26);
+  // track.addNote(0, 'b4', 32, 27);
+  // track.addNote(0, 'c5', 32, 28);
 
+  // track.noteOn(0, 'c4', 100)
+  // track.noteOn(0, 'e4', 400)
+  // track.noteOff(0, 'c4', 400)
+  // track.noteOff(0, 'e4', 700)
+
+  MidiTrackMaker(track)
 
   // Convert file to a binary string
   var midiData = file.toBytes();
@@ -532,6 +541,61 @@ function generateMidi() {
   // Remove the link from the body
   document.body.removeChild(downloadLink);
 }
+
+function MidiTrackMaker(track){
+  for(let trackTimer = 0; trackTimer <duration_track; trackTimer += 1/fps){
+    //musicPlayer(currentTime);
+    let cur_track_set = TrackObject.getcurrentClipSet(trackTimer);
+    //console.log(cur_track_set)
+    if(cur_track_set[1].length > 0){
+      MidiMelodyMaker(track, trackTimer - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
+    }
+    if(cur_track_set[2].length > 0){
+      MidiBeatMaker(track, trackTimer - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
+    }
+  }
+}
+
+
+function MidiMelodyMaker(track, currentTime, melody_clip){
+  let currentNote = melody_clip.getcurrentNoteSet(currentTime);
+  MidiNoteAdditor(track, currentNote, previousNote_track, currentTime);
+  previousNote_track = melody_clip.getcurrentNoteSet(currentTime);
+}
+function MidiNoteAdditor(track, currentNote, previousNote, currentTime){ //피아노 음 재생 함수
+  //piano_player(currentNote[0], true);
+  var exclusiveArr1 = currentNote.filter(function(val) {
+    return previousNote.indexOf(val) === -1;
+  });
+  var exclusiveArr2 = previousNote.filter(function(val) {
+    return currentNote.indexOf(val) === -1;
+  });
+  if(exclusiveArr1.length > 0){
+    //console.log("Inpnut", exclusiveArr1);
+    for( let note of exclusiveArr1){
+      track.noteOn(0, note, parseInt(currentTime * fps))
+      console.log("note ON", note, parseInt(currentTime * fps))
+    }  
+  }
+  if(exclusiveArr2.length > 0){
+    //console.log("Ouput ", exclusiveArr2);
+    for( let note of exclusiveArr2){
+      track.noteOff(0, note, parseInt(currentTime * fps))
+      console.log("note OFF", note, parseInt(currentTime * fps))
+    }  
+  }
+}
+
+
+function MidiBeatMaker(track, currentTime, beat_clip){
+  let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
+  console.log(currentBeat)
+  // for (let beat of currentBeat){
+  //   console.log(beat)
+  // }
+}
+
+
 
 /*-----------------------------MIDI 파일 생성용 코드-----------------------------------------*/
 
@@ -704,6 +768,7 @@ function notePlayer(currentNote, previousNote){ //피아노 음 재생 함수
       piano_player(note, false);
     }  
   }
+  console.log("piano Player Test ", exclusiveArr1, exclusiveArr2)
 }
 function stopAllNotePlayer(){ //재생되는 음을 모두 정지하는
   if(previousNote.length > 0){
@@ -1355,15 +1420,12 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
   if(cur_track_set[0].length > 0){
     //console.log(Template_clip_array);
     templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
-    console.log("Test1");
   }
   if(cur_track_set[1].length > 0){
     musicPlayerMelodyClip(currentTrackTime - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
-    console.log("Test2");
   }
   if(cur_track_set[2].length > 0){
     musicPlayerBeatClip(currentTrackTime - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
-    console.log("Test3");
   }
   if(currentTrackTime >= duration_track){
     stopTrack() // 끝 도달하면 자동으로 종료
@@ -1387,7 +1449,6 @@ function musicPlayerMelodyClip(currentTime, melody_clip){  //음이나 비트 �
   let currentNote = melody_clip.getcurrentNoteSet(currentTime);
   notePlayer(currentNote, previousNote_track);
   previousNote_track = melody_clip.getcurrentNoteSet(currentTime);
-  console.log("Lyrics Time", currentTime);
   document.getElementById("lyricsDisplay").innerHTML = melody_clip.getLyrics(currentTime);
 }
 function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리를 재생하는 코드
