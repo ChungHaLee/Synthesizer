@@ -1,7 +1,7 @@
 import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip} from './Share.js';
 import { piano_player, beat_player, dialInitialize, beat_output_play} from './Synthesizer.js';
 import * as Midi from "./jsmidgen.js"
-
+//import * as JZZ from "./JZZ.js"
 
 //최소 범위 A2 ~ C7
 
@@ -499,31 +499,11 @@ function generateMidi() {
   var track = new Midi.Track();
 
   file.addTrack(track);
-  track.instrument(1, 0x70)
-  track.instrument(2, 0x72)
-  track.instrument(3, 0x74)
-  track.instrument(4, 0x76)
-  // Test MIDI 작업용 코드 //
-  // let [TestNoteSet, TestTimeSet] = melody_clip.getMusicClip();
-  // for(let i = 0; i < TestNoteSet.length; i ++){
-  //   console.log("Test", TestNoteSet[i], TestTimeSet[i][0])
-  //   track.addNote(0, TestNoteSet[i], TestTimeSet[i][1] - TestTimeSet[i][0], TestTimeSet[i][0]);
-  // }
-
-
-  // track.addNote(0, 'c4', 32, 14);
-  // track.addNote(0, 'd4', 32, 15);
-  // track.addNote(0, 'e4', 32, 16);
-  // track.addNote(0, 'f4', 32, 17);
-  // track.addNote(0, 'g4', 32, 25);
-  // track.addNote(0, 'a4', 32, 26);
-  // track.addNote(0, 'b4', 32, 27);
-  // track.addNote(0, 'c5', 32, 28);
-
-
-
-
-
+  // track.instrument(1, 0x70)
+  // track.instrument(2, 0x72)
+  // track.instrument(3, 0x74)
+  // track.instrument(4, 0x76)
+  
   // track.noteOn(0, 'C4', 10)
   // track.noteOff(0, 'C4', 10)
   // track.noteOn(0, 'D4',10)
@@ -532,16 +512,6 @@ function generateMidi() {
   // track.noteOff(0, 'E4', 10)
   // track.noteOn(0, 'F4', 10)
   // track.noteOff(0, 'F4', 10)
-  // track.noteOn(0, 'G4', 10)
-  // track.noteOff(0, 'G4', 10)
-  // track.noteOn(0, 'A4', 10)
-  // track.noteOff(0, 'A4', 10)
-  // track.noteOn(0, 'B4', 10)
-  // track.noteOff(0, 'B4', 10)
-  // track.noteOn(0, 'C5', 10)
-  // track.noteOff(0, 'C5', 10)
-  // track.noteOn(0, 'D5', 10)
-  // track.noteOff(0, 'D5', 10)
   MidiTrackMaker(track)
 
   // Convert file to a binary string
@@ -805,7 +775,7 @@ function notePlayer(currentNote, previousNote){ //피아노 음 재생 함수
       piano_player(note, false);
     }  
   }
-  console.log("piano Player Test ", exclusiveArr1, exclusiveArr2)
+  //console.log("piano Player Test ", exclusiveArr1, exclusiveArr2)
 }
 function stopAllNotePlayer(){ //재생되는 음을 모두 정지하는
   if(previousNote.length > 0){
@@ -1345,13 +1315,13 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
     loadFromTrackToMusicClip(dragdrop.getAttribute("clip_type"), dragdrop.getAttribute("clip_id"));
   })
   if(currenctCliptType == MusicClipType.Melody){
-    dragdrop.textContent = "Melody " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop.textContent = "멜로디 " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "melody-drop");
     let boxItem = document.getElementById("MelodydropContainer");
     boxItem.appendChild(dragdrop);
   }
   else{
-    dragdrop.textContent = "Beat " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop.textContent = "비트 " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "beat-drop");
     let boxItem = document.getElementById("BeatdropContainer");
     boxItem.appendChild(dragdrop);
@@ -1367,7 +1337,7 @@ function createTemplateClipBox(template_clip){
     //console.log("current Clip Type:", dragdrop_template.getAttribute("clip_type"),"current Clip id", dragdrop_template.getAttribute("clip_id"))
     loadFromTrackToTemplateClip(dragdrop_template.getAttribute("clip_id"));
   })
-    dragdrop_template.textContent = "Effect " + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop_template.textContent = "효과 " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop_template.setAttribute("id", "template-drop");
     let boxItem_template = document.getElementById("TemplatedropContainer");
     boxItem_template.appendChild(dragdrop_template);
@@ -1385,11 +1355,11 @@ function createTrackClipObject(dropzoneName, clipType, clip_id, duration, box_id
   trackClip.style.width = time_to_px(duration, duration_track, track_box_width, 0) + "px"
 
   if(clipType == MusicClipType.Melody){
-    trackClip.textContent = "Melody_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    trackClip.textContent = "멜로디" + (clip_id + 1); //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "melody-drop");
   }
   else{
-    trackClip.textContent = "Beat_" + clip_id; //내용이 있어야 나와서 -로 일단 임시로 추가
+    trackClip.textContent = "비트" + (clip_id + 1); //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "beat-drop");
   }
   let boxItem = document.getElementById(dropzoneName);
@@ -1410,7 +1380,7 @@ function createTrackClipObject_template(dropzoneName, clip_id, box_id){
   trackClip.classList.add("resize-drag_clip");
   trackClip.style.width = time_to_px(30, duration_track, track_box_width, 0) + "px"
   let boxItem = document.getElementById(dropzoneName);
-  trackClip.textContent = "Effect_" + clip_id
+  trackClip.textContent = "효과" + (clip_id+1)
   trackClip.setAttribute("box_id", box_id); // clip_id 속성 추가
   trackClip.setAttribute("box_type", MusicClipType.Template); // clip_type 속성 추가
   trackClip.addEventListener("click", function(){
@@ -1608,14 +1578,6 @@ const tmp_template_array = []
 
 document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
   generateMidi()
-
-
-
-
-
-
-
-
 //   let MusicTrackObejct = {
 //     "Type":"MusicTrack",
 //     "user_Id": TrackObject.getUserId(),
@@ -1667,42 +1629,72 @@ document.getElementById("trackMusicSaveButton").addEventListener('click', functi
 //   }
 })
 document.getElementById("trackMusicLoadButton").addEventListener('click', function (){
-  InitializeAllSetting();
-  tmp_Meldoy_array.length = 0;
-  tmp_Beat_array.length = 0;
-  tmp_template_array.length = 0;
+  // InitializeAllSetting();
+  // tmp_Meldoy_array.length = 0;
+  // tmp_Beat_array.length = 0;
+  // tmp_template_array.length = 0;
   FileInput.click();
 })
 FileInput.addEventListener('change', function(e){
-  const Files = e.target.files;
-  for(let file of Files){
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const contents = event.target.result;
-      const jsonObject = JSON.parse(contents);
-      if(jsonObject["Type"]==MusicClipType.Melody){
-        let Tmp_melody_clip = new MusicClip(jsonObject["Type"], jsonObject["CLip_id"], jsonObject["duration"], jsonObject["noteSet"], jsonObject["TimeSet"])
-        console.log("Melody push", Tmp_melody_clip);
-        tmp_Meldoy_array.push(Tmp_melody_clip)
+  // const Files = e.target.files;
+  // for(let file of Files){
+  //   const reader = new FileReader();
+  //   reader.onload = function(event) {
+  //     const contents = event.target.result;
+  //     const jsonObject = JSON.parse(contents);
+  //     if(jsonObject["Type"]==MusicClipType.Melody){
+  //       let Tmp_melody_clip = new MusicClip(jsonObject["Type"], jsonObject["CLip_id"], jsonObject["duration"], jsonObject["noteSet"], jsonObject["TimeSet"])
+  //       console.log("Melody push", Tmp_melody_clip);
+  //       tmp_Meldoy_array.push(Tmp_melody_clip)
+  //     }
+  //     if(jsonObject["Type"]==MusicClipType.Beat){
+  //       let Tmp_beat_clip = new MusicClip(jsonObject["Type"], jsonObject["CLip_id"], jsonObject["duration"], jsonObject["noteSet"], jsonObject["TimeSet"]);
+  //       console.log("Beat push", Tmp_beat_clip);
+  //       tmp_Beat_array.push(Tmp_beat_clip);
+  //     }
+  //     if(jsonObject["Type"]==MusicClipType.Template){
+  //       let Tmp_template_clip = new TemplateClip(jsonObject["CLip_id"], jsonObject["duration"], jsonObject["instrument"]);
+  //       Tmp_template_clip.set_dial(jsonObject["dial_set"]);
+  //       console.log("Template push", Tmp_template_clip);
+  //       tmp_template_array.push(Tmp_template_clip);
+  //     }
+  //     if(jsonObject["Type"]=="MusicTrack"){
+  //       TrackObject = new MusicTrack(jsonObject["user_Id"], jsonObject["id_set"], jsonObject["time_set"]);
+  //       console.log("TrackObject : ", TrackObject);
+  //     }
+  //   };
+  //   reader.readAsText(file);
+
+
+  // JSS로 MIDI 읽기
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+      try {
+          const data = new Uint8Array(e.target.result);
+          const smf = new JZZ.MIDI.SMF(data.buffer);
+          console.log(smf);
+      } catch (error) {
+          console.error('Error parsing MIDI file:', error);
       }
-      if(jsonObject["Type"]==MusicClipType.Beat){
-        let Tmp_beat_clip = new MusicClip(jsonObject["Type"], jsonObject["CLip_id"], jsonObject["duration"], jsonObject["noteSet"], jsonObject["TimeSet"]);
-        console.log("Beat push", Tmp_beat_clip);
-        tmp_Beat_array.push(Tmp_beat_clip);
-      }
-      if(jsonObject["Type"]==MusicClipType.Template){
-        let Tmp_template_clip = new TemplateClip(jsonObject["CLip_id"], jsonObject["duration"], jsonObject["instrument"]);
-        Tmp_template_clip.set_dial(jsonObject["dial_set"]);
-        console.log("Template push", Tmp_template_clip);
-        tmp_template_array.push(Tmp_template_clip);
-      }
-      if(jsonObject["Type"]=="MusicTrack"){
-        TrackObject = new MusicTrack(jsonObject["user_Id"], jsonObject["id_set"], jsonObject["time_set"]);
-        console.log("TrackObject : ", TrackObject);
-      }
-    };
-    reader.readAsText(file);
-  }
+  };
+
+  reader.onerror = function() {
+      console.error('Error reading file:', reader.error);
+  };
+
+  reader.readAsArrayBuffer(file);
+
+
+  
+
+
+
+
+
+
+  //}
   // for(let i = 0; i<tmp_Meldoy_array.length; i++){
   //   console.log("loop check")
   //   for(let melodyclip of tmp_Meldoy_array){
