@@ -329,6 +329,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   play_state = false;
   if(current_clip_type == MusicClipType.Theme){
     current_clip_type = MusicClipType.Beat;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("sheetMusicController").style.display = "block";
     document.getElementById("trackContainer").style.display = "block";
     document.getElementById("ThemaContainer").style.display = "none";
