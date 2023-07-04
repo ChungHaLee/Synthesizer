@@ -307,6 +307,7 @@ bgColorSaveButton.addEventListener('click', function(){
 
 objColor1SaveButton.addEventListener('click', function(){
   cloud.setOptions({
+    skyColor: objColor1,
     cloudShadowColor: objColor1
   });
 
