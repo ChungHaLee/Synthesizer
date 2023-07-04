@@ -84,7 +84,7 @@ String.prototype.format = function() {
 function init() {
     scene = new THREE.Scene();
     // canvas
-    renderer = new THREE.WebGLRenderer( { alpha: true });
+    renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(960, 580);
@@ -439,30 +439,28 @@ function animate() {
     if (FrameRate % 4 == 0){
           deleteBasics();
           createShape();
-          // scene.background = new THREE.Color('black');
-          // console.log('이게 중요', scene.background);
+
           if (polyPitchArray.length == 0){  
             deleteBasics();
             
           } else {
 
-
           }
     
 
-          // if (polyBeatArray[0] == 0){
-          //   scene.background = new THREE.Color('#FF9EAA')
-          // } else if (polyBeatArray[0] == 1) {
-          //   scene.background = new THREE.Color('#FFC39E')
-          // } else if (polyBeatArray[0] == 2) {
-          //   scene.background = new THREE.Color('#FFF39E')
-          // } else if (polyBeatArray[0] == 3) {
-          //   scene.background = new THREE.Color('#AAFF9E')
-          // } else {
-          //   // scene.background = new THREE.Color('Black')
+          if (polyBeatArray[0] == 0){
+            renderer.setClearColor('#212121', 0.9);
+          } else if (polyBeatArray[0] == 1) {
+            renderer.setClearColor('#212121', 0.75);
+          } else if (polyBeatArray[0] == 2) {
+            renderer.setClearColor('#212121', 0.45);
+          } else if (polyBeatArray[0] == 3) {
+            renderer.setClearColor('#212121', 0.22);
+          } else {
+            renderer.setClearColor('#212121', 0);
             
 
-          // }
+          }
 
           render();
         } 
