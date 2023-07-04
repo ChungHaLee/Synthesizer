@@ -13,6 +13,7 @@ module.exports = {
         SheetMusic: path.resolve(__dirname, "src", "js", "SheetMusic.js"),
         haptic: path.resolve(__dirname, "src", "js", "haptic.js"),
         Jsmidgen :path.resolve(__dirname, "src", "js", "jsmidgen.js"),
+        vantavisual: path.resolve(__dirname, "src", "js", "vantavisual.js")
     },
     mode: "development",
     target: "web",

@@ -81,13 +81,12 @@ String.prototype.format = function() {
 // init function
 function init() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color('black')
 
     // canvas
-    renderer = new THREE.WebGLRenderer( { antialias: true });
+    renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(960, 500);
+    renderer.setSize(960, 580);
 
 
     camera = new THREE.PerspectiveCamera(70, renderer.domElement.width/renderer.domElement.height, 2, 2000);
@@ -435,6 +434,7 @@ function animate() {
     if (FrameRate % 4 == 0){
           deleteBasics();
           createShape();
+          console.log(polyPitchArray.length);
 
           if (polyPitchArray.length == 0){  
             deleteBasics()
@@ -443,17 +443,17 @@ function animate() {
 
           }
           
-          if (polyBeatArray[0] == 0){
-            scene.background = new THREE.Color('#FF9EAA')
-          } else if (polyBeatArray[0] == 1) {
-            scene.background = new THREE.Color('#FFC39E')
-          } else if (polyBeatArray[0] == 2) {
-            scene.background = new THREE.Color('#FFF39E')
-          } else if (polyBeatArray[0] == 3) {
-            scene.background = new THREE.Color('#AAFF9E')
-          } else {
-            scene.background = new THREE.Color('black')
-          }
+          // if (polyBeatArray[0] == 0){
+          //   scene.background = new THREE.Color('#FF9EAA')
+          // } else if (polyBeatArray[0] == 1) {
+          //   scene.background = new THREE.Color('#FFC39E')
+          // } else if (polyBeatArray[0] == 2) {
+          //   scene.background = new THREE.Color('#FFF39E')
+          // } else if (polyBeatArray[0] == 3) {
+          //   scene.background = new THREE.Color('#AAFF9E')
+          // } else {
+          //   renderer.setClearColor( 0x000000, 0 );
+          // }
 
           render();
         } 
@@ -470,6 +470,8 @@ function deleteBasics(){
     compoCenter.geometry.dispose();
     compoCenter.material.dispose();
 
+    compoCenter2.geometry.dispose();
+    compoCenter2.material.dispose();
 };
 
 // render function

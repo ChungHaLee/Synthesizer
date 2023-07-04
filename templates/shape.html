@@ -9,6 +9,7 @@
     <link type="text/css" href="../static/src/css/SheetMusic.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/melodyandbeat.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/buttons.css" rel="stylesheet">
+    <link type="text/css" href="../static/src/css/mood.css" rel="stylesheet">
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
@@ -41,6 +42,7 @@
     <div id = "userName" style="display:none;">{{ username }}</div>
     <div id = "userEmail"style="display:none;">{{ email }}</div>
     <div id = "musicType"style="display:none;">{{ musicType }}</div>
+
     <div id="DeviceConnectorContainer">
         <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">MIDI ON</button> 
         <button data-action = "close_midi_in" class="synthesizer">MIDI OFF</button> 
@@ -53,18 +55,10 @@
         BPM : <input type="number" id="bpm" value="120" min="0" max="1000" step ="1" style="display:inline;"></input>
     </div>    
     <div id="shape-canvas">
-        <!-- <canvas id="granim-canvas"></canvas> -->
+
     </div>    
     <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: -15px; margin-left: 40px;">your lyrics goes here</div>
-    <!--     
-    <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
-        <div id="player1" style="display:none;"></div>
-        <div id="player2"></div>
-        <br> 
-        <button class="videoSelectButton"id="exampleVideoButton" style="margin-top: -40px; display: none;" > 메뉴1 </button>
-        <button class="videoSelectButton"id="danceVideoButton" style="margin-top: -40px;"> 댄스 영상에 어울리는 음악을 만들어 보아요! </button> 
-    </div>
-     -->
+    
 
      <div id ="ClipSettingController" style="display:none;">
         <button class="sheetMusicButton"id="sheetMusicMelodyButton"style="display:none;"> 새 클립 </button>
@@ -127,20 +121,16 @@
             <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> Record </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 35px; margin-top: 10px; left:30px;"></div>
         </div>
+
         <div class="grid-container" id="ThemaContainer">
-        <!-- 여기에 테마? 내용을 조정할 수 있는 내용이 있으면 될꺼 같아요 밥먹고 제가 클릭 조절은 설정하겠습니다. -->
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        </div>        
+            <button class="themaButton" id="thema_fog">테마 1</button>
+            <button class="themaButton" id="thema_waves">테마 2</button>
+            <button class="themaButton" id="thema_clouds">테마 3</button>
+            <button class="themaButton" id="thema_birds">테마 4</button>
+            <button class="themaButton" id="thema_cells">테마 5</button>
+            <button class="themaButton" id="thema_halo">테마 6</button>
+        </div>   
+
         <div class="grid-container" id="MelodyContainer" style="display:none">
             <div id="'lyricsContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
                 Lyrics:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
@@ -321,7 +311,13 @@
             #endifㄴ
         }
     </script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.clouds.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.waves.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.birds.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.trunk.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three-nebula@10.0.3/build/three-nebula.min.js"></script>
     <script src=" https://cdn.jsdelivr.net/npm/granim@2.0.0/dist/granim.min.js "></script>
@@ -338,6 +334,7 @@
     <script type="module" defer src="./static/src/js/dist/Synthesizer.js"></script>
     <script type="module" defer src="./static/src/js/dist/SheetMusic.js"></script>
     <script type="module" defer src="./static/src/js/dist/haptic.js"></script>
+    <script type="module" defer src="./static/src/js/dist/vantavisual.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
