@@ -64,8 +64,9 @@ fog = VANTA.FOG({
   minHeight: 580.00,
   minWidth: 960.00,
   highlightColor: 0xb63277,
-  midtoneColor: 0xca3f68,
-  lowlightColor: 0xcd44d7,
+  midtoneColor: '#0084ff',
+  lowlightColor: '#0084ff',
+  baseColor: '#e3d842',
   blurFactor: 0.27,
   speed: 2.20,
   zoom: 1.90
@@ -185,8 +186,9 @@ function fogfunc(){
     minHeight: 580.00,
     minWidth: 960.00,
     highlightColor: 0xb63277,
-    midtoneColor: 0xca3f68,
-    lowlightColor: 0xcd44d7,
+    midtoneColor: '#0084ff',
+    lowlightColor: '#0084ff',
+    baseColor: '#e3d842',
     blurFactor: 0.27,
     speed: 2.20,
     zoom: 1.90
