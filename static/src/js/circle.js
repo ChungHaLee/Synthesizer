@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-
+import { cloud, cloudfunc } from './vantavisual'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { dataArray, analyser, pitchDetector, myNote, octave, randomEnergy, colorByPitchMulti } from './audio.js'
 import { bgColor, objColor1, objColor2, setBgColor, setObjColor1 } from './colorpicker'
@@ -33,6 +33,8 @@ let beat, backgroundColor;
 let group;
 let ambientLight, spotLight, pointLight;
 var pitchInfo;
+
+
 
 
 
@@ -81,9 +83,8 @@ String.prototype.format = function() {
 // init function
 function init() {
     scene = new THREE.Scene();
-
     // canvas
-    renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer( { alpha: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(960, 580);
@@ -94,10 +95,10 @@ function init() {
   
     container = document.getElementById('shape-canvas')
     container.appendChild( renderer.domElement )
-    renderer.autoClear = false;
+    renderer.autoClear = true;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    // renderer.outputEncoding = THREE.sRGBEncoding;
 
 
     group = new THREE.Group();
@@ -129,18 +130,22 @@ function createCircle_Vanilla(){
   group.add( compoCenter );
   group.add( compoCenter2 );
 
+  console.log('처음 그룹', group)
+
 }
 
 
 
 function returnPitchOne(polyPitchArray){
   pitch1 = polyPitchArray[0];
+  console.log('pitch1', pitch1)
   return pitch1
 }
 
 
 function returnPitchTwo(polyPitchArray){
   pitch2 = polyPitchArray[1];
+  console.log('pitch2', pitch2)
   return pitch2
 }
 
@@ -417,16 +422,18 @@ SyntheysizerEvents.addEventListener('joystickInpnut', function (e){ // 조이스
 
 
 function beatBGChanger(){
-    scene.background = new THREE.Color('white')
+    scene.background = new THREE.Color('white');
 
 }
 
 
+// function changeBlack(){
+//   scene.background = new THREE.Color('black');
+// }
+
+
 function animate() {
-
     requestAnimationFrame(animate);
-
-
     // 여기를 기점으로 색깔 등 요소 변경을 추가하면됨
     FrameRate = FrameRate + 1
     
@@ -434,15 +441,17 @@ function animate() {
     if (FrameRate % 4 == 0){
           deleteBasics();
           createShape();
-          console.log(polyPitchArray.length);
-
+          // scene.background = new THREE.Color('black');
+          // console.log('이게 중요', scene.background);
           if (polyPitchArray.length == 0){  
-            deleteBasics()
+            deleteBasics();
             
           } else {
 
+
           }
-          
+    
+
           // if (polyBeatArray[0] == 0){
           //   scene.background = new THREE.Color('#FF9EAA')
           // } else if (polyBeatArray[0] == 1) {
@@ -452,7 +461,9 @@ function animate() {
           // } else if (polyBeatArray[0] == 3) {
           //   scene.background = new THREE.Color('#AAFF9E')
           // } else {
-          //   renderer.setClearColor( 0x000000, 0 );
+          //   // scene.background = new THREE.Color('Black')
+            
+
           // }
 
           render();
@@ -463,15 +474,10 @@ function animate() {
 
 
 function deleteBasics(){
-    group.parent.remove(group);
+    scene.remove(group)
     group = new THREE.Group();
     scene.add(group);
-    
-    compoCenter.geometry.dispose();
-    compoCenter.material.dispose();
 
-    compoCenter2.geometry.dispose();
-    compoCenter2.material.dispose();
 };
 
 // render function
@@ -487,4 +493,4 @@ init();
 animate();
 
 
-export { pitchInfo }
+export { pitchInfo, scene }
