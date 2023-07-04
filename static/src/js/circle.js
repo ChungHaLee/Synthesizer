@@ -98,7 +98,7 @@ function init() {
     renderer.autoClear = true;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
-    // renderer.outputEncoding = THREE.sRGBEncoding;
+
 
 
     group = new THREE.Group();
@@ -138,14 +138,12 @@ function createCircle_Vanilla(){
 
 function returnPitchOne(polyPitchArray){
   pitch1 = polyPitchArray[0];
-  console.log('pitch1', pitch1)
   return pitch1
 }
 
 
 function returnPitchTwo(polyPitchArray){
   pitch2 = polyPitchArray[1];
-  console.log('pitch2', pitch2)
   return pitch2
 }
 

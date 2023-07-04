@@ -1,14 +1,103 @@
-import * as THREE from 'three';
+import { bgColor, objColor1 } from './colorpicker';
 
 
-let cloud, fog, waves, halo, cells, dots;
+let cloud, fog, blur, halo, cells, dots;
 
 let cloudButton = document.getElementById('thema_clouds')
-let wavesButton = document.getElementById('thema_waves')
+let blurButton = document.getElementById('thema_blur')
 let fogButton = document.getElementById('thema_fog')
 let haloButton = document.getElementById('thema_halo')
 let cellsButton = document.getElementById('thema_cells')
 let noneButton = document.getElementById('thema_none')
+
+
+
+const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
+const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
+
+
+
+cloudButton.addEventListener('click', cloudfunc)
+blurButton.addEventListener('click', blurfunc)
+fogButton.addEventListener('click', fogfunc)
+haloButton.addEventListener('click', halofunc)
+cellsButton.addEventListener('click', cellsfunc)
+noneButton.addEventListener('click', nonefunc)
+
+cloud = VANTA.CLOUDS({
+  el: "#shape-canvas",
+  minHeight: 580.00,
+  minWidth: 960.00,
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  skyColor: 0x63b4d2,
+  cloudColor: 0xadbedc,
+  cloudShadowColor: 0x18354a,
+  sunColor: 0xf79622,
+  sunGlareColor: 0xfa6331,
+  sunlightColor: 0xfc9c3e
+})
+
+blur = VANTA.FOG({
+  el: "#shape-canvas",
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  minHeight: 580.00,
+  minWidth: 960.00,
+  highlightColor: 0xffffff,
+
+  midtoneColor: '#fac4c4',
+  lowlightColor: '#fac4c4',
+  baseColor: '#8828ff',
+  blurFactor: 0.90,
+  speed: 2.50,
+  zoom: 1.60
+})
+
+fog = VANTA.FOG({    
+  el: "#shape-canvas",
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  minHeight: 580.00,
+  minWidth: 960.00,
+  highlightColor: 0xb63277,
+  midtoneColor: 0xca3f68,
+  lowlightColor: 0xcd44d7,
+  blurFactor: 0.27,
+  speed: 2.20,
+  zoom: 1.90
+})
+
+halo = VANTA.HALO({
+  el: "#shape-canvas",
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  minHeight: 580.00,
+  minWidth: 960.00,
+  baseColor: 0x458258,
+  backgroundColor: 0x123126,
+  amplitudeFactor: 1.10,
+  size: 3.00
+})
+
+cells = VANTA.CELLS({
+  el: "#shape-canvas",
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  minHeight: 580.00,
+  minWidth: 960.00,
+  scale: 1.00,
+  color1: 0xb6ebeb,
+  color2: 0xecd3fa,
+  size: 5.00,
+  speed: 3
+})
+
 
 dots = VANTA.DOTS({
   el: "#shape-canvas",
@@ -27,12 +116,6 @@ dots = VANTA.DOTS({
 })
 
 
-cloudButton.addEventListener('click', cloudfunc)
-wavesButton.addEventListener('click', wavesfunc)
-fogButton.addEventListener('click', fogfunc)
-haloButton.addEventListener('click', halofunc)
-cellsButton.addEventListener('click', cellsfunc)
-noneButton.addEventListener('click', nonefunc)
 
 
 
@@ -44,32 +127,54 @@ function cloudfunc(){
     mouseControls: false,
     touchControls: false,
     gyroControls: false,
-    backgroundColor: 0xc0c0c0,
-    skyColor: 0x66797f,
-    cloudColor: 0xbcbcff,
-    cloudShadowColor: 0x8e8e8e,
-    sunColor: 0xfffafa,
-    sunGlareColor: 0xff0086,
-    sunlightColor: 0xff3030,
-    speed: 1.30
+    skyColor: 0x63b4d2,
+    cloudColor: 0xadbedc,
+    cloudShadowColor: 0x18354a,
+    sunColor: 0xf79622,
+    sunGlareColor: 0xfa6331,
+    sunlightColor: 0xfc9c3e
   })
 
+  blur.destroy();
+  fog.destroy();
+  halo.destroy();
+  cells.destroy();
+  dots.destroy();
 }
 
-function wavesfunc(){
-  waves = VANTA.WAVES({
+
+
+
+
+
+
+
+function blurfunc(){
+  blur = VANTA.FOG({
     el: "#shape-canvas",
     mouseControls: false,
     touchControls: false,
     gyroControls: false,
     minHeight: 580.00,
     minWidth: 960.00,
-    scale: 1.00,
-    scaleMobile: 1.00,
-    color: 0x146619
+    highlightColor: 0xffffff,
+
+    midtoneColor: '#fac4c4',
+    lowlightColor: '#fac4c4',
+    baseColor: '#8828ff',
+    blurFactor: 0.90,
+    speed: 2.50,
+    zoom: 1.60
   })
 
+  cloud.destroy();
+  fog.destroy();
+  halo.destroy();
+  cells.destroy();
+  dots.destroy();
 }
+
+
 
 function fogfunc(){
   fog = VANTA.FOG({    
@@ -87,6 +192,12 @@ function fogfunc(){
     zoom: 1.90
   })
 
+  blur.destroy();
+  cloud.destroy();
+  halo.destroy();
+  cells.destroy();
+  dots.destroy();
+
 }
 
 
@@ -98,9 +209,17 @@ function halofunc(){
     gyroControls: false,
     minHeight: 580.00,
     minWidth: 960.00,
-    baseColor: 0x1b56e6,
-    backgroundColor: 0x4e60c0
+    baseColor: 0x458258,
+    backgroundColor: 0x123126,
+    amplitudeFactor: 1.10,
+    size: 3.00
   })
+
+  blur.destroy();
+  fog.destroy();
+  cloud.destroy();
+  cells.destroy();
+  dots.destroy();
 }
 
 
@@ -113,10 +232,17 @@ function cellsfunc(){
     minHeight: 580.00,
     minWidth: 960.00,
     scale: 1.00,
-    color1: 0xe8877b,
-    color2: 0xd99a9a,
-    size: 5.00
+    color1: 0xb6ebeb,
+    color2: 0xecd3fa,
+    size: 5.00,
+    speed: 3
   })
+
+  blur.destroy();
+  fog.destroy();
+  halo.destroy();
+  cloud.destroy();
+  dots.destroy();
 }
 
 
@@ -136,8 +262,70 @@ function nonefunc(){
     spacing: 5.00,
     showLines: false
   })
+
+  blur.destroy();
+  fog.destroy();
+  halo.destroy();
+  cells.destroy();
+  cloud.destroy();
 }
 
 
 
-export { cloudfunc, wavesfunc, fogfunc, halofunc }
+
+
+bgColorSaveButton.addEventListener('click', function(){
+  cloud.setOptions({
+    cloudColor: bgColor
+  });
+
+  blur.setOptions({
+    midtoneColor: bgColor,
+    lowlightColor: bgColor
+  });
+
+  fog.setOptions({
+    midtoneColor: bgColor,
+    lowlightColor: bgColor
+
+  })
+
+  halo.setOptions({
+    backgroundColor: bgColor
+  })
+
+  cells.setOptions({
+    color1: bgColor
+  })
+
+})
+
+
+
+
+
+
+objColor1SaveButton.addEventListener('click', function(){
+  cloud.setOptions({
+    cloudShadowColor: objColor1
+  });
+
+  blur.setOptions({
+    baseColor: objColor1
+  });
+
+  fog.setOptions({
+    baseColor: objColor1
+  })
+
+  halo.setOptions({
+    baseColor: objColor1
+  })
+
+  cells.setOptions({
+    color2: objColor1
+  })
+
+})
+
+
