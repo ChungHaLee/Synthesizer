@@ -158,7 +158,7 @@ body{
   position: relative; /* or 'absolute' or 'fixed', depending on your needs */
   /* margin-left: 100px; */
   width: 730px; /* Set the desired width */
-  height: 520px; /* Set the desired height */
+  height: 600px; /* Set the desired height */
   overflow: auto; /* Enables scrolling when the content exceeds the container's size */
   box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
   overflow: hidden;

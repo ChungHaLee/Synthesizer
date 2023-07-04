@@ -291,6 +291,7 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
   else if(current_clip_type == MusicClipType.Melody){
     console.log("to Beat")
     current_clip_type = MusicClipType.Beat;
+    // document.getElementById("lyricsDisplay").style.display = 'block'
     document.getElementById("BeatContainer").style.display = 'block'
     document.getElementById("MelodyContainer").style.display = 'none'
     document.getElementById("TemplateContainer").style.display = 'none'
@@ -305,6 +306,7 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     console.log('to Melody')
     saveModeCheck  = false
     current_clip_type = MusicClipType.Melody;
+    // document.getElementById("lyricsDisplay").style.display = 'block'
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
     document.getElementById("TemplateContainer").style.display = 'none'
@@ -335,6 +337,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
     document.getElementById("BeatContainer").style.display = 'block';
     document.getElementById("MelodyContainer").style.display = 'none';
     document.getElementById("TemplateContainer").style.display = 'none';
+    // document.getElementById("lyricsDisplay").style.display = 'block'
     clearNoteClip(MusicClipType.Beat);
     initializeTimer();
   }
@@ -345,6 +348,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
     document.getElementById("TemplateContainer").style.display = 'none'
+    // document.getElementById("lyricsDisplay").style.display = 'block'
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
   }
@@ -373,6 +377,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
     document.getElementById("BeatContainer").style.display = 'none'
     document.getElementById("MelodyContainer").style.display = 'none'
     document.getElementById("TemplateContainer").style.display = 'block'
+    // document.getElementById("lyricsDisplay").style.display = 'block'
     //document.getElementById("sheetMusicRecordButton").style.display = 'block'
     //document.getElementById("danceVideoButton").click();
     // player2.mute();

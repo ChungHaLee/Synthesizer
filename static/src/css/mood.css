@@ -21,10 +21,10 @@ div#ThemaContainer{
 .themaButton {
   width: 300px;
   height: 100px;
-  margin-top: 40px;
+  margin-top: 5px;
   margin-left: 30px;
   margin-right: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   align-items: center;
   /* appearance: none; */
   background-color: #FCFCFD;
