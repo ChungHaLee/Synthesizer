@@ -1,8 +1,9 @@
 #DeviceConnectorContainer{
     /* position: absolute; */
-    margin-left: 50px;
+    margin-left: 35px;
     width: 950px;
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 
@@ -175,6 +176,7 @@
     width: 100px;
     height: 30px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 
@@ -237,6 +239,8 @@
     border-radius: 3px;
 }
 
+
+
 #PreviousButton{
     background-color: #d3d3d3;
     color: black;
@@ -245,6 +249,7 @@
     border: 0;
     font-size: 50px;
     border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 #NextButton{
@@ -255,6 +260,7 @@
     border: 0;
     font-size: 50px;
     border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 

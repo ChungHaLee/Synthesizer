@@ -292,6 +292,7 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
   else if(current_clip_type == MusicClipType.Melody){
     console.log("to Beat")
     current_clip_type = MusicClipType.Beat;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'block'
     document.getElementById("MelodyContainer").style.display = 'none'
     document.getElementById("TemplateContainer").style.display = 'none'
@@ -306,6 +307,7 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     console.log('to Melody')
     saveModeCheck  = false
     current_clip_type = MusicClipType.Melody;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
     document.getElementById("TemplateContainer").style.display = 'none'
@@ -342,6 +344,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   else if(current_clip_type == MusicClipType.Beat){
     console.log("to Melody")
     current_clip_type = MusicClipType.Melody;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
@@ -370,6 +373,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   else{
     console.log("to Save")
     current_clip_type = MusicClipType.Template;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none'
     document.getElementById("MelodyContainer").style.display = 'none'
@@ -1518,6 +1522,7 @@ function stopAllNotePlayer2(){
 function loadFromTrackToMusicClip(clip_type, clip_id){
   if(clip_type == MusicClipType.Melody){
     current_clip_type = MusicClipType.Melody;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none';
     document.getElementById("MelodyContainer").style.display = 'block';
     document.getElementById("TemplateContainer").style.display = 'none';
@@ -1528,6 +1533,7 @@ function loadFromTrackToMusicClip(clip_type, clip_id){
   }
   else{
     current_clip_type = MusicClipType.Beat;
+    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'block';
     document.getElementById("MelodyContainer").style.display = 'none';
     document.getElementById("TemplateContainer").style.display = 'none';
@@ -1539,6 +1545,7 @@ function loadFromTrackToMusicClip(clip_type, clip_id){
 }
 function loadFromTrackToTemplateClip(clip_id){
   template_clip = Template_clip_array[clip_id];
+  document.getElementById("moodContainer").style.display = "none";
   document.getElementById("BeatContainer").style.display = 'none';
   document.getElementById("MelodyContainer").style.display = 'none';
   document.getElementById("TemplateContainer").style.display = 'block';

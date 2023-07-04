@@ -57,7 +57,7 @@ body{
     /* margin-left: 1150px; */
     position: relative; /* or 'absolute' or 'fixed', depending on your needs */
     width: 1850px; /* Set the desired width */
-    height: 470px; /* Set the desired height */
+    height: 500px; /* Set the desired height */
     overflow: auto; /* Enables scrolling when the content exceeds the container's size */
     padding: 0px;
     /* border: 5px solid rgb(0, 38, 255); */
