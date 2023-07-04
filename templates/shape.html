@@ -55,7 +55,7 @@
     <div id="shape-canvas">
         <!-- <canvas id="granim-canvas"></canvas> -->
     </div>    
-    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: 20px; margin-left: 40px;">your lyrics goes here</div>
+    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: -15px; margin-left: 40px;">your lyrics goes here</div>
     <!--     
     <div id = "Example Video" style="position:absolute;  margin-top: -460px; margin-left: 1000px;">
         <div id="player1" style="display:none;"></div>
@@ -67,10 +67,10 @@
      -->
 
      <div id ="ClipSettingController" style="display:none;">
-        <button class="sheetMusicButton"id="sheetMusicMelodyButton"style="display:none;"> 새 멜로디 </button>
+        <button class="sheetMusicButton"id="sheetMusicMelodyButton"style="display:none;"> 새 클립 </button>
         <button class="sheetMusicButton"id="sheetMusicBeatButton"style="display:none;"> 새 비트 </button>
         <button class="sheetMusicButton"id="sheetMusicTemplateButton"style="display:none;"> 새 음악 효과 </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton" style="display:none;">음악 저장</button>
+        <!-- <button class="trackMusicButton"id="trackMusicSaveButton" style="display:none;">음악 저장</button> -->
         <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30"style="display:none;">
         <button class="sheetMusicButton"id="sheetTemplateSaveButton"style="display:none;"> 음악 효과 저장 </button>
     </div>
@@ -81,6 +81,7 @@
         <button class="trackMusicButton"id="trackMusicPlayButton"> Play </button>
         <button class="trackMusicButton"id="trackMusicPauseButton"> Pause </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton"> Delete Clip </button>
+        <button class="trackMusicButton"id="trackClipCreateButton"> New Clip </button>
         <button class="trackMusicButton"id="trackMusicSaveButton"> Save Music </button>
         <button class="trackMusicButton"id="trackMusicLoadButton"> Load Music </button>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
@@ -118,15 +119,28 @@
         <button class="pageControl"id="NextButton"> &raquo; </button>
     </div>
     <div class="fixed-clip-container">
-        <div id = 'sheetMusicController'>
+        <div id = 'sheetMusicController'style="display:none">
             <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px;"> Play </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> Pause </button>
             <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 50px; margin-right: 40px;"> Delete It </button>
             <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 20px;"> Delete All </button>
             <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> Record </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 35px; margin-top: 10px; left:30px;"></div>
-            
         </div>
+        <div class="grid-container" id="ThemaContainer">
+        <!-- 여기에 테마? 내용을 조정할 수 있는 내용이 있으면 될꺼 같아요 밥먹고 제가 클릭 조절은 설정하겠습니다. -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        </div>        
         <div class="grid-container" id="MelodyContainer" style="display:none">
             <div id="'lyricsContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
                 Lyrics:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
@@ -153,7 +167,7 @@
 
 
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
-        <div class="grid-container" id="BeatContainer">
+        <div class="grid-container" id="BeatContainer" style="display:none">
             <div class="vertical-line" id="startLine2", style="margin-top:-5px; margin-left: 90px; "></div>
             <div class="vertical-line" id="timeLine2" style="background-color:green; margin-top:-5px; margin-left: 90px; "></div>
             <div class="grid-item" id="box_0" style="height:80px; margin-left: 30px; background-color: #FFFFFF;"> Beat1 </div>
@@ -304,8 +318,7 @@
         
                 gl_FragColor.a = 1.0;
         
-            #endif
-        
+            #endifㄴ
         }
     </script>
     
@@ -329,7 +342,8 @@
     
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tunajs/1.0.1/tuna.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- <script src ="https://cdnjs.cloudflare.com/ajax/libs/jsmidgen/0.1.0/jsmidgen.min.js"></script> -->
+    <!-- <script src="https://www.youtube.com/iframe_api"></script> -->
 
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/midi/0.0.0/midi.js"></script> -->

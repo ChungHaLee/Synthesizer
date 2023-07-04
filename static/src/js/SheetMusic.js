@@ -1,5 +1,8 @@
 import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip} from './Share.js';
 import { piano_player, beat_player, dialInitialize, beat_output_play} from './Synthesizer.js';
+import * as Midi from "./jsmidgen.js"
+
+
 //최소 범위 A2 ~ C7
 
 const fps = 30;
@@ -21,7 +24,7 @@ const Template_clip_array = [];
 const Melody_clip_array = [];
 const Beat_clip_array = [];
 
-let current_clip_type = MusicClipType.Beat;
+let current_clip_type = MusicClipType.Theme;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
 let template_clip = new TemplateClip(Template_clip_array.length);
@@ -324,23 +327,25 @@ document.getElementById("NextButton").addEventListener("click", function(){
   stopRecording();
   stopAllNotePlayer();
   play_state = false;
-  if(current_clip_type == MusicClipType.Beat){
+  if(current_clip_type == MusicClipType.Theme){
+    current_clip_type = MusicClipType.Beat;
+    document.getElementById("sheetMusicController").style.display = "block";
+    document.getElementById("ThemaContainer").style.display = "none";
+    document.getElementById("BeatContainer").style.display = 'block';
+    document.getElementById("MelodyContainer").style.display = 'none';
+    document.getElementById("TemplateContainer").style.display = 'none';
+    clearNoteClip(MusicClipType.Beat);
+    initializeTimer();
+  }
+  else if(current_clip_type == MusicClipType.Beat){
     console.log("to Melody")
     current_clip_type = MusicClipType.Melody;
+    document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
     document.getElementById("TemplateContainer").style.display = 'none'
-    //document.getElementById("sheetMusicRecordButton").style.display = 'none'
-    // if(Melody_clip_array.length == 0 && current_clip_type == MusicClipType.Melody){
-    //   Melody_clip_array.push(melody_clip);
-    // } else {
-
-    // }
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
-    // settingExample();
-    //document.getElementById("danceVideoButton").click();
-    //addClipToTrack(false, false, false);
   }
   // else if(current_clip_type == MusicClipType.Melodys){
   //   console.log("to Tempalte")
@@ -363,6 +368,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   else{
     console.log("to Save")
     current_clip_type = MusicClipType.Template;
+    document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none'
     document.getElementById("MelodyContainer").style.display = 'none'
     document.getElementById("TemplateContainer").style.display = 'block'
@@ -374,31 +380,31 @@ document.getElementById("NextButton").addEventListener("click", function(){
   }
 })
 
-function addClipToTrack(melodyBool, BeatBool, TemplateBool){
-  TrackObject = new MusicTrack(); 
-  InitializeAllTrack();
-  if(melodyBool){
-    if(Melody_clip_array.length > 0){
-      const Tmp_clip = get_clip(MusicClipType.Melody, 0)
-      const clipTime = createTrackClipObject('melody-dropzone', Tmp_clip.getClipType(), Tmp_clip.getClipId(), Tmp_clip.getDuration(), TrackObject.getMelodyId())
-      TrackObject.setMusicClip(Tmp_clip, clipTime)
-    }
-  }
-  if(BeatBool){
-    if(Beat_clip_array.length > 0){
-      const Tmp_clip = get_clip(MusicClipType.Beat, 0)
-      const clipTime = createTrackClipObject('beat-dropzone', Tmp_clip.getClipType(), Tmp_clip.getClipId(), Tmp_clip.getDuration(), TrackObject.getMelodyId())
-      TrackObject.setMusicClip(Tmp_clip, clipTime)
-    }
-  }
-  if(TemplateBool){
-    if(Template_clip_array.length > 0){
-      const tempalteId = parseInt(0);
-      const clipTime = createTrackClipObject_template('template-dropzone', tempalteId, TrackObject.getTempalateId())
-      TrackObject.setTemplateClip(tempalteId, clipTime)
-    }
-  }
-}
+// function addClipToTrack(melodyBool, BeatBool, TemplateBool){
+//   TrackObject = new MusicTrack(); 
+//   InitializeAllTrack();
+//   if(melodyBool){
+//     if(Melody_clip_array.length > 0){
+//       const Tmp_clip = get_clip(MusicClipType.Melody, 0)
+//       const clipTime = createTrackClipObject('melody-dropzone', Tmp_clip.getClipType(), Tmp_clip.getClipId(), Tmp_clip.getDuration(), TrackObject.getMelodyId())
+//       TrackObject.setMusicClip(Tmp_clip, clipTime)
+//     }
+//   }
+//   if(BeatBool){
+//     if(Beat_clip_array.length > 0){
+//       const Tmp_clip = get_clip(MusicClipType.Beat, 0)
+//       const clipTime = createTrackClipObject('beat-dropzone', Tmp_clip.getClipType(), Tmp_clip.getClipId(), Tmp_clip.getDuration(), TrackObject.getMelodyId())
+//       TrackObject.setMusicClip(Tmp_clip, clipTime)
+//     }
+//   }
+//   if(TemplateBool){
+//     if(Template_clip_array.length > 0){
+//       const tempalteId = parseInt(0);
+//       const clipTime = createTrackClipObject_template('template-dropzone', tempalteId, TrackObject.getTempalateId())
+//       TrackObject.setTemplateClip(tempalteId, clipTime)
+//     }
+//   }
+// }
 
 function convertCharacters(inputString) {
   let convertedString = '';
@@ -478,9 +484,56 @@ function convertCharacters(inputString) {
 //   // 녹화 중단!
 //   mediaRecorder.stop(); 
 // }
+/*-----------------------------MIDI 파일 생성용 코드-----------------------------------------*/
+
+function generateMidi() {
+  var file = new Midi.File();
+  var track = new Midi.Track();
+  file.addTrack(track);
+
+  // Test MIDI 작업용 코드 //
+  // let [TestNoteSet, TestTimeSet] = melody_clip.getMusicClip();
+  // for(let i = 0; i < TestNoteSet.length; i ++){
+  //   console.log("Test", TestNoteSet[i], TestTimeSet[i][0])
+  //   track.addNote(0, TestNoteSet[i], TestTimeSet[i][1] - TestTimeSet[i][0], TestTimeSet[i][0]);
+  // }
 
 
+  track.addNote(0, 'c4', 32, 14);
+  track.addNote(0, 'd4', 32, 15);
+  track.addNote(0, 'e4', 32, 16);
+  track.addNote(0, 'f4', 32, 17);
+  track.addNote(0, 'g4', 32, 25);
+  track.addNote(0, 'a4', 32, 26);
+  track.addNote(0, 'b4', 32, 27);
+  track.addNote(0, 'c5', 32, 28);
 
+
+  // Convert file to a binary string
+  var midiData = file.toBytes();
+  // Convert binary string to array of 8-bit integers
+  var byteNumbers = new Array(midiData.length);
+  for (var i = 0; i < midiData.length; i++) {
+      byteNumbers[i] = midiData.charCodeAt(i);
+  }
+  var byteArray = new Uint8Array(byteNumbers);
+  // Create a blob that looks like a file.
+  var blob = new Blob([byteArray], {type: "application/octet-stream"});
+  // Create a link for our script to 'click'
+  var downloadLink = document.createElement('a');
+  // Supply the blob as the link's href
+  downloadLink.href = window.URL.createObjectURL(blob);
+  // Give the link a default file name
+  downloadLink.download = 'test.mid';
+  // Append the link to the body
+  document.body.appendChild(downloadLink);
+  // Simulate a click to start the download
+  downloadLink.click();
+  // Remove the link from the body
+  document.body.removeChild(downloadLink);
+}
+
+/*-----------------------------MIDI 파일 생성용 코드-----------------------------------------*/
 
 
 
@@ -805,30 +858,41 @@ function noteOff(note){//Note 변화 설정 초기화
 }
 
 /* Clip Event Code */
-document.getElementById("sheetMusicMelodyButton").addEventListener('click', function (){
-  current_clip_type = MusicClipType.Melody;
-  document.getElementById("BeatContainer").style.display = 'none' 
-  document.getElementById("MelodyContainer").style.display = 'block'
-  if(melody_clip.getClipId() != Melody_clip_array.length){
-    console.log("New Melody Clip Create", melody_clip.getClipId(), Melody_clip_array.length)
+document.getElementById("trackClipCreateButton").addEventListener('click', function (){
+  if(current_clip_type == MusicClipType.Melody){
+    console.log("New Melody Clip Create", Melody_clip_array.length)
     melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
     noteClickIndex = -1;
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
   }
-})
-document.getElementById("sheetMusicBeatButton").addEventListener('click', function (){
-  current_clip_type = MusicClipType.Beat;
-  document.getElementById("BeatContainer").style.display = 'block'
-  document.getElementById("MelodyContainer").style.display = 'none'
-  if(beat_clip.getClipId() != Beat_clip_array.length){
-    console.log("New Beat Clip Create", beat_clip.getClipId(), Beat_clip_array.length)
+  else if(current_clip_type == MusicClipType.Beat){
+    console.log("New Beat Clip Create", Beat_clip_array.length)
     beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
     noteClickIndex = -1;
     clearNoteClip(MusicClipType.Beat);
     initializeTimer();
   }
+  else if(current_clip_type == MusicClipType.Template){
+    console.log("New Template Clip Create", Template_clip_array.length)
+    template_clip = new TemplateClip(Template_clip_array.length);
+    templateConnectToVisualAndSound(template_clip);
+    console.log(Template_clip_array)
+  }
+
 })
+// document.getElementById("sheetMusicBeatButton").addEventListener('click', function (){
+//   current_clip_type = MusicClipType.Beat;
+//   document.getElementById("BeatContainer").style.display = 'block'
+//   document.getElementById("MelodyContainer").style.display = 'none'
+//   if(beat_clip.getClipId() != Beat_clip_array.length){
+//     console.log("New Beat Clip Create", beat_clip.getClipId(), Beat_clip_array.length)
+//     beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+//     noteClickIndex = -1;
+//     clearNoteClip(MusicClipType.Beat);
+//     initializeTimer();
+//   }
+// })
 document.getElementById("sheetMusicTemplateButton").addEventListener('click', function (){
   if(template_clip.get_Clip_id() != Template_clip_array.length){
     console.log("New Template Clip Create", template_clip.get_Clip_id(), Template_clip_array.length)
@@ -1287,6 +1351,7 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
   timeLine3.style.left = time_to_px(currentTrackTime, duration_track, track_box_width, 0) + "px";
   //console.log("Test Track", cur_track_set[0][1]);
   let cur_track_set = TrackObject.getcurrentClipSet(currentTrackTime);
+  //console.log(cur_track_set)
   if(cur_track_set[0].length > 0){
     //console.log(Template_clip_array);
     templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
@@ -1444,55 +1509,64 @@ const tmp_template_array = []
 
 
 document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
-  let MusicTrackObejct = {
-    "Type":"MusicTrack",
-    "user_Id": TrackObject.getUserId(),
-    "id_set" : TrackObject.getIdData(),
-    "time_set" : TrackObject.getTimeData()
-  }
-  //downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
-  if(current_clip_type == MusicClipType.Template){
-    for(let i = 0; i < Template_clip_array.length; i ++){
-      let templateObejct = {
-        "userName":userName,
-        "musicName":musicId,
-        "Type": MusicClipType.Template,
-        "CLip id": Template_clip_array[i].get_Clip_id(),
-        "duration": Template_clip_array[i].get_duration(),
-        "instrument": Template_clip_array[i].get_instrument(),
-        "dial_set": Template_clip_array[i].get_dial()
-      }
-      downloadJsonFile("template_clip_" + userName + "_" + musicId, templateObejct); 
-    }
-  }
-  if(current_clip_type == MusicClipType.Melody){
-    for(let i = 0; i < Melody_clip_array.length; i ++){
-      let MusicObejct = {
-        "userName":userName,
-        "musicName":musicId,
-        "Type": Melody_clip_array[i].getClipType(),
-        "CLip id": Melody_clip_array[i].getClipId(),
-        "duration": Melody_clip_array[i].getDuration(),
-        "noteSet": Melody_clip_array[i].getMusicClip()[0],
-        "timeSet": Melody_clip_array[i].getMusicClip()[1],
-      }
-      downloadJsonFile("Melody_clip_" + userName + "_" + musicId, MusicObejct); 
-    }
-  }
-  if(current_clip_type == MusicClipType.Beat){
-    for(let i = 0; i < Beat_clip_array.length; i ++){
-      let MusicObejct = {
-        "userName":userName,
-        "musicName":musicId,
-        "Type": Beat_clip_array[i].getClipType(),
-        "CLip id": Beat_clip_array[i].getClipId(),
-        "duration": Beat_clip_array[i].getDuration(),
-        "noteSet": Beat_clip_array[i].getMusicClip()[0],
-        "timeSet": Beat_clip_array[i].getMusicClip()[1]
-      }
-      downloadJsonFile("Beat_clip_" + userName + "_" + musicId, MusicObejct); 
-    }
-  }
+  generateMidi()
+
+
+
+
+
+
+
+
+//   let MusicTrackObejct = {
+//     "Type":"MusicTrack",
+//     "user_Id": TrackObject.getUserId(),
+//     "id_set" : TrackObject.getIdData(),
+//     "time_set" : TrackObject.getTimeData()
+//   }
+//   //downloadJsonFile("MusicTrack_" + TrackObject.getUserId(), MusicTrackObejct);  //Track 정보 저장
+//   if(current_clip_type == MusicClipType.Template){
+//     for(let i = 0; i < Template_clip_array.length; i ++){
+//       let templateObejct = {
+//         "userName":userName,
+//         "musicName":musicId,
+//         "Type": MusicClipType.Template,
+//         "CLip id": Template_clip_array[i].get_Clip_id(),
+//         "duration": Template_clip_array[i].get_duration(),
+//         "instrument": Template_clip_array[i].get_instrument(),
+//         "dial_set": Template_clip_array[i].get_dial()
+//       }
+//       downloadJsonFile("template_clip_" + userName + "_" + musicId, templateObejct); 
+//     }
+//   }
+//   if(current_clip_type == MusicClipType.Melody){
+//     for(let i = 0; i < Melody_clip_array.length; i ++){
+//       let MusicObejct = {
+//         "userName":userName,
+//         "musicName":musicId,
+//         "Type": Melody_clip_array[i].getClipType(),
+//         "CLip id": Melody_clip_array[i].getClipId(),
+//         "duration": Melody_clip_array[i].getDuration(),
+//         "noteSet": Melody_clip_array[i].getMusicClip()[0],
+//         "timeSet": Melody_clip_array[i].getMusicClip()[1],
+//       }
+//       downloadJsonFile("Melody_clip_" + userName + "_" + musicId, MusicObejct); 
+//     }
+//   }
+//   if(current_clip_type == MusicClipType.Beat){
+//     for(let i = 0; i < Beat_clip_array.length; i ++){
+//       let MusicObejct = {
+//         "userName":userName,
+//         "musicName":musicId,
+//         "Type": Beat_clip_array[i].getClipType(),
+//         "CLip id": Beat_clip_array[i].getClipId(),
+//         "duration": Beat_clip_array[i].getDuration(),
+//         "noteSet": Beat_clip_array[i].getMusicClip()[0],
+//         "timeSet": Beat_clip_array[i].getMusicClip()[1]
+//       }
+//       downloadJsonFile("Beat_clip_" + userName + "_" + musicId, MusicObejct); 
+//     }
+//   }
 })
 document.getElementById("trackMusicLoadButton").addEventListener('click', function (){
   InitializeAllSetting();

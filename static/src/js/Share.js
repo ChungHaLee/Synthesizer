@@ -25,6 +25,7 @@ export const joystick_set = {
 };  
 
 export const MusicClipType = {
+  Theme: "Theme",
   Melody: "Melody",
   Beat: "Beat",
   Template: "Template"
@@ -172,7 +173,7 @@ export class MusicClip {
     return this.Type;
   }
   getDuration(){
-    return this.duration;
+    return parseFloat(this.duration);
   }
   getNoteIndex(){
     if(this.Type==MusicClipType.Melody){
@@ -250,13 +251,13 @@ export class MusicTrack{
   setMusicClip(musicClip, clipTime){
     if(musicClip.getClipType() == MusicClipType.Melody){
       this.MelodyClipIdList.push(musicClip.getClipId());
-      let duration = musicClip.getDuration();
+      let duration = parseFloat(musicClip.getDuration());
       this.MelodyTimeset.push([clipTime, clipTime + duration]);
       console.log("Add Melody box", this.MelodyClipIdList);
     }
     else{
       this.BeatClipIdList.push(musicClip.getClipId());
-      let duration = musicClip.getDuration();
+      let duration = parseFloat(musicClip.getDuration());
       this.BeatTimeset.push([clipTime, clipTime + duration]);
       console.log("Add Beat box", this.BeatClipIdList);
     }
@@ -289,6 +290,7 @@ export class MusicTrack{
     const Meldoy_set = []
     const Beat_set = []
     const Template_set = []
+    //console.log(this.BeatTimeset);
     for (let i = 0; i < this.TemplateTimeset.length; i++) {
       if (this.TemplateTimeset[i][0] <= currentTime && currentTime < this.TemplateTimeset[i][1]) {
         Template_set.push(this.TemplateTimeset[i][0]);  // 시간이 먼저

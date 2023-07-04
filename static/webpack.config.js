@@ -11,7 +11,8 @@ module.exports = {
         Synthesizer: path.resolve(__dirname, "src", "js", "Synthesizer.js"),
         Share: path.resolve(__dirname, "src", "js", "Share.js"),
         SheetMusic: path.resolve(__dirname, "src", "js", "SheetMusic.js"),
-        haptic: path.resolve(__dirname, "src", "js", "haptic.js")
+        haptic: path.resolve(__dirname, "src", "js", "haptic.js"),
+        Jsmidgen :path.resolve(__dirname, "src", "js", "jsmidgen.js"),
     },
     mode: "development",
     target: "web",
