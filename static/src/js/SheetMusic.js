@@ -494,7 +494,10 @@ function generateMidi() {
   var track = new Midi.Track();
 
   file.addTrack(track);
-  //track.instrument(1, 0X13)
+  track.instrument(1, 0x70)
+  track.instrument(2, 0x72)
+  track.instrument(3, 0x74)
+  track.instrument(4, 0x76)
   // Test MIDI 작업용 코드 //
   // let [TestNoteSet, TestTimeSet] = melody_clip.getMusicClip();
   // for(let i = 0; i < TestNoteSet.length; i ++){
@@ -595,7 +598,7 @@ function MidiNoteAdditor(track, currentNote, previousNote, currentTime){ //피�
   if(exclusiveArr1.length > 0){
     //console.log("Inpnut", exclusiveArr1);
     for( let note of exclusiveArr1){
-      //track.noteOn(0, note, parseInt((currentTime - MidiEventTime) * 300))
+      track.noteOn(0, note, parseInt((currentTime - MidiEventTime) * 300))
       console.log("note ON", note, parseInt((currentTime - MidiEventTime) * 300), currentTime)
       MidiEventTime = currentTime
     }  
@@ -603,7 +606,7 @@ function MidiNoteAdditor(track, currentNote, previousNote, currentTime){ //피�
   if(exclusiveArr2.length > 0){
     //console.log("Ouput ", exclusiveArr2);
     for( let note of exclusiveArr2){
-      //track.noteOff(0, note, parseInt((currentTime - MidiEventTime) * 300))
+      track.noteOff(0, note, parseInt((currentTime - MidiEventTime) * 300))
       console.log("note OFF", note, parseInt((currentTime - MidiEventTime) * 300))
       MidiEventTime = currentTime
     }  
@@ -618,7 +621,7 @@ function MidiBeatMaker(track, currentTime, inputTime, beat_clip){
     MidiEventTime = 0.0;
   }
   for (let beat of currentBeat){
-     track.addNote(beat+1, "c2", 32, parseInt((currentTime - MidiEventTime) * 300), currentTime)
+     track.addNote(beat+1, "c2", 32, parseInt((currentTime - MidiEventTime) * 300))
      console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * 300), currentTime)
      MidiEventTime = currentTime
    }
