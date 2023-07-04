@@ -34,7 +34,6 @@ let previousNote = [];
 let previousNote_track = [];
 let TrackObject = new MusicTrack();
 let previousDial_ID = -1;
-
 let doubleChecker = 0 //Webpack double Event error catcher
 let trackActivaqte = false;
 let noteClickIndex = -1;
@@ -292,7 +291,6 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
   else if(current_clip_type == MusicClipType.Melody){
     console.log("to Beat")
     current_clip_type = MusicClipType.Beat;
-    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'block'
     document.getElementById("MelodyContainer").style.display = 'none'
     document.getElementById("TemplateContainer").style.display = 'none'
@@ -307,7 +305,6 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
     console.log('to Melody')
     saveModeCheck  = false
     current_clip_type = MusicClipType.Melody;
-    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
     document.getElementById("TemplateContainer").style.display = 'none'
@@ -344,7 +341,6 @@ document.getElementById("NextButton").addEventListener("click", function(){
   else if(current_clip_type == MusicClipType.Beat){
     console.log("to Melody")
     current_clip_type = MusicClipType.Melody;
-    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none' 
     document.getElementById("MelodyContainer").style.display = 'block'
@@ -373,7 +369,6 @@ document.getElementById("NextButton").addEventListener("click", function(){
   else{
     console.log("to Save")
     current_clip_type = MusicClipType.Template;
-    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("ThemaContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none'
     document.getElementById("MelodyContainer").style.display = 'none'
@@ -492,13 +487,14 @@ function convertCharacters(inputString) {
 // }
 /*-----------------------------MIDI 파일 생성용 코드-----------------------------------------*/
 
-
+let MidiEventTime = 0.0
 
 function generateMidi() {
   var file = new Midi.File();
   var track = new Midi.Track();
-  file.addTrack(track);
 
+  file.addTrack(track);
+  //track.instrument(1, 0X13)
   // Test MIDI 작업용 코드 //
   // let [TestNoteSet, TestTimeSet] = melody_clip.getMusicClip();
   // for(let i = 0; i < TestNoteSet.length; i ++){
@@ -516,11 +512,28 @@ function generateMidi() {
   // track.addNote(0, 'b4', 32, 27);
   // track.addNote(0, 'c5', 32, 28);
 
-  // track.noteOn(0, 'c4', 100)
-  // track.noteOn(0, 'e4', 400)
-  // track.noteOff(0, 'c4', 400)
-  // track.noteOff(0, 'e4', 700)
 
+
+
+
+  // track.noteOn(0, 'C4', 10)
+  // track.noteOff(0, 'C4', 10)
+  // track.noteOn(0, 'D4',10)
+  // track.noteOff(0, 'D4', 10)
+  // track.noteOn(0, 'E4', 10)
+  // track.noteOff(0, 'E4', 10)
+  // track.noteOn(0, 'F4', 10)
+  // track.noteOff(0, 'F4', 10)
+  // track.noteOn(0, 'G4', 10)
+  // track.noteOff(0, 'G4', 10)
+  // track.noteOn(0, 'A4', 10)
+  // track.noteOff(0, 'A4', 10)
+  // track.noteOn(0, 'B4', 10)
+  // track.noteOff(0, 'B4', 10)
+  // track.noteOn(0, 'C5', 10)
+  // track.noteOff(0, 'C5', 10)
+  // track.noteOn(0, 'D5', 10)
+  // track.noteOff(0, 'D5', 10)
   MidiTrackMaker(track)
 
   // Convert file to a binary string
@@ -553,22 +566,26 @@ function MidiTrackMaker(track){
     let cur_track_set = TrackObject.getcurrentClipSet(trackTimer);
     //console.log(cur_track_set)
     if(cur_track_set[1].length > 0){
-      MidiMelodyMaker(track, trackTimer - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
+      MidiMelodyMaker(track, trackTimer, trackTimer - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
     }
     if(cur_track_set[2].length > 0){
-      MidiBeatMaker(track, trackTimer - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
+      MidiBeatMaker(track, trackTimer, trackTimer - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
     }
   }
 }
 
 
-function MidiMelodyMaker(track, currentTime, melody_clip){
-  let currentNote = melody_clip.getcurrentNoteSet(currentTime);
+function MidiMelodyMaker(track, currentTime, inputTime, melody_clip){
+  let currentNote = melody_clip.getcurrentNoteSet(inputTime);
   MidiNoteAdditor(track, currentNote, previousNote_track, currentTime);
-  previousNote_track = melody_clip.getcurrentNoteSet(currentTime);
+  previousNote_track = melody_clip.getcurrentNoteSet(inputTime);
 }
 function MidiNoteAdditor(track, currentNote, previousNote, currentTime){ //피아노 음 재생 함수
   //piano_player(currentNote[0], true);
+  if(currentTime < MidiEventTime){
+    console.log("MidiEventTimer reset")
+    MidiEventTime = 0.0;
+  }
   var exclusiveArr1 = currentNote.filter(function(val) {
     return previousNote.indexOf(val) === -1;
   });
@@ -578,26 +595,33 @@ function MidiNoteAdditor(track, currentNote, previousNote, currentTime){ //피�
   if(exclusiveArr1.length > 0){
     //console.log("Inpnut", exclusiveArr1);
     for( let note of exclusiveArr1){
-      track.noteOn(0, note, parseInt(currentTime * fps))
-      console.log("note ON", note, parseInt(currentTime * fps))
+      //track.noteOn(0, note, parseInt((currentTime - MidiEventTime) * 300))
+      console.log("note ON", note, parseInt((currentTime - MidiEventTime) * 300), currentTime)
+      MidiEventTime = currentTime
     }  
   }
   if(exclusiveArr2.length > 0){
     //console.log("Ouput ", exclusiveArr2);
     for( let note of exclusiveArr2){
-      track.noteOff(0, note, parseInt(currentTime * fps))
-      console.log("note OFF", note, parseInt(currentTime * fps))
+      //track.noteOff(0, note, parseInt((currentTime - MidiEventTime) * 300))
+      console.log("note OFF", note, parseInt((currentTime - MidiEventTime) * 300))
+      MidiEventTime = currentTime
     }  
   }
 }
 
 
-function MidiBeatMaker(track, currentTime, beat_clip){
-  let currentBeat = beat_clip.getcurrentNoteSet(currentTime);
-  console.log(currentBeat)
-  // for (let beat of currentBeat){
-  //   console.log(beat)
-  // }
+function MidiBeatMaker(track, currentTime, inputTime, beat_clip){
+  let currentBeat = beat_clip.getcurrentNoteSet(inputTime);
+  if(currentTime < MidiEventTime){
+    console.log("MidiEventTimer reset")
+    MidiEventTime = 0.0;
+  }
+  for (let beat of currentBeat){
+     track.addNote(beat+1, "c2", 32, parseInt((currentTime - MidiEventTime) * 300), currentTime)
+     console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * 300), currentTime)
+     MidiEventTime = currentTime
+   }
 }
 
 
@@ -1522,7 +1546,6 @@ function stopAllNotePlayer2(){
 function loadFromTrackToMusicClip(clip_type, clip_id){
   if(clip_type == MusicClipType.Melody){
     current_clip_type = MusicClipType.Melody;
-    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'none';
     document.getElementById("MelodyContainer").style.display = 'block';
     document.getElementById("TemplateContainer").style.display = 'none';
@@ -1533,7 +1556,6 @@ function loadFromTrackToMusicClip(clip_type, clip_id){
   }
   else{
     current_clip_type = MusicClipType.Beat;
-    document.getElementById("moodContainer").style.display = "none";
     document.getElementById("BeatContainer").style.display = 'block';
     document.getElementById("MelodyContainer").style.display = 'none';
     document.getElementById("TemplateContainer").style.display = 'none';
@@ -1545,7 +1567,6 @@ function loadFromTrackToMusicClip(clip_type, clip_id){
 }
 function loadFromTrackToTemplateClip(clip_id){
   template_clip = Template_clip_array[clip_id];
-  document.getElementById("moodContainer").style.display = "none";
   document.getElementById("BeatContainer").style.display = 'none';
   document.getElementById("MelodyContainer").style.display = 'none';
   document.getElementById("TemplateContainer").style.display = 'block';
