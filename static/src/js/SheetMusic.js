@@ -499,10 +499,11 @@ function generateMidi() {
   var track = new Midi.Track();
 
   file.addTrack(track);
-  // track.instrument(1, 0x70)
-  // track.instrument(2, 0x72)
-  // track.instrument(3, 0x74)
-  // track.instrument(4, 0x76)
+  track.instrument(0, 0x03)
+  track.instrument(1, 0x70)
+  track.instrument(2, 0x72)
+  track.instrument(3, 0x74)
+  track.instrument(4, 0x76)
   
   // track.noteOn(0, 'C4', 10)
   // track.noteOff(0, 'C4', 10)
