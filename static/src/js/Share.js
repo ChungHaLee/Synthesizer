@@ -26,10 +26,10 @@ export const joystick_set = {
 };  
 
 export const MusicClipType = {
-  Lyrics:"Lyrics",
-  Theme: "Theme",
+  Mood: "Mood",
   Melody: "Melody",
   Beat: "Beat",
+  Lyrics:"Lyrics",
   Template: "Template"
 }
 

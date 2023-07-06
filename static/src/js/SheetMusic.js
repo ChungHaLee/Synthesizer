@@ -24,7 +24,7 @@ const Template_clip_array = [];
 const Melody_clip_array = [];
 const Beat_clip_array = [];
 
-let current_clip_type = MusicClipType.Theme;
+let current_clip_type = MusicClipType.Mood;
 let melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
 let beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
 let template_clip = new TemplateClip(Template_clip_array.length);
@@ -288,38 +288,47 @@ document.getElementById("PreviousButton").addEventListener("click", function(){
   stopRecording();
   stopAllNotePlayer();
   play_state = false;
-  if(current_clip_type == MusicClipType.Beat){
+  if(current_clip_type == MusicClipType.Mood){
     console.log('to Login')
     document.getElementById("loginPage").click();
+  }
+  else if(current_clip_type == MusicClipType.Beat){
+    current_clip_type = MusicClipType.Mood;
+    console.log("to Mood", current_clip_type);
+    document.getElementById("moodContainer").style.display = "block";
+    document.getElementById("sheetMusicController").style.display = "none";
+    document.getElementById("trackContainer").style.display = "none";
+    document.getElementById("ThemaContainer").style.display = "block";
+    document.getElementById("BeatContainer").style.display = 'none';
+    document.getElementById("MelodyContainer").style.display = 'none';
+    document.getElementById("TemplateContainer").style.display = 'none';
   }
   else if(current_clip_type == MusicClipType.Melody){
     current_clip_type = MusicClipType.Beat;
     console.log("to Beat", current_clip_type);
-    // document.getElementById("lyricsDisplay").style.display = 'block'
-    document.getElementById("BeatContainer").style.display = 'block'
-    document.getElementById("MelodyContainer").style.display = 'none'
-    document.getElementById("TemplateContainer").style.display = 'none'
-    //document.getElementById("sheetMusicRecordButton").style.display = 'none'
+    document.getElementById("moodContainer").style.display = "none";
+    document.getElementById("sheetMusicController").style.display = "block";
+    document.getElementById("trackContainer").style.display = "block";
+    document.getElementById("ThemaContainer").style.display = "none";
+    document.getElementById("BeatContainer").style.display = 'block';
+    document.getElementById("MelodyContainer").style.display = 'none';
+    document.getElementById("TemplateContainer").style.display = 'none';
     clearNoteClip(MusicClipType.Beat);
     initializeTimer();
-    // settingExample();
-    //document.getElementById("danceVideoButton").click();
-    //addClipToTrack(false, false, false);
   }
   else{
     saveModeCheck  = false
     current_clip_type = MusicClipType.Melody;
     console.log("to Melody", current_clip_type);
-    // document.getElementById("lyricsDisplay").style.display = 'block'
-    document.getElementById("BeatContainer").style.display = 'none' 
-    document.getElementById("MelodyContainer").style.display = 'block'
-    document.getElementById("TemplateContainer").style.display = 'none'
-    //document.getElementById("sheetMusicRecordButton").style.display = 'none'
+    document.getElementById("moodContainer").style.display = "none";
+    document.getElementById("sheetMusicController").style.display = "block";
+    document.getElementById("trackContainer").style.display = "block";
+    document.getElementById("ThemaContainer").style.display = "none";
+    document.getElementById("BeatContainer").style.display = 'none';
+    document.getElementById("MelodyContainer").style.display = 'block';
+    document.getElementById("TemplateContainer").style.display = 'none';
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
-    //document.getElementById("danceVideoButton").click();
-    //addClipToTrack(false, false, false);
-    //document.getElementById("exampleVideoButton").disabled = false;
   }
 })
 
@@ -331,7 +340,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   stopRecording();
   stopAllNotePlayer();
   play_state = false;
-  if(current_clip_type == MusicClipType.Theme){
+  if(current_clip_type == MusicClipType.Mood){
     current_clip_type = MusicClipType.Beat;
     console.log("to Beat", current_clip_type);
     document.getElementById("moodContainer").style.display = "none";
@@ -341,17 +350,19 @@ document.getElementById("NextButton").addEventListener("click", function(){
     document.getElementById("BeatContainer").style.display = 'block';
     document.getElementById("MelodyContainer").style.display = 'none';
     document.getElementById("TemplateContainer").style.display = 'none';
-    // document.getElementById("lyricsDisplay").style.display = 'block'
     clearNoteClip(MusicClipType.Beat);
     initializeTimer();
   }
   else if(current_clip_type == MusicClipType.Beat){
     current_clip_type = MusicClipType.Melody;
     console.log("to Melody", current_clip_type);
+    document.getElementById("moodContainer").style.display = "none";
+    document.getElementById("sheetMusicController").style.display = "block";
+    document.getElementById("trackContainer").style.display = "block";
     document.getElementById("ThemaContainer").style.display = "none";
-    document.getElementById("BeatContainer").style.display = 'none' 
-    document.getElementById("MelodyContainer").style.display = 'block'
-    document.getElementById("TemplateContainer").style.display = 'none'
+    document.getElementById("BeatContainer").style.display = 'none';
+    document.getElementById("MelodyContainer").style.display = 'block';
+    document.getElementById("TemplateContainer").style.display = 'none';
     // document.getElementById("lyricsDisplay").style.display = 'block'
     clearNoteClip(MusicClipType.Melody);
     initializeTimer();
@@ -378,10 +389,13 @@ document.getElementById("NextButton").addEventListener("click", function(){
     console.log("to Save")
     current_clip_type = MusicClipType.Template;
     console.log("to Template", current_clip_type);
+    document.getElementById("moodContainer").style.display = "none";
+    document.getElementById("sheetMusicController").style.display = "block";
+    document.getElementById("trackContainer").style.display = "block";
     document.getElementById("ThemaContainer").style.display = "none";
-    document.getElementById("BeatContainer").style.display = 'none'
-    document.getElementById("MelodyContainer").style.display = 'none'
-    document.getElementById("TemplateContainer").style.display = 'block'
+    document.getElementById("BeatContainer").style.display = 'none';
+    document.getElementById("MelodyContainer").style.display = 'none';
+    document.getElementById("TemplateContainer").style.display = 'block';
     // document.getElementById("lyricsDisplay").style.display = 'block'
     //document.getElementById("sheetMusicRecordButton").style.display = 'block'
     //document.getElementById("danceVideoButton").click();
@@ -1761,11 +1775,9 @@ function getMididata(midiData) {
       let MidiTextLine = getMidiLine(midiData[i])
       if(MidiTextLine != null){
         if(current_clip_type == MusicClipType.Melody){
-          console.log(MidiTextLine);
           setMidiToMelodyClip(MidiTextLine)
         }
         else if(current_clip_type==MusicClipType.Beat){
-          console.log(MidiTextLine);
           setMidiToBeatClip(MidiTextLine)
         }
       }
@@ -1782,7 +1794,7 @@ function getMididata(midiData) {
     loadClip(beat_clip, beat_clip.getDuration())
   }
   if(OverMidiDataChecker){
-    alert("범위에서 벗어난 노트값이 있습니다. 일부 MIDI값이 반영되지 않을 수 있습니다.")
+    alert("범위에서 벗어난 MIDI 정보가 있습니다. 일부는 적용이 안됩니다.")
     OverMidiDataChecker = false;
   }
 }
