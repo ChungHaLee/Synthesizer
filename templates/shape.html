@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Synthesizer_1회기</title>
+    <title>Synthesizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Style -->
     <link type="text/css" href="../static/src/css/style.css" rel="stylesheet">
@@ -61,8 +61,6 @@
     
 
      <div id ="ClipSettingController" style="display:none;">
-        <button class="sheetMusicButton"id="sheetMusicMelodyButton"style="display:none;"> 새 클립 </button>
-        <button class="sheetMusicButton"id="sheetMusicBeatButton"style="display:none;"> 새 비트 </button>
         <button class="sheetMusicButton"id="sheetMusicTemplateButton"style="display:none;"> 새 음악 효과 </button>
         <!-- <button class="trackMusicButton"id="trackMusicSaveButton" style="display:none;">음악 저장</button> -->
         <input type="number" name="age" id="clipduration" min="3" max="600" step="0.1" value="30"style="display:none;">
@@ -71,13 +69,12 @@
     <div class="fixed-track-container" id="trackContainer" style="margin-top: -610px; margin-left: 1010px; display:none;">
         <br>
         <h5 style="font-size: 25px; margin: 10px; text-align: center;"> 음악의 트랙 </h5>
-        <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300" style="font-size: 20px; margin-left: 80px;">
+        <input type="number" name="age" id="trackduration" min="30" max="6000" step="1" value="60" style="font-size: 20px; margin-left: 80px; display:none">
         <button class="trackMusicButton"id="trackMusicPlayButton" style="font-size: 20px;"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton" style="font-size: 20px;"> 정지 </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton" style="font-size: 20px;"> 클립 삭제 </button>
         <button class="trackMusicButton"id="trackClipCreateButton" style="font-size: 20px;"> 새 클립 </button>
         <button class="trackMusicButton"id="trackMusicSaveButton" style="font-size: 20px;"> 음악 저장 </button>
-        <button class="trackMusicButton"id="trackMusicLoadButton" style="font-size: 20px;"> 음악 불러오기 </button>
         <br>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
@@ -139,32 +136,23 @@
         <div id = 'sheetMusicController'style="display:none">
             <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px;"> 재생 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> 정지 </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 50px; margin-right: 40px;"> 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 20px;"> 전체 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 30px; margin-right: 40px;"> 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 30px;"> 전체 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicLoadButton" style="margin-right: 30px;"> 불러오기 </button>
             <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> Record </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 35px; margin-top: 10px; left:30px;"></div>
         </div>
 
         <div class="grid-container" id="ThemaContainer">
             
-            <div class="moodCustomMenuColor">
-                <h4>색상</h4>
+            <div class="moodCustomMenu">
+                <h4>무드 커스터마이징 메뉴</h4>
                 <button class="colorText" id="backgroundColor"> 색상 1 <input id="backgroundColorID" type="text" data-coloris> </button> <button class="colorText"  id="backgroundColorSaveButton"> 저장 </button>
                 <br>
                 <br>
-                <button  class="colorText" id="objectColor1"> 색상 2 <input id="objectColor1ID"t ype="text" data-coloris> </button> <button class="colorText" id="objectColor1SaveButton"> 저장 </button>
-            </div>
-
-
-            <div class="moodCustomMenuAssistive">
-                <h4>요소 추가</h4>
-                <button class="assistiveText" id="speed"> 빠르기 <input id="speedID" type="text"> </button> <button class="assistiveText"  id="speedSaveButton"> 저장 </button>
-                <br>
-                <br>
-                <button  class="assistiveText" id="zoom"> 확대 <input id="zoomID" type="text"> </button> <button class="assistiveText" id="zoomSaveButton"> 저장 </button>
+                <button  class="colorText" id="objectColor1"> 색상 2 <input type="text" data-coloris> </button> <button class="colorText" id="objectColor1SaveButton"> 저장 </button>
             </div>
         </div>   
-
 
         <div class="grid-container" id="MelodyContainer" style="display:none">
             <div id="'lyricsContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">

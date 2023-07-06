@@ -14,7 +14,7 @@ let noneButton = document.getElementById('thema_none')
 
 
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
-const objColor1SaveButton = document.getElementById('objectbColor1SaveButton');
+const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
 
 
 

@@ -13,6 +13,7 @@ export const poly_note_set = {
 
 export const pad_set = {
   id: 0,
+  value: 0
 };
 
 export const dial_set = {
@@ -25,6 +26,7 @@ export const joystick_set = {
 };  
 
 export const MusicClipType = {
+  Lyrics:"Lyrics",
   Theme: "Theme",
   Melody: "Melody",
   Beat: "Beat",
@@ -88,12 +90,10 @@ export class MusicClip {
       }
   }
   setType(type){
-    console.log("Set Type: ", type);
     this.Type = type;
   }
   setNoteInput(note, time) {
     if(this.Type==MusicClipType.Melody){
-      //console.log("Pitch input Time:", pitch, time);
       this.melodyNoteSet.push(note);
       this.melodyTimeset.push([time, -1]);
       this.melodyNoteId +=1;
@@ -104,7 +104,6 @@ export class MusicClip {
   }
   setNoteRelease(note, time) {
     if(this.Type==MusicClipType.Melody){
-      //console.log("Pitch Release Time:", pitch, time);
       for (let i = this.melodyNoteSet.length - 1; i >= 0; i--) {
         if (this.melodyNoteSet[i] === note) {
           if(this.melodyTimeset[i][1] == -1){
@@ -121,7 +120,6 @@ export class MusicClip {
   }
   setBeatInput(pad_id, time) {
     if(this.Type==MusicClipType.Beat){
-      //console.log("Beat input Time:", pad_id, time);
       this.beatSet.push(pad_id);
       this.beatTime.push(time);
       this.beatSetId+=1;
@@ -156,7 +154,6 @@ export class MusicClip {
     }
   }
   deleteNote(noteIndex){
-    console.log("delete note", noteIndex);
     if(this.Type==MusicClipType.Melody){
       this.melodyNoteSet.splice(noteIndex,1);
       this.melodyTimeset.splice(noteIndex,1);
@@ -166,6 +163,31 @@ export class MusicClip {
       this.beatTime.splice(noteIndex,1);
     }
   }
+  getClipLastTime(){
+    let lastTime = 1;
+    if(this.Type == MusicClipType.Melody){
+      for(let i=0; i<this.melodyTimeset.length; i++){
+        if(lastTime < this.melodyTimeset[i][1]){
+          lastTime = this.melodyTimeset[i][1]
+        }
+      }
+      for(let i=0; i<this.lyrictimeSet.length; i++){
+        if(lastTime < this.melodyTimeset[i][1]){
+          lastTime = this.lyrictimeSet[i][1]
+        }
+      }
+      return lastTime
+    }
+    else{
+      for(let i=0; i<this.beatTime.length; i++){
+        if(lastTime < this.beatTime[i]){
+          lastTime = this.beatTime[i]
+        }
+      }
+      return lastTime
+    }
+  }
+
   getClipId(){
     return this.Clip_id;
   }

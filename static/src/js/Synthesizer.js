@@ -119,7 +119,7 @@ function set_synthesiser(msg){
         piano_key_release(synthesiser_msg.input_id)
         break;
       case "99":  //tap the touch pad
-        pad_input(synthesiser_msg.input_id)
+        pad_input(synthesiser_msg.input_id, synthesiser_msg.input_value)
         break;
       case "89":  //Release the touch pad
         pad_output(synthesiser_msg.input_id)
@@ -230,7 +230,6 @@ export function beat_output_play(input_id){
 function pad_input(input_id){
   pad_set.id = input_id - 36;
   beat_player(input_id - 36)
-  console.log("test")
   const event = new CustomEvent('padkeyInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
 }
