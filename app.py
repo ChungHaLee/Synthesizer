@@ -5,20 +5,6 @@ app = Flask(__name__)
 
 ## 필요한 함수 선언 
 
-# @app.route('/', methods=['POST', 'GET'])
-# def login():
-#     return render_template('login.html')
-
-
-
-# @app.route('/menu', methods=['POST', 'GET'])
-# def menu():
-#     if request.method == 'POST':
-#         id = request.form['id_name']  # 아이디 저장
-#         pw = request.form['pw_name']  # 패스워드 저장
-
-#     return render_template('menu.html', UserID = id, UserPW = pw)
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -26,28 +12,27 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/melody', methods=['POST', 'GET'])
+
+@app.route('/phase1', methods=['POST', 'GET'])
 def shape():
     if request.method == "POST":
         username = request.form.get('username')
-        email = request.form.get('email')
-        musicType = request.form.get("musicType")
-        print(username)  # Debug print
-        print(email)  # Debug print
-        print(musicType)
-        return render_template('shape.html', username=username, email=email, musicType = musicType)
-    #return render_template('shape.html')
+        print('유저 이름', username)  # Debug print
+        return render_template('shape.html', username=username)
 
 
 
-@app.route('/edit', methods=['POST', 'GET'])
-def edit():
-    return render_template('edit.html')
+@app.route('/phase2', methods=['POST', 'GET'])
+def shapetwo():
+    if request.method == "POST":
+        username = request.form.get('username')
+        print('유저 이름', username)  # Debug print
+
+        return render_template('shape_two.html', username=username)
 
 
-# @app.route('/template', methods=['POST', 'GET'])
-# def shape_template():
-#     return render_template('shape_template.html')
+
+
 
 
 if __name__ == '__main__':

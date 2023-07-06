@@ -8,8 +8,23 @@ div#shape-canvas{
 
 
 button.colorText{
-  font-size: 30px;
+  font-size: 22px;
 }
+
+
+
+div.moodCustomMenuAssistive{
+  margin-top: -200px;
+  margin-left: 500px;
+
+}
+
+
+
+button.assistiveText{
+  font-size: 22px;
+}
+
 
 div#ThemaContainer{
     margin-top: 30px;

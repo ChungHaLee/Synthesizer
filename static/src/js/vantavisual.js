@@ -1,7 +1,8 @@
 import { bgColor, objColor1 } from './colorpicker';
 
-
+// 변수명 정의
 let cloud, fog, blur, halo, cells, dots;
+
 
 let cloudButton = document.getElementById('thema_clouds')
 let blurButton = document.getElementById('thema_blur')
@@ -13,7 +14,7 @@ let noneButton = document.getElementById('thema_none')
 
 
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
-const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
+const objColor1SaveButton = document.getElementById('objectbColor1SaveButton');
 
 
 

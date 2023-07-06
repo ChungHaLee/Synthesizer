@@ -1,8 +1,11 @@
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
 
-
+// 변수명 정의
 var bgColor, objColor1
+
+
+
 var bgColorArr, objColor1Arr
 
 objColor1 = '#FFFFFF'
