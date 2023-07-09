@@ -153,6 +153,77 @@
   }
 
 
+  #recordStartButton {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    align-items: center;
+    background-image: linear-gradient(144deg,#ff4099, #f37442 50%,#ebcc00);
+    box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+    border: 0;
+    border-radius: 4px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    font-size: 14px;
+    justify-content: center;
+    width: 80px;
+    height: 35px;
+    cursor: pointer;
+  }
+
+  #recordStartButton:active,
+  #recordStartButton:hover {
+    background-image: linear-gradient(144deg,#ff0c7e, #d44811 50%,#ffdd00);
+    outline: 0;
+  }
+
+  #recordStopButton {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+    border: 0;
+    border-radius: 4px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    font-size: 14px;
+    justify-content: center;
+    width: 80px;
+    height: 35px;
+    cursor: pointer;
+  }
+  
+  #recordStopButton:active,
+  #recordStopButton:hover {
+    background-image: linear-gradient(144deg,#9400ff, #3f22ed 50%,#00b9c5);
+    outline: 0;
+  }
+
+
+  /* #sheetMusicRecordButton {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    align-items: center;
+    background-image: linear-gradient(144deg,#ff4099, #f37442 50%,#ebcc00);
+    box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+    border: 0;
+    border-radius: 4px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    font-size: 14px;
+    justify-content: center;
+    width: 80px;
+    height: 35px;
+    cursor: pointer;
+  } */
+  
+
+
+
+
 
 
 .synthesizer{

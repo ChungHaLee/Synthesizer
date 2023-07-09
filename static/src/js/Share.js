@@ -137,6 +137,7 @@ export class MusicClip {
   setLyrics(lyric, timeset){
     this.lyricSet.push(lyric);
     this.lyrictimeSet.push(timeset);
+    this.lyricId += 1;
   }
   editNote(noteIndex, deltaTimeset){
     if(this.Type==MusicClipType.Melody){
@@ -163,6 +164,19 @@ export class MusicClip {
       this.beatTime.splice(noteIndex,1);
     }
   }
+  deletelyric(lyricId){
+    if(this.Type==MusicClipType.Melody){
+      this.lyricSet.splice(lyricId,1);
+      this.lyrictimeSet.splice(lyricId,1);
+    }
+  }
+  dleteAlllyric(){
+    if(this.Type==MusicClipType.Melody){
+      this.lyricSet =[];
+      this.lyrictimeSet=[];
+      this.lyricId = 0;
+    }
+  }
   getClipLastTime(){
     let lastTime = 1;
     if(this.Type == MusicClipType.Melody){
@@ -172,7 +186,7 @@ export class MusicClip {
         }
       }
       for(let i=0; i<this.lyrictimeSet.length; i++){
-        if(lastTime < this.melodyTimeset[i][1]){
+        if(lastTime < this.lyrictimeSet[i][1]){
           lastTime = this.lyrictimeSet[i][1]
         }
       }
@@ -204,6 +218,9 @@ export class MusicClip {
     else{
       return this.beatSetId;
     }
+  }
+  getLyricsIndex(){
+    return this.lyricId;
   }
   getMusicClip(){
     if(this.Type==MusicClipType.Melody){
@@ -246,12 +263,15 @@ export class MusicClip {
     return "";
   }
   getLyricsLastTime(){
-    if(this.lyrictimeSet.length >0){
-      return this.lyrictimeSet[this.lyrictimeSet.length-1][1];
-   }
-   else{
-    return 0;
-   }
+    let lastTime = 0;
+    if(this.Type == MusicClipType.Melody){
+      for(let i=0; i<this.lyrictimeSet.length; i++){
+        if(lastTime < this.lyrictimeSet[i][1]){
+          lastTime = this.lyrictimeSet[i][1]
+        }
+      }
+    }
+    return lastTime
   }
   getAllLyrics(){
     return [this.lyricSet, this.lyrictimeSet];
