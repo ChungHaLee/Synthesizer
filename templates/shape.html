@@ -183,13 +183,13 @@
                 <button id="recordStartButton">녹화 시작</button>
                 <button id="recordStopButton">녹화 종료</button>
                 <br>
-                <video id="videoCanvas" controls style="width: 500px; height: 300px;">실시간 영상 재생용</video>
-                <br>
-                <button id="vidoePlayButton">재생</button>
-                <button id="vidoeStopButton">정지</button>
+                <video id="videoRecordCanvas" controls style="width: 500px; height: 300px;"></video>
+                <video id="videoCheckCanvas" controls style="width: 500px; height: 300px; display:none" ></video>
+                <div class="videoClipBox" id = "VideoClipContainer" style="position: absolute; margin-top:-300px; margin-left: 520px;">
+                </div>
             </div>
         </div>
-
+        
 
 
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->

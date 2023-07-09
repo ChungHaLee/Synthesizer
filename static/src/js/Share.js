@@ -66,7 +66,20 @@ export class TemplateClip{
     return this.dial_set;
   }
 }
-
+export class VideoClip{
+  constructor (videoId = [], videoData = []){ 
+    this.videoId = videoId;
+    this.videoData = videoData;
+  }
+  setVideo(videoId, videoData){
+    this.videoId.push(videoId);
+    this.videoData.push(videoData)
+  }
+  getVideoData(videoId){
+    let index = this.videoId.indexOf(videoId);
+    return this.videoData[index]
+  }
+}
 
 export class MusicClip {
   constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = [], lyricSet = [], lyrictimeSet = []) {

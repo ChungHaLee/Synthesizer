@@ -1,4 +1,4 @@
-import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip} from './Share.js';
+import { SyntheysizerEvents, MusicClip, MusicClipType, MusicTrack, TemplateClip, VideoClip} from './Share.js';
 import { piano_player, beat_player, dialInitialize, beat_output_play} from './Synthesizer.js';
 import * as Midi from "./jsmidgen.js"
 //import * as JZZ from "./JZZ.js"
@@ -33,6 +33,7 @@ let onNoteList = [];
 let previousNote = [];
 let previousNote_track = [];
 let TrackObject = new MusicTrack();
+let vedeoObject = new VideoClip();
 let previousDial_ID = -1;
 let doubleChecker = 0 //Webpack double Event error catcher
 let trackActivaqte = false;
@@ -255,17 +256,32 @@ function templateTypeSceneChanger(){
 
 /*------------------------------녹화용 코드 관련 코드--------------------------------*/
 let mediaRecorder = null;
-const videoCanvas = document.getElementById("videoCanvas");
+let videoId = 0;
+const videoRecordCanvas = document.getElementById("videoRecordCanvas");
+const videoCheckCanvas = document.getElementById("videoCheckCanvas");
 const arrVideoData = [];
 
+function videoRecordingMode(recordingState){
+  if(recordingState){
+    videoRecordCanvas.style.display = "block"
+    videoCheckCanvas.style.display = "none"
+  }
+  else{
+    videoRecordCanvas.style.display = "none"
+    videoCheckCanvas.style.display = "block"
+  }
+}
+
+
 document.getElementById("recordStartButton").addEventListener("click", async function(){
+  videoRecordingMode(true);
   const mediaStream = await navigator.mediaDevices.getUserMedia({
     audio: true,
     video: true
   });
-  videoCanvas.srcObject = mediaStream;
-  videoCanvas.onloadedmetadata = (event)=>{
-    videoCanvas.play();
+  videoRecordCanvas.srcObject = mediaStream;
+  videoRecordCanvas.onloadedmetadata = (event)=>{
+    videoRecordCanvas.play();
   }
   mediaRecorder = new MediaRecorder(mediaStream);
   mediaRecorder.ondataavailable = (event)=>{
@@ -273,28 +289,52 @@ document.getElementById("recordStartButton").addEventListener("click", async fun
   }
   mediaRecorder.onstop = (event)=>{
     // 배열에 담아둔 녹화 데이터들을 통합한 Blob객체 생성
+    vedeoObject.setVideo(videoId, arrVideoData);
+    console.log(arrVideoData)
     const videoBlob = new Blob(arrVideoData);
     // BlobURL(ObjectURL) 생성
     const blobURL = window.URL.createObjectURL(videoBlob);
-    // 녹화된 영상 재생: 두번째 video태그에서 재생
-    videoCanvas.src = blobURL;
-    videoCanvas.play();
-  
+    // 녹화된 영상 재생: 
+    videoCheckCanvas.src = blobURL;
+    videoCheckCanvas.play();
     // 기존 녹화 데이터 제거
     arrVideoData.splice(0);
+    createVideoClipObject(videoId)
+    videoId +=1;
+    console.log(vedeoObject);
   }
   mediaRecorder.start();
 });
 
 document.getElementById("recordStopButton").addEventListener("click", function(){
   // 녹화 종료!
+  videoRecordingMode(false);
   mediaRecorder.stop();
 })
+function loadVideoClip(videoId){
+  videoRecordingMode(false);
+  const VideoData = vedeoObject.getVideoData(videoId);
+  const videoBlob = new Blob(VideoData);
+  const blobURL = window.URL.createObjectURL(videoBlob);
+  videoCheckCanvas.src = blobURL;
+  videoCheckCanvas.play();
+}
 
 
-
-
-
+//video Clip Object 생성용 코드(melody, Beat용)
+function createVideoClipObject(videoCLipId){
+  const videoIdClip = document.createElement("div");
+  videoIdClip.classList.add("Video_clip");
+  videoIdClip.style.width = '200px'
+  videoIdClip.textContent = "클립 " + (videoCLipId + 1); 
+  let boxItem = document.getElementById("VideoClipContainer");
+  videoIdClip.setAttribute("box_id", videoCLipId); // clip_id 속성 추가
+  videoIdClip.addEventListener("click", function(){
+    console.log("videoCLipId:", videoIdClip.getAttribute("box_id"));
+    loadVideoClip(videoIdClip.getAttribute("box_id"));
+  })
+  boxItem.appendChild(videoIdClip);
+}
 
 /*-----------------------------MIDI 파일 생성용 코드-----------------------------------------*/
 
