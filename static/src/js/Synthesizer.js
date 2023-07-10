@@ -3,6 +3,9 @@ import { SyntheysizerEvents, note_set, pad_set, dial_set, joystick_set, poly_not
 
 let noteType = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 let vector = {X:"x", Y:"y"}
+
+let BeatHapticOn = true; //bpm-beat haptic 설정용 예비함수2 (서로 반대로 설정해야함)
+
 //AutiFilter >> 그냥 필터!
 const filter = new Tone.Filter().toDestination();
 filter.set({
@@ -202,7 +205,9 @@ export function beat_player(input_id){
   pad_set.id = input_id;
   const event = new CustomEvent('padInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
-  document.getElementById('HapticPlayButton').click();
+  if(BeatHapticOn){
+    document.getElementById('HapticPlayButton').click();
+  }
   //console.log("tap Check");
   switch (input_id){
     case 0:

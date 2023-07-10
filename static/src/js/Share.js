@@ -316,10 +316,15 @@ export class MusicClip {
         return [this.lyricSet[i], i];
       }
     }
-    return ["", 0];
+    return ["", -1];
   }
-  getLyricsDuration(lyricsId){
-    return (this.lyrictimeSet[this.lyricsI][1] - this.lyrictimeSet[lyricsId][0]);
+  getLyricsTimeset(lyricsId){
+    if (lyricsId < this.lyrictimeSet.length && lyricsId >= 0 ){ 
+      return [this.lyrictimeSet[lyricsId][0], this.lyrictimeSet[lyricsId][1]];
+    }
+    else{
+      return [null, null]
+    }
   }
   getLyricsLastTime(){
     let lastTime = 0;
