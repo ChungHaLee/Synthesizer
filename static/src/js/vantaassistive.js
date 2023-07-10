@@ -1,16 +1,24 @@
 const speedSaveButton = document.getElementById('speedSaveButton')
+const zoomSaveButton = document.getElementById('zoomSaveButton')
 const sizeSaveButton = document.getElementById('sizeSaveButton')
 
 
 
 let speedvalue, speedfinal;
 let sizevalue, sizefinal;
+let zoomvalue, zoomfinal;
 
 
 
 function getSpeed()  {
    speedvalue = Number(document.getElementById('speedID').value);
    return speedvalue
+}
+
+
+function getZoom() {
+    zoomvalue = Number(document.getElementById('zoomID').value);
+    return zoomvalue
 }
 
 
@@ -29,6 +37,10 @@ speedSaveButton.addEventListener('click', function(){
 })
 
 
+zoomSaveButton.addEventListener('click', function(){
+    zoomfinal = getZoom();
+})
+
 
 sizeSaveButton.addEventListener('click', function(){
     sizefinal = getSize();
@@ -37,4 +49,4 @@ sizeSaveButton.addEventListener('click', function(){
 
 
 
-export { speedfinal, sizefinal }
+export { speedfinal, zoomfinal, sizefinal }

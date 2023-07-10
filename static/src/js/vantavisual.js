@@ -1,5 +1,5 @@
 import { bgColor, objColor1 } from './colorpicker';
-import { speedfinal, sizefinal } from './vantaassistive';
+import { speedfinal, zoomfinal, sizefinal } from './vantaassistive';
 
 
 
@@ -21,6 +21,7 @@ let noneButton = document.getElementById('thema_none')
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
 const speedSaveButton =document.getElementById('speedSaveButton');
+const zoomSaveButton =document.getElementById('zoomSaveButton');
 const sizeSaveButton = document.getElementById('sizeSaveButton');
 
 
@@ -357,7 +358,23 @@ speedSaveButton.addEventListener('click', function(){
    speed: speedfinal
  })
 
+
 })
+
+
+
+
+zoomSaveButton.addEventListener('click', function(){
+  blur.setOptions({
+    zoom: zoomfinal
+  })
+ 
+  fog.setOptions({
+    zoom: zoomfinal
+  })
+})
+
+
 
 
 
