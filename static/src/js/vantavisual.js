@@ -1,14 +1,12 @@
 import { bgColor, objColor1 } from './colorpicker';
-import { speedfinal, zoomfinal, sizefinal } from './vantaassistive';
-
+import { speedfinal, zoomfinal, sizefinal, velocityfinal } from './vantaassistive';
 
 
 // 테마별 변수명 정의
 let cloud, fog, blur, halo, cells, dots;
 
 
-
-
+// 테마별 버튼
 let cloudButton = document.getElementById('thema_clouds')
 let blurButton = document.getElementById('thema_blur')
 let fogButton = document.getElementById('thema_fog')
@@ -17,12 +15,16 @@ let cellsButton = document.getElementById('thema_cells')
 let noneButton = document.getElementById('thema_none')
 
 
-
+// 색상 저장 버튼
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
-const speedSaveButton =document.getElementById('speedSaveButton');
-const zoomSaveButton =document.getElementById('zoomSaveButton');
+
+
+// 추가 요소 저장 버튼
+const speedSaveButton = document.getElementById('speedSaveButton');
+const zoomSaveButton = document.getElementById('zoomSaveButton');
 const sizeSaveButton = document.getElementById('sizeSaveButton');
+const velocitySaveButton = document.getElementById('velocitySaveButton');
 
 
 
@@ -32,7 +34,6 @@ fogButton.addEventListener('click', fogfunc)
 haloButton.addEventListener('click', halofunc)
 cellsButton.addEventListener('click', cellsfunc)
 noneButton.addEventListener('click', nonefunc)
-
 
 
 
@@ -96,7 +97,7 @@ halo = VANTA.HALO({
   baseColor: 0x458258,
   backgroundColor: 0x123126,
   amplitudeFactor: 1.10,
-  size: 3.00
+  size: 2.00
 })
 
 cells = VANTA.CELLS({
@@ -229,7 +230,7 @@ function halofunc(){
     baseColor: 0x458258,
     backgroundColor: 0x123126,
     amplitudeFactor: 1.10,
-    size: 3.00
+    size: 2.00
   })
 
   blur.destroy();
@@ -315,6 +316,12 @@ bgColorSaveButton.addEventListener('click', function(){
     color1: bgColor
   })
 
+  dots.setOptions({
+    color: bgColor,
+    color2: bgColor,
+    backgroundColor: bgColor
+  })
+
 })
 
 
@@ -384,6 +391,17 @@ sizeSaveButton.addEventListener('click', function(){
     size: sizefinal
   })
 
+})
+
+
+velocitySaveButton.addEventListener('click', function(){
+  cloud.setOptions({
+    speed: velocityfinal
+  })
+
+  cells.setOptions({
+    speed: velocityfinal
+  })
 })
 
 

@@ -4,7 +4,9 @@ div#shape-canvas{
 }
 
 
-
+div.assistiveDIV{
+  display: none;
+}
 
 
 button.colorText{

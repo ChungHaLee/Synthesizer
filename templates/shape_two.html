@@ -150,22 +150,23 @@
 
         <div class="grid-container" id="ThemaContainer">
             
-            <div class="moodCustomMenuColor">
-                <h4>색상</h4>
-                <button class="colorText" id="backgroundColor"> 색상 1 <input id="backgroundColorID" type="text" data-coloris> </button> <button class="colorText"  id="backgroundColorSaveButton"> 저장 </button>
+            <div class="moodCustomMenu">
+                <h4>색상 메뉴</h4>
+                <div id="bgColorDIV"><button class="colorText" id="backgroundColor"> 색상 1 <input id="backgroundColorID" type="text" data-coloris> </button> <button class="colorText" id="backgroundColorSaveButton"> 저장 </button></div>
                 <br>
                 <br>
-                <button  class="colorText" id="objectColor1"> 색상 2 <input id="objectColor1ID"t ype="text" data-coloris> </button> <button class="colorText" id="objectColor1SaveButton"> 저장 </button>
+                <div id="objColor1DIV"><button class="colorText" id="objectColor1"> 색상 2 <input type="text" data-coloris> </button> <button class="colorText" id="objectColor1SaveButton"> 저장 </button></div>
             </div>
-
 
             <div class="moodCustomMenuAssistive">
                 <h4>요소 추가</h4>
-                빠르기 <input id="speedID" type="range" min="0" max="40" value="20" step="1"> <button class="assistiveText" id="speedSaveButton"> 저장 </button>
+                <div class="assistiveDIV" id="speedDIV"> 빠르기 <input id="speedID" type="range" min="0" max="20" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> 저장 </button> </div>
                 <br><br>
-                복잡 <input id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 저장 </button>
+                <div class="assistiveDIV" id="zoomDIV"> 복잡 <input id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 저장 </button> </div>
                 <br><br>
-                크기 <input id="sizeID" type="range" min="0.1" max="5" value="1" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 저장 </button>
+                <div class="assistiveDIV" id="sizeDIV"> 크기 <input id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 저장 </button> </div>
+                <br><br>
+                <div class="assistiveDIV" id="velocityDIV"> 속도 <input id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> 저장 </button> </div>
             </div>
         </div>   
 
