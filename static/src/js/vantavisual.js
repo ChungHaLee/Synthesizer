@@ -1,7 +1,12 @@
 import { bgColor, objColor1 } from './colorpicker';
+import { speedfinal, sizefinal } from './vantaassistive';
 
-// 변수명 정의
+
+
+// 테마별 변수명 정의
 let cloud, fog, blur, halo, cells, dots;
+
+
 
 
 let cloudButton = document.getElementById('thema_clouds')
@@ -15,6 +20,8 @@ let noneButton = document.getElementById('thema_none')
 
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
+const speedSaveButton =document.getElementById('speedSaveButton');
+const sizeSaveButton = document.getElementById('sizeSaveButton');
 
 
 
@@ -24,6 +31,10 @@ fogButton.addEventListener('click', fogfunc)
 haloButton.addEventListener('click', halofunc)
 cellsButton.addEventListener('click', cellsfunc)
 noneButton.addEventListener('click', nonefunc)
+
+
+
+
 
 cloud = VANTA.CLOUDS({
   el: "#shape-canvas",
@@ -54,7 +65,7 @@ blur = VANTA.FOG({
   baseColor: '#8828ff',
   blurFactor: 0.90,
   speed: 2.50,
-  zoom: 1.60
+  zoom: 2.00
 })
 
 fog = VANTA.FOG({    
@@ -70,8 +81,9 @@ fog = VANTA.FOG({
   baseColor: '#e3d842',
   blurFactor: 0.27,
   speed: 2.20,
-  zoom: 1.90
+  zoom: 2.00
 })
+
 
 halo = VANTA.HALO({
   el: "#shape-canvas",
@@ -166,7 +178,7 @@ function blurfunc(){
     baseColor: '#8828ff',
     blurFactor: 0.90,
     speed: 2.50,
-    zoom: 1.60
+    zoom: 2.00
   })
 
   cloud.destroy();
@@ -191,9 +203,10 @@ function fogfunc(){
     lowlightColor: '#0084ff',
     baseColor: '#e3d842',
     blurFactor: 0.27,
-    speed: 2.20,
-    zoom: 1.90
+    speed: 2.50,
+    zoom: 2.00
   })
+
 
   blur.destroy();
   cloud.destroy();
@@ -328,6 +341,30 @@ objColor1SaveButton.addEventListener('click', function(){
 
   cells.setOptions({
     color2: objColor1
+  })
+
+})
+
+
+
+speedSaveButton.addEventListener('click', function(){
+
+ blur.setOptions({
+   speed: speedfinal
+ })
+
+ fog.setOptions({
+   speed: speedfinal
+ })
+
+})
+
+
+
+sizeSaveButton.addEventListener('click', function(){
+
+  halo.setOptions({
+    size: sizefinal
   })
 
 })
