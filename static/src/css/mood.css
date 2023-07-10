@@ -14,9 +14,37 @@ button.colorText{
 }
 
 
+#bgColorDIV > div > button{
+  width: 200px;
+  height: 100px;
+}
+
+#backgroundColorID{
+  width: 200px;
+  height: 100px;
+  background-color: white;
+  border: white;
+  color: white;
+}
+
+
+#objColor1DIV > div > button{
+  width: 200px;
+  height: 100px;
+}
+
+#objectColor1ID{
+  width: 200px;
+  height: 100px;
+  background-color: white;
+  border: white;
+  color: white;
+}
+
+
 
 div.moodCustomMenuAssistive{
-  margin-top: -200px;
+  margin-top: -350px;
   margin-left: 500px;
 
 }
@@ -87,3 +115,6 @@ div#ThemaContainer{
   box-shadow: #D6D6E7 0 3px 7px inset;
   transform: translateY(2px);
 }
+
+
+

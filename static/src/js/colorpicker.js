@@ -1,9 +1,11 @@
 const bgColorSaveButton = document.getElementById('backgroundColorSaveButton');
 const objColor1SaveButton = document.getElementById('objectColor1SaveButton');
 
+// const bgColorSwatch = document.getElementById('backgroundColorID')
+// const objColor1Swatch = document.getElementById('objectColor1ID')
+
 // 변수명 정의
 var bgColor, objColor1
-
 
 
 var bgColorArr, objColor1Arr
@@ -23,7 +25,8 @@ document.querySelector('#backgroundColor').addEventListener('click', e => {
   Coloris({
     themeMode: 'light',
     alpha: true,
-    formatToggle: false
+    formatToggle: true,
+    swatchesOnly: true
   });
 
 });
@@ -34,7 +37,8 @@ document.querySelector('#objectColor1').addEventListener('click', e => {
   Coloris({
     themeMode: 'light',
     alpha: true,
-    formatToggle: false
+    formatToggle: true,
+    swatchesOnly: true
   });
 
 });
@@ -63,7 +67,9 @@ bgColorSaveButton.addEventListener('click', function (){
     bgColor = document.getElementsByClassName('clr-field')[0].style.color
     bgColorArr = colortoList(bgColor);
     bgColor = rgbToHex(bgColorArr);
-    
+
+
+    // bgColorSwatch.style.backgroundColor = bgColor
 })
 
 
@@ -72,6 +78,8 @@ objColor1SaveButton.addEventListener('click', function (){
     objColor1Arr = colortoList(objColor1);
     objColor1 = rgbToHex(objColor1Arr);
 
+
+    // objColor1Swatch.style.backgroundColor = objColor1
 })
 
 
