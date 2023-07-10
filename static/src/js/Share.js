@@ -66,23 +66,57 @@ export class TemplateClip{
     return this.dial_set;
   }
 }
-export class VideoClip{
-  constructor (videoId = [], videoData = []){ 
+
+class VideoObject{
+  constructor(videoId, videoData, videoDuration){{
     this.videoId = videoId;
     this.videoData = videoData;
+    this.videoDuration = videoDuration;
+  }}
+}
+
+
+export class VideoClip{
+  constructor (videoId = [], videoData = [], videoDuration = []){ 
+    this.videoId = videoId;
+    this.videoData = videoData;
+    this.videoDuration = videoDuration;
   }
-  setVideo(videoId, videoData){
+  setVideo(videoId, videoData, videoDuration){
     this.videoId.push(videoId);
-    this.videoData.push(videoData)
+    this.videoData.push(videoData);
+    this.videoDuration.push(videoDuration);
   }
   getVideoData(videoId){
-    let index = this.videoId.indexOf(videoId);
-    return this.videoData[index]
+    if (videoId >= 0 && videoId < this.videoId.length){
+      // console.log(this.videoId)
+      // console.log(videoId)
+      // let index = this.videoId.indexOf(videoId);
+      // console.log("get id :", videoId, "index :", index)
+      return this.videoData[videoId]
+    }
+    else{
+      console.error("Data index out of bounds");
+      return null
+    }
+  }
+  getVideoDuration(videoId){
+    if (videoId >= 0 && videoId < this.videoId.length){
+      // console.log(this.videoId)
+      // console.log(videoId)
+      // let index = this.videoId.indexOf(videoId);
+      // console.log("get id :", videoId, "index :", index)
+      return this.videoDuration[videoId]
+    }
+    else{
+      console.error("Data index out of bounds");
+      return null
+    }
   }
 }
 
 export class MusicClip {
-  constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = [], lyricSet = [], lyrictimeSet = []) {
+  constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = [], lyricSet = [], lyrictimeSet = [], lyricsVideoId = []) {
       console.log("music Type : ", Type, "Clip_id", Clip_id,  "duration", duration);
       this.Type = Type;
       this.Clip_id = Clip_id;
@@ -95,6 +129,7 @@ export class MusicClip {
         this.lyricSet = lyricSet;
         this.lyrictimeSet = lyrictimeSet;
         this.lyricId = lyricSet.length;
+        this.lyricsVideoId = lyricsVideoId
       }
       if(Type==MusicClipType.Beat){
         this.beatSet = arraySet;
@@ -151,6 +186,10 @@ export class MusicClip {
     this.lyricSet.push(lyric);
     this.lyrictimeSet.push(timeset);
     this.lyricId += 1;
+    this.lyricsVideoId.push(-1);
+  }
+  setLyricsVideo(lyricsId, vidoeId){
+    this.lyricsVideoId[lyricsId] = vidoeId;
   }
   editNote(noteIndex, deltaTimeset){
     if(this.Type==MusicClipType.Melody){
@@ -181,6 +220,7 @@ export class MusicClip {
     if(this.Type==MusicClipType.Melody){
       this.lyricSet.splice(lyricId,1);
       this.lyrictimeSet.splice(lyricId,1);
+      this.lyricsVideoId.push(lyricId,1);
     }
   }
   dleteAlllyric(){
@@ -188,6 +228,7 @@ export class MusicClip {
       this.lyricSet =[];
       this.lyrictimeSet=[];
       this.lyricId = 0;
+      this.lyricsVideoId = [];
     }
   }
   getClipLastTime(){
@@ -214,7 +255,9 @@ export class MusicClip {
       return lastTime
     }
   }
-
+  getLyricsVideoId(lyricsId){
+    return this.lyricsVideoId[lyricsId];
+  }
   getClipId(){
     return this.Clip_id;
   }
@@ -270,10 +313,13 @@ export class MusicClip {
     //console.log(this.lyricSet, this.lyrictimeSet)
     for (let i = 0; i < this.lyrictimeSet.length; i++) {
       if (this.lyrictimeSet[i][0] <= currentTime && currentTime < this.lyrictimeSet[i][1]) {
-        return this.lyricSet[i];
+        return [this.lyricSet[i], i];
       }
     }
-    return "";
+    return ["", 0];
+  }
+  getLyricsDuration(lyricsId){
+    return (this.lyrictimeSet[this.lyricsI][1] - this.lyrictimeSet[lyricsId][0]);
   }
   getLyricsLastTime(){
     let lastTime = 0;
@@ -287,7 +333,7 @@ export class MusicClip {
     return lastTime
   }
   getAllLyrics(){
-    return [this.lyricSet, this.lyrictimeSet];
+    return [this.lyricSet, this.lyrictimeSet, this.lyricsVideoId];
   }
 }
 
