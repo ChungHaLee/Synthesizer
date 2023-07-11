@@ -40,7 +40,7 @@ const MusicNote = {
   end: -1.0
 }
 export class TemplateClip{
-  constructor(Clip_id, duration = 30, instrument = 0){
+  constructor(Clip_id, duration = 60, instrument = 0){
     this.Clip_id = Clip_id;
     this.duration = duration;
     this.instrument = instrument;

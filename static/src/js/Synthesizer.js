@@ -205,7 +205,7 @@ export function beat_player(input_id){
   pad_set.id = input_id;
   const event = new CustomEvent('padInput', { detail: pad_set });
   SyntheysizerEvents.dispatchEvent(event);
-  if(BeatHapticOn){
+  if(!document.getElementById("hapticType").checked){
     document.getElementById('HapticPlayButton').click();
   }
   //console.log("tap Check");
