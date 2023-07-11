@@ -53,22 +53,6 @@ cloud = VANTA.CLOUDS({
   sunlightColor: 0xfc9c3e
 })
 
-blur = VANTA.FOG({
-  el: "#shape-canvas",
-  mouseControls: false,
-  touchControls: false,
-  gyroControls: false,
-  minHeight: 580.00,
-  minWidth: 960.00,
-  highlightColor: 0xffffff,
-
-  midtoneColor: '#fac4c4',
-  lowlightColor: '#fac4c4',
-  baseColor: '#8828ff',
-  blurFactor: 0.90,
-  speed: 2.50,
-  zoom: 2.00
-})
 
 fog = VANTA.FOG({    
   el: "#shape-canvas",
@@ -130,6 +114,25 @@ dots = VANTA.DOTS({
   spacing: 5.00,
   showLines: false
 })
+
+
+blur = VANTA.FOG({
+  el: "#shape-canvas",
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  minHeight: 580.00,
+  minWidth: 960.00,
+  highlightColor: 0xffffff,
+
+  midtoneColor: '#fac4c4',
+  lowlightColor: '#fac4c4',
+  baseColor: '#8828ff',
+  blurFactor: 0.90,
+  speed: 2.50,
+  zoom: 2.00
+})
+
 
 
 

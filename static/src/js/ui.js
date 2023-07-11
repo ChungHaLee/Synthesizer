@@ -37,6 +37,12 @@ blurButton.addEventListener('click', function(){
     sizeDIV.style.display = 'none'
     velocityDIV.style.display = 'none'
     objColor1DIV.style.display = 'block'
+    blurButton.style.backgroundColor = '#DDDDDD'
+    noneButton.style.backgroundColor = '#FFFFFF'
+    cloudButton.style.backgroundColor = '#FFFFFF'
+    cellsButton.style.backgroundColor = '#FFFFFF'
+    haloButton.style.backgroundColor = '#FFFFFF'
+    fogButton.style.backgroundColor = '#FFFFFF'
 });
 
 
@@ -47,6 +53,12 @@ fogButton.addEventListener('click', function(){
     sizeDIV.style.display = 'none'
     velocityDIV.style.display = 'none'
     objColor1DIV.style.display = 'block'
+    fogButton.style.backgroundColor = '#DDDDDD'
+    noneButton.style.backgroundColor = '#FFFFFF'
+    cloudButton.style.backgroundColor = '#FFFFFF'
+    cellsButton.style.backgroundColor = '#FFFFFF'
+    haloButton.style.backgroundColor = '#FFFFFF'
+    blurButton.style.backgroundColor = '#FFFFFF'
 });
 
 
@@ -56,6 +68,12 @@ haloButton.addEventListener('click', function(){
     sizeDIV.style.display = 'block'
     velocityDIV.style.display = 'none'
     objColor1DIV.style.display = 'block'
+    haloButton.style.backgroundColor = '#DDDDDD'
+    noneButton.style.backgroundColor = '#FFFFFF'
+    cloudButton.style.backgroundColor = '#FFFFFF'
+    cellsButton.style.backgroundColor = '#FFFFFF'
+    fogButton.style.backgroundColor = '#FFFFFF'
+    blurButton.style.backgroundColor = '#FFFFFF'
 })
 
 
@@ -65,6 +83,12 @@ cellsButton.addEventListener('click', function(){
     sizeDIV.style.display = 'none'
     velocityDIV.style.display = 'block'
     objColor1DIV.style.display = 'block'
+    cellsButton.style.backgroundColor = '#DDDDDD'
+    noneButton.style.backgroundColor = '#FFFFFF'
+    cloudButton.style.backgroundColor = '#FFFFFF'
+    haloButton.style.backgroundColor = '#FFFFFF'
+    fogButton.style.backgroundColor = '#FFFFFF'
+    blurButton.style.backgroundColor = '#FFFFFF'
 })
 
 
@@ -74,6 +98,12 @@ cloudButton.addEventListener('click', function(){
     sizeDIV.style.display = 'none'
     velocityDIV.style.display = 'block'
     objColor1DIV.style.display = 'block'
+    cloudButton.style.backgroundColor = '#DDDDDD'
+    noneButton.style.backgroundColor = '#FFFFFF'
+    cellsButton.style.backgroundColor = '#FFFFFF'
+    haloButton.style.backgroundColor = '#FFFFFF'
+    fogButton.style.backgroundColor = '#FFFFFF'
+    blurButton.style.backgroundColor = '#FFFFFF'
 })
 
 
@@ -83,6 +113,12 @@ noneButton.addEventListener('click', function(){
     sizeDIV.style.display = 'none'
     velocityDIV.style.display = 'none'
     objColor1DIV.style.display = 'none'
+    noneButton.style.backgroundColor = '#DDDDDD'
+    cloudButton.style.backgroundColor = '#FFFFFF'
+    cellsButton.style.backgroundColor = '#FFFFFF'
+    haloButton.style.backgroundColor = '#FFFFFF'
+    fogButton.style.backgroundColor = '#FFFFFF'
+    blurButton.style.backgroundColor = '#FFFFFF'
 })
 
 

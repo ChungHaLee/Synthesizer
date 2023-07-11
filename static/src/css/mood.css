@@ -4,9 +4,9 @@ div#shape-canvas{
 }
 
 
-div.assistiveDIV{
+/* div.assistiveDIV{
   display: none;
-}
+} */
 
 
 button.colorText{
@@ -16,29 +16,33 @@ button.colorText{
 
 #bgColorDIV > div > button{
   width: 200px;
-  height: 100px;
+  height: 200px;
+  border-radius: 50%;
 }
 
 #backgroundColorID{
   width: 200px;
-  height: 100px;
+  height: 200px;
   background-color: white;
   border: white;
   color: white;
+  border-radius: 50%;
 }
 
 
 #objColor1DIV > div > button{
   width: 200px;
-  height: 100px;
+  height: 200px;
+  border-radius: 50%;
 }
 
 #objectColor1ID{
   width: 200px;
-  height: 100px;
+  height: 200px;
   background-color: white;
   border: white;
   color: white;
+  border-radius: 50%;
 }
 
 
@@ -118,3 +122,7 @@ div#ThemaContainer{
 
 
 
+
+button#thema_blur{
+  background-color: #DDDDDD;
+}

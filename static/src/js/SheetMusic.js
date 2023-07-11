@@ -1749,7 +1749,7 @@ let bpmHapticOn = false // bpm-beat haptic 설정용 예비함수2
 const metronome = new Tone.Loop(time => {
   const synth = new Tone.NoiseSynth().toDestination();
   synth.triggerAttackRelease("2n", time);
-  if(document.getElementById("hapticType").checked){
+  if(document.getElementById("hapticType").checked){     /// 여기 수정
     document.getElementById('HapticPlayButton').click();
   }
   bpmPlayNumber += 1;
