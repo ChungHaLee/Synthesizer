@@ -60,6 +60,9 @@ document.getElementById("synthConnector").click();
 
 
 
+
+
+
 document.getElementById("PreviousButton").addEventListener("click", function(){
   console.log("previous check")
   stopRecording();
@@ -174,87 +177,35 @@ function templateTypeSceneChanger(){
   document.getElementById("MelodyContainer").style.display = 'none';
   document.getElementById("TemplateContainer").style.display = 'block';
 }
+/*------------------------------단축키 코드 관련 코드--------------------------------*/
+document.addEventListener('keyup', function(event) {
+  if (event.defaultPrevented) {
+    return;
+  }
 
+  switch (event.key) {
+    case 'Enter':
+      console.log("Enter")
+      break;
+    case ' ':
+      if (event.shiftKey) { 
+        console.log("Shift+space")
+      } else {
+        console.log("space")
+      }
+      break;
+    case 'ArrowLeft':
+      console.log("Left")
+      break;
+    case 'ArrowRight':
+      console.log("Eight")
+      break;
+    default:
+      return;
+  }
 
-// function convertCharacters(inputString) {
-//   let convertedString = '';
-//   for (let i = 0; i < inputString.length; i++) {
-//     if (inputString[i] === '.') {
-//       convertedString += '_';
-//     } else if (inputString[i] === '@') {
-//       convertedString += '()';
-//     } else {
-//       convertedString += inputString[i];
-//     }
-//   }
-//   return convertedString;
-// }
-
-// let mediaRecorder = null;
-// const arrVideoData = [];
-// async function canvasRecordingStart(){
-//   // 캔버스 영역 화면을 스트림으로 취득
-//   const mediaStream = document.getElementById("shape-canvas").firstElementChild.captureStream();
-
-//   // Get audio stream
-//   //const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-
-//   // Combine video and audio streams
-//   //let combinedStream = new MediaStream([...mediaStream.getTracks(), ...audioStream.getTracks()]);
-
-  
-//   // // Get display and audio streams
-//   // const displayMediaOptions = {
-//   //   video: {
-//   //     cursor: 'always'
-//   //   },
-//   //   audio: true
-//   // };
-//   // const displayStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-
-//   // // Combine canvas video and display audio streams
-//   // let combinedStream = new MediaStream([...canvasStream.getVideoTracks(), ...displayStream.getAudioTracks()]);
-
-
-
-
-//   // MediaRecorder(녹화기) 객체 생성
-//   mediaRecorder = new MediaRecorder(mediaStream);
-
-//   // MediaRecorder.dataavailable 이벤트 처리
-//   mediaRecorder.ondataavailable = (event)=>{
-//       // 스트림 데이터(Blob)가 들어올 때마다 배열에 담아둔다.
-//       arrVideoData.push(event.data);
-//   }
-
-//   // MediaRecorder.stop 이벤트 처리
-//   mediaRecorder.onstop = (event)=>{
-//       // 들어온 스트림 데이터들(Blob)을 통합한 Blob객체를 생성
-//       const blob = new Blob(arrVideoData);
-
-//       // BlobURL 생성: 통합한 스트림 데이터를 가르키는 임시 주소를 생성
-//       const blobURL = window.URL.createObjectURL(blob);
-
-//       // 다운로드 구현
-//       const $anchor = document.createElement("a"); // 앵커 태그 생성
-//       document.body.appendChild($anchor);
-//       $anchor.style.display = "none";
-//       $anchor.href = blobURL; // 다운로드 경로 설정
-//       $anchor.download = convertCharacters(userName + "_" + userEmail) + ".mp4"; // 파일명 설정
-//       $anchor.click(); // 앵커 클릭
-      
-//       // 배열 초기화
-//       arrVideoData.splice(0);
-//   }
-
-//   // 녹화 시작
-//   mediaRecorder.start(); 
-// }
-// function canvasRecordingStop(){
-//   // 녹화 중단!
-//   mediaRecorder.stop(); 
-// }
-
+  event.preventDefault();
+}, true);
 
 /*------------------------------녹화용 코드 관련 코드--------------------------------*/
 let mediaRecorder = null;
@@ -274,10 +225,26 @@ function videoRecordingMode(recordingState){
   }
 }
 
-document.getElementById("recordStartButton").addEventListener("click", async function(){
+document.getElementById("recordStartButton").addEventListener("click", function(){
+  let timeElapsed = 4;
+  const intervalId = setInterval( function() {
+    timeElapsed--;
+    console.log(`${timeElapsed}초 뒤에 함수가 실행됩니다.`);
+    document.getElementById("videoWaitTime").innerHTML = `${timeElapsed}초 뒤에 녹화 시작.`;
+    if (timeElapsed <= 0) {
+      document.getElementById("videoWaitTime").innerHTML = '';
+      videoRecordingStart()
+      clearInterval(intervalId);
+    }
+  }, 1000);
+});
+
+async function videoRecordingStart(){
   videoRecordingMode(true);
   let vidoeDuration = 0;
   let startDate = 0;
+  let waitTime = 3;
+  let recordingState = false
   const mediaStream = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: true
@@ -312,7 +279,10 @@ document.getElementById("recordStartButton").addEventListener("click", async fun
     console.log(videoObject);
   }
   mediaRecorder.start();
-});
+}
+
+
+
 
 document.getElementById("recordStopButton").addEventListener("click", function(){
   // 녹화 종료!
@@ -370,7 +340,7 @@ function createVideoClipObject(videoCLipId){
 document.getElementById("lyricsSettingButton").addEventListener("click", function(){
   if(current_clip_type == MusicClipType.Lyrics){
     let lyricsText = document.getElementById('lyricsVideo').innerHTML;
-    if(noteClickIndex != -1 && lyricsText != "none"){
+    if(noteClickIndex != -1){
       console.log("current lyrics id :", noteClickIndex, "video id :", parseInt(lyricsText.substr(2))-1);
       melody_clip.setLyricsVideo(noteClickIndex, parseInt(lyricsText.substr(2))-1)
     }
@@ -576,10 +546,8 @@ function startRecording(){//Timer를 시작하는 코드
   play_state = true;
   previousLyricsIndex = null;
   startTimer();
-  if(document.getElementById("BPMType").checked){
-    startMetronome();
-  }
-  else{
+  startMetronome();
+  if(!document.getElementById("BPMType").checked){
     bpmPlayNumber = 5
   }
 }
@@ -608,10 +576,8 @@ function startTrack(){//Timer를 시작하는 코드
   play_state_track = true;
   previousLyricsIndex = null;
   startTimer2();
-  if(document.getElementById("BPMType").checked){
-    startMetronome();
-  }
-  else{
+  startMetronome();
+  if(!document.getElementById("BPMType").checked){
     bpmPlayNumber = 5
   }
 }
@@ -643,7 +609,7 @@ function currentClipDuration(){
 
 
 function updateTime() { //시간에 따라 업데이트 해야하는 함수들
-  if(bpmPlayNumber > 5){
+  if(bpmPlayNumber > 4){
     currentTime += 1/fps;
     musicPlayer(currentTime);
     //console.log(time_to_px(currentTime, duration)-clip_start_px);
@@ -1263,7 +1229,7 @@ $("#slider_track").slider({ //Timer 슬라이더2
 });
 
 function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
-  if(bpmPlayNumber > 5){
+  if(bpmPlayNumber > 4){
     currentTrackTime += 1/fps
     //musicPlayer(currentTime);
     $("#slider_track").slider("value",time_to_px(currentTrackTime, duration_track, track_box_width, 0));
@@ -1532,10 +1498,20 @@ let OverMidiDataChecker = false;
 
 function clipDurationNormalize(type){
   if(type == MusicClipType.Melody){
-    melody_clip.setDuration(melody_clip.getClipLastTime()+1)
+    if(melody_clip.getNoteIndex() != 0){
+      melody_clip.setDuration(melody_clip.getClipLastTime()+1)
+    }
+    else{
+      console.log("there isn't note")
+    }
   }
   else{
-    beat_clip.setDuration(beat_clip.getClipLastTime()+1)
+    if(beat_clip.getNoteIndex() != 0){
+      beat_clip.setDuration(beat_clip.getClipLastTime()+1)
+    }
+    else{
+      console.log("there isn't note")
+    }
   }
 }
 function setMidiToMelodyClip(inputLog){
@@ -1748,9 +1724,11 @@ function dragMoveListener_lyrics(event) {
 let bpmHapticOn = false // bpm-beat haptic 설정용 예비함수2
 const metronome = new Tone.Loop(time => {
   const synth = new Tone.NoiseSynth().toDestination();
-  synth.triggerAttackRelease("2n", time);
-  if(document.getElementById("hapticType").checked){     /// 여기 수정
-    document.getElementById('HapticPlayButton').click();
+  if(document.getElementById("BPMType").checked){
+    synth.triggerAttackRelease("2n", time);
+  }
+  if(!document.getElementById("hapticType").checked){
+    document.getElementById('HapticPlayButton1').click();
   }
   bpmPlayNumber += 1;
 }, "4n");

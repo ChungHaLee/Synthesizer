@@ -44,17 +44,23 @@
     <div id = "musicType"style="display:none;">{{ musicType }}</div>
 
     <div id="DeviceConnectorContainer">
-        <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">MIDI ON</button> 
-        <button data-action = "close_midi_in" class="synthesizer">MIDI OFF</button> 
-        MIDI: <span id="midiInName">NONE</span>
+        <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">미디 연결</button> 
+        <button data-action = "close_midi_in" class="synthesizer">미디 해제</button> 
+        미디: <span id="midiInName">NONE</span>
 
         <input type="checkbox" id="hapticType" checked>
-        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 30px;">Haptic ON</button> 
-        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">Haptic OFF</button> 
+        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 30px;">햅틱 연결</button> 
+        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">햅틱 해제</button> 
         
 
-        <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none">Play</button>
-        Intensity : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
+        <button data-action = "HapticPatternPlayButton1" id="HapticPlayButton1" style="display: none">Play1</button>
+        <button data-action = "HapticPatternPlayButton2" id="HapticPlayButton2" style="display: none">Play2</button>
+        <button data-action = "HapticPatternPlayButton3" id="HapticPlayButton3" style="display: none">Play3</button>
+        <button data-action = "HapticPatternPlayButton4" id="HapticPlayButton4" style="display: none">Play4</button>
+        
+        
+        
+        햅틱 세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
         <input type="checkbox" id="BPMType" checked>
         BPM : <input type="number" id="bpm" value="120" min="0" max="1000" step ="1" style="display:inline;"></input>
     </div>    
@@ -196,6 +202,8 @@
             <div id = "lyricsVideoContainer" style="margin-top:10px; margin-left: 80px; display: none;">
                 <button id="recordStartButton">녹화 시작</button>
                 <button id="recordStopButton">녹화 종료</button>
+                <span id="videoWaitTime"></span>
+                <!-- 수어:  <input type="text" id="lyricsName" size=10 style="width: 200px; height:20px" style="font-size: 12px;"> -->
                 <br>
                 <video id="videoRecordCanvas" controls style="width: 500px; height: 300px;"></video>
                 <video id="videoCheckCanvas" controls style="width: 500px; height: 300px; display:none" ></video>

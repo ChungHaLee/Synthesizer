@@ -276,14 +276,59 @@ function haptic_listener(event){
 let isVibrating = false;
 let timer;
 document
-    .querySelector('[data-action="HapticPatternPlayButton"]')
+    .querySelector('[data-action="HapticPatternPlayButton1"]')
     .addEventListener('click', function(event) {
-        console.log("Haptic Play");
+        console.log("Haptic Play1");
         //SendHapticData(100, 100);
         if (isVibrating) {
             clearTimeout(timer);
         }
         SendHapticData(150, amp*2);
+        isVibrating = true;
+        timer = setTimeout(function() {
+            SendHapticData(0, 0);    
+            isVibrating = false;
+        }, 200);
+    });
+document
+    .querySelector('[data-action="HapticPatternPlayButton2"]')
+    .addEventListener('click', function(event) {
+        console.log("Haptic Play2");
+        //SendHapticData(100, 100);
+        if (isVibrating) {
+            clearTimeout(timer);
+        }
+        SendHapticData(200, amp*2);
+        isVibrating = true;
+        timer = setTimeout(function() {
+            SendHapticData(0, 0);    
+            isVibrating = false;
+        }, 200);
+    });
+document
+    .querySelector('[data-action="HapticPatternPlayButton3"]')
+    .addEventListener('click', function(event) {
+        console.log("Haptic Play3");
+        //SendHapticData(100, 100);
+        if (isVibrating) {
+            clearTimeout(timer);
+        }
+        SendHapticData(250, amp*2);
+        isVibrating = true;
+        timer = setTimeout(function() {
+            SendHapticData(0, 0);    
+            isVibrating = false;
+        }, 200);
+    });
+document
+    .querySelector('[data-action="HapticPatternPlayButton4"]')
+    .addEventListener('click', function(event) {
+        console.log("Haptic Play4");
+        //SendHapticData(100, 100);
+        if (isVibrating) {
+            clearTimeout(timer);
+        }
+        SendHapticData(300, amp*2);
         isVibrating = true;
         timer = setTimeout(function() {
             SendHapticData(0, 0);    
