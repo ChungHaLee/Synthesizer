@@ -96,7 +96,7 @@ export class VideoClip{
       return this.videoData[videoId]
     }
     else{
-      console.error("Data index out of bounds");
+      console.log("Data index out of bounds");
       return null
     }
   }
@@ -109,7 +109,7 @@ export class VideoClip{
       return this.videoDuration[videoId]
     }
     else{
-      console.error("Data index out of bounds");
+      console.log("Data index out of bounds");
       return null
     }
   }
