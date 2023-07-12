@@ -11,8 +11,9 @@ html, body {
 
 
 #slider > span{
+    margin-top: 1px;
     width: 30px;
-    height: 20px;
+    height: 23px;
     background: linear-gradient(144deg,hsl(0, 0%, 95%), #808080 50%,#5d5454);
 }
 
