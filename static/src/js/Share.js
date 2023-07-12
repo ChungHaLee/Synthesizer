@@ -337,6 +337,9 @@ export class MusicClip {
     }
     return lastTime
   }
+  getLyricsText(lyricsId){
+    return this.lyricSet[lyricsId];
+  }
   getAllLyrics(){
     return [this.lyricSet, this.lyrictimeSet, this.lyricsVideoId];
   }

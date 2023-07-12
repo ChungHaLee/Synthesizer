@@ -188,7 +188,7 @@ document.addEventListener('keyup', function(event) {
     case ' ':
       if (event.shiftKey) { 
         console.log("Shift+space")
-        if(play_state_track){
+        if(!play_state_track){
           document.getElementById("trackMusicPlayButton").click();
         }
         else{
@@ -197,7 +197,7 @@ document.addEventListener('keyup', function(event) {
       } 
       else {
         console.log("space")
-        if(play_state){
+        if(!play_state){
           document.getElementById("sheetMusicPlayButton").click();
         }
         else{
@@ -362,6 +362,7 @@ document.getElementById("lyricsSettingButton").addEventListener("click", functio
     let lyricsText = document.getElementById('lyricsVideo').innerHTML;
     if(noteClickIndex != -1){
       console.log("current lyrics id :", noteClickIndex, "video id :", parseInt(lyricsText.substr(2))-1);
+      alert("자막(" + melody_clip.getLyricsText(noteClickIndex) +")과 영상 ("+lyricsText +")이 연결되었습니다.")
       melody_clip.setLyricsVideo(noteClickIndex, parseInt(lyricsText.substr(2))-1)
     }
   }
@@ -1637,10 +1638,12 @@ document.getElementById("LyricsPushButton").addEventListener("click", function()
     lyricsDefaultTime = 1
   }
   let lyricsText = document.getElementById("lyricsInputer").value;
-  let lyricsLastTime = melody_clip.getLyricsLastTime();
-  let lyticsId = melody_clip.getLyricsIndex()
-  melody_clip.setLyrics(lyricsText,[lyricsLastTime, lyricsLastTime + lyricsDefaultTime])
-  createLyricsObject(lyticsId, lyricsText, lyricsLastTime, lyricsLastTime + lyricsDefaultTime, -1);
+  if(lyricsText != ""){
+    let lyricsLastTime = melody_clip.getLyricsLastTime();
+    let lyticsId = melody_clip.getLyricsIndex()
+    melody_clip.setLyrics(lyricsText,[lyricsLastTime, lyricsLastTime + lyricsDefaultTime])
+    createLyricsObject(lyticsId, lyricsText, lyricsLastTime, lyricsLastTime + lyricsDefaultTime, -1);
+  }
   document.getElementById("lyricsInputer").value = ""
 })
 function createLyricsObject(note_id, lyricsText, startTime, endTime, LyricsVideoId){
