@@ -6,9 +6,9 @@ h5#hapticTitle{
 
 div#midisoundDIV{
     
-    width: 400px;
+    width: 350px;
     height: 80px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 35px;
     border-color: #e3e3ea;
     border-style: dotted;
@@ -17,12 +17,13 @@ div#midisoundDIV{
 
 
 div#bpmsoundDIV{
-    width: 400px;
+    width: 600px;
     height: 80px;
-    margin-top: -100px;
+    margin-top: -150px;
     margin-left: 1080px;
     border-color: #e3e3ea;
     border-style: dotted;
+    margin-bottom: 50px;
 }
 
 
@@ -30,10 +31,11 @@ div#bpmsoundDIV{
 div#hapticsoundDIV{
     width: 600px;
     height: 80px;
-    margin-top: -60px;
+    margin-top: -100px;
     margin-left: 450px;
     border-color: #e3e3ea;
     border-style: dotted;
+    margin-bottom: 50px;
 }
 
 
