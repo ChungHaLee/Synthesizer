@@ -15,7 +15,8 @@ module.exports = {
         Jsmidgen :path.resolve(__dirname, "src", "js", "jsmidgen.js"),
         vantavisual: path.resolve(__dirname, "src", "js", "vantavisual.js"),
         vantaassistive: path.resolve(__dirname, "src", "js", "vantaassistive.js"),
-        ui: path.resolve(__dirname, "src", "js", "ui.js")
+        ui: path.resolve(__dirname, "src", "js", "ui.js"),
+        sign: path.resolve(__dirname, "src", "js", "sign.js")
     },
     mode: "development",
     target: "web",

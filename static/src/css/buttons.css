@@ -1,8 +1,26 @@
-/* button.videoButton{
-  margin-left: -100px;
+button.trackMusicButton{
+  margin-top: -10px;
+  margin-bottom: 10px;
+  align-items: center;
+  background-image: linear-gradient(144deg,#000000, #1e1e1e 50%,#5a5a5a);
+  box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  font-size: 14px;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
 }
- */
 
+
+button#trackMusicPlayButton{
+  margin-left: 30px;
+  background-image: linear-gradient(144deg,#ff4099, #f37442 50%,#ebcc00);
+}
 
  div#videolyricpair{
   margin-left: 20px;
@@ -550,9 +568,9 @@
   text-align: center;
   line-height: 1;
   padding: 9px 4px;
-  background-color: #03a9f4;
+  background-color: #ffffff;
   box-shadow: 
-              inset .6em 1em 10px rgba(0, 0, 0, 0.412),
+              inset .6em 1em 10px rgba(100, 100, 100, 0.412),
               inset -.6em -1em 10px rgba(231, 231, 231, 0.643);
   border-radius: 50%;
   transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
@@ -566,14 +584,14 @@
   box-shadow: 
               inset .6em 1em 10px rgba(0, 0, 0, 0.331),
               inset -.6em -1em 10px rgba(255, 255, 255, .415);
-  background-color: #f44336;
+  background-color: #b8b8b8;
 }
 
 
 #button-bpm .checkbox ~ .layer {
-  background-color: #e7eeff;
+  background-color: #ffffff;
   box-shadow: 
-  inset .6em 1em 10px rgba(0,0,0,.15),
+  inset .6em 1em 10px rgba(110, 110, 110, 0.15),
   inset -.6em -1em 10px rgba(255, 255, 255, .415);
 }
 
@@ -581,7 +599,7 @@
 
 
 #button-bpm .checkbox:checked ~ .layer {
-  background-color: #fcebeb;
+  background-color: #c3c3c3;
   box-shadow: 
   inset .6em 1em 10px rgba(0,0,0,.15),
   inset -.6em -1em 10px rgba(255, 255, 255, .415);

@@ -5,6 +5,17 @@ import * as Midi from "./jsmidgen.js"
 
 //최소 범위 A2 ~ C7
 
+let nowClicked;
+let previousClicked;
+let clickCount = 0;
+let clickedHistory = [];
+
+
+let nowVideoClicked;
+let previousVideoClicked;
+let clickVideoCount = 0;
+let clickedVideoHistory = [];
+
 const fps = 30;
 let currentTime = 0.0;
 let currentTrackTime = 0.0;
@@ -345,17 +356,55 @@ function createVideoClipObject(videoCLipId){
   videoIdClip.textContent = "수어 " + (videoCLipId + 1); 
   let boxItem = document.getElementById("VideoClipContainer");
   videoIdClip.setAttribute("Video_Cilp_id", videoCLipId); // clip_id 속성 추가
+
+  videoIdClip.setAttribute('id', "video" + videoCLipId); // 색상 바꾸는 용도
+
+
+
   videoIdClip.addEventListener("click", function(){
     console.log("videoClipId:", videoIdClip.getAttribute("Video_Cilp_id"));
     if(videoCLipId != -1){
-    loadVideoClip(videoIdClip.getAttribute("Video_Cilp_id"));
+      loadVideoClip(videoIdClip.getAttribute("Video_Cilp_id"));
     }
     if(current_clip_type == MusicClipType.Lyrics){
       document.getElementById('lyricsVideo').innerHTML = videoIdClip.textContent;
     }
   })
+
+  // 여기임당
+
+  videoIdClip.addEventListener("click", function (){
+    clickVideoCount += 1;
+    console.log(videoIdClip.id);
+    clickedVideoHistory.push(videoIdClip.id) // 아이디 히스토리 리스트로 넣기
+
+    // clickedHistory[-2] != clickedHistory[-1]
+    if (clickedVideoHistory.length == 1){     // 하나만 들어왔을 시
+      // console.log('히스토리', clickedHistory);
+      nowVideoClicked = document.getElementById(clickedVideoHistory[0]);
+      console.log('요거', nowVideoClicked)
+      nowVideoClicked.style.borderWidth = '0.5em'
+    }
+
+    // 두개 이상 들어왔을 시
+    else if (clickedVideoHistory.length > 1 && clickedVideoHistory[clickedVideoHistory.length - 1] != clickedVideoHistory[clickedVideoHistory.length - 2]){
+      nowVideoClicked = document.getElementById(clickedVideoHistory[clickedVideoHistory.length - 1]);
+      previousVideoClicked = document.getElementById(clickedVideoHistory[clickedVideoHistory.length - 2])
+
+      nowVideoClicked.style.borderWidth = '0.5em'
+      previousVideoClicked.style.borderWidth = ''
+      
+    }})
+
+
+
+
   boxItem.appendChild(videoIdClip);
 }
+
+
+
+
 
 document.getElementById("lyricsSettingButton").addEventListener("click", function(){
   if(current_clip_type == MusicClipType.Lyrics){
@@ -1631,7 +1680,6 @@ function pitch2NoteMidi(input_pitch){
 
 
 
-
 document.getElementById("LyricsPushButton").addEventListener("click", function(){
   let lyricsDefaultTime = parseInt(melody_clip.getDuration()/10)
   if(lyricsDefaultTime < 1){
@@ -1650,13 +1698,21 @@ function createLyricsObject(note_id, lyricsText, startTime, endTime, LyricsVideo
   const boxItem = document.getElementById("LyricsBox1");
   const lyricsNote = document.createElement("div");
   lyricsNote.classList.add("resize-lyrics");
+
   lyricsNote.style.left = time_to_px(startTime, currentClipDuration()) + "px";
   lyricsNote.style.width = time_to_px_Scale(endTime - startTime, currentClipDuration()) + "px";
   lyricsNote.textContent = lyricsText
   lyricsNote.setAttribute("note_id", note_id); // clip_id 속성 추가
+  lyricsNote.setAttribute('id', note_id) // 색상 바꾸는 용도
+
+  
   lyricsNote.addEventListener("click", function(){
+
+
     console.log("id", lyricsNote.getAttribute("note_id"));
     noteClickIndex = lyricsNote.getAttribute("note_id");
+
+
     document.getElementById("lyricsWord").innerHTML = lyricsNote.textContent;
     let lyricsVideoId = melody_clip.getLyricsVideoId(lyricsNote.getAttribute("note_id"))
     if(lyricsVideoId != -1){
@@ -1666,7 +1722,33 @@ function createLyricsObject(note_id, lyricsText, startTime, endTime, LyricsVideo
     else{
       document.getElementById('lyricsVideo').innerHTML = "none";
     }
+
+
   })
+
+
+  lyricsNote.addEventListener("click", function history(){
+    clickCount += 1;
+    clickedHistory.push(lyricsNote.id) // 아이디 히스토리 리스트로 넣기
+
+    // clickedHistory[-2] != clickedHistory[-1]
+    if (clickedHistory.length == 1){     //하나 이상 클릭했을 때
+      // console.log('히스토리', clickedHistory);
+      nowClicked = document.getElementById(clickedHistory[0]);
+      nowClicked.style.borderWidth = 'thick'
+    }
+
+    else if (clickedHistory.length > 1 && clickedHistory[clickedHistory.length - 1] != clickedHistory[clickedHistory.length - 2]){
+      nowClicked = document.getElementById(clickedHistory[clickedHistory.length - 1]);
+      previousClicked = document.getElementById(clickedHistory[clickedHistory.length - 2])
+
+      nowClicked.style.borderWidth = 'thick'
+      previousClicked.style.borderWidth = ''
+      
+    }})
+
+
+
   boxItem.appendChild(lyricsNote);
 }
 

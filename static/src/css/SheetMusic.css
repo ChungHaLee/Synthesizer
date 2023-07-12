@@ -157,7 +157,7 @@ div#VideoClipSettingContainer{
   opacity : 0.8;
   /* margin: 0rem; */
   background-color: rgb(45, 255, 168);
-  border: 1px solid black; /* 격자 항목의 테두리 설정 */
+  border: 0.3px solid black; /* 격자 항목의 테두리 설정 */
   color:rgb(0, 0, 0);
   text-align: center;
   border-radius: 0.75em;
@@ -205,6 +205,7 @@ div#VideoClipSettingContainer{
   opacity : 0.8;
   margin: 0rem;
   background-color: rgb(0, 131, 22);
+  border: 0.3px solid black; /* 격자 항목의 테두리 설정 */
   border-radius: 0.75em;
   touch-action: none;
   user-select: none;
@@ -216,6 +217,9 @@ div#VideoClipSettingContainer{
   line-height : 60px;
 }
 
+#beat-dropzone > div{
+  background-color: rgb(46, 46, 46);
+}
 
 .draggable_clip {
   width: 100px;

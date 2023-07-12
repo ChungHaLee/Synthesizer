@@ -79,7 +79,7 @@
 
 
         <div id="bpmsoundDIV">
-            <h4 style="margin-top: 6px; margin-bottom: -10px; font-size: 20px;"> 박자 메뉴 </h4>
+            <h4 style="margin-top: 9px; margin-bottom: -9px; font-size: 20px;"> 박자 메뉴 </h4>
             <div class="button r" id="button-bpm">
                 <input type="checkbox" class="checkbox" id="BPMType"  unchecked>
                 <div class="knobs"></div>
@@ -117,7 +117,7 @@
         <br>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
-        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:100px; height: 59%"></div>
+        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:120px; height: 59%"></div>
         <div class="grid-container" id="TrackContainer" style="margin-top: 30px">
             <div id="dropzoneGroup">
                 <p style="font-size: 20px; margin: 1px;"> 음악 효과 </p>
@@ -192,13 +192,13 @@
 
             <div class="moodCustomMenuAssistive">
                 <!-- <h4>요소 추가</h4> -->
-                <div class="assistiveDIV" id="speedDIV" style="margin-top: 30px;"> 빠르기 <input id="speedID" type="range" min="0" max="30" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="speedDIV" style="margin-top: 30px;"> 빠르기 <input class="moodClass" id="speedID" type="range" min="0" max="30" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> 적용 </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="zoomDIV"> 복잡 <input id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="zoomDIV"> 복잡도 <input class="moodClass" id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 적용 </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="sizeDIV" style="margin-top: -90px; display: none;"> 크기 <input id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="sizeDIV" style="margin-top: -90px; display: none;"> 크기 <input class="moodClass" id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 적용 </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="velocityDIV" style="margin-top: -150px; display: none;"> 속도 <input id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="velocityDIV" style="margin-top: -150px; display: none;"> 빠르기 <input class="moodClass" id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> 적용 </button> </div>
             </div>
         </div>   
 
@@ -433,6 +433,7 @@
     <script type="module" defer src="./static/src/js/dist/SheetMusic.js"></script>
     <script type="module" defer src="./static/src/js/dist/haptic.js"></script>
     <script type="module" defer src="./static/src/js/dist/ui.js"></script>
+    <script type="module" defer src="./static/src/js/dist/sign.js"></script>
     <script type="module" defer src="./static/src/js/dist/vantavisual.js"></script>
     <script type="module" defer src="./static/src/js/dist/vantaassistive.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
