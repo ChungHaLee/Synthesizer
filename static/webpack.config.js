@@ -14,6 +14,7 @@ module.exports = {
         haptic: path.resolve(__dirname, "src", "js", "haptic.js"),
         Jsmidgen :path.resolve(__dirname, "src", "js", "jsmidgen.js"),
         vantavisual: path.resolve(__dirname, "src", "js", "vantavisual.js"),
+        vantaassistive: path.resolve(__dirname, "src", "js", "vantaassistive.js"),
         ui: path.resolve(__dirname, "src", "js", "ui.js")
     },
     mode: "development",

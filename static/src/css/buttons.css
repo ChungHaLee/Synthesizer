@@ -1,7 +1,8 @@
 #DeviceConnectorContainer{
     /* position: absolute; */
     margin-left: 35px;
-    width: 950px;
+    width: 1600px;
+    height: 90px;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -241,7 +242,7 @@
     font-size: 16px;
     justify-content: center;
     margin-left: 5px;
-    width: 90px;
+    width: 100px;
     height: 30px;
     cursor: pointer;
 
@@ -370,4 +371,213 @@
 }
 #sheetMusicRecordButton{
   background-image: linear-gradient(144deg,hsl(0, 100%, 65%), #fb3535 50%,#ff8db9);
+}
+
+
+
+/* .button-cover {
+  height: 100px;
+  margin: 20px;
+  background-color: #fff;
+  box-shadow: 0 10px 20px -8px #c5d6d6;
+  border-radius: 4px;
+}
+
+.button-cover:before {
+  counter-increment: button-counter;
+  content: counter(button-counter);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #d7e3e3;
+  font-size: 12px;
+  line-height: 1;
+  padding: 5px;
+} */
+
+.button-cover,
+.knobs,
+.layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.button {
+  position: relative;
+  top: 50%;
+  width: 120px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.button.r,
+.button.r .layer {
+  border-radius: 100px;
+}
+
+.button.b2 {
+  border-radius: 2px;
+}
+
+.checkbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.knobs {
+  z-index: 2;
+}
+
+.layer {
+  width: 100%;
+  background-color: #fdfdfd;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+/* Button - HAPTIC  */
+#button-haptic{
+  margin-top: -90px;
+  margin-left: 450px;
+
+}
+
+
+#button-haptic .knobs:before {
+  content: "비트";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 40px;
+  height: 30px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.5;
+  padding: 9px 4px;
+  border-radius: 2em;
+  background-color: #03a9f4;
+  /* These shadow are what create the skeumorphic indent on the track. The first one is dark to show places in the indent that light don't reach and the second one shows places where light meets thereby creating the illusion of depth */ 
+  box-shadow: 
+              inset .6em 1em 10px rgba(0,0,0,.15),
+              inset -.6em -1em 10px rgba(255, 255, 255, .415);
+  border-radius: 50%;
+  transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+#button-haptic .checkbox:checked + .knobs:before {
+  justify-content: center;
+  content: "박자";
+
+  left: 65px;
+  background-color: #f44336;
+  box-shadow: 
+  inset .6em 1em 10px rgba(0,0,0,.15),
+  inset -.6em -1em 10px rgba(255, 255, 255, .415);
+}
+
+
+#button-haptic .checkbox ~ .layer {
+  background-color: #e7eeff;
+  box-shadow: 
+  inset .6em 1em 10px rgba(0,0,0,.15),
+  inset -.6em -1em 10px rgba(255, 255, 255, .415);
+}
+
+
+
+#button-haptic .checkbox:checked ~ .layer {
+  border-radius: 2em;
+  background-color: #fcebeb;
+  /* These shadow are what create the skeumorphic indent on the track. The first one is dark to show places in the indent that light don't reach and the second one shows places where light meets thereby creating the illusion of depth */ 
+  box-shadow: 
+              inset .6em 1em 10px rgba(0,0,0,.15),
+              inset -.6em -1em 10px rgba(255, 255, 255, .415);
+}
+
+#button-haptic .knobs,
+#button-haptic .knobs:before,
+#button-haptic .layer {
+  transition: 0.3s ease all;
+}
+
+
+
+
+
+/* Button - BPM */
+#button-bpm{
+  margin-top: -30px;
+  margin-left: 250px;
+}
+
+
+
+
+#button-bpm .knobs:before {
+  content: '🔉';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 40px;
+  height: 30px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  padding: 9px 4px;
+  background-color: #03a9f4;
+  box-shadow: 
+              inset .6em 1em 10px rgba(0, 0, 0, 0.412),
+              inset -.6em -1em 10px rgba(231, 231, 231, 0.643);
+  border-radius: 50%;
+  transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+#button-bpm .checkbox:checked + .knobs:before {
+  justify-content: center;
+  content: '🔇';
+
+  left: 65px;
+  box-shadow: 
+              inset .6em 1em 10px rgba(0, 0, 0, 0.331),
+              inset -.6em -1em 10px rgba(255, 255, 255, .415);
+  background-color: #f44336;
+}
+
+
+#button-bpm .checkbox ~ .layer {
+  background-color: #e7eeff;
+  box-shadow: 
+  inset .6em 1em 10px rgba(0,0,0,.15),
+  inset -.6em -1em 10px rgba(255, 255, 255, .415);
+}
+
+
+
+
+#button-bpm .checkbox:checked ~ .layer {
+  background-color: #fcebeb;
+  box-shadow: 
+  inset .6em 1em 10px rgba(0,0,0,.15),
+  inset -.6em -1em 10px rgba(255, 255, 255, .415);
+}
+
+
+
+#button-bpm .knobs,
+#button-bpm .knobs:before,
+#button-bpm .layer {
+  transition: 0.3s ease all;
 }

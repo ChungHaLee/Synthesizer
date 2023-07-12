@@ -10,6 +10,7 @@
     <link type="text/css" href="../static/src/css/melodyandbeat.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/buttons.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/mood.css" rel="stylesheet">
+    <link type="text/css" href="../static/src/css/semantic.css" rel="stylesheet">
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
@@ -44,26 +45,51 @@
     <div id = "musicType"style="display:none;">{{ musicType }}</div>
 
     <div id="DeviceConnectorContainer">
-        <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">미디 연결</button> 
-        <button data-action = "close_midi_in" class="synthesizer">미디 해제</button> 
-        미디: <span id="midiInName">NONE</span>
+        <div id="midisoundDIV">
+            <button data-action = "open_midi_in" class="synthesizer" id="synthConnector" style="margin-left: 10px;">미디 연결</button> 
+            <button data-action = "close_midi_in" class="synthesizer">미디 해제</button> 
+            미디: <span id="midiInName">NONE</span>
+            <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 10px; margin-top: 10px;">햅틱 연결</button> 
+            <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px; margin-top: 10px;">햅틱 해제</button> 
 
-        <input type="checkbox" id="hapticType" checked>
-        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 30px;">햅틱 연결</button> 
-        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">햅틱 해제</button> 
-        
+        </div>
 
-        <button data-action = "HapticPatternPlayButton1" id="HapticPlayButton1" style="display: none">Play1</button>
-        <button data-action = "HapticPatternPlayButton2" id="HapticPlayButton2" style="display: none">Play2</button>
-        <button data-action = "HapticPatternPlayButton3" id="HapticPlayButton3" style="display: none">Play3</button>
-        <button data-action = "HapticPatternPlayButton4" id="HapticPlayButton4" style="display: none">Play4</button>
-        
-        
-        
-        햅틱 세기 : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
-        <input type="checkbox" id="BPMType" checked>
-        BPM : <input type="number" id="bpm" value="120" min="0" max="1000" step ="1" style="display:inline;"></input>
-    </div>    
+
+        <div id="hapticsoundDIV">
+            
+            <button data-action = "HapticPatternPlayButton1" id="HapticPlayButton1" style="display: none">Play1</button>
+            <button data-action = "HapticPatternPlayButton2" id="HapticPlayButton2" style="display: none">Play2</button>
+            <button data-action = "HapticPatternPlayButton3" id="HapticPlayButton3" style="display: none">Play3</button>
+            <button data-action = "HapticPatternPlayButton4" id="HapticPlayButton4" style="display: none">Play4</button>
+            <main>
+                <input class="range" id="hapticIntensity" type="range" data-action="amplitude" value="35" min="0" max="50" > </input>
+            </main>
+
+
+            <div class="button r" id="button-haptic">
+                <input type="checkbox" class="checkbox" id="hapticType"  unchecked>
+                <div class="knobs"></div>
+                <div class="layer"></div>
+            </div>
+            
+            <!-- 햅틱 종류: <input type="checkbox" id="hapticType" checked> -->
+        </div>    
+
+
+
+        <div id="bpmsoundDIV">
+
+            <div class="button r" id="button-bpm">
+                <input type="checkbox" class="checkbox" id="BPMType"  unchecked>
+                <div class="knobs"></div>
+                <div class="layer"></div>
+            </div>
+
+            <input type="number" id="bpm" value="120" min="0" max="1000" step ="1">BPM</input>
+        </div>
+
+
+
     <div id="shape-canvas">
 
     </div>    
