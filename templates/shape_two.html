@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Synthesizer_2회기</title>
+    <title>Synthesizer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Style -->
     <link type="text/css" href="../static/src/css/style.css" rel="stylesheet">
@@ -10,9 +10,7 @@
     <link type="text/css" href="../static/src/css/melodyandbeat.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/buttons.css" rel="stylesheet">
     <link type="text/css" href="../static/src/css/mood.css" rel="stylesheet">
-    <link type="text/css" href="../static/src/css/phase2.css" rel="stylesheet">
-
-
+    <link type="text/css" href="../static/src/css/semantic.css" rel="stylesheet">
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
@@ -47,16 +45,52 @@
     <div id = "musicType"style="display:none;">{{ musicType }}</div>
 
     <div id="DeviceConnectorContainer">
-        <button data-action = "open_midi_in" class="synthesizer" id="synthConnector">MIDI ON</button> 
-        <button data-action = "close_midi_in" class="synthesizer">MIDI OFF</button> 
-        MIDI: <span id="midiInName">NONE</span>
-        <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 30px;">Haptic ON</button> 
-        <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px;">Haptic OFF</button> 
-        
-        <button data-action = "HapticPatternPlayButton" id="HapticPlayButton" style="display: none">Play</button>
-        Intensity : <input class="range" type="range" data-action="amplitude" value="35" min="0" max="50" style="display:inline;"></input>
-        BPM : <input type="number" id="bpm" value="120" min="0" max="1000" step ="1" style="display:inline;"></input>
-    </div>    
+        <div id="midisoundDIV">
+            <button data-action = "open_midi_in" class="synthesizer" id="synthConnector" style="margin-left: 10px;">미디 연결</button> 
+            <button data-action = "close_midi_in" class="synthesizer">미디 해제</button> 
+            미디: <span id="midiInName">NONE</span>
+            <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 10px; margin-top: 10px;">햅틱 연결</button> 
+            <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px; margin-top: 10px;">햅틱 해제</button> 
+
+        </div>
+
+
+        <div id="hapticsoundDIV">
+            <h4 style="margin-top: -3px; margin-bottom: 10px; font-size: 20px;"> 진동 메뉴 </h4>
+            <button data-action = "HapticPatternPlayButton1" id="HapticPlayButton1" style="display: none">Play1</button>
+            <button data-action = "HapticPatternPlayButton2" id="HapticPlayButton2" style="display: none">Play2</button>
+            <button data-action = "HapticPatternPlayButton3" id="HapticPlayButton3" style="display: none">Play3</button>
+            <button data-action = "HapticPatternPlayButton4" id="HapticPlayButton4" style="display: none">Play4</button>
+            <main>
+                
+                <input class="range" id="hapticIntensity" type="range" data-action="amplitude" value="35" min="0" max="50" > </input>
+            </main>
+
+
+            <div class="button r" id="button-haptic">
+                <input type="checkbox" class="checkbox" id="hapticType"  unchecked>
+                <div class="knobs"></div>
+                <div class="layer"></div>
+            </div>
+            
+            <!-- 햅틱 종류: <input type="checkbox" id="hapticType" checked> -->
+        </div>    
+
+
+
+        <div id="bpmsoundDIV">
+            <h4 style="margin-top: 6px; margin-bottom: -10px; font-size: 20px;"> 박자 메뉴 </h4>
+            <div class="button r" id="button-bpm">
+                <input type="checkbox" class="checkbox" id="BPMType"  unchecked>
+                <div class="knobs"></div>
+                <div class="layer"></div>
+            </div>
+
+            <input type="number" id="bpm" value="120" min="0" max="1000" step ="1">BPM</input>
+        </div>
+
+
+
     <div id="shape-canvas">
 
     </div>    
@@ -74,13 +108,12 @@
     <div class="fixed-track-container" id="trackContainer" style="margin-top: -610px; margin-left: 1010px; display:none;">
         <br>
         <h5 style="font-size: 25px; margin: 10px; text-align: center;"> 음악의 트랙 </h5>
-        <input type="number" name="age" id="trackduration" min="300" max="6000" step="1" value="300" style="font-size: 20px; margin-left: 80px;">
+        <input type="number" name="age" id="trackduration" min="30" max="6000" step="1" value="60" style="font-size: 20px; margin-left: 80px; display:none">
         <button class="trackMusicButton"id="trackMusicPlayButton" style="font-size: 20px;"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton" style="font-size: 20px;"> 정지 </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton" style="font-size: 20px;"> 클립 삭제 </button>
         <button class="trackMusicButton"id="trackClipCreateButton" style="font-size: 20px;"> 새 클립 </button>
         <button class="trackMusicButton"id="trackMusicSaveButton" style="font-size: 20px;"> 음악 저장 </button>
-        <button class="trackMusicButton"id="trackMusicLoadButton" style="font-size: 20px;"> 음악 불러오기 </button>
         <br>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
@@ -142,58 +175,81 @@
         <div id = 'sheetMusicController'style="display:none">
             <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px;"> 재생 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px;"> 정지 </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 50px; margin-right: 40px;"> 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 20px;"> 전체 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicRecordButton" style="margin-left: 90px; display: none;"> Record </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 30px; margin-right: 40px;"> 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 30px;"> 전체 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicLoadButton" style="margin-right: 30px;"> 불러오기 </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 35px; margin-top: 10px; left:30px;"></div>
         </div>
 
         <div class="grid-container" id="ThemaContainer">
             
             <div class="moodCustomMenu">
-                <h4>색상 메뉴</h4>
-                <div id="bgColorDIV"><button class="colorText" id="backgroundColor"> 색상 1 <input id="backgroundColorID" type="text" data-coloris> </button> <button class="colorText" id="backgroundColorSaveButton"> 저장 </button></div>
+                <!-- <h4>색상 메뉴</h4> -->
+                <div id="bgColorDIV" style="margin-top: 30px;"> <input class="coloris" id="backgroundColorID" type="text" data-coloris> <button class="colorText" id="backgroundColorSaveButton"> 적용 </button></div>
                 <br>
-                <br>
-                <div id="objColor1DIV"><button class="colorText" id="objectColor1"> 색상 2 <input type="text" data-coloris> </button> <button class="colorText" id="objectColor1SaveButton"> 저장 </button></div>
+                <div id="objColor1DIV" style="margin-top: -90px; margin-left: 120px;"> <input class="coloris" id="objectColor1ID" type="text" data-coloris> <button class="colorText" id="objectColor1SaveButton"> 적용 </button></div>
             </div>
 
             <div class="moodCustomMenuAssistive">
-                <h4>요소 추가</h4>
-                <div class="assistiveDIV" id="speedDIV"> 빠르기 <input id="speedID" type="range" min="0" max="30" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> 저장 </button> </div>
+                <!-- <h4>요소 추가</h4> -->
+                <div class="assistiveDIV" id="speedDIV" style="margin-top: 30px;"> 빠르기 <input id="speedID" type="range" min="0" max="30" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> 적용 </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="zoomDIV"> 복잡 <input id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 저장 </button> </div>
+                <div class="assistiveDIV" id="zoomDIV"> 복잡 <input id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 적용 </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="sizeDIV"> 크기 <input id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 저장 </button> </div>
+                <div class="assistiveDIV" id="sizeDIV" style="margin-top: -90px; display: none;"> 크기 <input id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 적용 </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="velocityDIV"> 속도 <input id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> 저장 </button> </div>
+                <div class="assistiveDIV" id="velocityDIV" style="margin-top: -150px; display: none;"> 속도 <input id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> 적용 </button> </div>
             </div>
         </div>   
 
-
         <div class="grid-container" id="MelodyContainer" style="display:none">
-            <div id="'lyricsContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
+            <div id="lyricsInputContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
                가사:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
                 <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:70px; height:35px; margin-bottom: -70px;"> 저장 </button>
             </div>
-            <div class="vertical-line" id="startLine", style=" margin-top:-5px; left:0px; margin-left: 80px; "></div>
-            <div class="vertical-line" id="timeLine1" style="background-color:green; margin-top:-5px; left:0px; margin-left: 80px; "></div> 
-            
+            <div id = "timeLineContainer">
+                <div class="vertical-line" id="startLine", style=" margin-top:-5px; left:0px; margin-left: 80px; "></div>
+                <div class="vertical-line" id="timeLine1" style="background-color:green; margin-top:-5px; left:0px; margin-left: 80px; "></div> 
+            </div>
             <div class="grid-item" id="LyricsBox1" style="height:20px; font-size: 18px;">가사</div>
-            <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">시  </div>
-            <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">라# </div>
-            <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">라 </div>
-            <div class="grid-item" id="box_G#" style="background-color: rgb(157, 183, 255);">솔# </div>
-            <div class="grid-item" id="box_G" style="background-color: rgb(119, 230, 255);;">솔 </div>
-            <div class="grid-item" id="box_F#" style="background-color: rgb(118, 255, 246);">파# </div>
-            <div class="grid-item" id="box_F" style="background-color: rgb(165, 255, 156);">파 </div>
-            <div class="grid-item" id="box_E" style="background-color: rgb(250, 255, 147);">미 </div>
-            <div class="grid-item" id="box_D#" style="background-color: rgb(255, 234, 141);">레#</div>
-            <div class="grid-item" id="box_D" style="background-color: #ffc691;">레</div>
-            <div class="grid-item" id="box_C#" style="background-color: rgb(255, 172, 160);">도# </div>
-            <div class="grid-item" id="box_C" style="background-color: rgb(255, 150, 150);">도 </div>
-        </div>
+            <div id = "noteBoxContainer">
+                <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">시  </div>
+                <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">라# </div>
+                <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">라 </div>
+                <div class="grid-item" id="box_G#" style="background-color: rgb(157, 183, 255);">솔# </div>
+                <div class="grid-item" id="box_G" style="background-color: rgb(119, 230, 255);;">솔 </div>
+                <div class="grid-item" id="box_F#" style="background-color: rgb(118, 255, 246);">파# </div>
+                <div class="grid-item" id="box_F" style="background-color: rgb(165, 255, 156);">파 </div>
+                <div class="grid-item" id="box_E" style="background-color: rgb(250, 255, 147);">미 </div>
+                <div class="grid-item" id="box_D#" style="background-color: rgb(255, 234, 141);">레#</div>
+                <div class="grid-item" id="box_D" style="background-color: #ffc691;">레</div>
+                <div class="grid-item" id="box_C#" style="background-color: rgb(255, 172, 160);">도# </div>
+                <div class="grid-item" id="box_C" style="background-color: rgb(255, 150, 150);">도 </div>
+            </div>
+            <div id = "lyricsVideoContainer" style="margin-top:10px; margin-left: 80px; display: none;">
 
+                <span id="videoWaitTime"></span>
+                <!-- 수어:  <input type="text" id="lyricsName" size=10 style="width: 200px; height:20px" style="font-size: 12px;"> -->
+                <br>
+                <video id="videoRecordCanvas" controls style="width: 500px; height: 300px;"></video>
+                <video id="videoCheckCanvas" controls style="width: 500px; height: 300px; display:none" ></video>
+                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; width: 950px; height:30px;  margin-top:-320px; margin-left: 720px;">
+                    <button class="videoButton" id="recordStartButton">녹화 시작</button>
+                    <button class="videoButton" id="recordStopButton">녹화 종료</button>
+                    <div id="videolyricpair">
+                        <span id="lyricsWord">선택 가사</span>
+                        -
+                        <span id="lyricsVideo">NONE</span> 
+
+                    </div>
+                    <button id="lyricsSettingButton" style="margin-left: 200px; margin-top: -9px; margin-bottom: 10px;">저장</button>
+                </div>
+                <div class="videoClipBox" id = "VideoClipContainer" style="position: absolute; margin-top:-260px; margin-left: 520px;">
+                
+                </div>
+            </div>
+        </div>
+        
 
 
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
@@ -377,7 +433,9 @@
     <script type="module" defer src="./static/src/js/dist/Synthesizer.js"></script>
     <script type="module" defer src="./static/src/js/dist/SheetMusic.js"></script>
     <script type="module" defer src="./static/src/js/dist/haptic.js"></script>
+    <script type="module" defer src="./static/src/js/dist/ui.js"></script>
     <script type="module" defer src="./static/src/js/dist/vantavisual.js"></script>
+    <script type="module" defer src="./static/src/js/dist/vantaassistive.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>

@@ -1,3 +1,14 @@
+/* button.videoButton{
+  margin-left: -100px;
+}
+ */
+
+
+div#videolyricpair{
+  margin-left: 20px;
+  margin-top: -30px;
+}
+
 #DeviceConnectorContainer{
     /* position: absolute; */
     margin-left: 35px;
@@ -155,8 +166,9 @@
 
 
   #recordStartButton {
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin-top: -80px;
+    margin-left: -200px;
+    /* margin-bottom: -10px; */
     align-items: center;
     background-image: linear-gradient(144deg,#ff4099, #f37442 50%,#ebcc00);
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
@@ -179,8 +191,8 @@
   }
 
   #recordStopButton {
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin-top: -120px;
+    /* margin-bottom: -10px; */
     align-items: center;
     background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
