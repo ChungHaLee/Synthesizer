@@ -468,42 +468,42 @@ function playVideoControl(currentTime, lyricsIndex){
 let MidiEventTime = 0.0
 const midiBPM = 120;
 const midiBeatNote = ["C" ,"D", "F", "A#"]
-function generateMidi() {
-  var file = new Midi.File();
-  var track = new Midi.Track();
+function generateMidi(miditype) {
+    var file = new Midi.File();
+    var track = new Midi.Track();
 
-  file.addTrack(track);
-  track.setTempo(midiBPM);
-  track.instrument(0, 0x03)
-  track.instrument(1, 0x70)
-  track.instrument(2, 0x72)
-  track.instrument(3, 0x74)
-  track.instrument(4, 0x76)
-  
-  MidiTrackMaker(track)
+    file.addTrack(track);
+    track.setTempo(midiBPM);
+    track.instrument(0, 0x03)
+    track.instrument(1, 0x70)
+    track.instrument(2, 0x72)
+    track.instrument(3, 0x74)
+    track.instrument(4, 0x76)
+    
+    MidiTrackMaker(track, miditype)
 
-  var midiData = file.toBytes();
-  var byteNumbers = new Array(midiData.length);
-  for (var i = 0; i < midiData.length; i++) {
-      byteNumbers[i] = midiData.charCodeAt(i);
-  }
-  var byteArray = new Uint8Array(byteNumbers);
-  var blob = new Blob([byteArray], {type: "application/octet-stream"});
-  var downloadLink = document.createElement('a');
-  downloadLink.href = window.URL.createObjectURL(blob);
-  downloadLink.download = 'test.mid';
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
+    var midiData = file.toBytes();
+    var byteNumbers = new Array(midiData.length);
+    for (var i = 0; i < midiData.length; i++) {
+        byteNumbers[i] = midiData.charCodeAt(i);
+    }
+    var byteArray = new Uint8Array(byteNumbers);
+    var blob = new Blob([byteArray], {type: "application/octet-stream"});
+    var downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = userName + "_" + miditype + '_Midi.mid';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
 
-function MidiTrackMaker(track){
+function MidiTrackMaker(track, miditype){
   for(let trackTimer = 0; trackTimer <duration_track; trackTimer += 1/fps){
     let cur_track_set = TrackObject.getcurrentClipSet(trackTimer);
-    if(cur_track_set[1].length > 0){
+    if(cur_track_set[1].length > 0 && miditype == MusicClipType.Melody){
       MidiMelodyMaker(track, trackTimer, trackTimer - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
     }
-    if(cur_track_set[2].length > 0){
+    if(cur_track_set[2].length > 0 && miditype == MusicClipType.Beat){
       MidiBeatMaker(track, trackTimer, trackTimer - cur_track_set[2][0], Beat_clip_array[cur_track_set[2][1]]);
     }
   }
@@ -1467,7 +1467,8 @@ const tmp_template_array = []
 
 
 document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
-  generateMidi();
+  generateMidi(MusicClipType.Melody);
+  generateMidi(MusicClipType.Beat);
 //   let MusicTrackObejct = {
 //     "Type":"MusicTrack",
 //     "user_Id": TrackObject.getUserId(),

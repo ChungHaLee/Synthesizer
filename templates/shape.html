@@ -231,9 +231,9 @@
 
                 <!-- 수어:  <input type="text" id="lyricsName" size=10 style="width: 200px; height:20px" style="font-size: 12px;"> -->
                 <br>
-                <video id="videoRecordCanvas" controls style="width: 550px; height:350px; margin-left: -30px; margin-top: -30px;"></video>
-                <video id="videoCheckCanvas" controls style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none" ></video>
-                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; height:30px;  margin-top:-360px; margin-left: 720px;">
+                <video id="videoRecordCanvas" controls style="width: 550px; height:350px; margin-left: -30px; margin-top: -30px; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
+                <video id="videoCheckCanvas" controls style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
+                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; height:30px;  margin-top:-360px; margin-left: 720px; ">
                     <button class="videoButton" id="recordStartButton">녹화 시작</button>
                     <button class="videoButton" id="recordStopButton">녹화 종료</button>
                     <div id="videolyricpair">
