@@ -209,25 +209,25 @@ export function beat_player(input_id){
   switch (input_id){
     case 0:
       restartAudio(beatAudio1);
-      if(document.getElementById("hapticType").checked){
+      if(!document.getElementById("hapticType").checked){
         document.getElementById('HapticPlayButton1').click();
       }
       break;
     case 1:
       restartAudio(beatAudio2);
-      if(document.getElementById("hapticType").checked){
+      if(!document.getElementById("hapticType").checked){
         document.getElementById('HapticPlayButton2').click();
       }
       break;
     case 2:
       restartAudio(beatAudio3);
-      if(document.getElementById("hapticType").checked){
+      if(!document.getElementById("hapticType").checked){
         document.getElementById('HapticPlayButton3').click();
       }
       break;
     case 3:
       restartAudio(beatAudio4);
-      if(document.getElementById("hapticType").checked){
+      if(!document.getElementById("hapticType").checked){
         document.getElementById('HapticPlayButton4').click();
       }
       break;

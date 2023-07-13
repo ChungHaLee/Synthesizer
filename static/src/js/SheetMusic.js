@@ -619,7 +619,7 @@ function startRecording(){//Timer를 시작하는 코드
   previousLyricsIndex = null;
   startTimer();
   startMetronome();
-  if(!document.getElementById("BPMType").checked){
+  if(document.getElementById("BPMType").checked){
     bpmPlayNumber = 5
   }
 }
@@ -649,7 +649,7 @@ function startTrack(){//Timer를 시작하는 코드
   previousLyricsIndex = null;
   startTimer2();
   startMetronome();
-  if(!document.getElementById("BPMType").checked){
+  if(document.getElementById("BPMType").checked){
     bpmPlayNumber = 5
   }
 }
@@ -1835,17 +1835,17 @@ function dragMoveListener_lyrics(event) {
 let bpmHapticOn = false // bpm-beat haptic 설정용 예비함수2
 const metronome = new Tone.Loop(time => {
   const synth = new Tone.NoiseSynth().toDestination();
-  if(document.getElementById("BPMType").checked){
+  if(!document.getElementById("BPMType").checked){
     synth.triggerAttackRelease("2n", time);
   }
-  if(!document.getElementById("hapticType").checked){
+  if(document.getElementById("hapticType").checked){
     document.getElementById('HapticPlayButton1').click();
   }
   bpmPlayNumber += 1;
 }, "4n");
 
 function startMetronome() {
-  const bpm = parseFloat(document.getElementById("bpm").value);
+  const bpm = parseFloat(!document.getElementById("bpm").value);
   Tone.Transport.bpm.value = bpm;
   metronome.start(0);
   Tone.Transport.start();
