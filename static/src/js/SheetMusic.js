@@ -1576,7 +1576,7 @@ let OverMidiDataChecker = false;
 function clipDurationNormalize(type){
   if(type == MusicClipType.Melody){
     if(melody_clip.getNoteIndex() != 0){
-      melody_clip.setDuration(melody_clip.getClipLastTime()+1)
+      melody_clip.setDuration(melody_clip.getClipLastTime())
     }
     else{
       console.log("there isn't note")
@@ -1584,7 +1584,7 @@ function clipDurationNormalize(type){
   }
   else{
     if(beat_clip.getNoteIndex() != 0){
-      beat_clip.setDuration(beat_clip.getClipLastTime()+1)
+      beat_clip.setDuration(beat_clip.getClipLastTime())
     }
     else{
       console.log("there isn't note")
@@ -1837,7 +1837,7 @@ let bpmHapticOn = false // bpm-beat haptic 설정용 예비함수2
 const metronome = new Tone.Loop(time => {
   const synth = new Tone.NoiseSynth().toDestination();
   if(!document.getElementById("BPMType").checked){
-    synth.triggerAttackRelease("2n", time);
+    synth.triggerAttackRelease("2n", time, 0.3);
   }
   if(document.getElementById("hapticType").checked){
     document.getElementById('HapticPlayButton1').click();
@@ -1846,7 +1846,7 @@ const metronome = new Tone.Loop(time => {
 }, "4n");
 
 function startMetronome() {
-  const bpm = parseFloat(!document.getElementById("bpm").value);
+  const bpm = parseFloat(document.getElementById("bpm").value);
   Tone.Transport.bpm.value = bpm;
   metronome.start(0);
   Tone.Transport.start();
