@@ -116,7 +116,7 @@ export class VideoClip{
 }
 
 export class MusicClip {
-  constructor (Type, Clip_id, duration = 30, arraySet = [], timeSet = [], lyricSet = [], lyrictimeSet = [], lyricsVideoId = []) {
+  constructor (Type, Clip_id, duration = 60, arraySet = [], timeSet = [], lyricSet = [], lyrictimeSet = [], lyricsVideoId = []) {
       console.log("music Type : ", Type, "Clip_id", Clip_id,  "duration", duration);
       this.Type = Type;
       this.Clip_id = Clip_id;

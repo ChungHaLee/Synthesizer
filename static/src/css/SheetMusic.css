@@ -199,8 +199,8 @@ div#VideoClipSettingContainer{
 
 
 .Video_clip {
-  width: 100px;
-  height: 60px;
+  width: 70px;
+  height: 40px;
   padding: 0px;
   opacity : 0.8;
   margin: 0rem;
@@ -281,7 +281,7 @@ div#VideoClipSettingContainer{
 
 .template-dropzone {
   background-color: #feffb1;
-  border: dashed 4px transparent;
+  border: dashed 0px transparent;
   border-radius: 4px;
   padding: 0px;
   /* width: 80%; */
@@ -290,7 +290,7 @@ div#VideoClipSettingContainer{
 
 .melody-dropzone {
   background-color: #e9fae4;
-  border: dashed 4px transparent;
+  border: dashed 0px transparent;
   border-radius: 4px;
   padding: 0px;
   /* width: 80%; */
@@ -299,7 +299,7 @@ div#VideoClipSettingContainer{
 
 .beat-dropzone {
   background-color: #e4e4e4;
-  border: dashed 4px transparent;
+  border: dashed 0px transparent;
   border-radius: 4px;
   padding: 0px;
   /* width: 80%; */

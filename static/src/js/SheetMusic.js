@@ -229,6 +229,16 @@ document.addEventListener('keyup', function(event) {
       console.log("right")
       document.getElementById("NextButton").click();
       break;
+    case "Backspace":
+      if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
+        document.getElementById("sheetMusicDeleteButton").click();
+      }
+      break
+    case "Delete":
+      if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
+        document.getElementById("sheetMusicDeleteButton").click();
+      }
+      break
     default:
       return;
   }
@@ -421,7 +431,6 @@ let previousLyricsIndex  = null;
 function playVideoControl(currentTime, lyricsIndex){
   if(current_clip_type == MusicClipType.Lyrics){
     let videoId = melody_clip.getLyricsVideoId(lyricsIndex);
-    console.log(videoId);
     if(lyricsIndex != -1 && videoId != -1){
       let [startTime, lastTime] = melody_clip.getLyricsTimeset(lyricsIndex);
       let videoDuration = videoObject.getVideoDuration(videoId);
@@ -448,12 +457,12 @@ function playVideoControl(currentTime, lyricsIndex){
       }
       setViodeTime(currentTime - startTime, videoDuration/(lastTime - startTime))
     }
-    else{
-      if(!videoCheckCanvas.paused){
-        console.log("pause check");
-        videoCheckCanvas.pause();
-      }
-    }
+    // else{
+    //   if(!videoCheckCanvas.paused){
+    //     console.log("pause check");
+    //     videoCheckCanvas.pause();
+    //   }
+    // }
   }
 }
 
@@ -474,11 +483,12 @@ function generateMidi(miditype) {
 
     file.addTrack(track);
     track.setTempo(midiBPM);
-    track.instrument(0, 0x03)
-    track.instrument(1, 0x70)
-    track.instrument(2, 0x72)
-    track.instrument(3, 0x74)
-    track.instrument(4, 0x76)
+    if(miditype == MusicClipType.Melody){
+      track.instrument(0, 0x03) // 피아노 악기로 설정
+    }
+    else{
+      track.instrument(0, 0x70) // 타악기로 설정
+    }
     
     MidiTrackMaker(track, miditype)
 
@@ -553,22 +563,22 @@ function MidiBeatMaker(track, currentTime, inputTime, beat_clip){
   }
   for (let beat of currentBeat){
     if(beat == 0){
-      track.addNote(beat+1, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
       console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
       MidiEventTime = currentTime
     }
     else if(beat == 1){
-      track.addNote(beat+1, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
       console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
       MidiEventTime = currentTime
     }
     else if(beat == 2){
-      track.addNote(beat+1, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
       console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
       MidiEventTime = currentTime
     }
     else{
-      track.addNote(beat+1, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
       console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
       MidiEventTime = currentTime
     }
@@ -1027,20 +1037,24 @@ document.getElementById("sheetMusicDeleteButton").addEventListener('click', func
       loadClip(melody_clip, melody_clip.getDuration());
     }
   }
+  noteClickIndex = -1; //선택 클립 number 초기화
 })
 document.getElementById("sheetMusicAllDeleteButton").addEventListener('click', function (){
   if (window.confirm("정말 클립 내용을 모두 삭제하시겠습니까?")) {
     if(current_clip_type == MusicClipType.Melody){
-      melody_clip = new MusicClip(MusicClipType.Melody, 0, duration);
+      melody_clip = new MusicClip(MusicClipType.Melody, melody_clip.getClipId(), duration);
       clearNoteClip(MusicClipType.Melody);
+      loadClip(melody_clip, melody_clip.getDuration());
     }
     else if(current_clip_type == MusicClipType.Beat){
-      beat_clip = new MusicClip(MusicClipType.Beat, 0, duration);
+      beat_clip = new MusicClip(MusicClipType.Beat, beat_clip.getClipId(), duration);
       clearNoteClip(MusicClipType.Beat);
+      loadClip(beat_clip, beat_clip.getDuration());
     }
     else if(current_clip_type == MusicClipType.Lyrics){
       melody_clip.dleteAlllyric();
       clearNoteClip(MusicClipType.Lyrics);
+      loadClip(melody_clip, melody_clip.getDuration());
     }
   }
 })
@@ -1419,6 +1433,7 @@ function loadFromTrackToMusicClip(clip_type, clip_id){
   if(clip_type == MusicClipType.Melody){
     if(current_clip_type == MusicClipType.Lyrics){  //클릭 당시 Lyrics 씬일 때만 적용
       lyricsTypeSceneChanger();
+      clearNoteClip(MusicClipType.Melody);
       melody_clip = Melody_clip_array[clip_id];
       loadClip(melody_clip, melody_clip.getDuration());
     }
@@ -1576,7 +1591,7 @@ let OverMidiDataChecker = false;
 function clipDurationNormalize(type){
   if(type == MusicClipType.Melody){
     if(melody_clip.getNoteIndex() != 0){
-      melody_clip.setDuration(melody_clip.getClipLastTime())
+      melody_clip.setDuration(melody_clip.getClipLastTime()+ 0.1);
     }
     else{
       console.log("there isn't note")
@@ -1584,7 +1599,7 @@ function clipDurationNormalize(type){
   }
   else{
     if(beat_clip.getNoteIndex() != 0){
-      beat_clip.setDuration(beat_clip.getClipLastTime())
+      beat_clip.setDuration(beat_clip.getClipLastTime()+ 0.1);
     }
     else{
       console.log("there isn't note")

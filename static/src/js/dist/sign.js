@@ -15,7 +15,7 @@
   \************************/
 /***/ (() => {
 
-eval("// let resizeLyrics = document.getElementsByClassName('resize-lyrics');\n\n\n// for (var i=0;  i < resizeLyrics.length; i++) {             \n//     console.log('길이길이', resizeLyrics.length);           //for문으로 class의 length를 잡고\n//     resizeLyrics[i].addEventListener(\"click\",function() {           //i 의 이벤트를 발생시킴\n//         console.log('됐당')\n//     } )}\n\n\n\n\n//# sourceURL=webpack://Synthesizer/./src/js/sign.js?");
+eval("// let resizeLyrics = document.getElementsByClassName('resize-lyrics');\r\n\r\n\r\n// for (var i=0;  i < resizeLyrics.length; i++) {             \r\n//     console.log('길이길이', resizeLyrics.length);           //for문으로 class의 length를 잡고\r\n//     resizeLyrics[i].addEventListener(\"click\",function() {           //i 의 이벤트를 발생시킴\r\n//         console.log('됐당')\r\n//     } )}\r\n\r\n\r\n\n\n//# sourceURL=webpack://Synthesizer/./src/js/sign.js?");
 
 /***/ })
 
