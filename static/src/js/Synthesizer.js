@@ -303,6 +303,10 @@ function dial_effect(input_id, input_value){
           polySynth.connect(feedbackDelay);
           dial_bool[0] = true;
         }
+        else{
+          polySynth.disconnect(feedbackDelay);
+          dial_bool[0] = false;
+        }
         break;
       case 71:
         console.log("crusher", input_value)
@@ -316,6 +320,10 @@ function dial_effect(input_id, input_value){
           crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 3]));
           polySynth.connect(crusher);
           dial_bool[1] = true;
+        }
+        else{
+          polySynth.disconnect(crusher);
+          dial_bool[0] = false;
         }
         break;
       case 72:
@@ -331,6 +339,10 @@ function dial_effect(input_id, input_value){
           polySynth.connect(cheby);
           dial_bool[2] = true;
         }
+        else{
+          polySynth.disconnect(cheby);
+          dial_bool[0] = false;
+        }
         break;
       case 73:
         console.log("chorus", input_value)
@@ -345,6 +357,10 @@ function dial_effect(input_id, input_value){
           chorus.frequency.value = Normaizing(input_value, [1, 7])
           polySynth.connect(chorus);
           dial_bool[3] = true;
+        }
+        else{
+          polySynth.disconnect(chorus);
+          dial_bool[0] = false;
         }
         break;
       default:
