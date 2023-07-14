@@ -107,13 +107,12 @@
     </div>
     <div class="fixed-track-container" id="trackContainer" style="margin-top: -610px; margin-left: 1010px; display:none;">
         <br>
-        <h5 style="font-size: 25px; margin: 10px; text-align: center;"> 음악의 트랙 </h5>
+        <h5 id = "trackText" style="font-size: 25px; margin: 10px; text-align: center;"> 음악의 트랙 </h5>
         <input type="number" name="age" id="trackduration" min="30" max="6000" step="1" value="80" style="font-size: 20px; margin-left: 80px; display:none">
         <button class="trackMusicButton"id="trackMusicPlayButton" style="font-size: 20px;"> 재생 </button>
         <button class="trackMusicButton"id="trackMusicPauseButton" style="font-size: 20px;"> 정지 </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton" style="font-size: 20px;"> 클립 삭제 </button>
         <button class="trackMusicButton"id="trackClipCreateButton" style="font-size: 20px;"> 새 클립 </button>
-        <button class="trackMusicButton"id="trackMusicSaveButton" style="font-size: 20px;"> 음악 저장 </button>
         <br>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
@@ -137,6 +136,7 @@
                 <!-- <div id="yes-drop" class="drag-drop"> Test 5 </div> -->
             </div>
         </div>
+        <video id="videoCheckCanvas2" controls style="width: 700px; height: 400px; margin-left: 15px; margin-top: 70px; display:none; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
     </div>
 
 
@@ -171,11 +171,11 @@
         <!-- <button class="pageControl"id="NextButton"onclick="window.location.href='/beat'"> &raquo; </button> -->
         <button class="pageControl"id="NextButton"> &raquo; </button>
     </div>
-    <div class="fixed-clip-container">
+    <div id = "clipEditContainer" class="fixed-clip-container">
         <div id = 'sheetMusicController'style="display:none">
             <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px; font-size: 18px;"> 클립 재생 </button>
             <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px; font-size: 18px;"> 클립 정지 </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 30px; margin-right: 40px; font-size: 18px;"> 클립 삭제 </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 30px; margin-right: 40px; font-size: 18px;"> 노트 삭제 </button>
             <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 30px; font-size: 18px;"> 전체 삭제 </button>
             <button class="sheetMusicButton"id="sheetMusicLoadButton" style="margin-right: 30px; font-size: 18px;"> 불러오기 </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 40px; margin-top: 10px; left:30px; font-size: 18px;"></div>

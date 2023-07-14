@@ -30,7 +30,8 @@ export const MusicClipType = {
   Melody: "Melody",
   Beat: "Beat",
   Lyrics:"Lyrics",
-  Template: "Template"
+  Template: "Template",
+  Total:"Total"
 }
 
 const MusicNote = {

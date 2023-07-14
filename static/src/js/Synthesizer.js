@@ -292,62 +292,50 @@ function dial_effect(input_id, input_value){
       case 70:
         console.log("feedbackDelay", input_value)
         if(dial_bool[0]){
-          // console.log("disconnect");
+          console.log("feedbackDelay disconnect");
           polySynth.disconnect(feedbackDelay);
           dial_bool[0] = false;
         }
         if(input_value > 10){
           // console.log("connect");
           //feedbackDelay = new Tone.FeedbackDelay("8n", Normaizing(input_value, [0, 0.8])).toDestination();
-          feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.5]);
-          polySynth.connect(feedbackDelay);
-          dial_bool[0] = true;
-        }
-        else{
-          polySynth.disconnect(feedbackDelay);
-          dial_bool[0] = false;
+          //feedbackDelay.feedback.value = Normaizing(input_value, [0, 0.5]);
+          //polySynth.connect(feedbackDelay);
+          //dial_bool[0] = true;
         }
         break;
       case 71:
         console.log("crusher", input_value)
         if(dial_bool[1]){
-          // console.log("disconnect");
+          console.log("crusher disconnect");
           polySynth.disconnect(crusher);
           dial_bool[1] = false;
         }
         if(input_value > 10){
           // console.log("connect");
-          crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 3]));
-          polySynth.connect(crusher);
-          dial_bool[1] = true;
-        }
-        else{
-          polySynth.disconnect(crusher);
-          dial_bool[0] = false;
+          //crusher.bits.value = 9 - parseInt(Normaizing(input_value, [1, 3]));
+          //polySynth.connect(crusher);
+          //dial_bool[1] = true;
         }
         break;
       case 72:
         console.log("cheby", input_value)
         if(dial_bool[2]){
-          // console.log("disconnect");
+          console.log("cheby disconnect");
           polySynth.disconnect(cheby);
           dial_bool[2] = false;
         }
         if(input_value > 10){  
           // console.log("connect");
-          cheby.order = parseInt(Normaizing(input_value, [1, 20]));
-          polySynth.connect(cheby);
-          dial_bool[2] = true;
-        }
-        else{
-          polySynth.disconnect(cheby);
-          dial_bool[0] = false;
+          //cheby.order = parseInt(Normaizing(input_value, [1, 20]));
+          //polySynth.connect(cheby);
+          //dial_bool[2] = true;
         }
         break;
       case 73:
         console.log("chorus", input_value)
         if(dial_bool[3]){
-          // console.log("disconnect");
+          console.log("chorus disconnect");
           polySynth.disconnect(chorus);
           dial_bool[3] = false;
         }
@@ -357,10 +345,6 @@ function dial_effect(input_id, input_value){
           chorus.frequency.value = Normaizing(input_value, [1, 7])
           polySynth.connect(chorus);
           dial_bool[3] = true;
-        }
-        else{
-          polySynth.disconnect(chorus);
-          dial_bool[0] = false;
         }
         break;
       default:
