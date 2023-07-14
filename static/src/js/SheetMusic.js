@@ -466,7 +466,7 @@ document.getElementById("lyricsSettingButton").addEventListener("click", functio
 
 let previousLyricsIndex  = null;
 function playVideoControl(currentTime, lyricsIndex){
-  if(current_clip_type == MusicClipType.Lyrics || current_clip_type == MusicClipType.Total){
+  if(current_clip_type == MusicClipType.Lyrics  || current_clip_type == MusicClipType.Total){
     let videoId = melody_clip.getLyricsVideoId(lyricsIndex);
     if(lyricsIndex != -1 && videoId != -1){
       let [startTime, lastTime] = melody_clip.getLyricsTimeset(lyricsIndex);
@@ -1002,14 +1002,14 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       createClipBox(melody_clip);
       Melody_clip_array.push(melody_clip);
       melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
-      alert("Melody Clip saved")
+      alert("멜로디 저장")
       clearNoteClip(MusicClipType.Melody);
       initializeTimer();
     }
     else{
       clipDurationNormalize(current_clip_type)
       Melody_clip_array[melody_clip.getClipId()] = melody_clip;
-      alert("Melody Clip resaved")
+      alert("멜로디 다시 저장")
     }
   }
   else if(current_clip_type == MusicClipType.Beat){      
@@ -1018,14 +1018,14 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       createClipBox(beat_clip);
       Beat_clip_array.push(beat_clip);
       beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
-      alert("Beat Clip saved")
+      alert("비트 저장")
       clearNoteClip(MusicClipType.Beat);
       initializeTimer();
     }
     else{
       clipDurationNormalize(current_clip_type)
       Beat_clip_array[beat_clip.getClipId()] = beat_clip;
-      alert("Beat Clip resaved")
+      alert("비트 다시 저장")
     }
   }
   else if(current_clip_type == MusicClipType.Lyrics){
@@ -1038,11 +1038,11 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       template_clip = new TemplateClip(Template_clip_array.length , duration_track);
       templateConnectToVisualAndSound(template_clip);
       console.log(Template_clip_array)
-      alert("Template Clip saved")
+      alert("이펙트 저장")
     }
     else{
       Template_clip_array[template_clip.get_Clip_id()] = template_clip;
-      alert("Template Clip resaved")
+      alert("이펙트 다시 저장")
     }
   }
   else if(current_clip_type == MusicClipType.Total){
