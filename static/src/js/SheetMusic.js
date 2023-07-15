@@ -66,7 +66,7 @@ const musicId = parseInt(document.getElementById("musicType").innerHTML);
 document.getElementById("synthConnector").click();
 
 const videoRecordCanvas = document.getElementById("videoRecordCanvas");
-let videoCheckCanvas = document.getElementById("videoCheckCanvas");
+let videoCheckContainerBox = document.getElementById("videoCheckContainer");
 
 
 //---------------------------무드 데이터 수집용-------------------------//
@@ -241,9 +241,10 @@ function lyricsTypeSceneChanger(){
   document.getElementById("trackClipCreateButton").disabled = false;
   document.getElementById("TrackContainer").style.display = 'block';
   document.getElementById("clipEditContainer").style.display = 'block';
-  document.getElementById("videoCheckCanvas2").style.display = 'none';
+  document.getElementById("videoCheckContainer2").style.display = 'none';
 
-  videoCheckCanvas = document.getElementById("videoCheckCanvas");
+  //videoCheckCanvas = document.getElementById("videoCheckCanvas");
+  videoCheckContainerBox = document.getElementById("videoCheckContainer");
 
   initializeTimer();
 }
@@ -265,50 +266,52 @@ function templateTypeSceneChanger(){
   document.getElementById("trackClipCreateButton").disabled = false;
   document.getElementById("TrackContainer").style.display = 'block';
   document.getElementById("clipEditContainer").style.display = 'block';
-  document.getElementById("videoCheckCanvas2").style.display = 'none';
+  document.getElementById("videoCheckContainer2").style.display = 'none';
 
-  videoCheckCanvas = document.getElementById("videoCheckCanvas");
+  videoCheckContainerBox = document.getElementById("videoCheckContainer");
 }
 function totalTypeSceneChanger(){
-  current_clip_type = MusicClipType.Total;
-  noteClickIndex = -1;
-  console.log("to Total", current_clip_type);
-  document.getElementById("moodContainer").style.display = "none";
-  document.getElementById("sheetMusicController").style.display = "none";
-  document.getElementById("trackContainer").style.display = "block";
-  document.getElementById("ThemaContainer").style.display = "none";
-  document.getElementById("BeatContainer").style.display = 'none';
-  document.getElementById("MelodyContainer").style.display = 'none';
-  document.getElementById("TemplateContainer").style.display = 'none';
+  if(window.confirm("마지막 페이지로 가면 감상 및 저장만 가능하고 더 이상 편집이 불가능합니다. 다음 페이지로 넘기시겠습니까?")){
+    current_clip_type = MusicClipType.Total;
+    noteClickIndex = -1;
+    console.log("to Total", current_clip_type);
+    document.getElementById("moodContainer").style.display = "none";
+    document.getElementById("sheetMusicController").style.display = "none";
+    document.getElementById("trackContainer").style.display = "block";
+    document.getElementById("ThemaContainer").style.display = "none";
+    document.getElementById("BeatContainer").style.display = 'none';
+    document.getElementById("MelodyContainer").style.display = 'none';
+    document.getElementById("TemplateContainer").style.display = 'none';
 
-  document.getElementById("trackText").style.display = 'none';
-  document.getElementById("timeLine3").style.display = 'none';
-  document.getElementById("trackMusicDeleteButton").disabled = true;
-  document.getElementById("trackClipCreateButton").disabled = true;
-  document.getElementById("TrackContainer").style.display = 'none';
-  document.getElementById("clipEditContainer").style.display = 'none';
-  document.getElementById("videoCheckCanvas2").style.display = 'block';
+    document.getElementById("trackText").style.display = 'none';
+    document.getElementById("timeLine3").style.display = 'none';
+    document.getElementById("trackMusicDeleteButton").disabled = true;
+    document.getElementById("trackClipCreateButton").disabled = true;
+    document.getElementById("TrackContainer").style.display = 'none';
+    document.getElementById("clipEditContainer").style.display = 'none';
+    document.getElementById("videoCheckContainer2").style.display = 'block';
 
 
-  document.getElementById("shape-canvas").style.width = '960px';
-  document.getElementById("shape-canvas").style.height = '580px';
-  document.getElementById("shape-canvas").style.marginTop = '300px'
+    document.getElementById("shape-canvas").style.width = '960px';
+    document.getElementById("shape-canvas").style.height = '580px';
+    document.getElementById("shape-canvas").style.marginTop = '300px'
 
-  document.getElementById("trackContainer").style.width = '900px'
-  document.getElementById("trackContainer").style.height = '620px'
+    document.getElementById("trackContainer").style.width = '900px'
+    document.getElementById("trackContainer").style.height = '620px'
 
-  document.getElementById("trackContainer").style.marginTop = '-620px'
-  document.getElementById("slider_track").style.width = '720px';
-  document.getElementById("slider_track").style.marginLeft = '70px';
-  document.getElementById('trackMusicPlayButton').style.marginLeft = '580px';
-  document.getElementById('trackMusicDeleteButton').style.display = 'none';
-  document.getElementById('trackClipCreateButton').style.display = 'none';
+    document.getElementById("trackContainer").style.marginTop = '-620px'
+    document.getElementById("slider_track").style.width = '720px';
+    document.getElementById("slider_track").style.marginLeft = '70px';
+    document.getElementById('trackMusicPlayButton').style.marginLeft = '580px';
+    document.getElementById('trackMusicDeleteButton').style.display = 'none';
+    document.getElementById('trackClipCreateButton').style.display = 'none';
 
-  videoCheckCanvas = document.getElementById("videoCheckCanvas2");
-  videoCheckCanvas.style.width = '750px';
-  videoCheckCanvas.style.height = '510px';
-  videoCheckCanvas.style.marginTop = '10px';
-  videoCheckCanvas.style.marginLeft = '60px';
+    videoCheckContainerBox = document.getElementById("videoCheckContainer2");
+    // videoCheckCanvas.style.width = '750px';
+    // videoCheckCanvas.style.height = '510px';
+    // videoCheckCanvas.style.marginTop = '10px';
+    // videoCheckCanvas.style.marginLeft = '60px';
+  }
 }
 /*------------------------------단축키 코드 관련 코드--------------------------------*/
 document.addEventListener('keyup', function(event) {
@@ -381,16 +384,16 @@ document.addEventListener('keyup', function(event) {
 /*------------------------------녹화용 코드 관련 코드--------------------------------*/
 let mediaRecorder = null;
 let videoId = 0;
-videoCheckCanvas.autoplay = false;
+//videoCheckCanvas.autoplay = false;
 let chunck = [];
 function videoRecordingMode(recordingState){
   if(recordingState){
     videoRecordCanvas.style.display = "block"
-    videoCheckCanvas.style.display = "none"
+    document.getElementById("videoCheckContainer").style.display = "none"
   }
   else{
     videoRecordCanvas.style.display = "none"
-    videoCheckCanvas.style.display = "block"
+    document.getElementById("videoCheckContainer").style.display = "block"
   }
 }
 
@@ -436,59 +439,151 @@ async function videoRecordingStart(){
     console.log("video Duration :", vidoeDuration);
     let videoBlob = new Blob(chunck, { type: 'video/webm' });
     videoObject.setVideo(videoId, videoBlob, vidoeDuration);
-    // BlobURL(ObjectURL) 생성
-    const blobURL = window.URL.createObjectURL(videoBlob);
-    // 녹화된 영상 재생: 
-    videoCheckCanvas.src = blobURL;
-    videoCheckCanvas.play();
+    // 녹화 영상 생성 밑 재생
+    createVideoCheckCanvas(videoId, videoBlob);
+
+    //최종본에도 일단 생성
+    createVideoCheckCanvas2(videoId, videoBlob);
     // 기존 녹화 데이터 제거
     chunck.splice(0);
+    // Clip 생성
     createVideoClipObject(videoId)
     videoId +=1;
-    console.log(videoObject);
   }
   mediaRecorder.start();
 }
 
 
 
+function createVideoCheckCanvas(videoId, blob) {
+  // Ensure blob is an instance of Blob
+  if (!(blob instanceof Blob)) {
+      console.error('The input data is not a Blob');
+      return;
+  }
+  // Create a new video element
+  var video = document.createElement('video');
+
+  // Apply the attributes and styles
+  video.setAttribute('id', videoId);
+  video.setAttribute('controls', '');
+  video.style.width = '550px';
+  video.style.height = '350px';
+  //video.style.marginLeft = '-30px';
+  //video.style.marginTop = '-30px';
+  video.style.transform = 'rotateY(180deg)';
+  video.style.webkitTransform = 'rotateY(180deg)';
+  video.style.mozTransform = 'rotateY(180deg)';
+  
+  // Create a URL for the blob
+  var url = URL.createObjectURL(blob);
+  // Set the source of the video element
+  video.src = url;
+  // Add controls to the video
+  video.controls = true;
+  let container = document.getElementById("videoCheckContainer")
+  // Append the video to the body (or any other container)
+  container.appendChild(video);
+  videoDisplay(videoId);
+  video.play();
+}
+
+function createVideoCheckCanvas2(videoId, blob) {
+  // Ensure blob is an instance of Blob
+  if (!(blob instanceof Blob)) {
+      console.error('The input data is not a Blob');
+      return;
+  }
+  // Create a new video element
+  var video = document.createElement('video');
+
+  // Apply the attributes and styles
+  video.setAttribute('id', videoId);
+  video.setAttribute('controls', '');
+  video.style.width = '750px';
+  video.style.height = '510px';
+  //video.style.marginLeft = '-30px';
+  //video.style.marginTop = '-30px';
+  video.style.transform = 'rotateY(180deg)';
+  video.style.webkitTransform = 'rotateY(180deg)';
+  video.style.mozTransform = 'rotateY(180deg)';
+  
+  // Create a URL for the blob
+  var url = URL.createObjectURL(blob);
+  // Set the source of the video element
+  video.src = url;
+  // Add controls to the video
+  video.controls = true;
+  let container = document.getElementById("videoCheckContainer2")
+  // Append the video to the body (or any other container)
+  container.appendChild(video);
+}
+
+
+
+
+
+
+
+
+function videoDisplay(videoId){ //지정한 비디오만 
+    // Get all the video elements inside the div
+    var videos = videoCheckContainerBox.getElementsByTagName('video');
+    
+    // Log the videoId of each video
+    for (var i = 0; i < videos.length; i++) {
+      if(videoId ==videos[i].getAttribute('id')){
+        videos[i].style.display = "block";
+      }
+      else{
+        videos[i].style.display = "none";
+      }
+    }
+}
+function getVideo(videoId){ //비디오를 ID로 접근하는 코드
+  // Get all the video elements inside the div
+  var videos = videoCheckContainerBox.getElementsByTagName('video');
+  // Log the videoId of each video
+  for (var i = 0; i < videos.length; i++) {
+    if(videoId ==videos[i].getAttribute('id')){
+      videoDisplay(videoId);
+      videos[i].currentTime = 0.0;
+      return videos[i];
+    }
+  }
+  return null;
+}
+function pauseVideo(){  //저장된 비디오 전부 정지
+  // Get all the video elements inside the div
+  var videos = videoCheckContainerBox.getElementsByTagName('video');
+  // Log the videoId of each video
+  for (var i = 0; i < videos.length; i++) {
+    if(!videos[i].paused){
+      videos[i].pause();
+    }
+  }
+}
 
 document.getElementById("recordStopButton").addEventListener("click", function(){
   // 녹화 종료!
   videoRecordingMode(false);
   mediaRecorder.stop();
 })
-function loadVideoClip(videoId, playDuration = null){
+function loadVideoClip(videoId){
   videoRecordingMode(false);
-  let videoData = videoObject.getVideoData(videoId);
-  let videoDuration = videoObject.getVideoDuration(videoId);
-  if (videoData instanceof Blob){
-    let url = window.URL.createObjectURL(videoData);
-    videoCheckCanvas.src = url;
+  videoDisplay(videoId);
+  let videoCheckCanvas = getVideo(videoId);
+  if(videoCheckCanvas.paused){
     videoCheckCanvas.play();
-    if(playDuration != null && playDuration > 0){
-      console.log("play rate :", videoDuration / playDuration);
-      videoCheckCanvas.playbackRate  = videoDuration / playDuration;
-    }
-    else{
-      videoCheckCanvas.playbackRate  = 1.0
-    }
-  }
-  else{
-    console.error('The element at this index is not a Blob')
   }
 }
-function setViodeTime(setTime, playbackRate){
+function setViodeTime(videoCheckCanvas, setTime, playbackRate){
   let videoTime = setTime * playbackRate;
   if(Math.abs(videoCheckCanvas.currentTime - videoTime) > 0.4){
     console.log("setting video Time : ", videoCheckCanvas.currentTime, videoTime)
     videoCheckCanvas.currentTime = videoTime;
   }
 }
-function pauseVideo(){
-  videoCheckCanvas.pause();
-}
-
 
 function videoDownload(blob, id, duration){
   const url = window.URL.createObjectURL(blob);
@@ -516,11 +611,7 @@ function createVideoClipObject(videoCLipId){
   videoIdClip.textContent = "수어 " + (videoCLipId + 1); 
   let boxItem = document.getElementById("VideoClipContainer");
   videoIdClip.setAttribute("Video_Cilp_id", videoCLipId); // clip_id 속성 추가
-
   videoIdClip.setAttribute('id', "video" + videoCLipId); // 색상 바꾸는 용도
-
-
-
   videoIdClip.addEventListener("click", function(){
     console.log("videoClipId:", videoIdClip.getAttribute("Video_Cilp_id"));
     if(videoCLipId != -1){
@@ -530,6 +621,7 @@ function createVideoClipObject(videoCLipId){
       document.getElementById('lyricsVideo').innerHTML = videoIdClip.textContent;
     }
   })
+
 
   // 여기임당
 
@@ -574,6 +666,7 @@ document.getElementById("lyricsSettingButton").addEventListener("click", functio
 })
 
 let previousLyricsIndex  = null;
+let currentVideoId = null;
 function playVideoControl(currentTime, lyricsIndex){
   if(current_clip_type == MusicClipType.Lyrics  || current_clip_type == MusicClipType.Total){
     let videoId = melody_clip.getLyricsVideoId(lyricsIndex);
@@ -582,26 +675,21 @@ function playVideoControl(currentTime, lyricsIndex){
       let videoDuration = videoObject.getVideoDuration(videoId);
       //console.log("time:", currentTime - startTime, "VideoId", videoId);
       if(lyricsIndex != -1 && previousLyricsIndex != lyricsIndex){
-        let videoData = videoObject.getVideoData(videoId);
-        if (videoData instanceof Blob){
-          let url = window.URL.createObjectURL(videoData);
-          videoCheckCanvas.src = url;
-          let playDuration = lastTime - startTime;
-          console.log("check", playDuration, startTime, lastTime);
-          if(playDuration != null && playDuration > 0){
-            videoCheckCanvas.playbackRate  = videoDuration / playDuration;
-            console.log("rate Change", videoDuration / playDuration)
-          }
-          else{
-            videoCheckCanvas.playbackRate  = 1.0;
-          }
+        let videoCheckCanvas = getVideo(videoId);
+        let playDuration = lastTime - startTime;
+        if(playDuration != null && playDuration > 0){
+          videoCheckCanvas.playbackRate  = videoDuration / playDuration;
+          console.log("rate Change", videoDuration / playDuration)
+        }
+        else{
+          videoCheckCanvas.playbackRate  = 1.0;
         }
         previousLyricsIndex = lyricsIndex;
+        if(videoCheckCanvas.paused){
+        videoCheckCanvas.play();
+        }
+        setViodeTime(videoCheckCanvas, currentTime - startTime, videoDuration/(lastTime - startTime));
       }
-      //if(videoCheckCanvas.paused){
-      //  videoCheckCanvas.play();
-      //}
-      setViodeTime(currentTime - startTime, videoDuration/(lastTime - startTime))
     }
     // else{
     //   if(!videoCheckCanvas.paused){
@@ -815,6 +903,7 @@ function stopTrack(){//Timer를 중지하는 코드
   noteSizeAllOff();
   stopTimer2();
   stopMetronome();
+  pauseVideo();
 }
 function startTimer2() { // 타이머 시작 코드
   if (!timer) { // 타이머가 이미 실행 중이지 않은 경우에만 실행

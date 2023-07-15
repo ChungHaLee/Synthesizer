@@ -136,7 +136,7 @@
                 <!-- <div id="yes-drop" class="drag-drop"> Test 5 </div> -->
             </div>
         </div>
-        <video id="videoCheckCanvas2" controls style="width: 700px; height: 400px; margin-left: 15px; margin-top: 70px; display:none; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
+        <div id="videoCheckContainer2" controls style="width: 750px; height: 510px; margin-left: 60px; margin-top: 10px; display:none;" ></div>
     </div>
 
 
@@ -231,9 +231,11 @@
 
                 <!-- 수어:  <input type="text" id="lyricsName" size=10 style="width: 200px; height:20px" style="font-size: 12px;"> -->
                 <br>
-                <video id="videoRecordCanvas" controls style="width: 550px; height:350px; margin-left: -30px; margin-top: -30px; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
-                <video id="videoCheckCanvas" controls style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
-                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; height:30px;  margin-top:-360px; margin-left: 720px; ">
+                <video id="videoRecordCanvas" controls style="width: 550px; height:350px; margin-left: -30px; margin-top: -30px; position: absolute; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video>
+                <div id = "videoCheckContainer" style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none; position: absolute;">
+                    <!-- <video id="videoCheckCanvas" controls style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video> -->
+                </div>
+                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; height:30px;  margin-top: -35px; margin-left: 720px; ">
                     <button class="videoButton" id="recordStartButton">녹화 시작</button>
                     <button class="videoButton" id="recordStopButton">녹화 종료</button>
                     <div id="videolyricpair">
@@ -243,7 +245,7 @@
                         <button id="lyricsSettingButton" style="position: absolute; width:120px; height:38px; font-size: 17px; margin-left: 30px; margin-top: -10px; float: right;">수어 영상 저장</button>
                     </div>
                 </div>
-                <div class="videoClipBox" id = "VideoClipContainer" style="position: absolute; height:280px; margin-top:-300px; margin-left: 530px;">
+                <div class="videoClipBox" id = "VideoClipContainer" style="position: absolute; height:280px; margin-top:25px; margin-left: 530px;">
                     <span id="videoWaitTime"></span>
                 </div>
             </div>
@@ -293,7 +295,7 @@
         <audio src="../static/src/sound/tomtom.wav" id = "beat3"></audio>
         <audio src="../static/src/sound/hi-hat.wav" id = "beat4"></audio>
     </div>
-    <button id="synthInitialize" style="display:none">신디 초기화  </button>
+    <button id="synthInitialize" style="display:none">신디 초기화 </button>
 
         <br>
         <div id="customSliders">
