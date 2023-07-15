@@ -237,6 +237,7 @@ div#VideoClipSettingContainer{
   color: white;
   font-size: 17px;
   line-height : 60px;
+  position: absolute;
 }
 
 .resize-drag_clip {
