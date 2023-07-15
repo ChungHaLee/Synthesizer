@@ -114,6 +114,9 @@ export class VideoClip{
       return null
     }
   }
+  getAllData(){
+    return [this.videoId, this.videoData, this.videoDuration]
+  }
 }
 
 export class MusicClip {

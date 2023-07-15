@@ -395,6 +395,25 @@ function setViodeTime(setTime, playbackRate){
 function pauseVideo(){
   videoCheckCanvas.pause();
 }
+
+
+function videoDownload(blob, id, duration){
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  let fileName = userName + "_" + id + "_" + parseInt(duration)
+  a.style.display = 'none';
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 100);
+}
+
+
 //video Clip Object 생성용 코드(melody, Beat용)
 function createVideoClipObject(videoCLipId){
   const videoIdClip = document.createElement("div");
@@ -442,10 +461,6 @@ function createVideoClipObject(videoCLipId){
       previousVideoClicked.style.borderWidth = ''
       
     }})
-
-
-
-
   boxItem.appendChild(videoIdClip);
 }
 
@@ -1045,9 +1060,13 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       alert("이펙트 다시 저장")
     }
   }
-  else if(current_clip_type == MusicClipType.Total){
+  else if(current_clip_type == MusicClipType.Total){  //자지막 전부 저장하는 부분
      generateMidi(MusicClipType.Melody);
      generateMidi(MusicClipType.Beat);
+     let [videoId, videoData, videoDuration] = videoObject.get
+     for(let i=0;i <videoId.length; i++){
+      videoDownload(videoData[i], videoId[i], videoDuration[i])
+     }
   }
 })
 
