@@ -221,8 +221,29 @@ function totalTypeSceneChanger(){
   document.getElementById("clipEditContainer").style.display = 'none';
   document.getElementById("videoCheckCanvas2").style.display = 'block';
 
+
+  document.getElementById("shape-canvas").style.width = '960px';
+  document.getElementById("shape-canvas").style.height = '580px';
+  document.getElementById("shape-canvas").style.marginTop = '300px'
+
+  document.getElementById("trackContainer").style.width = '900px'
+  document.getElementById("trackContainer").style.height = '620px'
+
+  document.getElementById("trackContainer").style.marginTop = '-620px'
+  document.getElementById("slider_track").style.width = '720px';
+  document.getElementById("slider_track").style.marginLeft = '70px';
+  document.getElementById('trackMusicPlayButton').style.marginLeft = '580px';
+  document.getElementById('trackMusicDeleteButton').style.display = 'none';
+  document.getElementById('trackClipCreateButton').style.display = 'none';
+
   videoCheckCanvas = document.getElementById("videoCheckCanvas2");
+  videoCheckCanvas.style.width = '750px';
+  videoCheckCanvas.style.height = '510px';
+  videoCheckCanvas.style.marginTop = '10px';
+  videoCheckCanvas.style.marginLeft = '60px';
 }
+
+
 /*------------------------------단축키 코드 관련 코드--------------------------------*/
 document.addEventListener('keyup', function(event) {
   if (event.defaultPrevented) {
