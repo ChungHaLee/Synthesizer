@@ -459,6 +459,29 @@ export class MusicTrack{
       }
     }
   }
+  getLastClipData(clipType){
+    if(clipType == MusicClipType.Melody){
+      let index = this.MelodyClipIdList.length-1
+      if(index != -1){
+        return [this.MelodyClipIdList[index], this.MelodyTimeset[index]]
+      }
+      else{
+        return [null, 0]
+      }
+    }
+    else if(clipType == MusicClipType.Beat){
+      let index = this.BeatClipIdList.length-1
+      if(index != -1){
+        return [this.BeatClipIdList[index], this.BeatTimeset[index]]
+      }
+      else{
+        return [null, 0]
+      }
+    }
+    else{
+      return [null, 0]
+    }
+  }
   // setMusicClip(Melody_clip_array){  //Track의 Clip 정리 코드
   //   const MaxId = Math.max.apply(null, this.MelodyClipIdList);
   // }
