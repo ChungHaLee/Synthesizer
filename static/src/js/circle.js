@@ -496,6 +496,9 @@ SyntheysizerEvents.addEventListener('noteInput', function (e){
   
   if (!polyPitchArray.includes(pitch)) {
     polyPitchArray.push(pitch);
+    if(polyPitchArray.length > 3){
+      polyPitchArray = polyPitchArray.slice(-3);
+    }
   }
 
   compoCenter.position.set(10, 0, 0);

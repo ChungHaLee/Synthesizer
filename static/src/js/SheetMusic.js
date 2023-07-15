@@ -347,6 +347,12 @@ document.addEventListener('keyup', function(event) {
         document.getElementById("sheetMusicSaveButton").click();
       }
       break;
+    case 'q':
+      if(event.ctrlKey){
+        document.getElementById("synthInitialize").click();
+        console.log("initial synth")
+      }
+      break;
     case 'ArrowLeft':
       console.log("Left")
       document.getElementById("PreviousButton").click();
@@ -592,9 +598,9 @@ function playVideoControl(currentTime, lyricsIndex){
         }
         previousLyricsIndex = lyricsIndex;
       }
-      if(videoCheckCanvas.paused){
-        videoCheckCanvas.play();
-      }
+      //if(videoCheckCanvas.paused){
+      //  videoCheckCanvas.play();
+      //}
       setViodeTime(currentTime - startTime, videoDuration/(lastTime - startTime))
     }
     // else{
@@ -847,6 +853,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
     if(currentTime >= currentClipDuration()){
       stopRecording() //끝 도달하면 자동으로 종료
     }
+    console.log(onNoteList);
   }
 }
 
@@ -1065,7 +1072,9 @@ function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, B
     noteClickIndex = resizeDrag.getAttribute("note_id");
   })
   noteClickIndex = noteId;
-  boxItem.appendChild(resizeDrag);
+  if(boxItem != null){
+    boxItem.appendChild(resizeDrag);
+  }
   return resizeDrag
 }
 
@@ -1086,7 +1095,6 @@ function noteOff(note){//Note 변화 설정 초기화
   for (let i = 0; i < onNoteList.length; i++) {
     if (onNoteList[i].getAttribute("note") === note) {
       onNoteList.splice(i, 1);
-      break;
     }
   }
 }
@@ -1249,13 +1257,13 @@ SyntheysizerEvents.addEventListener('pianoKeyInput', function (e){
   }
 })
 SyntheysizerEvents.addEventListener('pianoKeyOutput', function (e){
-  doubleChecker += 1
-  if(doubleChecker%2 ==0){
+  //doubleChecker += 1
+  //if(doubleChecker%2 ==0){
     if(play_state && current_clip_type == MusicClipType.Melody){
       melody_clip.setNoteRelease(e.detail.note, currentTime);
       noteOff(e.detail.note)
     }
-  }
+  //}
 })
 SyntheysizerEvents.addEventListener('padkeyInput', function (e){
   doubleChecker += 1

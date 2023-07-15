@@ -57,50 +57,50 @@ const delay = new Tone.FeedbackDelay(0.5).toDestination();;
 
 // const vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 
-let autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
-let crusher = new Tone.BitCrusher(4).toDestination();
-let cheby = new Tone.Chebyshev(50).toDestination();
-let chorus = new Tone.Chorus(5, 2.5, 0.5).toDestination();
-let feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
-let freeverb = new Tone.Freeverb().toDestination();
-let phaser = new Tone.Phaser({
-  frequency: 150,
-  octaves: 10,
-  baseFrequency: 1000
-}).toDestination();
-let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
+// let autoWah = new Tone.AutoWah(50, 6, -30).toDestination();
+// let crusher = new Tone.BitCrusher(4).toDestination();
+// let cheby = new Tone.Chebyshev(50).toDestination();
+// let chorus = new Tone.Chorus(5, 2.5, 0.5).toDestination();
+// let feedbackDelay = new Tone.FeedbackDelay("8n", 0.5).toDestination();
+// let freeverb = new Tone.Freeverb().toDestination();
+// let phaser = new Tone.Phaser({
+//   frequency: 150,
+//   octaves: 10,
+//   baseFrequency: 1000
+// }).toDestination();
+// let vibrato = new Tone.Vibrato(5, 0.1).toDestination();
 let dial_bool = [false, false, false, false, false, false, false, false]
 
 // const synth = new Tone.Synth().chain(chorus).toDestination();
 // const AMsynth = new Tone.AMSynth().toDestination();
 // const duoSynth = new Tone.DuoSynth().toDestination();
-const fmSynth = new Tone.FMSynth().toDestination();
+// const fmSynth = new Tone.FMSynth().toDestination();
 // const MembraneSynth = new Tone.MembraneSynth().toDestination();
 // const plucky = new Tone.PluckSynth().toDestination();
 
 
-const polySynth = new Tone.PolySynth().toDestination();
-polySynth.set({ detune: -1200 });
+let polySynth = new Tone.PolySynth().toDestination();
+//polySynth.set({ detune: -1200 });
 
-const MonoSynth = new Tone.MonoSynth({
-	oscillator: {
-		type: "square"
-	},
-	envelope: {
-		attack: 0.1
-	}
-}).toDestination();
+// const MonoSynth = new Tone.MonoSynth({
+// 	oscillator: {
+// 		type: "square"
+// 	},
+// 	envelope: {
+// 		attack: 0.1
+// 	}
+// }).toDestination();
 
-const sampler = new Tone.Sampler({
-	urls: {
-		A1: "A1.mp3",
-		A2: "A2.mp3",
-	},
-	//baseUrl: "https://tonejs.github.io/audio/salamander/",
-  baseUrl: "https://tonejs.github.io/audio/casio/",
-  attack: 1,
-  release: 0,
-}).toDestination();
+// const sampler = new Tone.Sampler({
+// 	urls: {
+// 		A1: "A1.mp3",
+// 		A2: "A2.mp3",
+// 	},
+// 	//baseUrl: "https://tonejs.github.io/audio/salamander/",
+//   baseUrl: "https://tonejs.github.io/audio/casio/",
+//   attack: 1,
+//   release: 0,
+// }).toDestination();
 
 //sampler.connect(pingPong)
 
@@ -109,8 +109,10 @@ const sampler = new Tone.Sampler({
 // Beat
 //const MetalSynth = new Tone.MetalSynth().toDestination();
 //const noiseSynth = new Tone.NoiseSynth().toDestination();
-
-
+document.getElementById("synthInitialize").addEventListener("click", function(){
+  polySynth = new Tone.PolySynth().toDestination();
+  polySynth.set({ detune: -1200 });
+})
 
 function set_synthesiser(msg){
   let synthesiser_msg = get_msg_input(msg)
@@ -268,9 +270,9 @@ export function dialInitialize(){
                   [0.0, 0.0, 0.0, 0.0]]
   const event = new CustomEvent('dialInput', { detail: dial_set });
   SyntheysizerEvents.dispatchEvent(event);
-  for(let i = 70; i < 78; i++){
-    dial_effect(i, 0);
-  }
+  //for(let i = 70; i < 78; i++){
+  //  dial_effect(i, 0);
+  //}
   
 }
 function dial_input(input_id, input_value){
@@ -279,7 +281,7 @@ function dial_input(input_id, input_value){
     dial_set.value[parseInt((input_id-70)/4)][(input_id-70)%4] = input_value;
     const event = new CustomEvent('dialInput', { detail: dial_set });
     SyntheysizerEvents.dispatchEvent(event);
-    dial_effect(input_id, input_value);
+    //dial_effect(input_id, input_value);
   }
 }
 

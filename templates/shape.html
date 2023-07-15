@@ -119,8 +119,8 @@
         <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:120px; height: 54%"></div>
         <div class="grid-container" id="TrackContainer" style="margin-top: 30px">
             <div id="dropzoneGroup">
-                <p style="font-size: 20px; margin: 1px;"> 음악 효과 </p>
-                <div id="template-dropzone" class="template-dropzone" style="width: 700px; height: 70px;"></div>
+                <p style="font-size: 20px; margin: 1px; display: none;"> 음악 효과 </p>
+                <div id="template-dropzone" class="template-dropzone" style="width: 700px; height: 70px; display: none;"></div>
                 <p style="font-size: 20px; margin: 1px;"> 멜로디 </p>
                 <div id="melody-dropzone" class="melody-dropzone" style="width: 700px; height: 70px"></div>
                 <p style="font-size: 20px; margin: 1px;"> 비트 </p>
@@ -293,6 +293,8 @@
         <audio src="../static/src/sound/tomtom.wav" id = "beat3"></audio>
         <audio src="../static/src/sound/hi-hat.wav" id = "beat4"></audio>
     </div>
+    <button id="synthInitialize" style="display:none">신디 초기화  </button>
+
         <br>
         <div id="customSliders">
             <h4>Color Menu</h4>
