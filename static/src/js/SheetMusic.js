@@ -506,6 +506,7 @@ function createVideoClipObject(videoCLipId){
   const videoIdClip = document.createElement("div");
   videoIdClip.classList.add("Video_clip");
   videoIdClip.style.width = '200px'
+  videoIdClip.style.backgroundColor = getColor(videoCLipId)
   videoIdClip.textContent = "수어 " + (videoCLipId + 1); 
   let boxItem = document.getElementById("VideoClipContainer");
   videoIdClip.setAttribute("Video_Cilp_id", videoCLipId); // clip_id 속성 추가
@@ -1011,7 +1012,34 @@ function OctaveToColor(octave){
       return 'hsl(0,100%,0%)'
   }
 }
-
+function getColor(id){
+  switch(id%12){
+    case 0:
+      return 'hsl(0,99%,41%)'
+    case 1:
+      return 'hsl(24,99%,41%)';
+    case 2:
+      return 'hsl(36,99%,41%)';
+    case 3:
+      return 'hsl(46,99%,41%)';
+    case 4:
+      return 'hsl(55,99%,41%)';
+    case 5:
+      return 'hsl(129,100%,31%)';
+    case 6:
+      return 'hsl(179,100%,27%)';
+    case 7:
+      return 'hsl(186,99%,41%)';
+    case 8:
+      return  '#2E93FF';
+    case 9:
+      return 'hsl(273,99%,40%)';
+    case 10:
+      return  'hsl(284,100%,34%)';
+    case 11:
+      return 'hsl(329,100%,39%)';
+  }
+}
 /*Cilp Note Object creater*/
 function createResizeDragElement(note, leftPosition, noteId, type) { //Melody, Beat 노트 생성
   const resizeDrag = document.createElement("div");
