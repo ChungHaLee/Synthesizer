@@ -23,7 +23,7 @@ button#trackMusicPlayButton{
 }
 
  div#videolyricpair{
-  margin-left: 20px;
+  margin-left: 50px;
   margin-top: -30px;
 }
 
@@ -195,9 +195,9 @@ button#trackMusicPlayButton{
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
     box-sizing: border-box;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 20px;
     justify-content: center;
-    width: 80px;
+    width: 95px;
     height: 45px;
     cursor: pointer;
   }
@@ -211,6 +211,7 @@ button#trackMusicPlayButton{
   #recordStopButton {
     margin-top: -120px;
     margin-left: 5px;
+    margin-right: 10px;
     /* margin-bottom: -10px; */
     align-items: center;
     background-image: linear-gradient(144deg,#19191a, #656565 50%,#cecece);
@@ -220,9 +221,9 @@ button#trackMusicPlayButton{
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
     box-sizing: border-box;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 20px;
     justify-content: center;
-    width: 80px;
+    width: 95px;
     height: 45px;
     cursor: pointer;
   }
@@ -343,8 +344,14 @@ button#trackMusicPlayButton{
     height: 50px;
 }
 
+.videoButton{
+  font-size: 17px;
+}
 
-
+.Video_clip{
+  font-size: 21px;
+  margin-bottom: 3px;
+}
 .videoSelectButton{
 
     align-items: center;

@@ -1277,7 +1277,11 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       loadTrack(TrackObject);
     }
   }
-  else if(current_clip_type == MusicClipType.Total){  //자지막 전부 저장하는 부분
+  else if (current_clip_type == MusicClipType.Mood){
+    saveMood();
+  }
+  
+  else if(current_clip_type == MusicClipType.Total){  //마지막 전부 저장하는 부분
      generateMidi(MusicClipType.Melody);
      generateMidi(MusicClipType.Beat);
      let [videoId, videoData, videoDuration] = videoObject.getAllData();
@@ -1506,6 +1510,8 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
     boxItem.appendChild(dragdrop);
   }
 }
+
+
 function createTemplateClipBox(template_clip){
   let clip_id = template_clip.get_Clip_id()
   const dragdrop_template = document.createElement("div");

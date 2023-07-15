@@ -38,8 +38,8 @@ body{
 
 div#VideoClipSettingContainer{
   border: ridge;
+  width: 800px;
 
-  width: 900px;
 }
 
 .grid-item {
