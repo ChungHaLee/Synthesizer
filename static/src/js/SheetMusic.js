@@ -68,6 +68,7 @@ document.getElementById("synthConnector").click();
 const videoRecordCanvas = document.getElementById("videoRecordCanvas");
 let videoCheckContainerBox = document.getElementById("videoCheckContainer");
 
+let saveStepTime = 2
 
 //---------------------------무드 데이터 수집용-------------------------//
 
@@ -931,6 +932,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
     musicPlayer(currentTime);
     //console.log(time_to_px(currentTime, duration)-clip_start_px);
     $("#slider").slider("value",time_to_px(currentTime, currentClipDuration()));
+    document.getElementById("clipTimeShower").innerText = getTimeString(currentTime);
     timeLine2.style.left = (time_to_px(currentTime, currentClipDuration())-clip_start_px) + "px";
     timeLine1.style.left = (time_to_px(currentTime, currentClipDuration())-clip_start_px) + "px";
     // console.log(onNoteList[0].style.left, time_to_px(currentTime, currentClipDuration()) + "px")
@@ -948,6 +950,7 @@ function updateTime() { //시간에 따라 업데이트 해야하는 함수들
 function ClipUpdateTimeControl(setTime){
   currentTime = setTime
   $("#slider").slider("value",time_to_px(currentTime, currentClipDuration()));
+  document.getElementById("clipTimeShower").innerText = getTimeString(currentTime);
   timeLine2.style.left = (time_to_px(currentTime, currentClipDuration())-clip_start_px) + "px";
   timeLine1.style.left = (time_to_px(currentTime, currentClipDuration())-clip_start_px) + "px";
   showLyrics(currentTime);
@@ -956,7 +959,19 @@ function ClipUpdateTimeControl(setTime){
   }
 }
 
-
+function getTimeString(currentTime){
+  if(currentTime < 1){
+    return "0." + parseInt(currentTime *100);
+  }
+  else{
+    if(parseInt((currentTime%1) *100) > 10){
+      return parseInt(currentTime) + "." + parseInt((currentTime%1) *100);
+    }
+    else{
+      return parseInt(currentTime) + ".0" + parseInt((currentTime%1) *100);
+    }
+  }
+}
 
 
 
@@ -969,6 +984,7 @@ $("#slider").slider({ //Timer 슬라이더
     timeLine1.style.left = ((ui.value)-clip_start_px) + "px";
     timeLine2.style.left = ((ui.value)-clip_start_px) + "px";
     currentTime = px_to_time(ui.value, currentClipDuration());
+    document.getElementById("clipTimeShower").innerText = getTimeString(currentTime);
     // if(practiceMode){
     //   player1.seekTo(px_to_time(ui.value, duration), true);
     // }
@@ -982,6 +998,7 @@ function initializeTimer(){ //Timer 초기화
   stopRecording();
   currentTime = 0.0;
   $("#slider").slider("value",time_to_px(currentTime, currentClipDuration()));
+  document.getElementById("clipTimeShower").innerText = getTimeString(currentTime);
   timeLine2.style.left = (time_to_px(currentTime, currentClipDuration())-clip_start_px) + "px";
   timeLine1.style.left = (time_to_px(currentTime, currentClipDuration())-clip_start_px) + "px";
 }
@@ -1600,6 +1617,7 @@ $("#slider_track").slider({ //Timer 슬라이더2
   slide: function( event, ui ) {
     timeLine3.style.left = (ui.value) + "px";
     currentTrackTime = px_to_time(ui.value, duration_track, track_box_width, 0)
+    document.getElementById("trackTimeShower").innerHTML = getTimeString(currentTrackTime);
     //console.log("Track Time", currentTrackTime)
   }
 });
@@ -1609,6 +1627,7 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
     currentTrackTime += 1/fps
     //musicPlayer(currentTime);
     $("#slider_track").slider("value",time_to_px(currentTrackTime, duration_track, track_box_width, 0));
+    document.getElementById("trackTimeShower").innerHTML = getTimeString(currentTrackTime);
     timeLine3.style.left = time_to_px(currentTrackTime, duration_track, track_box_width, 0) + "px";
     //console.log("Test Track", cur_track_set[0][1]);
     let cur_track_set = TrackObject.getcurrentClipSet(currentTrackTime);
@@ -1616,7 +1635,7 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
     if(cur_track_set[0].length > 0){
       //console.log(Template_clip_array);
       templatePlayerClip(Template_clip_array[cur_track_set[0][1]]);
-    }
+    } 
     if(cur_track_set[1].length > 0){
       musicPlayerMelodyClip(currentTrackTime - cur_track_set[1][0], Melody_clip_array[cur_track_set[1][1]]);
       if(current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){ // 클립 로드
@@ -1646,6 +1665,7 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
 }
 function initializeTimer2(){ // Timer 초기화
   $("#slider_track").slider("value",time_to_px(currentTrackTime, duration_track, track_box_width, 0));
+  document.getElementById("trackTimeShower").innerHTML = getTimeString(currentTrackTime);
   timeLine3.style.left = time_to_px(currentTrackTime, duration_track, track_box_width, 0) + "px";
 }
 function musicPlayerMelodyClip(currentTime, melody_clip){  //음이나 비트 소리를 재생하는 코드
@@ -1909,7 +1929,7 @@ let OverMidiDataChecker = false;
 function clipDurationNormalize(type){
   if(type == MusicClipType.Melody){
     if(melody_clip.getNoteIndex() != 0){
-      melody_clip.setDuration(melody_clip.getClipLastTime()+ 0.1);
+      melody_clip.setDuration(getStepDuration(melody_clip.getClipLastTime()));
     }
     else{
       console.log("there isn't note")
@@ -1917,7 +1937,7 @@ function clipDurationNormalize(type){
   }
   else{
     if(beat_clip.getNoteIndex() != 0){
-      beat_clip.setDuration(beat_clip.getClipLastTime()+ 0.1);
+      beat_clip.setDuration(getStepDuration(beat_clip.getClipLastTime()));
     }
     else{
       console.log("there isn't note")
@@ -2167,6 +2187,7 @@ function dragMoveListener_lyrics(event) {
 //let bpmPlayOn = document.getElementById("BPMType"); //bpm 온오프 설정용 예비함수1
 
 let bpmHapticOn = false // bpm-beat haptic 설정용 예비함수2
+
 const metronome = new Tone.Loop(time => {
   const synth = new Tone.NoiseSynth().toDestination();
   if(!document.getElementById("BPMType").checked){
@@ -2190,7 +2211,28 @@ function stopMetronome() {
   bpmPlayNumber = 0;
 }
 
+document.getElementById("bpm").addEventListener("change", function(){
+  saveStepTime = 60 / document.getElementById("bpm").value * parseInt(document.getElementById("beatSelect").value);
+})
 
+document.getElementById("beatSelect").addEventListener("change", function(){
+  saveStepTime = 60 / document.getElementById("bpm").value * parseInt(document.getElementById("beatSelect").value);
+})
+
+function getStepDuration(time){
+ let a = parseInt(47.5622 / saveStepTime)
+ let b= 47.5622 % saveStepTime 
+ if( b >0.0001){
+  return (a+1) * saveStepTime;
+ }
+ else{
+  return (a) * saveStepTime;
+ }
+}
+
+function makeVerticalGrid(clipType){
+  let a = document.getElementById(clipType + "-VerticalGrid")
+}
 
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//

@@ -18,7 +18,7 @@ button.trackMusicButton{
 
 
 button#trackMusicPlayButton{
-  margin-left: 150px;
+  margin-left: 100px;
   background-image: linear-gradient(144deg,#ff4099, #f37442 50%,#ebcc00);
 }
 
@@ -556,7 +556,7 @@ button#trackMusicPlayButton{
 /* Button - BPM */
 #button-bpm{
   margin-top: -30px;
-  margin-left: 250px;
+  margin-left: 300px;
 }
 
 
