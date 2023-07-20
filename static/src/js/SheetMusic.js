@@ -483,13 +483,9 @@ async function videoRecordingStart(){
     console.log("video Duration :", vidoeDuration);
     let videoBlob = new Blob(chunck, { type: 'video/webm' });
     console.log(videoBlob);
-    
-    let array = blobToBase64(videoBlob);
-    let newVideoBolb = base64ToBlob(array);
-    console.log(newVideoBolb);
 
 
-    let newId = videoObject.get_newVideoId()
+    let newId = videoObject.get_newVideoId();
     videoObject.setVideo(newId, videoBlob, vidoeDuration);
     // 녹화 영상 생성 밑 재생
     createVideoCheckCanvas(newId, videoBlob);
