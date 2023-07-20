@@ -58,10 +58,9 @@ const track_box_width = 700;
 let lyricsId = 0;
 
 let bpmPlayNumber = 0;
-
-const userName = document.getElementById("userName").innerHTML
-const userEmail = document.getElementById("userEmail").innerHTML
-const musicId = parseInt(document.getElementById("musicType").innerHTML);
+let recordingState = false
+const userName = document.getElementById("username").innerHTML;
+console.log("userName", userName)
 
 document.getElementById("synthConnector").click();
 
@@ -373,18 +372,28 @@ document.addEventListener('keyup', function(event) {
       } 
       else {
         console.log("space")
-        if(!play_state){
-          document.getElementById("sheetMusicPlayButton").click();
+        if(current_clip_type == MusicClipType.Melody||current_clip_type == MusicClipType.Beat){
+          if(!play_state){
+            document.getElementById("sheetMusicPlayButton").click();
+          }
+          else{
+            document.getElementById("sheetMusicPauseButton").click();
+          }
         }
-        else{
-          document.getElementById("sheetMusicPauseButton").click();
+        else if(current_clip_type == MusicClipType.Lyrics){
+          if(!recordingState){
+            document.getElementById("recordStartButton").click();
+          }
+          else{
+            document.getElementById("recordStopButton").click();
+          }
         }
       }
       break;
     case 's':
-      if(event.ctrlKey){
-        document.getElementById("sheetMusicSaveButton").click();
-      }
+      //if(event.ctrlKey){
+      document.getElementById("sheetMusicSaveButton").click();
+      //}
       break;
     case 'q':
       if(event.ctrlKey){
@@ -420,7 +429,6 @@ document.addEventListener('keyup', function(event) {
 /*------------------------------녹화용 코드 관련 코드--------------------------------*/
 let mediaRecorder = null;
 let videoId = 0;
-//videoCheckCanvas.autoplay = false;
 let chunck = [];
 function videoRecordingMode(recordingState){
   if(recordingState){
@@ -449,10 +457,9 @@ document.getElementById("recordStartButton").addEventListener("click", function(
 
 async function videoRecordingStart(){
   videoRecordingMode(true);
+  recordingState = true;
   let vidoeDuration = 0;
   let startDate = 0;
-  let waitTime = 3;
-  let recordingState = false
   const mediaStream = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: true
@@ -470,11 +477,18 @@ async function videoRecordingStart(){
   }
   mediaRecorder.onstop = (event)=>{
     // 배열에 담아둔 녹화 데이터들을 통합한 Blob객체 생성
+    recordingState = false;
     vidoeDuration = (Date.now() - startDate)/1000
     console.log("recording Stop : ");
     console.log("video Duration :", vidoeDuration);
     let videoBlob = new Blob(chunck, { type: 'video/webm' });
     console.log(videoBlob);
+    
+    let array = blobToBase64(videoBlob);
+    let newVideoBolb = base64ToBlob(array);
+    console.log(newVideoBolb);
+
+
     let newId = videoObject.get_newVideoId()
     videoObject.setVideo(newId, videoBlob, vidoeDuration);
     // 녹화 영상 생성 밑 재생
@@ -1862,7 +1876,7 @@ const tmp_template_array = []
 
 function saveLyrics(){
   let [MelodyClipIdList, MelodyTimeset] = TrackObject.getMelodySet()
-  let [videoId, videoData, videoDuration] = videoObject.getAllData();
+  // let [videoId, videoData, videoDuration] = videoObject.getAllData();
   let clipId =[]
   let LyricsSet = []
   let LyricsTimeset = []
@@ -1874,10 +1888,10 @@ function saveLyrics(){
     LyricsTimeset.push(time)
     LyricsVideoSet.push(video)
   }
-  let arrayVideoData = []
-  for(let i = 0; i <videoData.length; i++){
-    arrayVideoData.push(blobToArray(videoData[i]));
-  }
+  // let arrayVideoData = []
+  // for(let i = 0; i <videoData.length; i++){
+  //   arrayVideoData.push(blobToBase64(videoData[i]));
+  // }
   let LyricsDataObject = {
         "name":userName,
         "trackIdset":MelodyClipIdList,
@@ -1886,9 +1900,9 @@ function saveLyrics(){
         "LyricsSet":LyricsSet,
         "LyricsTimeset":LyricsTimeset,
         "LyricsVideoSet":LyricsVideoSet,
-        "videoId":videoId,
-        "videoData":arrayVideoData,
-        "videoDuration": videoDuration
+        // "videoId":videoId,
+        // "videoData":arrayVideoData,
+        // "videoDuration": videoDuration
       }
   console.log("lyricsSave")
   console.log(LyricsDataObject)
@@ -1925,35 +1939,53 @@ function loadLyrics(jsonObject){
   console.log(AllLyricsVideoSet);
   melody_clip.setAllLyrics(AllLyricsSet, AllLyricsTimeSet, AllLyricsVideoSet);
 
-  // video Load 코드 임시
-  console.log("Load Video data");
-  let videoId = jsonObject["videoId"];
-  let arrayVideoData = jsonObject["videoData"];
-  let videoDuration = jsonObject["videoDuration"];
-  console.log(videoId);
-  console.log(arrayVideoData);
-  console.log(videoDuration);
-  let videoData = []
-  for(let i = 0; i < arrayVideoData.length; i++){
-    videoData.push(arrayToBlob(arrayVideoData));
-  }
-  for(let i = 0; i < videoId.length; i++){
-    loadVideoFile(videoId[i], videoData[i], videoDuration[i]);
-  }
+  // // video Load 코드 임시
+  // console.log("Load Video data");
+  // let videoId = jsonObject["videoId"];
+  // let arrayVideoData = jsonObject["videoData"];
+  // let videoDuration = jsonObject["videoDuration"];
+  // console.log(videoId);
+  // console.log(arrayVideoData);
+  // console.log(videoDuration);
+  // let videoData = []
+  // for(let i = 0; i < arrayVideoData.length; i++){
+  //   videoData.push(base64ToBlob(arrayVideoData));
+  // }
+  // for(let i = 0; i < videoId.length; i++){
+  //   loadVideoFile(videoId[i], videoData[i], videoDuration[i]);
+  // }
 }
 
-function blobToArray(blob) {
-  console.log(blob);
-  return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(new Uint8Array(reader.result));
-      reader.onerror = reject;
-      reader.readAsArrayBuffer(blob);
-  });
-}
-function arrayToBlob(arrayData, contentType = 'video/webm') {
-  return new Blob([new Uint8Array(arrayData)], { type: contentType });
-}
+// function blobToArray(blob) {
+//   return new Promise((resolve, reject) => {
+//       const reader = new FileReader();
+//       reader.onloadend = () => resolve(new Uint8Array(reader.result));
+//       reader.onerror = reject;
+//       reader.readAsArrayBuffer(blob);
+//   });
+// }
+// function arrayToBlob(arrayData, contentType = 'video/webm') {
+//   return new Blob([new Uint8Array(arrayData)], { type: contentType });
+// }
+
+// function blobToBase64(blob) {
+//   return new Promise((resolve, reject) => {
+//       const reader = new FileReader();
+//       reader.onloadend = () => resolve(reader.result);
+//       reader.onerror = reject;
+//       reader.readAsDataURL(blob);
+//   });
+// }
+// // Convert an ArrayBuffer to a blob
+// function base64ToBlob(base64, type = 'video/webm') {
+//   const byteString = atob(base64.split(',')[1]);
+//   const arrayBuffer = new ArrayBuffer(byteString.length);
+//   const int8Array = new Uint8Array(arrayBuffer);
+//   for (let i = 0; i < byteString.length; i++) {
+//       int8Array[i] = byteString.charCodeAt(i);
+//   }
+//   return new Blob([int8Array], { type: type });
+// }
 
 
 // document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
@@ -2112,11 +2144,20 @@ FileInput.addEventListener('change', function(e){
         const reader = new FileReader();
         reader.onload = function(event) {
           try{
-            let result = event.target.result;
-            let uint8Array = new Uint8Array(result);
-            console.log(result);
-            console.log(uint8Array);
-            //loadVideoFile(videoId, result, videoDuration)
+            // let result = event.target.result;
+            // let uint8Array = new Uint8Array(result);
+            // console.log(result);
+            // console.log(uint8Array);
+            // //loadVideoFile(videoId, result, videoDuration)
+
+            loadWebmFile(file).then(blob => {
+              // Now you can use your blob
+                console.log(blob);
+                loadVideoFile(videoId, blob, videoDuration)
+            })
+            .catch(error => {
+                console.error(error);
+            });
           } catch(error){
             console.error('Error parsing Mood file:', error);
             alert("불러온 파일이 잘못되었습니다.")
@@ -2131,6 +2172,21 @@ FileInput.addEventListener('change', function(e){
     
   }
 })
+
+
+function loadWebmFile(file) {
+  return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.onload = function(event) {
+          const blob = new Blob([event.target.result], { type: 'video/webm' });
+          resolve(blob);
+      };
+      fileReader.onerror = function(event) {
+          reject(new Error("Error reading file: "+ event.target.error));
+      };
+      fileReader.readAsArrayBuffer(file);
+  });
+}
 
 
 
