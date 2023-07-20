@@ -621,11 +621,16 @@ document.getElementById("recordStopButton").addEventListener("click", function()
   mediaRecorder.stop();
 })
 function loadVideoClip(videoId){
-  videoRecordingMode(false);
-  videoDisplay(videoId);
-  let videoCheckCanvas = getVideo(videoId);
-  if(videoCheckCanvas.paused){
-    videoCheckCanvas.play();
+  if(videoObject.checkIdin(videoId)){
+    videoRecordingMode(false);
+    videoDisplay(videoId);
+    let videoCheckCanvas = getVideo(videoId);
+    if(videoCheckCanvas.paused){
+      videoCheckCanvas.play();
+    }
+  }
+  else{
+    alert("설정된 비디오가 없습니다.")
   }
 }
 function setViodeTime(videoCheckCanvas, setTime, playbackRate){
