@@ -102,6 +102,7 @@ export class VideoClip{
     }
   }
   getVideoDuration(videoId){
+    console.log("getVideoDuration", videoId,  this.videoId.length);
     if (videoId >= 0 && videoId < this.videoId.length){
       // console.log(this.videoId)
       // console.log(videoId)
@@ -119,6 +120,9 @@ export class VideoClip{
   }
   get_newVideoId(){
     return this.videoId.length;
+  }
+  checkIdIn(checkId){
+    return this.videoId.includes(checkId);
   }
 }
 

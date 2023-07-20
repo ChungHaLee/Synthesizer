@@ -617,16 +617,11 @@ document.getElementById("recordStopButton").addEventListener("click", function()
   mediaRecorder.stop();
 })
 function loadVideoClip(videoId){
-  if(videoObject.checkIdin(videoId)){
-    videoRecordingMode(false);
-    videoDisplay(videoId);
-    let videoCheckCanvas = getVideo(videoId);
-    if(videoCheckCanvas.paused){
-      videoCheckCanvas.play();
-    }
-  }
-  else{
-    alert("설정된 비디오가 없습니다.")
+  videoRecordingMode(false);
+  videoDisplay(videoId);
+  let videoCheckCanvas = getVideo(videoId);
+  if(videoCheckCanvas.paused){
+    videoCheckCanvas.play();
   }
 }
 function setViodeTime(videoCheckCanvas, setTime, playbackRate){
@@ -671,8 +666,8 @@ function parseVideoString(inputString) {
 
 
 function loadVideoFile(videoId, Bolb, videoDuration){
-  removeAllElementsByClassName("Video_clip");
-  videoObject = new VideoClip();
+  videoRecordingMode(false);
+  //removeAllElementsByClassName("Video_clip");
   // Create a new Uint8Array from the ArrayBuffer
   // Create a new Blob from the Uint8Array
   //let videoBlob = new Blob([result], { type: 'video/webm' });
