@@ -117,6 +117,9 @@ export class VideoClip{
   getAllData(){
     return [this.videoId, this.videoData, this.videoDuration]
   }
+  get_newVideoId(){
+    return this.videoId.length;
+  }
 }
 
 export class MusicClip {
@@ -194,6 +197,11 @@ export class MusicClip {
   }
   setLyricsVideo(lyricsId, vidoeId){
     this.lyricsVideoId[lyricsId] = vidoeId;
+  }
+  setAllLyrics(lyricSet, lyrictimeSet, lyricsVideoId){
+    this.lyricSet = lyricSet;
+    this.lyrictimeSet = lyrictimeSet;
+    this.lyricsVideoId = lyricsVideoId
   }
   editNote(noteIndex, deltaTimeset){
     if(this.Type==MusicClipType.Melody){

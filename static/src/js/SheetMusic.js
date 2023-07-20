@@ -70,9 +70,16 @@ let videoCheckContainerBox = document.getElementById("videoCheckContainer");
 
 let saveStepTime = 2
 
+createVerticalGrid(MusicClipType.Melody, time_to_px_Scale(saveStepTime, duration,clip_box_width-clip_start_px,0))
+createVerticalGrid(MusicClipType.Beat, time_to_px_Scale(saveStepTime, duration,clip_box_width-clip_start_px,0))
+
 //---------------------------무드 데이터 수집용-------------------------//
 
-let currentMoodName = "blur";
+const MoodList = ["blur", "cloud", "fog", "halo", "cells","none"]
+const MoodId   = ['thema_blur', 'thema_clouds', 'thema_fog', 'thema_halo', 'thema_cells', 'thema_none']
+
+
+let currentMoodName = MoodList[0];
 let backgroundColor = document.getElementById("backgroundColorID").value;
 let objectColor = document.getElementById("objectColor1ID").value;
 let speedFeature = document.getElementById("speedID").value;
@@ -80,12 +87,12 @@ let zoomFeature = document.getElementById("zoomID").value;
 let sizeFeature = document.getElementById("sizeID").value;
 let velocityFeature = document.getElementById("velocityID").value;
 
-document.getElementById('thema_clouds').addEventListener("click", function(){currentMoodName = "cloud"});
-document.getElementById('thema_blur').addEventListener("click", function(){currentMoodName = "blur"});
-document.getElementById('thema_fog').addEventListener("click", function(){currentMoodName = "fog"});
-document.getElementById('thema_halo').addEventListener("click", function(){currentMoodName = "halo"});
-document.getElementById('thema_cells').addEventListener("click", function(){currentMoodName = "cells"});
-document.getElementById('thema_none').addEventListener("click", function(){currentMoodName = "none"});
+document.getElementById(MoodId[0]).addEventListener("click", function(){currentMoodName = MoodList[0]});
+document.getElementById(MoodId[1]).addEventListener("click", function(){currentMoodName = MoodList[1]});
+document.getElementById(MoodId[2]).addEventListener("click", function(){currentMoodName = MoodList[2]});
+document.getElementById(MoodId[3]).addEventListener("click", function(){currentMoodName = MoodList[3]});
+document.getElementById(MoodId[4]).addEventListener("click", function(){currentMoodName = MoodList[4]});
+document.getElementById(MoodId[5]).addEventListener("click", function(){currentMoodName = MoodList[5]});
 
 
 // 색상 저장 버튼
@@ -125,7 +132,34 @@ function saveMood(){
   console.log(MoodDataObject)
   downloadJsonFile(userName + "_Moodlog", MoodDataObject);
 }
+function loadMood(jsonObject){
+  let MoodName = jsonObject["MoodName"];
+  let backgroundColor = jsonObject["backgroundColor"]
+  let objectColor = jsonObject["objectColor"]
+  let speedFeature = jsonObject["speedFeature"]
+  let zoomFeature = jsonObject["zoomFeature"]
+  let sizeFeature = jsonObject["sizeFeature"]
+  let velocityFeature = jsonObject["velocityFeature"]
 
+  document.getElementById(MoodId[MoodList.indexOf(MoodName)]).click();
+ 
+  document.getElementsByClassName('clr-field')[0].style.color = backgroundColor;
+  document.getElementById("backgroundColorSaveButton").click();
+
+  document.getElementsByClassName('clr-field')[1].style.color = objectColor;
+  document.getElementById("objectColor1SaveButton").click();
+
+  document.getElementById("speedID").value = speedFeature;
+  document.getElementById("zoomID").value = zoomFeature;
+  document.getElementById("sizeID").value = sizeFeature;
+  document.getElementById("velocityID").value = velocityFeature;
+
+  document.getElementById("speedSaveButton").click();
+  document.getElementById("zoomSaveButton").click();
+  document.getElementById("sizeSaveButton").click();
+  document.getElementById("velocitySaveButton").click();
+
+}
 
 
 document.getElementById("PreviousButton").addEventListener("click", function(){
@@ -217,6 +251,7 @@ function melodyTypeSceneChanger(){
   document.getElementById("noteBoxContainer").style.display = 'block';
   document.getElementById("timeLineContainer").style.display = 'block';
   document.getElementById("lyricsVideoContainer").style.display = 'none';
+  document.getElementById("Melody-VerticalGrid").style.display ='block';
   initializeTimer();
 }
 function lyricsTypeSceneChanger(){
@@ -234,7 +269,7 @@ function lyricsTypeSceneChanger(){
   document.getElementById("noteBoxContainer").style.display = 'none'
   document.getElementById("timeLineContainer").style.display = 'none';
   document.getElementById("lyricsVideoContainer").style.display = 'block';
-
+  document.getElementById("Melody-VerticalGrid").style.display ='none';
 
   document.getElementById("trackText").style.display = 'block';
   document.getElementById("timeLine3").style.display = 'block';
@@ -439,17 +474,18 @@ async function videoRecordingStart(){
     console.log("recording Stop : ");
     console.log("video Duration :", vidoeDuration);
     let videoBlob = new Blob(chunck, { type: 'video/webm' });
-    videoObject.setVideo(videoId, videoBlob, vidoeDuration);
+    console.log(videoBlob);
+    let newId = videoObject.get_newVideoId()
+    videoObject.setVideo(newId, videoBlob, vidoeDuration);
     // 녹화 영상 생성 밑 재생
-    createVideoCheckCanvas(videoId, videoBlob);
+    createVideoCheckCanvas(newId, videoBlob);
 
     //최종본에도 일단 생성
-    createVideoCheckCanvas2(videoId, videoBlob);
+    createVideoCheckCanvas2(newId, videoBlob);
     // 기존 녹화 데이터 제거
     chunck.splice(0);
     // Clip 생성
-    createVideoClipObject(videoId)
-    videoId +=1;
+    createVideoClipObject(newId);
   }
   mediaRecorder.start();
 }
@@ -588,8 +624,9 @@ function setViodeTime(videoCheckCanvas, setTime, playbackRate){
 
 function videoDownload(blob, id, duration){
   const url = window.URL.createObjectURL(blob);
+  console.log(blob)
   const a = document.createElement('a');
-  let fileName = userName + "_" + id + "_" + parseInt(duration)
+  let fileName = userName +"_id" + id + "_du_" + parseInt(duration*1000)
   a.style.display = 'none';
   a.href = url;
   a.download = fileName;
@@ -602,6 +639,37 @@ function videoDownload(blob, id, duration){
   }, 100);
 }
 
+function parseVideoString(inputString) {
+  const regex = /^(.*?)_id(\d+)_du_(\d+)(?:\.webm)?$/; // Regular expression to match the format
+  const match = inputString.match(regex);
+
+  if (!match) {
+    throw new Error("Invalid input string format");
+  }
+
+  const userName = match[1];
+  const id = parseInt(match[2]);
+  const duration = parseInt(match[3]) / 1000;
+
+  return [ id, duration ];
+}
+
+
+function loadVideoFile(videoId, Bolb, videoDuration){
+  removeAllElementsByClassName("Video_clip");
+  videoObject = new VideoClip();
+  // Create a new Uint8Array from the ArrayBuffer
+  // Create a new Blob from the Uint8Array
+  //let videoBlob = new Blob([result], { type: 'video/webm' });
+  console.log(Bolb)
+  videoObject.setVideo(videoId, Bolb, videoDuration);
+  // 녹화 영상 생성 밑 재생
+  createVideoCheckCanvas(videoId, Bolb);
+  //최종본에도 일단 생성
+  createVideoCheckCanvas2(videoId, Bolb);
+  // Clip 생성
+  createVideoClipObject(videoId);
+}
 
 //video Clip Object 생성용 코드(melody, Beat용)
 function createVideoClipObject(videoCLipId){
@@ -1209,6 +1277,7 @@ function newClipCreater(){
     melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
     noteClickIndex = -1;
     clearNoteClip(MusicClipType.Melody);
+    loadClip(melody_clip, melody_clip.getDuration());
     initializeTimer();
   }
   else if(current_clip_type == MusicClipType.Beat){
@@ -1216,6 +1285,7 @@ function newClipCreater(){
     beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
     noteClickIndex = -1;
     clearNoteClip(MusicClipType.Beat);
+    loadClip(beat_clip, melody_clip.getDuration());
     initializeTimer();
   }
   else if(current_clip_type == MusicClipType.Template){
@@ -1480,6 +1550,8 @@ function loadClip(MusicClip, duration){ // 입력 클립을 편집기에 반영
     }
   }
   noteClickIndex = -1;
+  removeAllVerticalGrid();
+  createVerticalGrid(MusicClip.getClipType());
 }
 
 function changeMusicClip(noteIndex, deltaTimeset){ // 노트 위치, 크기 편집을 클립 시간에 반영
@@ -1790,16 +1862,21 @@ const tmp_template_array = []
 
 function saveLyrics(){
   let [MelodyClipIdList, MelodyTimeset] = TrackObject.getMelodySet()
+  let [videoId, videoData, videoDuration] = videoObject.getAllData();
   let clipId =[]
   let LyricsSet = []
   let LyricsTimeset = []
   let LyricsVideoSet = []
   for(let i = 0; i <Melody_clip_array.length; i++){
     clipId.push(Melody_clip_array[i].getClipId());
-    let [text, time, video] = Melody_clip_array[i].getAllLyrics()
+    let [text, time, video] = Melody_clip_array[i].getAllLyrics();
     LyricsSet.push(text)
     LyricsTimeset.push(time)
     LyricsVideoSet.push(video)
+  }
+  let arrayVideoData = []
+  for(let i = 0; i <videoData.length; i++){
+    arrayVideoData.push(blobToArray(videoData[i]));
   }
   let LyricsDataObject = {
         "name":userName,
@@ -1808,15 +1885,75 @@ function saveLyrics(){
         "clipIdset":clipId,
         "LyricsSet":LyricsSet,
         "LyricsTimeset":LyricsTimeset,
-        "LyricsVideoSet":LyricsVideoSet
+        "LyricsVideoSet":LyricsVideoSet,
+        "videoId":videoId,
+        "videoData":arrayVideoData,
+        "videoDuration": videoDuration
       }
   console.log("lyricsSave")
   console.log(LyricsDataObject)
   downloadJsonFile(userName + "_LyricsLog", LyricsDataObject);
+}
+function loadLyrics(jsonObject){
+  let trackIdSet = jsonObject["trackIdset"];
+  let trackTimeset = jsonObject["trackTimeset"];
+  let clipIdset = jsonObject["clipIdset"];
+  let LyricsSet = jsonObject["LyricsSet"];
+  let LyricsTimeset = jsonObject["LyricsTimeset"];
+  let LyricsVideoSet = jsonObject["LyricsVideoSet"];
+  console.log("Load Lyrics data")
+  console.log(trackIdSet);
+  console.log(trackTimeset);
+  console.log(clipIdset);
+  console.log(LyricsSet);
+  console.log(LyricsTimeset);
+  console.log(LyricsVideoSet);
+  let AllLyricsSet = [];
+  let AllLyricsTimeSet = [];
+  let AllLyricsVideoSet = [];
+  for(let i = 0; i< trackIdSet.length; i++){
+    let clipIndex = clipIdset.indexOf(trackIdSet[i]);
+    let addTime = trackTimeset[i][0];
+    for(let j = 0; j<LyricsSet[clipIndex].length; j++){
+      AllLyricsSet.push(LyricsSet[clipIndex][j]);
+      AllLyricsTimeSet.push([LyricsTimeset[clipIndex][j][0] + addTime,LyricsTimeset[clipIndex][j][1] + addTime])
+      AllLyricsVideoSet.push(LyricsVideoSet[clipIndex][j]);
+    }
+  }
+  console.log(AllLyricsSet);
+  console.log(AllLyricsTimeSet);
+  console.log(AllLyricsVideoSet);
+  melody_clip.setAllLyrics(AllLyricsSet, AllLyricsTimeSet, AllLyricsVideoSet);
 
-
+  // video Load 코드 임시
+  console.log("Load Video data");
+  let videoId = jsonObject["videoId"];
+  let arrayVideoData = jsonObject["videoData"];
+  let videoDuration = jsonObject["videoDuration"];
+  console.log(videoId);
+  console.log(arrayVideoData);
+  console.log(videoDuration);
+  let videoData = []
+  for(let i = 0; i < arrayVideoData.length; i++){
+    videoData.push(arrayToBlob(arrayVideoData));
+  }
+  for(let i = 0; i < videoId.length; i++){
+    loadVideoFile(videoId[i], videoData[i], videoDuration[i]);
+  }
 }
 
+function blobToArray(blob) {
+  console.log(blob);
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(new Uint8Array(reader.result));
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(blob);
+  });
+}
+function arrayToBlob(arrayData, contentType = 'video/webm') {
+  return new Blob([new Uint8Array(arrayData)], { type: contentType });
+}
 
 
 // document.getElementById("trackMusicSaveButton").addEventListener('click', function(){
@@ -1879,6 +2016,9 @@ function saveLyrics(){
 document.getElementById("sheetMusicLoadButton").addEventListener('click', function (){
   FileInput.click();
 })
+document.getElementById("MoodLoadButtonMood").addEventListener('click', function (){
+  FileInput.click();
+})
 FileInput.addEventListener('change', function(e){
   // const Files = e.target.files;
   // for(let file of Files){
@@ -1908,24 +2048,93 @@ FileInput.addEventListener('change', function(e){
   //     }
   //   };
   //   reader.readAsText(file);
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onload = function(e) {
-      try {
-          const data = new Uint8Array(e.target.result);
-          const smf = new JZZ.MIDI.SMF(data.buffer);
-          getMididata(smf[0])
-      } catch (error) {
-          console.error('Error parsing MIDI file:', error);
+  const Files = e.target.files;
+  for(let file of Files){
+    console.log("Current Upload FIle Data");
+    console.log(file["name"])
+    console.log(file["name"].substr(file["name"].indexOf(".")))
+    if(current_clip_type == MusicClipType.Mood){
+      if(file["name"].substr(file["name"].indexOf(".")) == ".json"){
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          try{
+            const contents = event.target.result;
+            const jsonObject = JSON.parse(contents);
+            loadMood(jsonObject);
+          } catch(error){
+            console.error('Error parsing Mood file:', error);
+            alert("불러온 파일이 잘못되었습니다.")
+          }
+        };
+        reader.readAsText(file);
       }
-  };
-  reader.onerror = function() {
-      console.error('Error reading file:', reader.error);
-  };
-  reader.readAsArrayBuffer(file);
+      else{
+        alert("무드로 불러올 수 있는 데이터는 Json 파일만 가능합니다.")
+      }
+    }
+    if(current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Beat){
+      const reader = new FileReader();
+      reader.onload = function(e) {
+          try {
+              const data = new Uint8Array(e.target.result);
+              const smf = new JZZ.MIDI.SMF(data.buffer);
+              getMididata(smf[0])
+          } catch (error) {
+              console.error('Error parsing MIDI file:', error);
+              alert("불러온 파일 형식이 잘못되었습니다.")
+          }
+      };
+      reader.onerror = function() {
+          console.error('Error reading file:', reader.error);
+          alert("불러온 파일 정보에 문제가 있습니다.")
+      };
+      reader.readAsArrayBuffer(file);
+    }
+    else if(current_clip_type == MusicClipType.Lyrics){
+      if(file["name"].substr(file["name"].indexOf(".")) == ".json"){
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          try{
+            const contents = event.target.result;
+            const jsonObject = JSON.parse(contents);
+            loadLyrics(jsonObject);
+            clipDurationNormalize(MusicClipType.Melody);
+            loadClip(melody_clip, melody_clip.getDuration());
+          } catch(error){
+            console.error('Error parsing Mood file:', error);
+            alert("불러온 파일이 잘못되었습니다.")
+          }
+        };
+        reader.readAsText(file);
+      }
+      else if(file["name"].substr(file["name"].indexOf(".")) == ".webm"){
+        let [videoId, videoDuration] = parseVideoString(file["name"])
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          try{
+            let result = event.target.result;
+            let uint8Array = new Uint8Array(result);
+            console.log(result);
+            console.log(uint8Array);
+            //loadVideoFile(videoId, result, videoDuration)
+          } catch(error){
+            console.error('Error parsing Mood file:', error);
+            alert("불러온 파일이 잘못되었습니다.")
+          }
+        };
+        reader.readAsText(file);
+      }
+      else{
+        alert("무드로 불러올 수 있는 데이터는 Json 파일만 가능합니다.")
+      }
+    }
+    
+  }
 })
-let OverMidiDataChecker = false;
 
+
+
+let OverMidiDataChecker = false;
 function clipDurationNormalize(type){
   if(type == MusicClipType.Melody){
     if(melody_clip.getNoteIndex() != 0){
@@ -2213,15 +2422,21 @@ function stopMetronome() {
 
 document.getElementById("bpm").addEventListener("change", function(){
   saveStepTime = 60 / document.getElementById("bpm").value * parseInt(document.getElementById("beatSelect").value);
+  removeAllVerticalGrid();
+  createVerticalGrid(MusicClipType.Melody);
+  createVerticalGrid(MusicClipType.Beat);
 })
 
 document.getElementById("beatSelect").addEventListener("change", function(){
   saveStepTime = 60 / document.getElementById("bpm").value * parseInt(document.getElementById("beatSelect").value);
+  removeAllVerticalGrid();
+  createVerticalGrid(MusicClipType.Melody);
+  createVerticalGrid(MusicClipType.Beat);
 })
 
 function getStepDuration(time){
- let a = parseInt(47.5622 / saveStepTime)
- let b= 47.5622 % saveStepTime 
+ let a = parseInt(time / saveStepTime)
+ let b= time % saveStepTime 
  if( b >0.0001){
   return (a+1) * saveStepTime;
  }
@@ -2230,9 +2445,31 @@ function getStepDuration(time){
  }
 }
 
-function makeVerticalGrid(clipType){
-  let a = document.getElementById(clipType + "-VerticalGrid")
+function createVerticalGrid(clipType, stepSize = -1){
+  const a = document.getElementById(clipType + "-VerticalGrid");
+  let gridNum = parseInt(melody_clip.getDuration()/saveStepTime);
+  if(stepSize == -1){
+    gridNum = parseInt(melody_clip.getDuration()/saveStepTime);
+    if(clipType == MusicClipType.Melody){
+      stepSize = time_to_px_Scale(saveStepTime, melody_clip.getDuration(),clip_box_width-clip_start_px,0)
+    }
+    else{
+      stepSize = time_to_px_Scale(saveStepTime, beat_clip.getDuration(),clip_box_width-clip_start_px,0)
+    }
+  }
+  for(let i= 0; i< gridNum; i++){
+    const verticalGrid = document.createElement("div");
+    verticalGrid.classList.add("vertical-grid");
+    verticalGrid.style.left = (stepSize * (i+1))+"px"
+    a.appendChild(verticalGrid);
+  }
 }
+function removeAllVerticalGrid(){
+  removeAllElementsByClassName("vertical-grid");
+}
+
+
+
 
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
