@@ -72,6 +72,13 @@ let saveStepTime = 2
 createVerticalGrid(MusicClipType.Melody, time_to_px_Scale(saveStepTime, duration,clip_box_width-clip_start_px,0))
 createVerticalGrid(MusicClipType.Beat, time_to_px_Scale(saveStepTime, duration,clip_box_width-clip_start_px,0))
 
+
+document.getElementById("beatSelect").style.fontSize = '21px';
+document.getElementById("beatSelect").style.marginTop = '-10px';
+
+
+
+
 //---------------------------무드 데이터 수집용-------------------------//
 
 const MoodList = ["blur", "cloud", "fog", "halo", "cells","none"]
