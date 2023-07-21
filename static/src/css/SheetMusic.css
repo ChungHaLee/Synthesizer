@@ -15,7 +15,8 @@ body{
 .vertical-grid {
   position: absolute;
   width: 1px;
-  height: 100%;
+  margin-top: 9px;
+  height: 97%;
   background-color: rgba(189, 173, 173, 0.733);
 }
 .vertical-grid-container{
