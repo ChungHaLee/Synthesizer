@@ -208,6 +208,7 @@ document.getElementById("NextButton").addEventListener("click", function(){
   // }
   else{
     totalTypeSceneChanger();
+    document.getElementById("sheetMusicSaveButton").click();
   }
 })
 function moodTypeSceneChanger(){
@@ -340,6 +341,9 @@ function totalTypeSceneChanger(){
     document.getElementById('trackMusicPlayButton').style.marginLeft = '580px';
     document.getElementById('trackMusicDeleteButton').style.display = 'none';
     document.getElementById('trackClipCreateButton').style.display = 'none';
+
+
+    document.getElementById('sheetMusicSaveButton').style.marginBottom = '-400px;'
 
     videoCheckContainerBox = document.getElementById("videoCheckContainer2");
     // videoCheckCanvas.style.width = '750px';
