@@ -9,6 +9,8 @@ body{
     height: 340px;
     background-color: rgba(94,104,121,0.8);
     /* transform: translateX(0%); */
+    z-index: 999;
+    pointer-events: none; 
   }
 
 
@@ -18,6 +20,8 @@ body{
   margin-top: 9px;
   height: 97%;
   background-color: rgba(189, 173, 173, 0.733);
+  z-index: 999;
+  pointer-events: none; 
 }
 .vertical-grid-container{
   position: absolute;
@@ -25,6 +29,8 @@ body{
   margin-left: 80px;
   width: 1730px;
   height: 370px;
+  z-index: 999;
+  pointer-events: none; 
 }
 
 

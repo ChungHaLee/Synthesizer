@@ -360,6 +360,7 @@ function totalTypeSceneChanger(){
   }
 }
 /*------------------------------단축키 코드 관련 코드--------------------------------*/
+let spaceKeyOnOff = true;
 document.addEventListener('keyup', function(event) {
   if (event.defaultPrevented) {
     return;
@@ -383,31 +384,33 @@ document.addEventListener('keyup', function(event) {
       } 
       else {
         console.log("space")
-        if(current_clip_type == MusicClipType.Melody||current_clip_type == MusicClipType.Beat){
-          if(!play_state){
-            document.getElementById("sheetMusicPlayButton").click();
+        if(document.getElementById("lyricsInputer").value == ""){
+          if(current_clip_type == MusicClipType.Melody||current_clip_type == MusicClipType.Beat){
+            if(!play_state){
+              document.getElementById("sheetMusicPlayButton").click();
+            }
+            else{
+              document.getElementById("sheetMusicPauseButton").click();
+            }
           }
-          else{
-            document.getElementById("sheetMusicPauseButton").click();
-          }
-        }
-        else if(current_clip_type == MusicClipType.Lyrics){
-          if(!recordingState){
-            document.getElementById("recordStartButton").click();
-          }
-          else{
-            document.getElementById("recordStopButton").click();
+          else if(current_clip_type == MusicClipType.Lyrics){
+            if(!recordingState){
+              document.getElementById("recordStartButton").click();
+            }
+            else{
+              document.getElementById("recordStopButton").click();
+            }
           }
         }
       }
       break;
     case 's':
-      //if(event.ctrlKey){
+      if(event.shiftKey){
       document.getElementById("sheetMusicSaveButton").click();
-      //}
+      }
       break;
     case 'q':
-      if(event.ctrlKey){
+      if(event.shiftKey){
         document.getElementById("synthInitialize").click();
         console.log("initial synth")
       }
@@ -420,16 +423,16 @@ document.addEventListener('keyup', function(event) {
       console.log("right")
       document.getElementById("NextButton").click();
       break;
-    case "Backspace":
-      if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
-        document.getElementById("sheetMusicDeleteButton").click();
-      }
-      break
-    case "Delete":
-      if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
-        document.getElementById("sheetMusicDeleteButton").click();
-      }
-      break
+    // case "Backspace":
+    //   if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
+    //     document.getElementById("sheetMusicDeleteButton").click();
+    //   }
+    //   break
+    // case "Delete":
+    //   if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
+    //     document.getElementById("sheetMusicDeleteButton").click();
+    //   }
+    //   break
     default:
       return;
   }
@@ -698,7 +701,7 @@ function createVideoClipObject(videoCLipId){
   videoIdClip.classList.add("Video_clip");
   videoIdClip.style.width = '200px'
   videoIdClip.style.backgroundColor = getColor(videoCLipId)
-  videoIdClip.textContent = "수어 " + (videoCLipId + 1); 
+  videoIdClip.textContent = "수어_" + (videoCLipId + 1); 
   let boxItem = document.getElementById("VideoClipContainer");
   videoIdClip.setAttribute("Video_Cilp_id", videoCLipId); // clip_id 속성 추가
   videoIdClip.setAttribute('id', "video" + videoCLipId); // 색상 바꾸는 용도
@@ -747,13 +750,35 @@ function createVideoClipObject(videoCLipId){
 document.getElementById("lyricsSettingButton").addEventListener("click", function(){
   if(current_clip_type == MusicClipType.Lyrics){
     let lyricsText = document.getElementById('lyricsVideo').innerHTML;
+    let lyricsId = parseInt(lyricsText.split("_")[1]) - 1;
     if(noteClickIndex != -1){
-      console.log("current lyrics id :", noteClickIndex, "video id :", parseInt(lyricsText.substr(2))-1);
+      console.log("current lyrics id :", noteClickIndex, "video id :", lyricsId);
       alert("자막(" + melody_clip.getLyricsText(noteClickIndex) +")과 영상 ("+lyricsText +")이 연결되었습니다.")
-      melody_clip.setLyricsVideo(noteClickIndex, parseInt(lyricsText.substr(2))-1)
+      melody_clip.setLyricsVideo(noteClickIndex, lyricsId);
+      videoClipObjectNameChange(lyricsId, melody_clip.getLyricsText(noteClickIndex));
     }
   }
 })
+
+function videoClipObjectNameChange(lyricsId, chageName){
+  let object = getVideoClipObeject(lyricsId);
+  if(object != null){
+    object.innerHTML = chageName + "_" + (lyricsId+1)
+  }
+}
+
+
+
+function getVideoClipObeject(lyricsId){
+  const elements = document.getElementsByClassName("Video_clip");
+  for (let i = 0; i < elements.length; i++) {
+    if(elements[i].getAttribute("Video_Cilp_id") == lyricsId)
+      return elements[i];
+    }
+  return null;
+}
+
+
 
 let previousLyricsIndex  = null;
 let currentVideoId = null;
@@ -1335,10 +1360,11 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       clipDurationNormalize(current_clip_type)
       createClipBox(melody_clip);
       Melody_clip_array.push(melody_clip);
-      melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
+      //melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
       alert("멜로디 저장")
       clearNoteClip(MusicClipType.Melody);
       initializeTimer();
+      loadClip(melody_clip, melody_clip.getDuration());
     }
     else{
       clipDurationNormalize(current_clip_type)
@@ -1346,6 +1372,8 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       alert("멜로디 다시 저장")
       InitializeAllTrack();
       loadTrack(TrackObject);
+      clearNoteClip(MusicClipType.Melody);
+      loadClip(melody_clip, melody_clip.getDuration());
     }
   }
   else if(current_clip_type == MusicClipType.Beat){      
@@ -1353,9 +1381,10 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       clipDurationNormalize(current_clip_type)                          // Beat Save
       createClipBox(beat_clip);
       Beat_clip_array.push(beat_clip);
-      beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
-      alert("비트 저장")
+      //beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
+      alert("비트 저장");
       clearNoteClip(MusicClipType.Beat);
+      loadClip(beat_clip, beat_clip.getDuration());
       initializeTimer();
     }
     else{
@@ -1364,6 +1393,8 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       alert("비트 다시 저장")
       InitializeAllTrack();
       loadTrack(TrackObject);
+      clearNoteClip(MusicClipType.Beat);
+      loadClip(beat_clip, beat_clip.getDuration());
     }
   }
   else if(current_clip_type == MusicClipType.Lyrics){
@@ -2304,7 +2335,9 @@ function pitch2NoteMidi(input_pitch){
 //-------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------//
 
-
+document.getElementById("lyricsInputer").addEventListener("click", function(){
+  spaceKeyOnOff = false;
+});
 
 document.getElementById("LyricsPushButton").addEventListener("click", function(){
   let lyricsDefaultTime = parseInt(melody_clip.getDuration()/10)
@@ -2319,6 +2352,7 @@ document.getElementById("LyricsPushButton").addEventListener("click", function()
     createLyricsObject(lyticsId, lyricsText, lyricsLastTime, lyricsLastTime + lyricsDefaultTime, -1);
   }
   document.getElementById("lyricsInputer").value = ""
+  spaceKeyOnOff = true;
 })
 function createLyricsObject(note_id, lyricsText, startTime, endTime, LyricsVideoId){
   const boxItem = document.getElementById("LyricsBox1");
