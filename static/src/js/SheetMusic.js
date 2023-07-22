@@ -426,16 +426,16 @@ document.addEventListener('keyup', function(event) {
       console.log("right")
       document.getElementById("NextButton").click();
       break;
-    case 'q':
-      if(event.ctrlKey){
-      alert("scale Change to 1")
-      beatScaling = 1;
+    case 'P':
+      if(event.shiftKey){
+        alert("scale Change to 1")
+        beatScaling = 1;
       }
       break;
-    case 'w':
-      if(event.ctrlKey){
-        alert("scale Change to 1.288928572")
-        beatScaling = 1.288928572;
+    case 'O':
+      if(event.shiftKey){
+          alert("scale Change to 1.288928572")
+          beatScaling = 1.288928572;
       }
       break;
     // case "Backspace":
@@ -2285,9 +2285,9 @@ function setMidiToMelodyClip(inputLog){
 function setMidiToBeatClip(inputLog){
   let [channel, input, note, time] = inputLog
   if(input){
-    console.log("note :", note.slice(0, -1), "index :", midiBeatNote.indexOf(note.slice(0, -1)), "time:", time / 1.288928572)
+    console.log("note :", note.slice(0, -1), "index :", midiBeatNote.indexOf(note.slice(0, -1)), "time:", time / beatScaling)
     if(midiBeatNote.indexOf(note.slice(0, -1)) != -1){
-      beat_clip.setBeatInput(midiBeatNote.indexOf(note.slice(0, -1)), time / 1.288928572)
+      beat_clip.setBeatInput(midiBeatNote.indexOf(note.slice(0, -1)), time / beatScaling)
     }
     else{
       OverMidiDataChecker = true;
