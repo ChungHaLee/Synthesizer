@@ -501,6 +501,7 @@ async function videoRecordingStart(){
 
     let newId = videoObject.get_newVideoId();
     videoObject.setVideo(newId, videoBlob, vidoeDuration);
+    videoDownload(videoBlob, newId, vidoeDuration);
     // 녹화 영상 생성 밑 재생
     createVideoCheckCanvas(newId, videoBlob);
 
@@ -634,7 +635,7 @@ function loadVideoClip(videoId){
   videoRecordingMode(false);
   videoDisplay(videoId);
   let videoCheckCanvas = getVideo(videoId);
-  if(videoCheckCanvas.paused){
+  if(videoCheckCanvas!=null && videoCheckCanvas.paused){
     videoCheckCanvas.play();
   }
 }
@@ -911,27 +912,34 @@ function MidiBeatMaker(track, currentTime, inputTime, beat_clip){
     MidiEventTime = 0.0;
   }
   for (let beat of currentBeat){
-    if(beat == 0){
-      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
-      console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
-      MidiEventTime = currentTime
-    }
-    else if(beat == 1){
-      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
-      console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
-      MidiEventTime = currentTime
-    }
-    else if(beat == 2){
-      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
-      console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
-      MidiEventTime = currentTime
-    }
-    else{
-      track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
-      console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
-      MidiEventTime = currentTime
-    }
-   }
+    console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
+    track.noteOn(0, midiBeatNote[beat]+"2", parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    MidiEventTime = currentTime
+    track.noteOff(0, midiBeatNote[beat]+"2", 4)
+  }
+    // if(beat == 0){
+    //   //track.addNote(0, midiBeatNote[beat]+"2", 1, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    //   console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
+    //   track.noteOn(0, midiBeatNote[beat]+"2", parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    //   MidiEventTime = currentTime
+    //   track.noteOff(0, midiBeatNote[beat]+"2", parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    // }
+    // else if(beat == 1){
+    //   track.addNote(0, midiBeatNote[beat]+"2", 1, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    //   console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
+    //   MidiEventTime = currentTime
+    // }
+    // else if(beat == 2){
+    //   track.addNote(0, midiBeatNote[beat]+"2", 1, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    //   console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
+    //   MidiEventTime = currentTime
+    // }
+    // else{
+    //   track.addNote(0, midiBeatNote[beat]+"2", 1, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
+    //   console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
+    //   MidiEventTime = currentTime
+    // }
+  //  }
 }
 
 
@@ -1424,9 +1432,9 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
      generateMidi(MusicClipType.Melody);
      generateMidi(MusicClipType.Beat);
      let [videoId, videoData, videoDuration] = videoObject.getAllData();
-     for(let i=0;i <videoId.length; i++){
-      videoDownload(videoData[i], videoId[i], videoDuration[i])
-     }
+    //  for(let i=0;i <videoId.length; i++){
+    //   videoDownload(videoData[i], videoId[i], videoDuration[i])
+    //  }
      saveLyrics();
      saveMood();
   }
@@ -2355,61 +2363,49 @@ document.getElementById("LyricsPushButton").addEventListener("click", function()
   spaceKeyOnOff = true;
 })
 function createLyricsObject(note_id, lyricsText, startTime, endTime, LyricsVideoId){
-  const boxItem = document.getElementById("LyricsBox1");
-  const lyricsNote = document.createElement("div");
-  lyricsNote.classList.add("resize-lyrics");
+  if(lyricsText != ""){
+    const boxItem = document.getElementById("LyricsBox1");
+    const lyricsNote = document.createElement("div");
+    lyricsNote.classList.add("resize-lyrics");
+    lyricsNote.style.left = time_to_px(startTime, currentClipDuration()) + "px";
+    lyricsNote.style.width = time_to_px_Scale(endTime - startTime, currentClipDuration()) + "px";
+    lyricsNote.textContent = lyricsText
+    lyricsNote.setAttribute("note_id", note_id); // clip_id 속성 추가
+    lyricsNote.setAttribute('id', note_id) // 색상 바꾸는 용도
+    lyricsNote.addEventListener("click", function(){
+      console.log("id", lyricsNote.getAttribute("note_id"));
+      noteClickIndex = lyricsNote.getAttribute("note_id");
+      document.getElementById("lyricsWord").innerHTML = lyricsNote.textContent;
+      let lyricsVideoId = melody_clip.getLyricsVideoId(lyricsNote.getAttribute("note_id"))
+      if(lyricsVideoId != -1){
+        loadVideoClip(lyricsVideoId)
+        document.getElementById('lyricsVideo').innerHTML = "수어 " + (lyricsVideoId + 1);
+      }
+      else{
+        document.getElementById('lyricsVideo').innerHTML = "연결 없음";
+      }
+    })
+    lyricsNote.addEventListener("click", function history(){
+      clickCount += 1;
+      clickedHistory.push(lyricsNote.id) // 아이디 히스토리 리스트로 넣기
+      // clickedHistory[-2] != clickedHistory[-1]
+      if (clickedHistory.length == 1){     //하나 이상 클릭했을 때
+        // console.log('히스토리', clickedHistory);
+        nowClicked = document.getElementById(clickedHistory[0]);
+        nowClicked.style.borderWidth = 'thick'
+      }
+      else if (clickedHistory.length > 1 && clickedHistory[clickedHistory.length - 1] != clickedHistory[clickedHistory.length - 2]){
+        nowClicked = document.getElementById(clickedHistory[clickedHistory.length - 1]);
+        previousClicked = document.getElementById(clickedHistory[clickedHistory.length - 2])
 
-  lyricsNote.style.left = time_to_px(startTime, currentClipDuration()) + "px";
-  lyricsNote.style.width = time_to_px_Scale(endTime - startTime, currentClipDuration()) + "px";
-  lyricsNote.textContent = lyricsText
-  lyricsNote.setAttribute("note_id", note_id); // clip_id 속성 추가
-  lyricsNote.setAttribute('id', note_id) // 색상 바꾸는 용도
-
-  
-  lyricsNote.addEventListener("click", function(){
-
-
-    console.log("id", lyricsNote.getAttribute("note_id"));
-    noteClickIndex = lyricsNote.getAttribute("note_id");
-
-
-    document.getElementById("lyricsWord").innerHTML = lyricsNote.textContent;
-    let lyricsVideoId = melody_clip.getLyricsVideoId(lyricsNote.getAttribute("note_id"))
-    if(lyricsVideoId != -1){
-      loadVideoClip(lyricsVideoId)
-      document.getElementById('lyricsVideo').innerHTML = "수어 " + (lyricsVideoId + 1);
-    }
-    else{
-      document.getElementById('lyricsVideo').innerHTML = "none";
-    }
-
-
-  })
-
-
-  lyricsNote.addEventListener("click", function history(){
-    clickCount += 1;
-    clickedHistory.push(lyricsNote.id) // 아이디 히스토리 리스트로 넣기
-
-    // clickedHistory[-2] != clickedHistory[-1]
-    if (clickedHistory.length == 1){     //하나 이상 클릭했을 때
-      // console.log('히스토리', clickedHistory);
-      nowClicked = document.getElementById(clickedHistory[0]);
-      nowClicked.style.borderWidth = 'thick'
-    }
-
-    else if (clickedHistory.length > 1 && clickedHistory[clickedHistory.length - 1] != clickedHistory[clickedHistory.length - 2]){
-      nowClicked = document.getElementById(clickedHistory[clickedHistory.length - 1]);
-      previousClicked = document.getElementById(clickedHistory[clickedHistory.length - 2])
-
-      nowClicked.style.borderWidth = 'thick'
-      previousClicked.style.borderWidth = ''
-      
-    }})
-
-
-
+        nowClicked.style.borderWidth = 'thick'
+        if(previousClicked != null){
+          previousClicked.style.borderWidth = '' 
+        }
+      }
+    })
   boxItem.appendChild(lyricsNote);
+  }
 }
 
 function showLyrics(currentTime){

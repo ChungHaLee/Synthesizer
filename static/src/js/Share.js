@@ -234,9 +234,12 @@ export class MusicClip {
   }
   deletelyric(lyricId){
     if(this.Type==MusicClipType.Melody){
-      this.lyricSet.splice(lyricId,1);
-      this.lyrictimeSet.splice(lyricId,1);
-      this.lyricsVideoId.push(lyricId,1);
+      //this.lyricSet.splice(lyricId,1);
+      //this.lyrictimeSet.splice(lyricId,1);
+      //this.lyricsVideoId.push(lyricId,1);
+      this.lyricSet[lyricId] = "";
+      this.lyrictimeSet[lyricId] = [0, 0];
+      this.lyricsVideoId[lyricId] = -1;
     }
   }
   dleteAlllyric(){
