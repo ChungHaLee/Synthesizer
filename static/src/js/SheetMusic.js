@@ -11,6 +11,9 @@ let clickCount = 0;
 let clickedHistory = [];
 
 
+let beatScaling = 1.288928572;
+
+
 let nowVideoClicked;
 let previousVideoClicked;
 let clickVideoCount = 0;
@@ -422,6 +425,18 @@ document.addEventListener('keyup', function(event) {
     case 'ArrowRight':
       console.log("right")
       document.getElementById("NextButton").click();
+      break;
+    case 'q':
+      if(event.ctrlKey){
+      alert("scale Change to 1")
+      beatScaling = 1;
+      }
+      break;
+    case 'w':
+      if(event.ctrlKey){
+        alert("scale Change to 1.288928572")
+        beatScaling = 1.288928572;
+      }
       break;
     // case "Backspace":
     //   if(current_clip_type == MusicClipType.Beat || current_clip_type == MusicClipType.Melody || current_clip_type == MusicClipType.Lyrics){
@@ -912,7 +927,8 @@ function MidiBeatMaker(track, currentTime, inputTime, beat_clip){
     MidiEventTime = 0.0;
   }
   for (let beat of currentBeat){
-    console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime)
+    console.log("beat ON",beat+1, parseInt((currentTime - MidiEventTime) * midiBPM * 2), currentTime);
+    //track.addNote(0, midiBeatNote[beat]+"2", 32, parseInt((currentTime - MidiEventTime) * midiBPM * 2))
     track.noteOn(0, midiBeatNote[beat]+"2", parseInt((currentTime - MidiEventTime) * midiBPM * 2))
     MidiEventTime = currentTime
     track.noteOff(0, midiBeatNote[beat]+"2", 4)
@@ -2269,9 +2285,9 @@ function setMidiToMelodyClip(inputLog){
 function setMidiToBeatClip(inputLog){
   let [channel, input, note, time] = inputLog
   if(input){
-    console.log("note :", note.slice(0, -1), "index :", midiBeatNote.indexOf(note.slice(0, -1)), "time:", time)
+    console.log("note :", note.slice(0, -1), "index :", midiBeatNote.indexOf(note.slice(0, -1)), "time:", time / 1.288928572)
     if(midiBeatNote.indexOf(note.slice(0, -1)) != -1){
-      beat_clip.setBeatInput(midiBeatNote.indexOf(note.slice(0, -1)), time)
+      beat_clip.setBeatInput(midiBeatNote.indexOf(note.slice(0, -1)), time / 1.288928572)
     }
     else{
       OverMidiDataChecker = true;
