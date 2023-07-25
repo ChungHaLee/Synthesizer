@@ -11,7 +11,7 @@ let clickCount = 0;
 let clickedHistory = [];
 
 
-let beatScaling = 1.288928572;
+let beatScaling = 1;
 
 
 let nowVideoClicked;
@@ -1422,7 +1422,18 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
     }
   }
   else if(current_clip_type == MusicClipType.Lyrics){
-    
+    if(melody_clip.getClipId() != Melody_clip_array.length){
+      clipDurationNormalize(current_clip_type)
+      Melody_clip_array[melody_clip.getClipId()] = melody_clip;
+      alert("가사 저장")
+      InitializeAllTrack();
+      loadTrack(TrackObject);
+      clearNoteClip(MusicClipType.Melody);
+      loadClip(melody_clip, melody_clip.getDuration());
+    }
+    else{
+      alert("자막을 연결할 멜로디가 설정되지 않았습니다.")
+    }
   }
   else if(current_clip_type == MusicClipType.Template){
     if(template_clip.get_Clip_id() == Template_clip_array.length){
@@ -2191,6 +2202,7 @@ FileInput.addEventListener('change', function(e){
           try{
             const contents = event.target.result;
             const jsonObject = JSON.parse(contents);
+            removeAllElementsByClassName("resize-lyrics");
             loadLyrics(jsonObject);
             clipDurationNormalize(MusicClipType.Melody);
             loadClip(melody_clip, melody_clip.getDuration());
