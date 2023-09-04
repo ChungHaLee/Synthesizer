@@ -191,7 +191,7 @@ div#VideoClipSettingContainer{
   /* This makes things *much* easier */
   box-sizing: border-box;
   position: absolute;
-  font-size: 18px;
+  font-size: 20px;
   margin-top: -5px;
 }
 
@@ -223,7 +223,7 @@ div#VideoClipSettingContainer{
 
 
 /* #timeLine3{
-  height: 40px;
+  height: 60px;
   position: absolute;
 } */
 
@@ -272,7 +272,7 @@ div#VideoClipSettingContainer{
   text-align: center;
   margin: 0 auto;
   color: white;
-  font-size: 17px;
+  font-size: 20px;
   line-height : 60px;
   position: absolute;
 }
@@ -294,7 +294,7 @@ div#VideoClipSettingContainer{
   display: inline-block;
   /* This makes things *much* easier */
   color: white;
-  font-size: 17px;
+  font-size: 20px;
   box-sizing: border-box;
 }
 
@@ -331,7 +331,7 @@ div#VideoClipSettingContainer{
   border: dashed 0px transparent;
   border-radius: 4px;
   padding: 0px;
-  /* width: 80%; */
+  font-size: 20px;
   transition: background-color 0.3s;
 }
 
@@ -340,7 +340,7 @@ div#VideoClipSettingContainer{
   border: dashed 0px transparent;
   border-radius: 4px;
   padding: 0px;
-  /* width: 80%; */
+  font-size: 20px;
   transition: background-color 0.3s;
 }
 .drop-active {
@@ -393,7 +393,7 @@ div#VideoClipSettingContainer{
 
 
 #melody-dropzone > div{
-   font-size: 15px;
+   font-size: 20px;
 }
 
 #melody-drop{

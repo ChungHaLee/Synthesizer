@@ -12,14 +12,14 @@ div.fixed-clip-container{
 }
 
 #startLine{
-    height: 422px;
+    height: 423px;
     position: absolute;
 }
 
 
 
 #timeLine1{
-    height: 420px;
+    height: 423px;
     position: absolute;
 }
 
@@ -33,7 +33,7 @@ div.fixed-clip-container{
 }
 #timeLine2{
     position: absolute;
-    height: 368px;
+    height: 370px;
 }
 
 

@@ -475,7 +475,7 @@ document.getElementById("recordStartButton").addEventListener("click", function(
   const intervalId = setInterval( function() {
     timeElapsed--;
     console.log(`${timeElapsed}초 뒤에 함수가 실행됩니다.`);
-    document.getElementById("videoWaitTime").innerHTML = `${timeElapsed}초 뒤에 녹화 시작.`;
+    document.getElementById("videoWaitTime").innerHTML = `Recording Starts In ${timeElapsed} Seconds.`;
     if (timeElapsed <= 0) {
       document.getElementById("videoWaitTime").innerHTML = '';
       videoRecordingStart()
@@ -717,7 +717,7 @@ function createVideoClipObject(videoCLipId){
   videoIdClip.classList.add("Video_clip");
   videoIdClip.style.width = '200px'
   videoIdClip.style.backgroundColor = getColor(videoCLipId)
-  videoIdClip.textContent = "수어_" + (videoCLipId + 1); 
+  videoIdClip.textContent = "Sign_" + (videoCLipId + 1); 
   let boxItem = document.getElementById("VideoClipContainer");
   videoIdClip.setAttribute("Video_Cilp_id", videoCLipId); // clip_id 속성 추가
   videoIdClip.setAttribute('id', "video" + videoCLipId); // 색상 바꾸는 용도
@@ -1385,7 +1385,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       createClipBox(melody_clip);
       Melody_clip_array.push(melody_clip);
       //melody_clip = new MusicClip(MusicClipType.Melody, Melody_clip_array.length, duration);
-      alert("멜로디 저장")
+      alert("Saved Melody")
       clearNoteClip(MusicClipType.Melody);
       initializeTimer();
       loadClip(melody_clip, melody_clip.getDuration());
@@ -1393,7 +1393,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
     else{
       clipDurationNormalize(current_clip_type)
       Melody_clip_array[melody_clip.getClipId()] = melody_clip;
-      alert("멜로디 다시 저장")
+      alert("Saved Melody Again")
       InitializeAllTrack();
       loadTrack(TrackObject);
       clearNoteClip(MusicClipType.Melody);
@@ -1406,7 +1406,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
       createClipBox(beat_clip);
       Beat_clip_array.push(beat_clip);
       //beat_clip = new MusicClip(MusicClipType.Beat, Beat_clip_array.length, duration);
-      alert("비트 저장");
+      alert("Saved Beat");
       clearNoteClip(MusicClipType.Beat);
       loadClip(beat_clip, beat_clip.getDuration());
       initializeTimer();
@@ -1414,7 +1414,7 @@ document.getElementById("sheetMusicSaveButton").addEventListener('click', functi
     else{
       clipDurationNormalize(current_clip_type)
       Beat_clip_array[beat_clip.getClipId()] = beat_clip;
-      alert("비트 다시 저장")
+      alert("Saved Beat Again")
       InitializeAllTrack();
       loadTrack(TrackObject);
       clearNoteClip(MusicClipType.Beat);
@@ -1674,13 +1674,13 @@ function createClipBox(musicClip) { //Melody, Beat 노트 생성
     loadFromTrackToMusicClip(dragdrop.getAttribute("clip_type"), dragdrop.getAttribute("clip_id"));
   })
   if(currenctCliptType == MusicClipType.Melody){
-    dragdrop.textContent = "멜로디 " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop.textContent = "Melody " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "melody-drop");
     let boxItem = document.getElementById("MelodydropContainer");
     boxItem.appendChild(dragdrop);
   }
   else{
-    dragdrop.textContent = "비트 " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
+    dragdrop.textContent = "Beat " + (clip_id+1); //내용이 있어야 나와서 -로 일단 임시로 추가
     dragdrop.setAttribute("id", "beat-drop");
     let boxItem = document.getElementById("BeatdropContainer");
     boxItem.appendChild(dragdrop);
@@ -1716,11 +1716,11 @@ function createTrackClipObject(dropzoneName, clipType, clip_id, duration, box_id
   trackClip.style.width = time_to_px(duration, duration_track, track_box_width, 0) + "px"
 
   if(clipType == MusicClipType.Melody){
-    trackClip.textContent = "멜로디" + (clip_id + 1); //내용이 있어야 나와서 -로 일단 임시로 추가
+    trackClip.textContent = "Melody" + (clip_id + 1); //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "melody-drop");
   }
   else{
-    trackClip.textContent = "비트" + (clip_id + 1); //내용이 있어야 나와서 -로 일단 임시로 추가
+    trackClip.textContent = "Beat" + (clip_id + 1); //내용이 있어야 나와서 -로 일단 임시로 추가
     //dragdrop.setAttribute("id", "beat-drop");
   }
   let boxItem = document.getElementById(dropzoneName);

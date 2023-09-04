@@ -14,6 +14,7 @@
     <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
     <script id="vertexShader" type="x-shader/x-vertex">
@@ -44,17 +45,17 @@
 
     <div id="DeviceConnectorContainer">
         <div id="midisoundDIV">
-            <button data-action = "open_midi_in" class="synthesizer" id="synthConnector" style="margin-left: 10px;">미디 연결</button> 
-            <button data-action = "close_midi_in" class="synthesizer">미디 해제</button> 
-            미디: <span id="midiInName">NONE</span>
-            <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 10px; margin-top: 10px;">햅틱 연결</button> 
-            <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px; margin-top: 10px;">햅틱 해제</button> 
+            <button data-action = "open_midi_in" class="synthesizer" id="synthConnector" style="margin-left: 10px; font-size: 18px;">Connect Synthesizer</button> 
+            <button data-action = "close_midi_in" class="synthesizer" style="display: none;">미디 해제</button> 
+            <span id="midiInName" style="display: none;">NONE</span>
+            <button data-action = "SearchHapticDevice" class="haptic" style="margin-left: 10px; margin-top: 10px; font-size: 18px;">Connect Haptic Device</button> 
+            <button data-action = "DisconnectHapticDevice" class="haptic" style="margin-bottom: 10px; margin-right: 20px; margin-top: 10px; display: none;">햅틱 해제</button> 
 
         </div>
 
 
         <div id="hapticsoundDIV">
-            <h4 style="margin-top: -3px; margin-bottom: 10px; font-size: 20px;"> 진동 메뉴 </h4>
+            <h4 style="margin-top: -3px; margin-bottom: 10px; font-size: 20px;"> Vibration Intensity </h4>
             <button data-action = "HapticPatternPlayButton1" id="HapticPlayButton1" style="display: none">Play1</button>
             <button data-action = "HapticPatternPlayButton2" id="HapticPlayButton2" style="display: none">Play2</button>
             <button data-action = "HapticPatternPlayButton3" id="HapticPlayButton3" style="display: none">Play3</button>
@@ -77,13 +78,14 @@
 
 
         <div id="bpmsoundDIV">
-            <h4 style="margin-top: 9px; margin-bottom: -9px; font-size: 20px;"> 박자 메뉴 </h4>
+            <h4 style="margin-top: 9px; margin-bottom: -9px; font-size: 20px;"> Tempo </h4>
             <div class="button r" id="button-bpm">
                 <input type="checkbox" class="checkbox" id="BPMType"  unchecked>
                 <div class="knobs"></div>
                 <div class="layer"></div>
             </div>
             <input type="number" id="bpm" value="120" min="0" max="1000" step ="1">BPM</input>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <select name="beatSelect" id="beatSelect" style="width: 70px; height: 45px; font:13px">
                 <option value="4">4/4</option>
                 <option value="3">3/4</option>
@@ -95,7 +97,7 @@
     <div id="shape-canvas">
 
     </div>    
-    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: -5px; margin-left: 40px;">가사를 여기에 입력해주세요</div>
+    <div class="lyrics-displayer" id="lyricsDisplay" style="margin-top: -5px; margin-left: 40px;">Your Lyrics Goes Here</div>
     
 
      <div id ="ClipSettingController" style="display:none;">
@@ -108,25 +110,25 @@
     </div>
     <div class="fixed-track-container" id="trackContainer" style="margin-top: -610px; margin-left: 1010px; display:none;">
         <br>
-        <h5 id = "trackText" style="font-size: 25px; margin: 10px; text-align: center;"> 음악의 트랙 </h5>
+        <h5 id = "trackText" style="font-size: 25px; margin: 10px; text-align: center;"> Tracks </h5>
         <input type="number" name="age" id="trackduration" min="30" max="6000" step="1" value="80" style="font-size: 20px; margin-left: 80px; display:none">
         <button class="timeShower"id="trackTimeShower" style="margin-left: 10px; font-size: 18px;">0.0</button>
             
-        <button class="trackMusicButton"id="trackMusicPlayButton" style="font-size: 20px;"> 재생 </button>
-        <button class="trackMusicButton"id="trackMusicPauseButton" style="font-size: 20px;"> 정지 </button>
-        <button class="trackMusicButton"id="trackMusicDeleteButton" style="font-size: 20px;"> 클립 삭제 </button>
-        <button class="trackMusicButton"id="trackClipCreateButton" style="font-size: 20px;"> 새 클립 </button>
+        <button class="trackMusicButton"id="trackMusicPlayButton" style="font-size: 20px;"> Play </button>
+        <button class="trackMusicButton"id="trackMusicPauseButton" style="font-size: 20px;"> Pause </button>
+        <button class="trackMusicButton"id="trackMusicDeleteButton" style="font-size: 20px;"> Delete </button>
+        <button class="trackMusicButton"id="trackClipCreateButton" style="font-size: 20px;"> New Clip </button>
         <br>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
-        <div class="vertical-line" id="timeLine3" style="background-color:green; left:0px; top:130px; height: 39%"></div>
+        <div class="vertical-line" id="timeLine3" style="background-color:green; left:4px; top:140px; height: 39%"></div>
         <div class="grid-container" id="TrackContainer" style="margin-top: 30px">
             <div id="dropzoneGroup">
                 <p style="font-size: 20px; margin: 1px; display: none;"> 음악 효과 </p>
                 <div id="template-dropzone" class="template-dropzone" style="width: 700px; height: 70px; display: none;"></div>
-                <p style="font-size: 20px; margin: 1px;"> 멜로디 </p>
+                <p style="font-size: 23px; margin: 1px;"> Melody </p>
                 <div id="melody-dropzone" class="melody-dropzone" style="width: 700px; height: 70px"></div>
-                <p style="font-size: 20px; margin: 1px;"> 비트 </p>
+                <p style="font-size: 23px; margin: 1px;"> Beat </p>
                 <div id="beat-dropzone" class="beat-dropzone" style="width: 700px; height: 70px"></div>
             </div>
             <div id="TemplatedropContainer"style="width: 700px; height: 30px;">
@@ -147,15 +149,15 @@
 
     <!-- 무드 설정에서 오른쪽 화면에 추가할 내용! -->
     <div class="fixed-track-container" id="moodContainer" style="margin-top: -610px; margin-left: 1010px;">
-        <h5 style="font-size: 25px; margin-top: 40px; text-align: center;"> 음악의 분위기를 배경으로 표현해보세요 </h5>
-        <button class="themaButton" id="thema_blur">블러</button>
-        <button class="themaButton" id="thema_fog">흐름</button>
+        <h5 style="font-size: 25px; margin-top: 40px; text-align: center;"> Express Music’s Mood By Clicking Effects Below </h5>
+        <button class="themaButton" id="thema_blur">Blur Effect</button>
+        <button class="themaButton" id="thema_fog">Flow Effect</button>
         <br>
-        <button class="themaButton" id="thema_halo">일렁임</button>
-        <button class="themaButton" id="thema_clouds">구름</button> 
+        <button class="themaButton" id="thema_halo">Halo Effect</button>
+        <button class="themaButton" id="thema_clouds">Cloud Effect</button> 
         <br>
-        <button class="themaButton" id="thema_cells">버블</button>
-        <button class="themaButton" id="thema_none">기본</button>
+        <button class="themaButton" id="thema_cells">Bubble Effect</button>
+        <button class="themaButton" id="thema_none">Basic</button>
     
     
     </div>
@@ -177,57 +179,57 @@
     <div id = "clipEditContainer" class="fixed-clip-container">
         <div id = 'sheetMusicController'style="display:none">
             <button class="timeShower"id="clipTimeShower" style="margin-left: 60px; font-size: 18px;">0.0</button>
-            <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px; font-size: 18px;"> 클립 재생 </button>
-            <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px; font-size: 18px;"> 클립 정지 </button>
-            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 30px; margin-right: 40px; font-size: 18px;"> 노트 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 30px; font-size: 18px;"> 전체 삭제 </button>
-            <button class="sheetMusicButton"id="sheetMusicLoadButton" style="margin-right: 30px; font-size: 18px;"> 불러오기 </button>
+            <button class="sheetMusicButton"id="sheetMusicPlayButton" style="margin-left: 90px; font-size: 18px;"> Play </button>
+            <button class="sheetMusicButton"id="sheetMusicPauseButton" style="margin-left: 30px; font-size: 18px;"> Pause </button>
+            <button class="sheetMusicButton"id="sheetMusicDeleteButton" style="margin-left: 30px; margin-right: 40px; font-size: 18px;"> Delete Note </button>
+            <button class="sheetMusicButton"id="sheetMusicAllDeleteButton" style="margin-right: 30px; font-size: 18px;"> Delete All </button>
+            <button class="sheetMusicButton"id="sheetMusicLoadButton" style="margin-right: 30px; font-size: 18px;"> Import Clip </button>
             <div id="slider" style="width: 1730px; height: 20px; margin-left: 48px; margin-top: 10px; left:30px; font-size: 18px;"></div>
         </div>
 
         <div class="grid-container" id="ThemaContainer">
-            <button class="MoodLoadButton" id="MoodLoadButtonMood" style="margin-right: 30px; font-size: 18px;"> 불러오기 </button>
+            <button class="MoodLoadButton" id="MoodLoadButtonMood" style="margin-right: 30px; font-size: 22px;"> Import Mood </button>
             <div class="moodCustomMenu">
                 <!-- <h4>색상 메뉴</h4> -->
-                <div id="bgColorDIV" style="margin-top: 30px;"> <input class="coloris" id="backgroundColorID" type="text" data-coloris> <button class="colorText" id="backgroundColorSaveButton"> 적용 </button></div>
+                <div id="bgColorDIV" style="margin-top: 30px;"> <input class="coloris" id="backgroundColorID" type="text" data-coloris> <button class="colorText" id="backgroundColorSaveButton"> <i class="fa fa-check"></i></button></div>
                 <br>
-                <div id="objColor1DIV" style="margin-top: -90px; margin-left: 120px;"> <input class="coloris" id="objectColor1ID" type="text" data-coloris> <button class="colorText" id="objectColor1SaveButton"> 적용 </button></div>
+                <div id="objColor1DIV" style="margin-top: -90px; margin-left: 120px;"> <input class="coloris" id="objectColor1ID" type="text" data-coloris> <button class="colorText" id="objectColor1SaveButton"> <i class="fa fa-check"></i> </button></div>
             </div>
             <div class="moodCustomMenuAssistive">
                 <!-- <h4>요소 추가</h4> -->
-                <div class="assistiveDIV" id="speedDIV" style="margin-top: 30px;"> 빠르기 <input class="moodClass" id="speedID" type="range" min="0" max="30" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="speedDIV" style="margin-top: 30px;"> Speed <input class="moodClass" id="speedID" type="range" min="0" max="30" value="8" step="1"> <button class="assistiveText" id="speedSaveButton"> <i class="fa fa-check"></i> </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="zoomDIV"> 복잡도 <input class="moodClass" id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="zoomDIV"> Density <input class="moodClass" id="zoomID" type="range" min="0.1" max="8" value="2" step="0.1"> <button class="assistiveText" id="zoomSaveButton"> <i class="fa fa-check"></i> </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="sizeDIV" style="margin-top: -90px; display: none;"> 크기 <input class="moodClass" id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="sizeDIV" style="margin-top: -90px; display: none;"> Size <input class="moodClass" id="sizeID" type="range" min="0.1" max="5" value="2" step="0.1"> <button class="assistiveText" id="sizeSaveButton"> <i class="fa fa-check"></i> </button> </div>
                 <br><br>
-                <div class="assistiveDIV" id="velocityDIV" style="margin-top: -150px; display: none;"> 빠르기 <input class="moodClass" id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> 적용 </button> </div>
+                <div class="assistiveDIV" id="velocityDIV" style="margin-top: -150px; display: none;"> Speed <input class="moodClass" id="velocityID" type="range" min="0" max="6" value="1" step="0.1"> <button class="assistiveText" id="velocitySaveButton"> <i class="fa fa-check"></i> </button> </div>
             </div>
         </div>   
 
         <div class="grid-container" id="MelodyContainer" style="display:none">
             <div id="lyricsInputContainer" style=" margin-left: 1050px; margin-top: -60px; position: absolute; ">
-               가사:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
-                <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:80px; height:35px; margin-top: -10px; margin-bottom: -70px;"> 추가 </button>
+               Lyrics:  <input type="text" id="lyricsInputer" size=30 style="width: 600px; height:30px" style="font-size: 17px;">
+                <button class="sheetMusicLyricsButton"id="LyricsPushButton"style="width:80px; height:35px; margin-top: -10px; margin-bottom: -70px; font-size: 18px;"> Enter </button>
             </div>
             <div id = "timeLineContainer">
-                <div class="vertical-line" id="startLine", style=" margin-top:0px; left:0px; margin-left: 80px; "></div>
+                <div class="vertical-line" id="startLine", style=" margin-top:0px; left:0px; margin-left: 80px;"></div>
                 <div class="vertical-line" id="timeLine1" style="background-color:green; margin-top:0px; left:0px; margin-left: 80px; "></div> 
             </div>
-            <div class="grid-item" id="LyricsBox1" style="height:20px; font-size: 18px;">가사</div>
+            <div class="grid-item" id="LyricsBox1" style="height:20px; font-size: 18px;">Lyrics</div>
             <div id = "noteBoxContainer">
-                <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">시  </div>
-                <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">라# </div>
-                <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">라 </div>
-                <div class="grid-item" id="box_G#" style="background-color: rgb(157, 183, 255);">솔# </div>
-                <div class="grid-item" id="box_G" style="background-color: rgb(119, 230, 255);;">솔 </div>
-                <div class="grid-item" id="box_F#" style="background-color: rgb(118, 255, 246);">파# </div>
-                <div class="grid-item" id="box_F" style="background-color: rgb(165, 255, 156);">파 </div>
-                <div class="grid-item" id="box_E" style="background-color: rgb(250, 255, 147);">미 </div>
-                <div class="grid-item" id="box_D#" style="background-color: rgb(255, 234, 141);">레#</div>
-                <div class="grid-item" id="box_D" style="background-color: #ffc691;">레</div>
-                <div class="grid-item" id="box_C#" style="background-color: rgb(255, 172, 160);">도# </div>
-                <div class="grid-item" id="box_C" style="background-color: rgb(255, 150, 150);">도 </div>
+                <div class="grid-item" id="box_B" style="background-color: rgb(255, 148, 214);">Si  </div>
+                <div class="grid-item" id="box_A#" style="background-color: rgb(255, 145, 246);">La# </div>
+                <div class="grid-item" id="box_A" style="background-color: rgb(196, 145, 255);">La </div>
+                <div class="grid-item" id="box_G#" style="background-color: rgb(157, 183, 255);">Sol# </div>
+                <div class="grid-item" id="box_G" style="background-color: rgb(119, 230, 255);;">Sol </div>
+                <div class="grid-item" id="box_F#" style="background-color: rgb(118, 255, 246);">Fa# </div>
+                <div class="grid-item" id="box_F" style="background-color: rgb(165, 255, 156);">Fa </div>
+                <div class="grid-item" id="box_E" style="background-color: rgb(250, 255, 147);">Mi </div>
+                <div class="grid-item" id="box_D#" style="background-color: rgb(255, 234, 141);">Re#</div>
+                <div class="grid-item" id="box_D" style="background-color: #ffc691;">Re</div>
+                <div class="grid-item" id="box_C#" style="background-color: rgb(255, 172, 160);">Do# </div>
+                <div class="grid-item" id="box_C" style="background-color: rgb(255, 150, 150);">Do </div>
             </div>
             <div class = "vertical-grid-container"  id = "Melody-VerticalGrid" style="height: 395px; margin-top: -395px;"></div>
 
@@ -239,15 +241,15 @@
                 <div id = "videoCheckContainer" style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none; position: absolute;">
                     <!-- <video id="videoCheckCanvas" controls style="width: 550px; height: 350px; margin-left: -30px; margin-top: -30px; display:none; transform:rotateY(180deg); -webkit-transform:rotateY(180deg); -moz-transform:rotateY(180deg);" ></video> -->
                 </div>
-                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; height:30px;  margin-top: -35px; margin-left: 720px; ">
-                    <button class="videoButton" id="recordStartButton">녹화 시작</button>
-                    <button class="videoButton" id="recordStopButton">녹화 종료</button>
+                <div class="videoClipBox" id = "VideoClipSettingContainer" style="position: absolute; height:30px;  margin-top: -35px; margin-left: 800px; ">
+                    <button class="videoButton" id="recordStartButton">Record</button>
+                    <button class="videoButton" id="recordStopButton">Save</button>
                     
                     <div id="videolyricpair">
-                        <span id="lyricsWord">선택 가사</span>
+                        <span id="lyricsWord">Clicked Sign</span>
                         -
                         <span id="lyricsVideo">NONE</span> 
-                        <button id="lyricsSettingButton" style="position: absolute; width:120px; height:38px; font-size: 17px; margin-left: 30px; margin-top: -10px; float: right;">수어 영상 저장</button>
+                        <button id="lyricsSettingButton" style="position: absolute; width:120px; height:38px; font-size: 22px; margin-left: 30px; margin-top: -10px; float: right;">Connect</button>
                     </div>
                 </div>
                 <div class="videoClipBox" id = "VideoClipContainer" style="position: absolute; height:280px; margin-top:25px; margin-left: 530px;">
@@ -261,11 +263,11 @@
         <!-- 여기는 비트 부분입니다.. 아마 2번 씬은 여기 부분을 조절해서 할꺼라서 display:none이라 크게 신경 안써도 괜찮을꺼 같습니다 -->
         <div class="grid-container" id="BeatContainer" style="display:none">
             <div class="vertical-line" id="startLine2", style="margin-top:0px; margin-left: 80px; "></div>
-            <div class="vertical-line" id="timeLine2" style="background-color:green; margin-top:0px; margin-left: 80px; "></div>
-            <div class="grid-item" id="box_0" style="height:80px; background-color: #FFFFFF;"> 비트1 </div>
-            <div class="grid-item" id="box_1" style="height:80px; background-color: #929292;"> 비트2 </div>
-            <div class="grid-item" id="box_2" style="height:80px; background-color: #727272;"> 비트3 </div>
-            <div class="grid-item" id="box_3" style="height:80px; background-color: #d6d6d6;"> 비트4 </div>
+            <div class="vertical-line" id="timeLine2" style="background-color:green; margin-top:0px; margin-left: 80px;"></div>
+            <div class="grid-item" id="box_0" style="height:80px; background-color: #727272;"> Beat1 </div>
+            <div class="grid-item" id="box_1" style="height:80px; background-color: #929292;"> Beat2 </div>
+            <div class="grid-item" id="box_2" style="height:80px; background-color: #d6d6d6;"> Beat3 </div>
+            <div class="grid-item" id="box_3" style="height:80px; background-color: #e7e7e7;"> Beat4 </div>
             <div class = "vertical-grid-container" id = "Beat-VerticalGrid">
 
             </div>
@@ -449,7 +451,7 @@
     <script type="module" defer src="./static/src/js/dist/vantavisual.js"></script>
     <script type="module" defer src="./static/src/js/dist/vantaassistive.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/tunajs/1.0.1/tuna.js"></script>
     

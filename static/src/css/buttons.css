@@ -22,6 +22,15 @@ button#trackMusicPlayButton{
   background-image: linear-gradient(144deg,#ff4099, #f37442 50%,#ebcc00);
 }
 
+button#trackMusicPauseButton{
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+}
+
+button#trackClipCreateButton{
+  background: #04AA6D;
+
+}
+
  div#videolyricpair{
   margin-left: 50px;
   margin-top: -30px;
@@ -112,7 +121,7 @@ button#trackMusicPlayButton{
     margin-top: 10px;
     margin-bottom: -10px;
     align-items: center;
-    background-image: linear-gradient(144deg,#585858, #363442 50%,#bebebe);
+    background-color: black;
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
     border: 0;
     border-radius: 4px;
@@ -121,14 +130,14 @@ button#trackMusicPlayButton{
     color: #FFFFFF;
     font-size: 14px;
     justify-content: center;
-    width: 80px;
+    width: 120px;
     height: 35px;
     cursor: pointer;
   }
   
   #sheetMusicDeleteButton:active,
   #sheetMusicDeleteButton:hover {
-    background-image: linear-gradient(144deg,#282828, #5b5b5b 50%,#2c2c2c);
+    background-color: rgb(220, 56, 56);
     outline: 0;
   }
 
@@ -138,7 +147,7 @@ button#trackMusicPlayButton{
     margin-top: 10px;
     margin-bottom: -10px;
     align-items: center;
-    background-image: linear-gradient(144deg,#000000, #1e1e1e 50%,#5a5a5a);
+    background-color: black;
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
     border: 0;
     border-radius: 4px;
@@ -147,14 +156,14 @@ button#trackMusicPlayButton{
     color: #FFFFFF;
     font-size: 14px;
     justify-content: center;
-    width: 80px;
+    width: 120px;
     height: 35px;
     cursor: pointer;
   }
   
   #sheetMusicAllDeleteButton:active,
   #sheetMusicAllDeleteButton:hover {
-    background-image: linear-gradient(144deg,#530000, #540000 50%,#232323);
+    background-color: rgb(207, 0, 0);
     outline: 0;
   }
 
@@ -162,26 +171,26 @@ button#trackMusicPlayButton{
     margin-top: 10px;
     margin-bottom: -10px;
     align-items: center;
-    background-image: linear-gradient(144deg,#00a524, #02f516 50%,#cdffc3);
+    background-color: rgb(66, 198, 0);
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
     border: 0;
     border-radius: 4px;
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
     box-sizing: border-box;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 16px;
     justify-content: center;
-    width: 80px;
+    width: 120px;
     height: 35px;
     cursor: pointer;
   }
   
-  #sheetMusicLoadButton:active,
+  /* #sheetMusicLoadButton:active,
   #sheetMusicLoadButton:hover {
-    background-image: linear-gradient(144deg,#282828, #5b5b5b 50%,#2c2c2c);
+    background: black;
     outline: 0;
   }
-
+ */
 
   #MoodLoadButtonMood {
     margin-top: 150px;
@@ -197,7 +206,7 @@ button#trackMusicPlayButton{
     color: #FFFFFF;
     font-size: 17px;
     justify-content: center;
-    width: 100px;
+    width: 120px;
     height: 80px;
     cursor: pointer;
     position:absolute;
@@ -205,7 +214,7 @@ button#trackMusicPlayButton{
   
   #MoodLoadButtonMood:active,
   #MoodLoadButtonMood:hover {
-    background-image: linear-gradient(144deg,#282828, #5b5b5b 50%,#2c2c2c);
+    background-image: linear-gradient(144deg,#eb9500, #d96500 50%,#ecc500);
     outline: 0;
   }
 
@@ -216,7 +225,7 @@ button#trackMusicPlayButton{
     margin-left: -190px;
     /* margin-bottom: -10px; */
     align-items: center;
-    background-image: linear-gradient(144deg,#d40000, #e24405 50%,#c8ae00);
+    background: rgb(199, 0, 0);
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
     border: 0;
     border-radius: 4px;
@@ -230,19 +239,19 @@ button#trackMusicPlayButton{
     cursor: pointer;
   }
 
-  #recordStartButton:active,
+  /* #recordStartButton:active,
   #recordStartButton:hover {
     background-image: linear-gradient(144deg,#ff0c0c, #6c1f00 50%,#cfb406);
     outline: 0;
-  }
+  } */
 
   #recordStopButton {
     margin-top: -120px;
     margin-left: 5px;
     margin-right: 10px;
-    /* margin-bottom: -10px; */
+
     align-items: center;
-    background-image: linear-gradient(144deg,#19191a, #656565 50%,#cecece);
+    background: rgb(0, 0, 163);
     box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
     border: 0;
     border-radius: 4px;
@@ -256,11 +265,11 @@ button#trackMusicPlayButton{
     cursor: pointer;
   }
   
-  #recordStopButton:active,
+  /* #recordStopButton:active,
   #recordStopButton:hover {
     background-image: linear-gradient(144deg,#000000, #272727 50%,#ffffff);
     outline: 0;
-  }
+  } */
 
 
   /* #sheetMusicRecordButton {
@@ -302,7 +311,7 @@ button#trackMusicPlayButton{
     font-size: 16px;
     justify-content: center;
     margin-left: 5px;
-    width: 100px;
+    width: 250px;
     height: 30px;
     cursor: pointer;
 
@@ -328,7 +337,7 @@ button#trackMusicPlayButton{
     font-size: 16px;
     justify-content: center;
     margin-left: 4px;
-    width: 100px;
+    width: 250px;
     height: 30px;
     cursor: pointer;
     font-size: 16px;
@@ -378,8 +387,10 @@ button#trackMusicPlayButton{
 
 .Video_clip{
   font-size: 21px;
+  text-align:center;
   margin-bottom: 3px;
 }
+
 .videoSelectButton{
 
     align-items: center;
@@ -519,7 +530,7 @@ button#trackMusicPlayButton{
 
 
 #button-haptic .knobs:before {
-  content: "비트";
+  content: "Beat";
   position: absolute;
   top: 6px;
   left: 6px;
@@ -543,7 +554,7 @@ button#trackMusicPlayButton{
 
 #button-haptic .checkbox:checked + .knobs:before {
   justify-content: center;
-  content: "박자";
+  content: "Time";
 
   left: 65px;
   background-color: #f44336;
@@ -652,7 +663,7 @@ button#trackMusicPlayButton{
 
 #lyricsSettingButton{
   align-items: center;
-  background-image: linear-gradient(144deg,#d4c200, #e24405 50%,#c8ae00);
+  background-color: #fc5b1b;
   box-shadow: -5px -5px 9px rgba(255,255,255,0.45), 5px 5px 9px rgba(94,104,121,0.3);
   border: 0;
   border-radius: 4px;
