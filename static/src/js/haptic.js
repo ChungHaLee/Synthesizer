@@ -298,7 +298,7 @@ document
         if (isVibrating) {
             clearTimeout(timer);
         }
-        SendHapticData(200, amp*2);
+        SendHapticData(195, amp*2);
         isVibrating = true;
         timer = setTimeout(function() {
             SendHapticData(0, 0);    
@@ -313,7 +313,7 @@ document
         if (isVibrating) {
             clearTimeout(timer);
         }
-        SendHapticData(250, amp*2);
+        SendHapticData(254, amp*2);
         isVibrating = true;
         timer = setTimeout(function() {
             SendHapticData(0, 0);    
@@ -328,7 +328,7 @@ document
         if (isVibrating) {
             clearTimeout(timer);
         }
-        SendHapticData(300, amp*2);
+        SendHapticData(330, amp*2);
         isVibrating = true;
         timer = setTimeout(function() {
             SendHapticData(0, 0);    
