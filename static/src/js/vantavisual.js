@@ -125,9 +125,9 @@ blur = VANTA.FOG({
   minWidth: 960.00,
   highlightColor: 0xffffff,
 
-  midtoneColor: '#fac4c4',
-  lowlightColor: '#fac4c4',
-  baseColor: '#8828ff',
+  midtoneColor: '#CFF26A',
+  lowlightColor: '#60B1F1',
+  baseColor: '#60F17A',
   blurFactor: 0.90,
   speed: 2.50,
   zoom: 2.00

@@ -311,7 +311,7 @@ button#trackClipCreateButton{
     font-size: 16px;
     justify-content: center;
     margin-left: 5px;
-    width: 250px;
+    width: 150px;
     height: 30px;
     cursor: pointer;
 
@@ -337,7 +337,7 @@ button#trackClipCreateButton{
     font-size: 16px;
     justify-content: center;
     margin-left: 4px;
-    width: 250px;
+    width: 150px;
     height: 30px;
     cursor: pointer;
     font-size: 16px;
