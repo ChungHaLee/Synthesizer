@@ -118,6 +118,7 @@
         <button class="trackMusicButton"id="trackMusicPauseButton" style="font-size: 20px;"> Pause </button>
         <button class="trackMusicButton"id="trackMusicDeleteButton" style="font-size: 20px;"> Delete </button>
         <button class="trackMusicButton"id="trackClipCreateButton" style="font-size: 20px;"> New Clip </button>
+        <button class="trackMusicButton"id="displayUploadButton" style="font-size: 20px; display: none;"> Upload </button>
         <br>
         <input type="file" id="fileUpload" multiple ='multiple' style="display:none"/>
         <div id="slider_track" style="width: 700px; height: 15px;"></div>
@@ -141,9 +142,8 @@
                 <!-- <div id="yes-drop" class="drag-drop"> Test 5 </div> -->
             </div>
         </div>
-        <div id="videoCheckContainer2" controls style="width: 750px; height: 510px; margin-left: 60px; margin-top: 10px; display:none;" ></div>
     </div>
-
+    <div id="videoCheckContainer2" controls style="width: 375px; height: 255px; margin-left: 842px; margin-top: -280px; display:none; z-index: 5; position: absolute;" ></div>
 
 
 
@@ -457,6 +457,8 @@
     
     <script src="https://cdn.jsdelivr.net/npm/jzz"></script>
     <script src="https://cdn.jsdelivr.net/npm/jzz-midi-smf"></script>
+
+    <script src="https://apis.google.com/js/api.js"></script>
 
 </body>
 </html>

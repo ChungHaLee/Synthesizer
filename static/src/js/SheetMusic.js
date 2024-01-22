@@ -81,7 +81,6 @@ document.getElementById("beatSelect").style.marginTop = '-10px';
 
 
 
-
 //---------------------------무드 데이터 수집용-------------------------//
 
 const MoodList = ["blur", "cloud", "fog", "halo", "cells","none"]
@@ -336,30 +335,38 @@ function totalTypeSceneChanger(){
     document.getElementById("TrackContainer").style.display = 'none';
     document.getElementById("clipEditContainer").style.display = 'none';
     document.getElementById("videoCheckContainer2").style.display = 'block';
+    document.getElementById("videoCheckContainer2").style.zIndex = '5';
 
+    document.getElementById("videoCheckContainer").style.display = 'none';
 
-    document.getElementById("shape-canvas").style.width = '960px';
+    document.getElementById("shape-canvas").style.width = '1000px';
     document.getElementById("shape-canvas").style.height = '580px';
     document.getElementById("shape-canvas").style.marginTop = '300px'
+    document.getElementById("shape-canvas").style.marginLeft = '200px'
+    document.getElementById("shape-canvas").style.zIndex = '3'
+  
+    document.getElementById("lyricsDisplay").style.marginLeft = '240px'
 
-    document.getElementById("trackContainer").style.width = '900px'
-    document.getElementById("trackContainer").style.height = '620px'
+    document.getElementById("trackContainer").style.width = '1200px'
+    document.getElementById("trackContainer").style.height = '780px'
+    document.getElementById("trackContainer").style.position='absolute'
+    document.getElementById("trackContainer").style.marginLeft='110px'
 
-    document.getElementById("trackContainer").style.marginTop = '-620px'
+    document.getElementById("trackContainer").style.marginTop = '-750px'
     document.getElementById("slider_track").style.width = '720px';
-    document.getElementById("slider_track").style.marginLeft = '70px';
-    document.getElementById('trackMusicPlayButton').style.marginLeft = '580px';
+    document.getElementById("slider_track").style.marginLeft = '250px';
+    document.getElementById('trackMusicPlayButton').style.marginLeft = '700px';
     document.getElementById('trackMusicDeleteButton').style.display = 'none';
     document.getElementById('trackClipCreateButton').style.display = 'none';
 
-
+    document.getElementById('displayUploadButton').style.display = 'block';
+    document.getElementById('displayUploadButton').style.marginTop = '-50px';
+    document.getElementById('displayUploadButton').style.marginLeft = '1050px';
+    
     document.getElementById('sheetMusicSaveButton').style.marginBottom = '-400px;'
 
     videoCheckContainerBox = document.getElementById("videoCheckContainer2");
-    // videoCheckCanvas.style.width = '750px';
-    // videoCheckCanvas.style.height = '510px';
-    // videoCheckCanvas.style.marginTop = '10px';
-    // videoCheckCanvas.style.marginLeft = '60px';
+    displayMediaRecorderActivate() // 화면 공유 권한을 미리 부여
   }
 }
 /*------------------------------단축키 코드 관련 코드--------------------------------*/
@@ -577,14 +584,15 @@ function createVideoCheckCanvas2(videoId, blob) {
   // Apply the attributes and styles
   video.setAttribute('id', videoId);
   video.setAttribute('controls', '');
-  video.style.width = '750px';
-  video.style.height = '510px';
+  video.style.width = '375px';
+  video.style.height = '255px';
   //video.style.marginLeft = '-30px';
   //video.style.marginTop = '-30px';
   video.style.transform = 'rotateY(180deg)';
   video.style.webkitTransform = 'rotateY(180deg)';
   video.style.mozTransform = 'rotateY(180deg)';
-  
+  video.style.display ='none'
+
   // Create a URL for the blob
   var url = URL.createObjectURL(blob);
   // Set the source of the video element
@@ -1751,19 +1759,19 @@ function createTrackClipObject_template(dropzoneName, clip_id, box_id){
     trackClickType = trackClip.getAttribute("box_type");
   })
   boxItem.appendChild(trackClip);
-  return px_to_time_Scale(trackClip.offsetLeft, duration_track, track_box_width, 0)
+  return px_to_time_Scale(trackClip.offsetLeft, duration_track, track_box_width, 0);
 }
 
 //clip 정보를 가져오는 코드
 function get_clip(clipType, clip_id){
   if(clipType == MusicClipType.Melody){
     console.log("get Clip data", Melody_clip_array[clip_id]);
-    return Melody_clip_array[clip_id]
+    return Melody_clip_array[clip_id];
     //dragdrop.setAttribute("id", "melody-drop");
   }
   else{
     console.log("get Clip data", Beat_clip_array[clip_id]);
-    return Beat_clip_array[clip_id]
+    return Beat_clip_array[clip_id];
     //dragdrop.setAttribute("id", "beat-drop");
   }
 }
@@ -1775,7 +1783,7 @@ $("#slider_track").slider({ //Timer 슬라이더2
   step: 0.1,
   slide: function( event, ui ) {
     timeLine3.style.left = (ui.value) + "px";
-    currentTrackTime = px_to_time(ui.value, duration_track, track_box_width, 0)
+    currentTrackTime = px_to_time(ui.value, duration_track, track_box_width, 0);
     document.getElementById("trackTimeShower").innerHTML = getTimeString(currentTrackTime);
     //console.log("Track Time", currentTrackTime)
   }
@@ -1814,7 +1822,7 @@ function updateTime2() { //시간에 따라 업데이트 해야하는 함수들
           clearNoteClip(MusicClipType.Beat);
           loadClip(beat_clip, beat_clip.getDuration());
         }
-        ClipUpdateTimeControl(currentTrackTime - cur_track_set[2][0])
+        ClipUpdateTimeControl(currentTrackTime - cur_track_set[2][0]);
       }
     }
     if(currentTrackTime >= duration_track){
@@ -1843,7 +1851,7 @@ function musicPlayerBeatClip(currentTime, beat_clip){  //음이나 비트 소리
 function templatePlayerClip(inputClip){
   if(inputClip.get_Clip_id() != previousDial_ID){
     //console.log("id", inputClip.get_Clip_id())
-    template_clip = inputClip
+    template_clip = inputClip;
     templateConnectToVisualAndSound(inputClip);
      previousDial_ID = inputClip.get_Clip_id();
   }
@@ -1874,8 +1882,8 @@ document.getElementById("trackMusicDeleteButton").addEventListener('click', func
 })
 function loadTrack(MusicTrack){ // Track을 편집기에 반영
   // const [TemplateId, TemplateTimeset] = MusicTrack.getTemplateSet()
-  const [MelodyClipId, MelodyTimeset] = MusicTrack.getMelodySet()
-  const [BeatClipId, BeatTimeset] = MusicTrack.getBeatSet()
+  const [MelodyClipId, MelodyTimeset] = MusicTrack.getMelodySet();
+  const [BeatClipId, BeatTimeset] = MusicTrack.getBeatSet();
   // for(let i=0; i<TemplateId.length; i++){
   //   createTrackClipObject_template('template-dropzone', TemplateId[i], i);
   // }
@@ -2964,3 +2972,138 @@ interact('.draggable_clip')
     target.setAttribute('data-x', x)
     target.setAttribute('data-y', y)
   }
+
+  //---------------------------화면 녹화용 코드 부분-------------------------------//
+
+let recordedChunks = [];
+let displayMediaRecorder;
+let videoFile;
+
+async  function displayMediaRecorderActivate(){
+  try {
+  const stream = await navigator.mediaDevices.getDisplayMedia({
+    video: true,
+    audio: true
+  });
+  displayMediaRecorder = new MediaRecorder(stream);
+  } catch (error) {
+    console.error('Error: ', error);
+  }
+}
+
+document.getElementById("trackMusicPlayButton").addEventListener("click", async () => {
+  if (current_clip_type == MusicClipType.Total) {
+      displayMediaRecorder.ondataavailable = event => {
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      displayMediaRecorder.start();
+      document.getElementById("trackMusicPauseButton").disabled = false;
+  }
+});
+
+document.getElementById("trackMusicPauseButton").addEventListener("click", () => {
+  if (current_clip_type == MusicClipType.Total && displayMediaRecorder) {
+    displayMediaRecorder.stop();
+    displayMediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, {
+        type: "video/webm"
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      a.href = url;
+      a.download = "recording.webm";
+      a.click();
+      window.URL.revokeObjectURL(url);
+      recordedChunks = [];
+    };
+    document.getElementById("trackMusicPauseButton").disabled = true;
+    const blob = new Blob(recordedChunks, { type: "video/webm" });
+    videoFile = new File([blob], "my_video.webm", { type: "video/webm" });
+  }
+});
+// function uploadVideo(videoFile, accessToken) {
+//   const metadata = {
+//     snippet: {
+//       title: 'Video Title',
+//       description: 'Video Description',
+//       tags: ['tag1', 'tag2'],
+//       categoryId: '22'
+//     },
+//     status: {
+//       privacyStatus: 'public'
+//     }
+//   };
+
+//   const formData = new FormData();
+//   formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+//   formData.append('file', videoFile);
+
+//   fetch('https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status', {
+//     method: 'POST',
+//     headers: new Headers({
+//       'Authorization': 'Bearer ' + accessToken,
+//       'Accept': 'application/json',
+//     }),
+//     body: formData
+//   })
+//   .then(response => response.json())
+//   .then(data => console.log(data))
+//   .catch(error => console.error('Error:', error));
+// }
+
+
+// function authenticate() {
+//   return gapi.auth2.getAuthInstance()
+//       .signIn({ scope: "https://www.googleapis.com/auth/youtube.upload" })
+//       .then(function () { console.log("Sign-in successful"); },
+//             function (err) { console.error("Error signing in", err); });
+// }
+
+// function loadClient() {
+//   gapi.client.setApiKey('AIzaSyAc9fn3KHYPzqhytT_aYSWpEXbeV5XdIGQ');
+//   return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
+//       .then(function () { console.log("GAPI client loaded for API"); },
+//             function (err) { console.error("Error loading GAPI client for API", err); });
+// }
+// document.getElementById("displayUploadButton").addEventListener("click", () => {
+//   const formData = new FormData();
+//   formData.append('video', videoFile);
+
+//   fetch('https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status', {
+//       method: 'POST',
+//       headers: new Headers({
+//           'Authorization': 'Bearer ' + gapi.auth.getToken().access_token,
+//           'Accept': 'application/json',
+//       }),
+//       body: formData
+//   })
+//   .then(response => response.json())
+//   .then(data => console.log(data))
+//   .catch(error => console.error('Error:', error));
+// });
+
+// gapi.load('client:auth2', function() {
+//   // 클라이언트 초기화
+//   gapi.client.init({
+//       apiKey: 'AIzaSyAc9fn3KHYPzqhytT_aYSWpEXbeV5XdIGQ',
+//       clientId: '796752244348-rt5aqcrmjg6jb85lvh8ss2o9cffvjl75.apps.googleusercontent.com',
+//       discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"],
+//       scope: 'https://www.googleapis.com/auth/youtube.upload'
+//   }).then(function () {
+//       // 초기화 완료 후 로직
+//       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+//         console.log("login Acesse")
+//           // 로그인된 상태
+//       } else {
+//           // 로그인되지 않은 상태
+//           console.log("login deacesse")
+//       }
+//   }, function(error) {
+//       console.error('Error loading client: ', error);
+//   });
+// });

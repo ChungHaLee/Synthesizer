@@ -406,3 +406,14 @@ div#VideoClipSettingContainer{
   margin-top: -50px;
 }
 
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-moz-range-track {
+  display: none;
+}
+
+video::--ms-track {
+  display: none;
+}
